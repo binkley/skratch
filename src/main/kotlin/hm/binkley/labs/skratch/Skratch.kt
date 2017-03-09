@@ -9,6 +9,12 @@ class Bar {
         return body(this)
     }
 
+    infix fun foo(b: Bar) : Bar {
+        println("foo: " + this)
+        println("b: " + b)
+        return b
+    }
+
     infix fun bob(body: (b: Bar) -> Bar): Bar {
         println("bob: " + this)
         println("body: " + body)
@@ -25,7 +31,7 @@ infix fun Int.foo(b: Int) = this + b
 fun main(args: Array<String>) {
     println(1 foo 2)
 
-    bar foo {
+    bar foo bar foo {
         println("body: " + it)
         it
     } bob {
