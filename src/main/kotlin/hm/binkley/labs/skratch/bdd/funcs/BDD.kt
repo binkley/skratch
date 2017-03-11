@@ -16,9 +16,31 @@ fun main(args: Array<String>) {
             QED)
 }
 
-infix fun Given.`an apple`(WHEN: When) = When()
-infix fun When.`it falls`(THEN: Then) = Then()
-infix fun Then.`Newton thinks`(QED: Qed) = BDD(GIVEN, WHEN)
+class Newton(var thinking: Boolean)
+class Apple(val physicist: Newton) {
+    fun fall(): Unit {
+        physicist.thinking = true
+    }
+}
+
+var apple: Apple? = null
+
+infix fun Given.`an apple`(WHEN: When): When {
+    apple = Apple(Newton(thinking = false))
+    return When()
+}
+
+infix fun When.`it falls`(THEN: Then): Then {
+    apple?.fall()
+    return Then()
+}
+
+infix fun Then.`Newton thinks`(QED: Qed): BDD {
+    assert(apple?.physicist?.thinking ?: false) {
+        "Newton is sleeping"
+    }
+    return BDD(GIVEN, WHEN)
+}
 
 inline fun whoami() = Throwable().stackTrace[1].methodName
 
