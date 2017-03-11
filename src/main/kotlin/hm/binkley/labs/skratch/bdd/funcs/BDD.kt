@@ -29,7 +29,7 @@ data class BDD(val GIVEN: String, val WHEN: String, val THEN: String) {
     }
 
     class Given
-    data class When(val GIVEN: String)
-    data class Then(val GIVEN: String, val WHEN: String)
+    class When(val GIVEN: String)
+    class Then(val GIVEN: String, val WHEN: String)
     class Qed
 }
