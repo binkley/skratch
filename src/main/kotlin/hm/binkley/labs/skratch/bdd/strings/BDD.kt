@@ -1,6 +1,13 @@
-package hm.binkley.labs.skratch.bdd
+package hm.binkley.labs.skratch.bdd.strings
 
-import hm.binkley.labs.skratch.bdd.BDD.Companion.So
+import hm.binkley.labs.skratch.bdd.strings.BDD.Companion.So
+
+fun main(args: Array<String>) {
+    println(So
+            GIVEN "an apple"
+            WHEN "it falls"
+            THEN "Newton thinks")
+}
 
 data class BDD constructor(
         val GIVEN: String, val WHEN: String, val THEN: String) {
@@ -17,11 +24,4 @@ data class BDD constructor(
             }
         }
     }
-}
-
-fun main(args: Array<String>) {
-    println(So
-            GIVEN "an apple"
-            WHEN "it falls"
-            THEN "Newton thinks")
 }
