@@ -16,20 +16,22 @@ fun main(args: Array<String>) {
             QED)
 }
 
-infix fun Given.`an apple`(WHEN: When) = When("an apple")
-infix fun When.`it falls`(THEN: Then) = Then(GIVEN, "it falls")
-infix fun Then.`Newton thinks`(QED: Qed) = BDD(GIVEN, WHEN, "Newton thinks")
+infix fun Given.`an apple`(WHEN: When) = When()
+infix fun When.`it falls`(THEN: Then) = Then(GIVEN)
+infix fun Then.`Newton thinks`(QED: Qed) = BDD(GIVEN, WHEN)
 
-data class BDD(val GIVEN: String, val WHEN: String, val THEN: String) {
+inline fun whoami() = Throwable().stackTrace[1].methodName
+
+data class BDD(val GIVEN: String, val WHEN: String, val THEN: String = whoami()) {
     companion object {
         val GIVEN = Given()
-        val WHEN = When("")
-        val THEN = Then("", "")
+        val WHEN = When()
+        val THEN = Then("")
         val QED = Qed()
     }
 
     class Given
-    class When(val GIVEN: String)
-    class Then(val GIVEN: String, val WHEN: String)
+    class When(val GIVEN: String = whoami())
+    class Then(val GIVEN: String, val WHEN: String = whoami())
     class Qed
 }
