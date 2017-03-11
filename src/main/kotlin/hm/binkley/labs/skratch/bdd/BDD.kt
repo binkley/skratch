@@ -11,10 +11,9 @@ data class BDD constructor(
     class So {
         infix fun GIVEN(GIVEN: String) = Given(GIVEN)
         data class Given(private val GIVEN: String) {
-            infix fun WHEN(WHEN: String) = When(this, WHEN)
-            data class When(private val GIVEN: Given, private val WHEN: String) {
-                infix fun THEN(THEN: String)
-                        = BDD(GIVEN.GIVEN, WHEN, THEN)
+            infix fun WHEN(WHEN: String) = When(GIVEN, WHEN)
+            data class When(private val GIVEN: String, private val WHEN: String) {
+                infix fun THEN(THEN: String) = BDD(GIVEN, WHEN, THEN)
             }
         }
     }
