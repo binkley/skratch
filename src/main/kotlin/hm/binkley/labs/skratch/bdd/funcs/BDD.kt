@@ -6,6 +6,7 @@ import hm.binkley.labs.skratch.bdd.funcs.BDD.Companion.GIVEN
 import hm.binkley.labs.skratch.bdd.funcs.BDD.Companion.QED
 import hm.binkley.labs.skratch.bdd.funcs.BDD.Companion.THEN
 import hm.binkley.labs.skratch.bdd.funcs.BDD.Companion.WHEN
+import hm.binkley.labs.skratch.bdd.funcs.BDD.Companion.upon
 import hm.binkley.labs.skratch.bdd.funcs.BDD.Given
 import hm.binkley.labs.skratch.bdd.funcs.BDD.Given.When
 import hm.binkley.labs.skratch.bdd.funcs.BDD.Given.When.Then
@@ -20,21 +21,18 @@ fun main(args: Array<String>) {
 
 var apple: Apple? = null
 
-infix fun Given.`an apple`(WHEN: When): When {
+infix fun Given.`an apple`(WHEN: When) = upon(this) {
     apple = Apple(Newton(thinking = false))
-    return When()
 }
 
-infix fun When.`it falls`(THEN: Then): Then {
+infix fun When.`it falls`(THEN: Then) = upon(this) {
     apple?.falls()
-    return Then()
 }
 
-infix fun Then.`Newton thinks`(QED: Qed): BDD {
+infix fun Then.`Newton thinks`(QED: Qed) = upon(this) {
     assert(apple?.physicist?.thinking ?: false) {
         "Newton is sleeping"
     }
-    return BDD(GIVEN, WHEN)
 }
 
 inline fun caller() = Throwable().stackTrace[1].methodName
@@ -46,6 +44,21 @@ data class BDD(val GIVEN: String, val WHEN: String,
         val WHEN = GIVEN.When()
         val THEN = WHEN.Then()
         val QED = THEN.Qed()
+
+        inline fun upon(GIVEN: Given, action: () -> Unit): When {
+            action.invoke()
+            return GIVEN.When()
+        }
+
+        inline fun upon(WHEN: When, action: () -> Unit): Then {
+            action.invoke()
+            return WHEN.Then()
+        }
+
+        inline fun upon(THEN: Then, action: () -> Unit): BDD {
+            action.invoke()
+            return BDD(THEN.GIVEN, THEN.WHEN)
+        }
     }
 
     class Given {
