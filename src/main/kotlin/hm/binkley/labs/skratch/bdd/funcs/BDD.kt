@@ -42,9 +42,10 @@ infix fun Then.`Newton thinks`(QED: Qed): BDD {
     return BDD(GIVEN, WHEN)
 }
 
-inline fun whoami() = Throwable().stackTrace[1].methodName
+inline fun caller() = Throwable().stackTrace[1].methodName
 
-data class BDD(val GIVEN: String, val WHEN: String, val THEN: String = whoami()) {
+data class BDD(val GIVEN: String, val WHEN: String,
+        val THEN: String = caller()) {
     companion object {
         val GIVEN = Given()
         val WHEN = GIVEN.When()
@@ -53,8 +54,9 @@ data class BDD(val GIVEN: String, val WHEN: String, val THEN: String = whoami())
     }
 
     class Given {
-        inner class When(val GIVEN: String = whoami()) {
-            inner class Then(val GIVEN: String = this@When.GIVEN, val WHEN: String = whoami()) {
+        inner class When(val GIVEN: String = caller()) {
+            inner class Then(val GIVEN: String = this@When.GIVEN,
+                    val WHEN: String = caller()) {
                 inner class Qed
             }
         }
