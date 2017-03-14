@@ -1,7 +1,7 @@
 package hm.binkley.labs.skratch.bdd
 
 class Apple(val physicist: Newton) {
-    fun fall(): Unit {
+    fun falls(): Unit {
         physicist.thinking = true
     }
 }

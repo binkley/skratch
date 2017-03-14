@@ -26,7 +26,7 @@ infix fun Given.`an apple`(WHEN: When): When {
 }
 
 infix fun When.`it falls`(THEN: Then): Then {
-    apple?.fall()
+    apple?.falls()
     return Then()
 }
 

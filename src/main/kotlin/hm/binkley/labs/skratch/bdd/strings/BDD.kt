@@ -9,7 +9,7 @@ import hm.binkley.labs.skratch.bdd.strings.BDD.Companion.upon
 fun main(args: Array<String>) {
     var apple: Apple? = null
     upon("an apple") { apple = Apple(Newton(thinking = false)) }
-    upon("it falls") { apple?.fall() }
+    upon("it falls") { apple?.falls() }
     upon("Newton thinks") {
         assert(apple?.physicist?.thinking ?: false) {
             "Newton is sleeping"
