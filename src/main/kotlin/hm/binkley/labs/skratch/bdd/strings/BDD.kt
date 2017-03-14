@@ -3,13 +3,14 @@ package hm.binkley.labs.skratch.bdd.strings
 import hm.binkley.labs.skratch.bdd.Apple
 import hm.binkley.labs.skratch.bdd.Newton
 import hm.binkley.labs.skratch.bdd.strings.BDD.Companion.So
+import hm.binkley.labs.skratch.bdd.strings.BDD.Companion.upon
 
 
 fun main(args: Array<String>) {
     var apple: Apple? = null
-    BDD["an apple"] = { apple = Apple(Newton(thinking = false)) }
-    BDD["it falls"] = { apple?.fall() }
-    BDD["Newton thinks"] = {
+    upon("an apple") { apple = Apple(Newton(thinking = false)) }
+    upon("it falls") { apple?.fall() }
+    upon("Newton thinks") {
         assert(apple?.physicist?.thinking ?: false) {
             "Newton is sleeping"
         }
@@ -35,7 +36,7 @@ data class BDD constructor(
     companion object {
         val So = So()
         private val actions = HashMap<String, () -> Unit>()
-        operator fun set(clause: String, action: () -> Unit): Unit {
+        fun upon(clause: String, action: () -> Unit): Unit {
             actions[clause] = action
         }
     }
