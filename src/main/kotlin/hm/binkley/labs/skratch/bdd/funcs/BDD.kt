@@ -1,5 +1,7 @@
 package hm.binkley.labs.skratch.bdd.funcs
 
+import hm.binkley.labs.skratch.bdd.Apple
+import hm.binkley.labs.skratch.bdd.Newton
 import hm.binkley.labs.skratch.bdd.funcs.BDD.Companion.GIVEN
 import hm.binkley.labs.skratch.bdd.funcs.BDD.Companion.QED
 import hm.binkley.labs.skratch.bdd.funcs.BDD.Companion.THEN
@@ -16,17 +18,11 @@ fun main(args: Array<String>) {
             QED)
 }
 
-class Newton(var thinking: Boolean)
-class Apple(val physicist: Newton) {
-    fun fall(): Unit {
-        physicist.thinking = true
-    }
-}
-
 var apple: Apple? = null
 
 infix fun Given.`an apple`(WHEN: When): When {
-    apple = Apple(Newton(thinking = false))
+    apple = Apple(
+            Newton(thinking = false))
     return When()
 }
 
