@@ -21,8 +21,7 @@ fun main(args: Array<String>) {
 var apple: Apple? = null
 
 infix fun Given.`an apple`(WHEN: When): When {
-    apple = Apple(
-            Newton(thinking = false))
+    apple = Apple(Newton(thinking = false))
     return When()
 }
 
