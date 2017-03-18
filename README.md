@@ -6,5 +6,5 @@ Kotlin Scratch Code
 
 Two styles of BDD in Kotlin: strings and functions.
 
-- Strings: passes BDD text as strings
-- Functions: passes BDD text as function names
+- Strings: passes BDD text as [strings](src/main/kotlin/hm/binkley/skratch/bdd/strings)
+- Functions: passes BDD text as [function names](src/main/kotlin/hm/binkley/skratch/bdd/funcs)
