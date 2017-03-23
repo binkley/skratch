@@ -12,23 +12,23 @@ import hm.binkley.labs.skratch.bdd.funcs.BDD.Given.When.Then
 import hm.binkley.labs.skratch.bdd.funcs.BDD.Given.When.Then.Qed
 import org.junit.jupiter.api.Test
 
-var apple: Apple? = null
-
-infix fun Given.`an apple`(WHEN: When) = BDD.upon(this) {
-    apple = Apple(Newton(thinking = false))
-}
-
-infix fun When.`it falls`(THEN: Then) = BDD.upon(this) {
-    apple?.falls()
-}
-
-infix fun Then.`Newton thinks`(QED: Qed) = BDD.upon(this) {
-    assert(apple?.physicist?.thinking ?: false) {
-        "Newton is sleeping"
-    }
-}
-
 class newtonTest {
+    lateinit var apple: Apple
+
+    infix fun Given.`an apple`(WHEN: When) = BDD.upon(this) {
+        apple = Apple(Newton(thinking = false))
+    }
+
+    infix fun When.`it falls`(THEN: Then) = BDD.upon(this) {
+        apple.falls()
+    }
+
+    infix fun Then.`Newton thinks`(QED: Qed) = BDD.upon(this) {
+        assert(apple.physicist.thinking) {
+            "Newton is sleeping"
+        }
+    }
+
     @Test
     fun shouldThink() {
         GIVEN `an apple`

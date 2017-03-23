@@ -7,17 +7,18 @@ import hm.binkley.labs.skratch.bdd.strings.BDD.Companion.upon
 import org.junit.jupiter.api.Test
 
 class newtonTest {
+    lateinit var apple: Apple
+
     @Test
     fun shouldThink() {
-        var apple: Apple? = null
         upon("an apple") {
             apple = Apple(Newton(thinking = false))
         }
         upon("it falls") {
-            apple?.falls()
+            apple.falls()
         }
         upon("Newton thinks") {
-            assert(apple?.physicist?.thinking ?: false) {
+            assert(apple.physicist.thinking) {
                 "Newton is sleeping"
             }
         }
