@@ -12,6 +12,7 @@ data class BDD(val GIVEN: String, val WHEN: String,
         val THEN = WHEN.Then()
         val QED = THEN.Qed()
 
+        // `caller` is inline to preserve the stack trace
         inline private fun caller() = Throwable().stackTrace[1].methodName!!
 
         inline fun upon(GIVEN: Given, action: () -> Unit): When {
