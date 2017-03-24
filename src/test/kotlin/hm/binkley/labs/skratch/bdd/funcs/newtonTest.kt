@@ -32,9 +32,13 @@ class newtonTest {
 
     @Test
     fun shouldThink() {
-        GIVEN `an apple`
+        val bdd = GIVEN `an apple`
                 WHEN `it falls`
                 THEN `Newton thinks`
                 QED
+        assert(bdd.toString() ==
+                "GIVEN an apple WHEN it falls THEN Newton thinks") {
+            "Expected: `GIVEN an apple WHEN it falls THEN Newton thinks`, got: $bdd"
+        }
     }
 }

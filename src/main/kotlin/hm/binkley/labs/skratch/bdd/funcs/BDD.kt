@@ -6,6 +6,8 @@ import jdk.nashorn.internal.runtime.Debug.caller
 
 data class BDD(val GIVEN: String, val WHEN: String,
                val THEN: String = caller()) {
+    override fun toString() = "GIVEN $GIVEN WHEN $WHEN THEN $THEN"
+
     companion object {
         val GIVEN = Given()
         val WHEN = GIVEN.When()
