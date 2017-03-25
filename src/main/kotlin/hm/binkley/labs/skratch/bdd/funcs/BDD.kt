@@ -2,6 +2,7 @@ package hm.binkley.labs.skratch.bdd.funcs
 
 import hm.binkley.labs.skratch.bdd.funcs.BDD.Given.When
 import hm.binkley.labs.skratch.bdd.funcs.BDD.Given.When.Then
+import hm.binkley.labs.skratch.bdd.funcs.BDD.Given.When.Then.Qed
 import jdk.nashorn.internal.runtime.Debug.caller
 
 data class BDD(val GIVEN: String, val WHEN: String,
@@ -17,17 +18,17 @@ data class BDD(val GIVEN: String, val WHEN: String,
         // `caller` is inline to preserve the stack trace
         inline private fun caller() = Throwable().stackTrace[1].methodName!!
 
-        inline fun upon(GIVEN: Given, action: () -> Unit): When {
+        inline fun upon(GIVEN: Given, WHEN: When, action: () -> Unit): When {
             action.invoke()
             return GIVEN.When()
         }
 
-        inline fun upon(WHEN: When, action: () -> Unit): Then {
+        inline fun upon(WHEN: When, THEN: Then, action: () -> Unit): Then {
             action.invoke()
             return WHEN.Then()
         }
 
-        inline fun upon(THEN: Then, action: () -> Unit): BDD {
+        inline fun upon(THEN: Then, QED: Qed, action: () -> Unit): BDD {
             action.invoke()
             return BDD(THEN.GIVEN, THEN.WHEN)
         }
