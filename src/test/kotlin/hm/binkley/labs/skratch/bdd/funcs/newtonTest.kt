@@ -6,7 +6,6 @@ import hm.binkley.labs.skratch.bdd.funcs.BDD.Companion.GIVEN
 import hm.binkley.labs.skratch.bdd.funcs.BDD.Companion.QED
 import hm.binkley.labs.skratch.bdd.funcs.BDD.Companion.THEN
 import hm.binkley.labs.skratch.bdd.funcs.BDD.Companion.WHEN
-import hm.binkley.labs.skratch.bdd.funcs.BDD.Companion.upon
 import hm.binkley.labs.skratch.bdd.funcs.BDD.Given
 import hm.binkley.labs.skratch.bdd.funcs.BDD.Given.When
 import hm.binkley.labs.skratch.bdd.funcs.BDD.Given.When.Then
@@ -16,15 +15,15 @@ import org.junit.jupiter.api.Test
 class newtonTest {
     lateinit var apple: Apple
 
-    infix fun Given.`an apple`(WHEN: When) = upon(this, WHEN) {
+    infix fun Given.`an apple`(WHEN: When) = this.upon(WHEN) {
         apple = Apple(Newton(thinking = false))
     }
 
-    infix fun When.`it falls`(THEN: Then) = upon(this, THEN) {
+    infix fun When.`it falls`(THEN: Then) = this.upon(THEN) {
         apple.falls()
     }
 
-    infix fun Then.`Newton thinks`(QED: Qed) = upon(this, QED) {
+    infix fun Then.`Newton thinks`(QED: Qed) = this.upon(QED) {
         assert(apple.physicist.thinking) {
             "Newton is sleeping"
         }
