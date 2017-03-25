@@ -15,15 +15,15 @@ import org.junit.jupiter.api.Test
 class newtonTest {
     lateinit var apple: Apple
 
-    infix fun Given.`an apple`(WHEN: When) = this.upon(WHEN) {
+    infix fun Given.`an apple`(WHEN: When) = this.upon {
         apple = Apple(Newton(thinking = false))
     }
 
-    infix fun When.`it falls`(THEN: Then) = this.upon(THEN) {
+    infix fun When.`it falls`(THEN: Then) = this.upon {
         apple.falls()
     }
 
-    infix fun Then.`Newton thinks`(QED: Qed) = this.upon(QED) {
+    infix fun Then.`Newton thinks`(QED: Qed) = this.upon {
         assert(apple.physicist.thinking) {
             "Newton is sleeping"
         }
