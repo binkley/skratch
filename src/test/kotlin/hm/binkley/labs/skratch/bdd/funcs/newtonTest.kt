@@ -13,7 +13,7 @@ import hm.binkley.labs.skratch.bdd.funcs.BDD.Given.When.Then.Qed
 import org.junit.jupiter.api.Test
 
 class newtonTest {
-    lateinit var apple: Apple
+    lateinit private var apple: Apple
 
     infix fun Given.`an apple`(WHEN: When) = upon {
         apple = Apple(Newton(thinking = false))
@@ -35,8 +35,7 @@ class newtonTest {
                 WHEN `it falls`
                 THEN `Newton thinks`
                 QED
-        assert(bdd.toString() ==
-                "GIVEN an apple WHEN it falls THEN Newton thinks") {
+        assert("$bdd" == "GIVEN an apple WHEN it falls THEN Newton thinks") {
             "Expected: `GIVEN an apple WHEN it falls THEN Newton thinks`, got: $bdd"
         }
     }
