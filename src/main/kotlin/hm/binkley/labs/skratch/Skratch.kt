@@ -1,27 +1,38 @@
 package hm.binkley.labs.skratch
 
+import hm.binkley.labs.skratch.Q.Companion.la
+
+typealias F = (Int, Int) -> String
+
 class X(private val a: String) : CharSequence by a {
     override fun toString() = a
 }
 
-interface Bob<T>
-typealias IntBobby = (Int, Int) -> Bob<Int>
-
 class Q : MutableMap<String, Any> by mutableMapOf() {
-    operator fun <T> set(key: String, x: (a: Int, b: Int) -> Bob<T>) {
+    operator fun <T> set(key: String, x: (a: Int, b: Int) -> T) {
         this[key] = x as Any
     }
+
+    companion object {
+        fun la(s: String) = { a: Int, b: Int -> s }
+    }
+}
+
+class S(private val s:String) {
+    override fun toString() = s
 }
 
 fun main(args: Array<String>) {
     println(::main)
     println(X("abc"))
     val q = Q()
-    q["bob"] = { a, b ->
-        object : Bob<Int> {
-            override fun toString() = "Int Bob"
-        }
-    }
-    q["mary"] = "mary"
-    println("${q["mary"]}: ${(q["bob"] as IntBobby)(1, 2)}")
+    q["bob"] = { a, b -> "$a + $b = ${a + b}" }
+    q["mary"] = S("Mary")
+    q["howard"] = la("Fooby-do!")
+
+    for ((k, v) in q)
+        println("$k -> ${when (v) {
+            is Function<*> -> (v as F)(1, 2)
+            else -> v
+        }}")
 }
