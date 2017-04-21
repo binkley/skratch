@@ -18,11 +18,28 @@ class Q : MutableMap<String, Any> by mutableMapOf() {
     }
 }
 
-class S(private val s:String) {
+class S(private val s: String) {
     override fun toString() = s
 }
 
 fun main(args: Array<String>) {
+    open class Named<in T>(val name: String, check: (T) -> Boolean)
+        : (T) -> Boolean by check {
+        override fun toString() = name
+    }
+
+    fun do_the_three_thing() {
+        println("Breakfast, lunch, dinner")
+    }
+
+    fun maybe_three(check: (Int) -> Boolean) {
+        if (check(3)) do_the_three_thing()
+        else println("$check says do not pass go")
+    }
+
+    maybe_three(Named("Is it three?") { i -> 3 == i })
+    maybe_three(Named("Is it four?") { i -> 4 == i })
+
     println(::main)
     println(X("abc"))
     val q = Q()
