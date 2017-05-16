@@ -11,19 +11,25 @@ class newtonTest {
 
     @Test
     fun shouldThink() {
-        upon("an apple") {
+        upon(an_apple) {
             apple = Apple(Newton(thinking = false))
         }
-        upon("it falls") {
+        upon(it_falls) {
             apple.falls()
         }
-        upon("Newton thinks") {
+        upon(Newton_thinks) {
             assert(apple.physicist.thinking) {
                 "Newton is sleeping"
             }
         }
 
         // TODO: Breaking these across lines confuses Kotlin compiler
-        So GIVEN "an apple" WHEN "it falls" THEN "Newton thinks"
+        So GIVEN an_apple WHEN it_falls THEN Newton_thinks
+    }
+
+    companion object {
+        private const val an_apple = "an apple"
+        private const val it_falls = "it falls"
+        private const val Newton_thinks = "Newton thinks"
     }
 }
