@@ -27,9 +27,9 @@
         <jacoco.version>0.7.9</jacoco.version>
         <java.charset>UTF-8</java.charset>
         <java.version>1.8</java.version>
-        <junit.jupiter.version>5.0.0-M3</junit.jupiter.version>
+        <junit.jupiter.version>5.0.0-M4</junit.jupiter.version>
         <junit.platform.version>1.0.0-M3</junit.platform.version>
-        <kotlin.version>1.1.1</kotlin.version>
+        <kotlin.version>1.1.4-dev-600</kotlin.version>
         <maven-clean-plugin.version>3.0.0</maven-clean-plugin.version>
         <maven-compiler-plugin.version>3.6.1</maven-compiler-plugin.version>
         <maven-dependency-plugin.version>3.0.0</maven-dependency-plugin.version>
@@ -38,32 +38,30 @@
         <project.build.sourceEncoding>${java.charset}</project.build.sourceEncoding>
         <project.reporting.outputEncoding>${java.charset}</project.reporting.outputEncoding>
         <surefire.printSummary>false</surefire.printSummary>
-        <versions-maven-plugin.version>2.3</versions-maven-plugin.version>
+        <versions-maven-plugin.version>2.4</versions-maven-plugin.version>
         <!-- @formatter:on -->
     </properties>
 
-    <!--
     <repositories>
         <repository>
             <id>kotlin-bintray</id>
             <name>Kotlin Bintray</name>
-            <url>https://dl.bintray.com/kotlin/kotlin-eap-1.1</url>
+            <url>https://dl.bintray.com/kotlin/kotlin-dev</url>
         </repository>
     </repositories>
-    -->
 
     <pluginRepositories>
         <pluginRepository>
             <id>kotlin-bintray</id>
             <name>Kotlin Bintray</name>
-            <url>https://dl.bintray.com/kotlin/kotlin-eap-1.1</url>
+            <url>https://dl.bintray.com/kotlin/kotlin-dev</url>
         </pluginRepository>
     </pluginRepositories>
 
     <dependencies>
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
-            <artifactId>kotlin-stdlib</artifactId>
+            <artifactId>kotlin-stdlib-jre8</artifactId>
             <version>${kotlin.version}</version>
         </dependency>
         <dependency>
@@ -89,14 +87,10 @@
                 <artifactId>buildplan-maven-plugin</artifactId>
                 <version>${buildplan-maven-plugin.version}</version>
             </plugin>
-            <!--
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>versions-maven-plugin</artifactId>
                 <version>${versions-maven-plugin.version}</version>
-                <configuration>
-                    <rulesUri>file:///${session.executionRootDirectory}/maven-version-rules.xml</rulesUri>
-                </configuration>
                 <executions>
                     <execution>
                         <id>update-dependencies</id>
@@ -107,7 +101,6 @@
                     </execution>
                 </executions>
             </plugin>
-            -->
             <plugin>
                 <artifactId>maven-clean-plugin</artifactId>
                 <version>${maven-clean-plugin.version}</version>
@@ -172,11 +165,6 @@
             <plugin>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>${maven-surefire-plugin.version}</version>
-                <configuration>
-                    <environmentVariables>
-                        <SPRING_PROFILES_ACTIVE>test</SPRING_PROFILES_ACTIVE>
-                    </environmentVariables>
-                </configuration>
                 <dependencies>
                     <dependency>
                         <groupId>org.junit.platform</groupId>
@@ -194,11 +182,6 @@
             <plugin>
                 <artifactId>maven-failsafe-plugin</artifactId>
                 <version>${maven-surefire-plugin.version}</version>
-                <configuration>
-                    <environmentVariables>
-                        <SPRING_PROFILES_ACTIVE>test</SPRING_PROFILES_ACTIVE>
-                    </environmentVariables>
-                </configuration>
                 <dependencies>
                     <dependency>
                         <groupId>org.junit.platform</groupId>
@@ -239,7 +222,8 @@
                                         <limit>
                                             <counter>INSTRUCTION</counter>
                                             <value>COVEREDRATIO</value>
-                                            <minimum>${jacoco.coverage}</minimum>
+                                            <minimum>${jacoco.coverage}
+                                            </minimum>
                                         </limit>
                                     </limits>
                                 </rule>
