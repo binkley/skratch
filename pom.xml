@@ -170,6 +170,9 @@
                 <configuration>
                     <archive>
                         <index>true</index>
+                        <manifest>
+                            <mainClass>hm.binkley.labs.skratch.jvmagent.AgentX</mainClass>
+                        </manifest>
                         <manifestEntries>
                             <!-- @formatter:off -->
                             <Premain-Class>hm.binkley.labs.skratch.jvmagent.AgentX</Premain-Class>
