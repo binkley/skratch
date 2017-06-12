@@ -30,6 +30,7 @@
         <junit.jupiter.version>5.0.0-M4</junit.jupiter.version>
         <junit.platform.version>1.0.0-M3</junit.platform.version>
         <kotlin.version>1.1.4-dev-600</kotlin.version>
+        <maven-archiver-plugin.version>3.1.1</maven-archiver-plugin.version>
         <maven-clean-plugin.version>3.0.0</maven-clean-plugin.version>
         <maven-compiler-plugin.version>3.6.1</maven-compiler-plugin.version>
         <maven-dependency-plugin.version>3.0.0</maven-dependency-plugin.version>
@@ -171,7 +172,7 @@
                         <index>true</index>
                         <manifestEntries>
                             <!-- @formatter:off -->
-                            <Premain-Class>hm.binkley.labs.skratch.AgentX</Premain-Class>
+                            <Premain-Class>hm.binkley.labs.skratch.jvmagent.AgentX</Premain-Class>
                             <!-- @formatter:on -->
                         </manifestEntries>
                     </archive>
