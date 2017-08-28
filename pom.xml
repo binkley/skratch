@@ -27,7 +27,7 @@
         <jacoco.version>0.7.9</jacoco.version>
         <java.charset>UTF-8</java.charset>
         <java.version>1.8</java.version>
-        <junit.jupiter.version>5.0.0-RC2</junit.jupiter.version>
+        <junit.jupiter.version>5.0.0-RC3</junit.jupiter.version>
         <junit.platform.version>1.0.0-RC2</junit.platform.version>
         <kotlin.version>1.2-M2</kotlin.version>
         <maven-clean-plugin.version>3.0.0</maven-clean-plugin.version>
