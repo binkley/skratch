@@ -14,7 +14,7 @@ class Q : MutableMap<String, Any> by mutableMapOf() {
     }
 
     companion object {
-        fun la(s: String) = { a: Int, b: Int -> s }
+        fun la(s: String) = { _: Int, _: Int -> s }
     }
 }
 
