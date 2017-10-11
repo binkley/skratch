@@ -29,7 +29,7 @@
         <java.version>1.8</java.version>
         <junit.jupiter.version>5.0.1</junit.jupiter.version>
         <junit.platform.version>1.0.0-RC2</junit.platform.version>
-        <kotlin.version>1.2-M2</kotlin.version>
+        <kotlin.version>1.2.0-beta-31</kotlin.version>
         <maven-clean-plugin.version>3.0.0</maven-clean-plugin.version>
         <maven-compiler-plugin.version>3.6.1</maven-compiler-plugin.version>
         <maven-dependency-plugin.version>3.0.0</maven-dependency-plugin.version>
@@ -92,6 +92,11 @@
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>versions-maven-plugin</artifactId>
                 <version>${versions-maven-plugin.version}</version>
+                <configuration>
+                    <rulesUri>
+                        file:///${session.executionRootDirectory}/maven-version-rules.xml
+                    </rulesUri>
+                </configuration>
                 <executions>
                     <execution>
                         <id>update-dependencies</id>
@@ -190,11 +195,16 @@
                 <configuration>
                     <shadedArtifactAttached>true</shadedArtifactAttached>
                     <transformers>
-                        <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                        <transformer
+                                implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                             <!-- TODO: Why does it not use the archiver plugin? -->
                             <manifestEntries>
-                                <Main-Class>hm.binkley.labs.skratch.jvmagent.AgentX</Main-Class>
-                                <Premain-Class>hm.binkley.labs.skratch.jvmagent.AgentX</Premain-Class>
+                                <Main-Class>
+                                    hm.binkley.labs.skratch.jvmagent.AgentX
+                                </Main-Class>
+                                <Premain-Class>
+                                    hm.binkley.labs.skratch.jvmagent.AgentX
+                                </Premain-Class>
                             </manifestEntries>
                         </transformer>
                     </transformers>
@@ -212,7 +222,8 @@
                 <artifactId>maven-failsafe-plugin</artifactId>
                 <version>${maven-surefire-plugin.version}</version>
                 <configuration>
-                    <argLine>-javaagent:${project.build.finalName}.jar</argLine>
+                    <argLine>-javaagent:${project.build.finalName}.jar
+                    </argLine>
                 </configuration>
                 <dependencies>
                     <dependency>
