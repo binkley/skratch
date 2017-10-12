@@ -1,8 +1,9 @@
 package hm.binkley.labs.skratch.collections
 
+import java.util.Objects
 import kotlin.collections.MutableMap.MutableEntry
 
-data class ValueEntry(override val key: String, override val value: Value)
+class ValueEntry(override val key: String, override val value: Value)
     : MutableEntry<String, Value> {
     override fun setValue(newValue: Value): Value {
         throw UnsupportedOperationException()
@@ -14,4 +15,15 @@ data class ValueEntry(override val key: String, override val value: Value)
             = value.replaceWith(layer, key, element.value)
 
     fun add(layer: Int) = value.add(layer, key)
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as ValueEntry
+
+        return key == other.key && value == other.value
+    }
+
+    override fun hashCode() = Objects.hash(key, value)
 }

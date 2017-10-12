@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Assertions.assertSame
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Test
 
-internal class ValueTest {
+internal class ValueMockTest {
     private val layer = 0
     private val key = "foo"
     private val database: Database = mock()
@@ -18,23 +18,23 @@ internal class ValueTest {
 
     @Test
     fun shouldComplainWhenNonceRemoves() {
-        assertThrows(IllegalStateException::class.java, {
+        assertThrows(IllegalStateException::class.java) {
             Nonce.remove(layer, key)
-        })
+        }
     }
 
     @Test
     fun shouldComplainWhenNonceReplacesWith() {
-        assertThrows(IllegalStateException::class.java, {
+        assertThrows(IllegalStateException::class.java) {
             Nonce.replaceWith(layer, key, Nonce)
-        })
+        }
     }
 
     @Test
     fun shouldComplainWhenNonceAdds() {
-        assertThrows(IllegalStateException::class.java, {
+        assertThrows(IllegalStateException::class.java) {
             Nonce.add(layer, key)
-        })
+        }
     }
 
     @Test
