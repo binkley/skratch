@@ -6,6 +6,7 @@ import com.nhaarman.mockito_kotlin.verifyZeroInteractions
 import hm.binkley.labs.skratch.collections.Value.DatabaseValue
 import hm.binkley.labs.skratch.collections.Value.Nonce
 import hm.binkley.labs.skratch.collections.Value.RuleValue
+import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Test
 
 internal class ValueTest {
@@ -13,6 +14,27 @@ internal class ValueTest {
     private val key = "foo"
     private val database: Database = mock()
     val value = DatabaseValue(database, "3")
+
+    @Test
+    fun shouldComplainWhenNonceRemoves() {
+        assertThrows(IllegalStateException::class.java, {
+            Nonce.remove(layer, key)
+        })
+    }
+
+    @Test
+    fun shouldComplainWhenNonceReplacesWith() {
+        assertThrows(IllegalStateException::class.java, {
+            Nonce.replaceWith(layer, key, Nonce)
+        })
+    }
+
+    @Test
+    fun shouldComplainWhenNonceAdds() {
+        assertThrows(IllegalStateException::class.java, {
+            Nonce.add(layer, key)
+        })
+    }
 
     @Test
     fun shouldRemoveFromDatabase() {
