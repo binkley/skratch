@@ -47,7 +47,7 @@ internal class ValueEntryTest {
     @Test
     fun shouldReplaceWith() {
         val layer = 1
-        val other = RuleValue({ _, _ -> 4 })
+        val other = RuleValue { _, _ -> 4 }
         doNothing().whenever(value).replaceWith(layer, key, other)
 
         entry.replaceWith(layer, ValueEntry(key, other))

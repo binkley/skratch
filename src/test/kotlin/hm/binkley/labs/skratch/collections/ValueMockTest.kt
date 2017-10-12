@@ -14,7 +14,7 @@ internal class ValueMockTest {
     private val layer = 0
     private val key = "foo"
     private val database: Database = mock()
-    val value = DatabaseValue(database, "3")
+    private val value = DatabaseValue(database, "3")
 
     @Test
     fun shouldComplainWhenNonceRemoves() {
@@ -53,7 +53,7 @@ internal class ValueMockTest {
 
     @Test
     fun shouldRemoveWhenReplacedByRule() {
-        value.replaceWith(layer, key, RuleValue({ _, _ -> 3 }))
+        value.replaceWith(layer, key, RuleValue { _, _ -> 3 })
 
         verify(database).remove(layer, key)
     }

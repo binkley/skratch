@@ -39,4 +39,3 @@ sealed class Value {
 
     class RuleValue<out T>(val rule: Rule<T>) : Value()
 }
-
