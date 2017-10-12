@@ -6,6 +6,7 @@ import com.nhaarman.mockito_kotlin.verifyZeroInteractions
 import hm.binkley.labs.skratch.collections.Value.DatabaseValue
 import hm.binkley.labs.skratch.collections.Value.Nonce
 import hm.binkley.labs.skratch.collections.Value.RuleValue
+import org.junit.jupiter.api.Assertions.assertSame
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Test
 
@@ -70,5 +71,12 @@ internal class ValueTest {
         value.add(layer, key)
 
         verify(database).upsert(layer, key, value.value)
+    }
+
+    @Test
+    fun shouldGetRule_toMakeJaCoCoHappy() {
+        val rule: Rule<Int> = { _, _ -> 3 }
+
+        assertSame(rule, RuleValue(rule).rule)
     }
 }
