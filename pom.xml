@@ -29,13 +29,14 @@
         <java.version>1.8</java.version>
         <junit.jupiter.version>5.0.1</junit.jupiter.version>
         <junit.platform.version>1.0.0-RC2</junit.platform.version>
-        <kotlin.version>1.2.0-beta-31</kotlin.version>
+        <kotlin.version>1.2-M2</kotlin.version>
         <maven-clean-plugin.version>3.0.0</maven-clean-plugin.version>
         <maven-compiler-plugin.version>3.6.1</maven-compiler-plugin.version>
         <maven-dependency-plugin.version>3.0.0</maven-dependency-plugin.version>
         <maven-jar-plugin.version>3.0.2</maven-jar-plugin.version>
         <maven-shade-plugin.version>3.0.0</maven-shade-plugin.version>
         <maven-surefire-plugin.version>2.20</maven-surefire-plugin.version>
+        <mockito-kotlin.version>1.5.0</mockito-kotlin.version>
         <project.build.sourceEncoding>${java.charset}</project.build.sourceEncoding>
         <project.reporting.outputEncoding>${java.charset}</project.reporting.outputEncoding>
         <surefire.printSummary>false</surefire.printSummary>
@@ -69,6 +70,18 @@
             <groupId>org.jetbrains.kotlin</groupId>
             <artifactId>kotlin-reflect</artifactId>
             <version>${kotlin.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-test</artifactId>
+            <version>${kotlin.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.nhaarman</groupId>
+            <artifactId>mockito-kotlin-kt1.1</artifactId>
+            <version>${mockito-kotlin.version}</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
