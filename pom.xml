@@ -113,7 +113,7 @@
                 <executions>
                     <execution>
                         <id>update-dependencies</id>
-                        <phase>validate</phase>
+                        <phase>bogus</phase>
                         <goals>
                             <goal>update-properties</goal>
                         </goals>
