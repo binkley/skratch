@@ -8,6 +8,7 @@ import hm.binkley.labs.skratch.collections.Value.Nonce
 import hm.binkley.labs.skratch.collections.Value.RuleValue
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
 internal class ValueSetMockTest {
@@ -43,11 +44,27 @@ internal class ValueSetMockTest {
     }
 
     @Test
+    fun shouldContains() {
+        val entry = ValueEntry(key, RuleValue { _, _ -> 3 })
+        val set = ValueSet(layer, mutableSetOf(entry))
+
+        assertTrue(set.contains(entry))
+    }
+
+    @Test
+    fun shouldNotContains() {
+        val entry = ValueEntry(key, RuleValue { _, _ -> 3 })
+        val set = ValueSet(layer)
+
+        assertFalse(set.contains(entry))
+    }
+
+    @Test
     fun shouldReplaceWhenAddingSameKey() {
         val entry = spy(ValueEntry(key, RuleValue { _, _ -> 3 }))
         val set = ValueSet(layer, mutableSetOf(entry))
-
         val other = spy(ValueEntry(key, spy(RuleValue { _, _ -> 4 })))
+
         set.add(other)
 
         assertEquals(1, set.size)
@@ -66,6 +83,28 @@ internal class ValueSetMockTest {
         assertTrue(set.isEmpty())
 
         verify(entry, times(1)).remove(layer)
+    }
+
+    @Test
+    fun shouldNotAddNonce() {
+        val entry = ValueEntry(key, Nonce)
+        val set = ValueSet(layer)
+
+        assertFalse(set.add(entry))
+        assertTrue(set.isEmpty())
+    }
+
+    @Test
+    fun shouldNotAddDuplicate() {
+        val rule = RuleValue { _, _ -> 3 }
+        val entry = spy(ValueEntry(key, rule))
+        val set = ValueSet(layer, mutableSetOf(entry))
+        val other = ValueEntry(key, rule)
+
+        assertFalse(set.add(other))
+        assertEquals(1, set.size)
+
+        verify(entry, never()).replaceWith(layer, other)
     }
 
     @Test
