@@ -31,6 +31,18 @@ internal class ValueSetMockTest {
     }
 
     @Test
+    fun shouldAddNew() {
+        val entry = spy(ValueEntry(key, RuleValue { _, _ -> 3 }))
+        val set = ValueSet(layer)
+
+        set.add(entry)
+
+        assertEquals(1, set.size)
+
+        verify(entry).add(layer)
+    }
+
+    @Test
     fun shouldReplaceWhenAddingSameKey() {
         val entry = spy(ValueEntry(key, RuleValue { _, _ -> 3 }))
         val set = ValueSet(layer, mutableSetOf(entry))
