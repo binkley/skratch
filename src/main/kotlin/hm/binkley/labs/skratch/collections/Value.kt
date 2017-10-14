@@ -1,5 +1,7 @@
 package hm.binkley.labs.skratch.collections
 
+import java.util.Objects
+
 typealias Rule<T> = (String, Layers) -> T
 
 class Layers
@@ -35,7 +37,29 @@ sealed class Value {
 
         override fun add(layer: Int, key: String)
                 = database.upsert(layer, key, value)
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) return true
+            if (javaClass != other?.javaClass) return false
+
+            other as DatabaseValue
+
+            return database == other.database && value == other.value
+        }
+
+        override fun hashCode() = Objects.hash(database, value)
     }
 
-    class RuleValue<out T>(val rule: Rule<T>) : Value()
+    class RuleValue<out T>(val rule: Rule<T>) : Value() {
+        override fun equals(other: Any?): Boolean {
+            if (this === other) return true
+            if (javaClass != other?.javaClass) return false
+
+            other as RuleValue<*>
+
+            return rule == other.rule
+        }
+
+        override fun hashCode() = Objects.hash(rule)
+    }
 }
