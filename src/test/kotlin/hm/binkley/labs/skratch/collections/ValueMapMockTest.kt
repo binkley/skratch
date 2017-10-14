@@ -14,6 +14,7 @@ import hm.binkley.labs.skratch.collections.Value.RuleValue
 import org.junit.jupiter.api.Assertions.assertSame
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 internal class ValueMapMockTest {
     private val database: Database = mock()
@@ -42,10 +43,10 @@ internal class ValueMapMockTest {
 
     @Test
     fun shouldForwardWhenSettingValue() {
+        val value = "3"
         val set = spy(ValueSet(layer))
         doReturn(true).whenever(set).add(any())
         val map = ValueMap(database, layer, set)
-        val value = "3"
 
         map[key] = value
 
@@ -58,10 +59,10 @@ internal class ValueMapMockTest {
 
     @Test
     fun shouldForwardWhenSettingRule() {
+        val rule: Rule<Int> = { _, _ -> 3 }
         val set = spy(ValueSet(layer))
         doReturn(true).whenever(set).add(any())
         val map = ValueMap(database, layer, set)
-        val rule: Rule<Int> = { _, _ -> 3 }
 
         map[key] = rule
 
@@ -70,5 +71,18 @@ internal class ValueMapMockTest {
             assertEquals(key, firstValue.key)
             assertEquals(RuleValue(rule), firstValue.value)
         }
+    }
+
+    @Test
+    fun shouldForwardWhenRemoving() {
+        val entry = ValueEntry(key, RuleValue { _, _ -> 3 })
+        val dummy = mutableSetOf(entry)
+        val set = spy(ValueSet(layer, mutableSetOf(entry)))
+        doReturn(dummy.iterator()).whenever(set).iterator()
+        val map = ValueMap(database, layer, set)
+
+        map.remove(key)
+
+        assertTrue(dummy.isEmpty())
     }
 }
