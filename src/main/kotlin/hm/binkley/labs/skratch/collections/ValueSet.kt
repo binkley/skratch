@@ -46,7 +46,7 @@ class ValueSet(
 
     private fun replaceWith(previous: ValueEntry, element: ValueEntry)
             = when (element.value) {
-        Nonce -> remove(element)
+        Nonce -> remove(previous)
         previous.value -> false
         else -> {
             val add = set.add(element)
