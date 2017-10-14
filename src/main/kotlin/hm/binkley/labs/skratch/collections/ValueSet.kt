@@ -22,8 +22,8 @@ class ValueSet(
         }
 
         override fun remove() {
-            it.remove()
             next.remove(layer)
+            it.remove()
         }
     }
 
@@ -38,9 +38,8 @@ class ValueSet(
     private fun addNew(element: ValueEntry) = when (element.value) {
         Nonce -> false
         else -> {
-            val add = set.add(element)
             element.add(layer)
-            add
+            set.add(element)
         }
     }
 
@@ -49,10 +48,10 @@ class ValueSet(
         Nonce -> remove(previous)
         previous.value -> false
         else -> {
-            val add = set.add(element)
             previous.replaceWith(layer, element)
             element.add(layer)
-            add
+            set.remove(previous)
+            set.add(element)
         }
     }
 }
