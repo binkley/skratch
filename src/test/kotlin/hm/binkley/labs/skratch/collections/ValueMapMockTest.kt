@@ -21,6 +21,11 @@ internal class ValueMapMockTest {
     private val key = "foo"
 
     @Test
+    fun shouldGetLayer() {
+        assertEquals(layer, ValueMap(database, layer, ValueSet(layer)).layer)
+    }
+
+    @Test
     fun shouldForwardWhenSettingNonce() {
         val set = spy(ValueSet(layer))
         doReturn(true).whenever(set).add(any())
