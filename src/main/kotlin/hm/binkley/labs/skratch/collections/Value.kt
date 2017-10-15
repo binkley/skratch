@@ -2,10 +2,6 @@ package hm.binkley.labs.skratch.collections
 
 import java.util.Objects
 
-typealias Rule<T> = (String, Layers) -> T
-
-class Layers
-
 sealed class Value {
     open fun remove(layer: Int, key: String) = Unit
     open fun replaceWith(layer: Int, key: String, other: Value) = Unit
