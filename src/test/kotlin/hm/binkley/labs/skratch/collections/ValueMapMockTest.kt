@@ -8,7 +8,6 @@ import com.nhaarman.mockito_kotlin.spy
 import com.nhaarman.mockito_kotlin.times
 import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.whenever
-import hm.binkley.labs.skratch.collections.Value.DatabaseValue
 import hm.binkley.labs.skratch.collections.Value.Nonce
 import hm.binkley.labs.skratch.collections.Value.RuleValue
 import org.junit.jupiter.api.Assertions.assertSame
@@ -53,7 +52,7 @@ internal class ValueMapMockTest {
         argumentCaptor<ValueEntry>().apply {
             verify(set, times(1)).add(capture())
             assertEquals(key, firstValue.key)
-            assertEquals(DatabaseValue(database, value), firstValue.value)
+            assertEquals(database.value(value), firstValue.value)
         }
     }
 

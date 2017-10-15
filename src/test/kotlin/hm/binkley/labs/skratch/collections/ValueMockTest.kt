@@ -3,7 +3,6 @@ package hm.binkley.labs.skratch.collections
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.verifyZeroInteractions
-import hm.binkley.labs.skratch.collections.Value.DatabaseValue
 import hm.binkley.labs.skratch.collections.Value.Nonce
 import hm.binkley.labs.skratch.collections.Value.RuleValue
 import org.junit.jupiter.api.Assertions.assertSame
@@ -14,7 +13,7 @@ internal class ValueMockTest {
     private val layer = 0
     private val key = "foo"
     private val database: Database = mock()
-    private val value = DatabaseValue(database, "3")
+    private val value = database.value("3")
 
     @Test
     fun shouldComplainWhenNonceRemoves() {
@@ -60,7 +59,7 @@ internal class ValueMockTest {
 
     @Test
     fun shouldIgnoreWhenReplacedByAnotherValue() {
-        val other = DatabaseValue(database, "4")
+        val other = database.value("4")
         value.replaceWith(layer, key, other)
 
         verifyZeroInteractions(database)

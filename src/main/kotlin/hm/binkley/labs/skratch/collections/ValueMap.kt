@@ -1,6 +1,5 @@
 package hm.binkley.labs.skratch.collections
 
-import hm.binkley.labs.skratch.collections.Value.DatabaseValue
 import hm.binkley.labs.skratch.collections.Value.Nonce
 import hm.binkley.labs.skratch.collections.Value.RuleValue
 import kotlin.collections.MutableMap.MutableEntry
@@ -23,7 +22,7 @@ class ValueMap(
             = put(key, Nonce)
 
     operator fun set(key: String, value: String)
-            = put(key, DatabaseValue(database, value))
+            = put(key, database.value(value))
 
     operator fun <T> set(key: String, rule: Rule<T>)
             = put(key, RuleValue(rule))
