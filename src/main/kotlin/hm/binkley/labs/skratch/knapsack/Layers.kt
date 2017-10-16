@@ -1,7 +1,7 @@
-package hm.binkley.labs.skratch.collections
+package hm.binkley.labs.skratch.knapsack
 
-import hm.binkley.labs.skratch.collections.Value.DatabaseValue
-import hm.binkley.labs.skratch.collections.Value.RuleValue
+import hm.binkley.labs.skratch.knapsack.Value.DatabaseValue
+import hm.binkley.labs.skratch.knapsack.Value.RuleValue
 
 class Layers(private val list: MutableList<ValueMap> = ArrayList())
     : AbstractList<ValueMap>() {

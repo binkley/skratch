@@ -1,4 +1,4 @@
-package hm.binkley.labs.skratch.collections
+package hm.binkley.labs.skratch.knapsack
 
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.argumentCaptor
@@ -8,8 +8,8 @@ import com.nhaarman.mockito_kotlin.spy
 import com.nhaarman.mockito_kotlin.times
 import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.whenever
-import hm.binkley.labs.skratch.collections.Value.Nonce
-import hm.binkley.labs.skratch.collections.Value.RuleValue
+import hm.binkley.labs.skratch.knapsack.Value.Nonce
+import hm.binkley.labs.skratch.knapsack.Value.RuleValue
 import org.junit.jupiter.api.Assertions.assertSame
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals

@@ -1,6 +1,6 @@
-package hm.binkley.labs.skratch.collections
+package hm.binkley.labs.skratch.knapsack
 
-import hm.binkley.labs.skratch.collections.Value.Nonce
+import hm.binkley.labs.skratch.knapsack.Value.Nonce
 
 class ValueSet(
         val layer: Int,

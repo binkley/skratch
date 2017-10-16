@@ -1,7 +1,7 @@
-package hm.binkley.labs.skratch.collections
+package hm.binkley.labs.skratch.knapsack
 
-import hm.binkley.labs.skratch.collections.Value.Nonce
-import hm.binkley.labs.skratch.collections.Value.RuleValue
+import hm.binkley.labs.skratch.knapsack.Value.Nonce
+import hm.binkley.labs.skratch.knapsack.Value.RuleValue
 import kotlin.collections.MutableMap.MutableEntry
 
 class ValueMap(

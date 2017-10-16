@@ -1,4 +1,4 @@
-package hm.binkley.labs.skratch.collections
+package hm.binkley.labs.skratch.knapsack
 
 import java.util.Objects
 

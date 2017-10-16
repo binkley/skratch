@@ -1,4 +1,4 @@
-package hm.binkley.labs.skratch.collections
+package hm.binkley.labs.skratch.knapsack
 
 interface Database {
     fun remove(layer: Int, key: String)

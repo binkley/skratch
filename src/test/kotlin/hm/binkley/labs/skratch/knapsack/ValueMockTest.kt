@@ -1,10 +1,10 @@
-package hm.binkley.labs.skratch.collections
+package hm.binkley.labs.skratch.knapsack
 
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.verifyZeroInteractions
-import hm.binkley.labs.skratch.collections.Value.Nonce
-import hm.binkley.labs.skratch.collections.Value.RuleValue
+import hm.binkley.labs.skratch.knapsack.Value.Nonce
+import hm.binkley.labs.skratch.knapsack.Value.RuleValue
 import org.junit.jupiter.api.Assertions.assertSame
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Test
