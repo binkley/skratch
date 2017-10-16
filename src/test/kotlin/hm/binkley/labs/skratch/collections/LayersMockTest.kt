@@ -32,4 +32,19 @@ internal class LayersMockTest {
 
         assertEquals(layers["foo"], listOf("3", "4"))
     }
+
+    @Test
+    fun shouldFindMostRecentRule() {
+        val mapA = ValueMap(database, 0)
+        mapA["foo"] = RuleValue { _, _ -> 3 }
+        val mapB = ValueMap(database, 1)
+        val mapC = ValueMap(database, 2)
+        val rule: Rule<Int> = { _, _ -> 4 }
+        mapC["foo"] = RuleValue(rule)
+        val mapD = ValueMap(database, 3)
+        mapD["foo"] = "3"
+        val layers = Layers(mutableListOf(mapA, mapB, mapC, mapD))
+
+        assertEquals(4, layers("foo"))
+    }
 }
