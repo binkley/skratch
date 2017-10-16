@@ -1,7 +1,6 @@
 package hm.binkley.labs.skratch.collections
 
 import com.nhaarman.mockito_kotlin.mock
-import hm.binkley.labs.skratch.collections.Value.RuleValue
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
@@ -27,7 +26,7 @@ internal class LayersMockTest {
         val mapC = ValueMap(database, 2)
         mapC["foo"] = "4"
         val mapD = ValueMap(database, 3)
-        mapD["foo"] = RuleValue { _, _ -> 3 }
+        mapD["foo"] = { _, _ -> 3 }
         val layers = Layers(mutableListOf(mapA, mapB, mapC, mapD))
 
         assertEquals(layers["foo"], listOf("3", "4"))
@@ -36,11 +35,10 @@ internal class LayersMockTest {
     @Test
     fun shouldFindMostRecentRule() {
         val mapA = ValueMap(database, 0)
-        mapA["foo"] = RuleValue { _, _ -> 3 }
+        mapA["foo"] = { _, _ -> 3 }
         val mapB = ValueMap(database, 1)
         val mapC = ValueMap(database, 2)
-        val rule: Rule<Int> = { _, _ -> 4 }
-        mapC["foo"] = RuleValue(rule)
+        mapC["foo"] = { _, _ -> 4 }
         val mapD = ValueMap(database, 3)
         mapD["foo"] = "3"
         val layers = Layers(mutableListOf(mapA, mapB, mapC, mapD))
