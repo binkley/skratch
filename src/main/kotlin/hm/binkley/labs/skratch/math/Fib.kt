@@ -3,6 +3,14 @@ package hm.binkley.labs.skratch.math
 fun main(args: Array<String>) {
     for (n in 0..7)
         println(Fib(n))
+
+    println(Fib(-2))
+
+    val fib0 = Mat2(Ratio(0), Ratio(1), Ratio(1), Ratio(1))
+    println("|F(0)| = ${fib0.det()}")
+    println("F(0)^-1 = ${fib0.inv()}")
+    println("F(0)^-1 * F(0) = ${fib0.inv() * fib0}")
+    println("F(0) * F(0)^-1 = ${fib0 * fib0.inv()}")
 }
 
 class Fib(val n: Int) {
@@ -12,27 +20,47 @@ class Fib(val n: Int) {
     val d: Ratio
 
     init {
-        val fib0 = Mat2(Ratio(0), Ratio(1), Ratio(1), Ratio(1))
         var mat2 = fib0
         var n = this.n
-        while (n-- > 0)
-            mat2 *= fib0
+        when {
+            0 == n -> Unit
+            0 < n -> {
+                while (n-- > 0)
+                    mat2 *= fib0
+            }
+            else -> {
+                while (n++ < 0)
+                    mat2 *= fib0.inv()
+            }
+        }
         a = mat2.a
         b = mat2.b
         c = mat2.c
         d = mat2.d
     }
 
-    override fun toString() = "[$a $b / $c $d]"
+    override fun toString() = "F($n) = [$a $b / $c $d]"
+
+    companion object {
+        private val fib0 = Mat2(Ratio(0), Ratio(1), Ratio(1), Ratio(1))
+    }
 }
 
 data class Mat2(val a: Ratio, val b: Ratio, val c: Ratio, val d: Ratio) {
-    operator fun times(that: Mat2): Mat2 {
-        return Mat2(a * that.a + b * that.c,
-                a * that.d + b * that.b,
-                a * that.d + c * that.c,
-                c * that.b + d * that.d)
-    }
+    operator fun times(that: Mat2) = Mat2(
+            a * that.a + b * that.c,
+            a * that.b + b * that.d,
+            c * that.a + d * that.c,
+            c * that.b + d * that.d)
+
+    operator fun times(that: Ratio)
+            = Mat2(a * that, b * that, c * that, d * that)
+
+    fun det() = a * d - b * c
+
+    fun inv() = Mat2(d, -b, -c, a) * det().inv()
+
+    override fun toString() = "[$a $b / $c $d]"
 }
 
 class Ratio(n: Long, d: Long) {
@@ -47,10 +75,17 @@ class Ratio(n: Long, d: Long) {
 
     constructor(n: Long) : this(n, 1)
 
+    operator fun unaryMinus() = Ratio(-n, d)
+
     operator fun plus(that: Ratio)
             = Ratio(n * that.d + that.n * d, d * that.d)
 
+    operator fun minus(that: Ratio)
+            = Ratio(n * that.d - that.n * d, d * that.d)
+
     operator fun times(that: Ratio) = Ratio(n * that.n, d * that.d)
+
+    fun inv() = Ratio(d, n)
 
     override fun toString() = if (1L == d) n.toString() else "$n/$d"
 
