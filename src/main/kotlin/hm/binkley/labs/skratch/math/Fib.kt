@@ -14,15 +14,14 @@ fun main(args: Array<String>) {
     println("F(0)^-1 * F(0) = ${fib0.inv() * fib0}")
     println("F(0) * F(0)^-1 = ${fib0 * fib0.inv()}")
 
+    println()
+
     for (n in -1..3)
         println("F(0)^$n = ${Fib.pow(n)}")
 }
 
 class Fib(val n: Int) {
-    val a: Ratio
-    val b: Ratio
-    val c: Ratio
-    val d: Ratio
+    private val mat2: Mat2
 
     init {
         var mat2 = fib0
@@ -38,24 +37,24 @@ class Fib(val n: Int) {
                     mat2 *= fib0.inv()
             }
         }
-        a = mat2.a
-        b = mat2.b
-        c = mat2.c
-        d = mat2.d
+        this.mat2 = mat2
     }
 
-    fun det() = Mat2(a, b, c, d).det()
-    fun char() = b
+    fun det() = mat2.det()
+    fun char() = mat2[0, 1]
 
-    override fun toString() = "[$a $b / $c $d]"
+    override fun toString() = mat2.toString()
 
     companion object {
-        private val fib0 = Mat2(Ratio(0), Ratio(1), Ratio(1), Ratio(1))
+        private val fib0 = Mat2(0, 1, 1, 1)
         fun pow(n: Int) = fib0.pow(n)
     }
 }
 
 data class Mat2(val a: Ratio, val b: Ratio, val c: Ratio, val d: Ratio) {
+    constructor(a: Long, b: Long, c: Long, d: Long)
+            : this(Ratio(a), Ratio(b), Ratio(c), Ratio(d))
+
     operator fun times(that: Mat2) = Mat2(
             a * that.a + b * that.c,
             a * that.b + b * that.d,
@@ -64,6 +63,14 @@ data class Mat2(val a: Ratio, val b: Ratio, val c: Ratio, val d: Ratio) {
 
     operator fun times(that: Ratio)
             = Mat2(a * that, b * that, c * that, d * that)
+
+    operator fun get(row: Int, col: Int) = when {
+        row == 0 && col == 0 -> a
+        row == 0 && col == 1 -> b
+        row == 1 && col == 0 -> c
+        row == 1 && col == 1 -> d
+        else -> throw IndexOutOfBoundsException("$row, $col")
+    }
 
     fun det() = a * d - b * c
 
