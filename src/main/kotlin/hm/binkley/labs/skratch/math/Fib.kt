@@ -1,8 +1,10 @@
 package hm.binkley.labs.skratch.math
 
 fun main(args: Array<String>) {
-    for (n in -7..7)
-        println("F($n) = ${Fib(n)}")
+    for (n in -7..12) {
+        val fib = Fib(n)
+        println("F($n) = ${fib.char()} $fib |F($n)| = ${fib.det()}")
+    }
 
     val fib0 = Mat2(Ratio(0), Ratio(1), Ratio(1), Ratio(1))
     println("|F(0)| = ${fib0.det()}")
@@ -36,6 +38,10 @@ class Fib(val n: Int) {
         c = mat2.c
         d = mat2.d
     }
+
+    fun det() = Mat2(a, b, c, d).det()
+
+    fun char() = b
 
     override fun toString() = "[$a $b / $c $d]"
 
