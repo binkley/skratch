@@ -15,7 +15,7 @@ fun main(args: Array<String>) {
     println("F(0) * F(0)^-1 = ${fib0 * fib0.inv()}")
 
     for (n in -1..3)
-        println("F(0)^$n = ${Fib(0).pow(n)}")
+        println("F(0)^$n = ${Fib.pow(n)}")
 }
 
 class Fib(val n: Int) {
@@ -45,13 +45,13 @@ class Fib(val n: Int) {
     }
 
     fun det() = Mat2(a, b, c, d).det()
-    fun pow(n: Int) = fib0.pow(n)
     fun char() = b
 
     override fun toString() = "[$a $b / $c $d]"
 
     companion object {
         private val fib0 = Mat2(Ratio(0), Ratio(1), Ratio(1), Ratio(1))
+        fun pow(n: Int) = fib0.pow(n)
     }
 }
 
