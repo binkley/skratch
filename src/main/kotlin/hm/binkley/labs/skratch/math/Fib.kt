@@ -1,18 +1,38 @@
 package hm.binkley.labs.skratch.math
 
+import java.util.Objects
+
 fun main(args: Array<String>) {
-    for (n in -7..12) {
+    for (n in -6..6) {
         val fib = Fib(n)
-        println("F($n) = ${fib.char()} $fib |F($n)| = ${fib.det()}")
+        println("f($n) = ${fib.char()}, F($n) = $fib, 1/F($n) = ${fib.asMatrix().inv()}, |F($n)| = ${fib.det()}")
     }
 
     println()
 
-    val fib0 = Mat2(Ratio(0), Ratio(1), Ratio(1), Ratio(1))
-    println("|F(0)| = ${fib0.det()}")
-    println("F(0)^-1 = ${fib0.inv()}")
-    println("F(0)^-1 * F(0) = ${fib0.inv() * fib0}")
-    println("F(0) * F(0)^-1 = ${fib0 * fib0.inv()}")
+    val a = (-6..6).map(::Fib).map(Fib::char)
+    val b = (-6..6).map(::Fib).map { fib ->
+        -fib.char() * fib.det()
+    }.reversed()
+
+    println(a)
+    println(b)
+
+    println()
+
+    val p = (-6..6).map(::Fib)
+    val q = (-6..6).map(::Fib).map { it.asMatrix().inv() }.reversed()
+
+    println(q)
+    println(q)
+    println("FIX ME - p == q ? ${p == q}")
+
+    println()
+
+    val fib1 = Mat2(0, 1, 1, 1)
+    println("F(1)^-1 = ${fib1.inv()}")
+    println("F(1)^-1 * F(1) = ${fib1.inv() * fib1}")
+    println("F(1) * F(1)^-1 = ${fib1 * fib1.inv()}")
 
     println()
 
@@ -24,17 +44,17 @@ class Fib(val n: Int) {
     private val mat2: Mat2
 
     init {
-        var mat2 = fib0
-        var n = this.n
+        var mat2 = fib1
+        var n = this.n - 1
         when {
             0 == n -> Unit
             0 < n -> {
                 while (n-- > 0)
-                    mat2 *= fib0
+                    mat2 *= fib1
             }
             else -> {
                 while (n++ < 0)
-                    mat2 *= fib0.inv()
+                    mat2 *= fib1.inv()
             }
         }
         this.mat2 = mat2
@@ -43,11 +63,13 @@ class Fib(val n: Int) {
     fun det() = mat2.det()
     fun char() = mat2[0, 1]
 
+    fun asMatrix() = mat2
+
     override fun toString() = mat2.toString()
 
     companion object {
-        private val fib0 = Mat2(0, 1, 1, 1)
-        fun pow(n: Int) = fib0.pow(n)
+        private val fib1 = Mat2(0, 1, 1, 1)
+        fun pow(n: Int) = fib1.pow(n)
     }
 }
 
@@ -63,6 +85,8 @@ data class Mat2(val a: Ratio, val b: Ratio, val c: Ratio, val d: Ratio) {
 
     operator fun times(that: Ratio)
             = Mat2(a * that, b * that, c * that, d * that)
+
+    operator fun div(that: Mat2) = this * that.inv()
 
     operator fun get(row: Int, col: Int) = when {
         row == 0 && col == 0 -> a
@@ -113,8 +137,20 @@ class Ratio(n: Long, d: Long) {
 
     override fun toString() = if (1L == d) n.toString() else "$n/$d"
 
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as Ratio
+
+        return n == other.n && d == other.d
+    }
+
+    override fun hashCode() = Objects.hash(n, d)
+
     companion object {
-        fun gcm(a: Long, b: Long): Long = if (b == 0L) a else gcm(b, a % b)
+        private fun gcm(a: Long, b: Long): Long
+                = if (b == 0L) a else gcm(b, a % b)
     }
 }
 
