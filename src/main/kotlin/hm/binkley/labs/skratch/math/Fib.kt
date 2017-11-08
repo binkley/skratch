@@ -1,10 +1,8 @@
 package hm.binkley.labs.skratch.math
 
 fun main(args: Array<String>) {
-    for (n in 0..7)
-        println(Fib(n))
-
-    println(Fib(-2))
+    for (n in -7..7)
+        println("F($n) = ${Fib(n)}")
 
     val fib0 = Mat2(Ratio(0), Ratio(1), Ratio(1), Ratio(1))
     println("|F(0)| = ${fib0.det()}")
@@ -39,7 +37,7 @@ class Fib(val n: Int) {
         d = mat2.d
     }
 
-    override fun toString() = "F($n) = [$a $b / $c $d]"
+    override fun toString() = "[$a $b / $c $d]"
 
     companion object {
         private val fib0 = Mat2(Ratio(0), Ratio(1), Ratio(1), Ratio(1))
@@ -75,15 +73,21 @@ class Ratio(n: Long, d: Long) {
 
     constructor(n: Long) : this(n, 1)
 
+    operator fun unaryPlus() = this
     operator fun unaryMinus() = Ratio(-n, d)
 
     operator fun plus(that: Ratio)
             = Ratio(n * that.d + that.n * d, d * that.d)
 
-    operator fun minus(that: Ratio)
-            = Ratio(n * that.d - that.n * d, d * that.d)
+    operator fun plus(that: Long) = this + Ratio(that)
+
+    operator fun minus(that: Ratio) = this + -that
+    operator fun minus(that: Long) = this + -that
 
     operator fun times(that: Ratio) = Ratio(n * that.n, d * that.d)
+    operator fun times(that: Long) = this * Ratio(that)
+    operator fun div(that: Ratio) = this * that.inv()
+    operator fun div(that: Long) = this / Ratio(that)
 
     fun inv() = Ratio(d, n)
 
@@ -93,3 +97,8 @@ class Ratio(n: Long, d: Long) {
         fun gcm(a: Long, b: Long): Long = if (b == 0L) a else gcm(b, a % b)
     }
 }
+
+operator fun Long.plus(that: Ratio) = Ratio(this) + that
+operator fun Long.minus(that: Ratio) = Ratio(this) - that
+operator fun Long.times(that: Ratio) = Ratio(this) * that
+operator fun Long.div(that: Ratio) = Ratio(this) / that
