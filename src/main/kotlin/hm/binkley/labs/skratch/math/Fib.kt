@@ -6,11 +6,16 @@ fun main(args: Array<String>) {
         println("F($n) = ${fib.char()} $fib |F($n)| = ${fib.det()}")
     }
 
+    println()
+
     val fib0 = Mat2(Ratio(0), Ratio(1), Ratio(1), Ratio(1))
     println("|F(0)| = ${fib0.det()}")
     println("F(0)^-1 = ${fib0.inv()}")
     println("F(0)^-1 * F(0) = ${fib0.inv() * fib0}")
     println("F(0) * F(0)^-1 = ${fib0 * fib0.inv()}")
+
+    for (n in -1..3)
+        println("F(0)^$n = ${Fib(0).pow(n)}")
 }
 
 class Fib(val n: Int) {
@@ -40,7 +45,7 @@ class Fib(val n: Int) {
     }
 
     fun det() = Mat2(a, b, c, d).det()
-
+    fun pow(n: Int) = fib0.pow(n)
     fun char() = b
 
     override fun toString() = "[$a $b / $c $d]"
@@ -63,6 +68,8 @@ data class Mat2(val a: Ratio, val b: Ratio, val c: Ratio, val d: Ratio) {
     fun det() = a * d - b * c
 
     fun inv() = Mat2(d, -b, -c, a) * det().inv()
+
+    fun pow(n: Int) = Fib(n - 1)
 
     override fun toString() = "[$a $b / $c $d]"
 }
