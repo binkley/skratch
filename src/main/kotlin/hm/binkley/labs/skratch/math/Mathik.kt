@@ -12,7 +12,7 @@ fun main(args: Array<String>) {
 
     for (n in -6..6) {
         val fib = Fib(n)
-        println("f($n) = ${fib.char()}, F($n) = $fib, 1/F($n) = ${fib.toMat().inv()}, |F($n)| = ${fib.det()}")
+        println("f($n) = ${fib.char()}, F($n) = $fib, 1/F($n) = ${fib.toMat2x2().inv()}, |F($n)| = ${fib.det()}")
     }
 
     println()
@@ -26,7 +26,7 @@ fun main(args: Array<String>) {
     println()
 
     val p = (-6..6).map(::Fib)
-    val q = (-6..6).map(::Fib).map { it.toMat().inv() }.reversed()
+    val q = (-6..6).map(::Fib).map { it.toMat2x2().inv() }.reversed()
 
     println(q)
     println(q)
@@ -34,7 +34,7 @@ fun main(args: Array<String>) {
 
     println()
 
-    val fib1 = Mat2(0, 1, 1, 1)
+    val fib1 = Mat2x2(0, 1, 1, 1)
     println("F(1)^-1 = ${fib1.inv()}")
     println("F(1)^-1 * F(1) = ${fib1.inv() * fib1}")
     println("F(1) * F(1)^-1 = ${fib1 * fib1.inv()}")
