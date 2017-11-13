@@ -25,6 +25,7 @@
         <generateBackupPoms>false</generateBackupPoms>
         <jacoco.coverage>0.00</jacoco.coverage>
         <jacoco.version>0.7.10-SNAPSHOT</jacoco.version>
+        <jansi.version>1.16</jansi.version>
         <java.charset>UTF-8</java.charset>
         <java.version>1.8</java.version>
         <junit.jupiter.version>5.0.2</junit.jupiter.version>
@@ -71,6 +72,11 @@
             <groupId>org.jetbrains.kotlin</groupId>
             <artifactId>kotlin-reflect</artifactId>
             <version>${kotlin.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.fusesource.jansi</groupId>
+            <artifactId>jansi</artifactId>
+            <version>${jansi.version}</version>
         </dependency>
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>

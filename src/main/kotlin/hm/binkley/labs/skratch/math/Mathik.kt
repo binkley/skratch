@@ -1,18 +1,26 @@
 package hm.binkley.labs.skratch.math
 
+import org.fusesource.jansi.Ansi.ansi
+import org.fusesource.jansi.AnsiConsole
 import java.lang.Math as nativeMath
 
 inline infix fun Int.pow(that: Int) = nativeMath.pow(this.toDouble(),
         that.toDouble()).toInt()
 
 fun main(args: Array<String>) {
-    println(3 pow 4)
+    AnsiConsole.systemInstall()
 
-    println()
+    println(3 pow 4)
 
     for (n in -6..6) {
         val fib = Fib(n)
-        println("f($n) = ${fib.char()}, F($n) = $fib, 1/F($n) = ${fib.toMat2x2().inv()}, |F($n)| = ${fib.det()}")
+        println()
+        println(ansi().render("""
+@|bold f($n) = ${fib.char()}}|@
+@|green F($n) = $fib|@
+@|blue 1/F($n) = ${fib.toMat2x2().inv()}|@
+@|magenta |F($n)| = ${fib.det()}|@
+""".trim()))
     }
 
     println()
