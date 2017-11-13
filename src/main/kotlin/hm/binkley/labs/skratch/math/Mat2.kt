@@ -31,7 +31,7 @@ data class Mat2(val a: Ratio, val b: Ratio, val c: Ratio, val d: Ratio) {
 
     fun inv() = Mat2(d, -b, -c, a) * det().inv()
 
-    fun pow(n: Int) = Fib(n)
+    inline infix fun pow(n: Int) = Fib(n)
 
     override fun toString() = if (I == this) "I" else "[$a $b / $c $d]"
 

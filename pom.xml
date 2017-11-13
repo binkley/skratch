@@ -40,6 +40,7 @@
         <project.build.sourceEncoding>${java.charset}</project.build.sourceEncoding>
         <project.reporting.outputEncoding>${java.charset}</project.reporting.outputEncoding>
         <surefire.printSummary>false</surefire.printSummary>
+        <versions-maven-plugin.phase>verify</versions-maven-plugin.phase>
         <versions-maven-plugin.version>2.5</versions-maven-plugin.version>
         <!-- @formatter:on -->
     </properties>
@@ -119,7 +120,7 @@
                 <executions>
                     <execution>
                         <id>update-dependencies</id>
-                        <phase>bogus</phase>
+                        <phase>${versions-maven-plugin.phase}</phase>
                         <goals>
                             <goal>update-properties</goal>
                         </goals>
