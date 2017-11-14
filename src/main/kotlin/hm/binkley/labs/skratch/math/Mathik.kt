@@ -2,6 +2,11 @@ package hm.binkley.labs.skratch.math
 
 import org.fusesource.jansi.Ansi.ansi
 import org.fusesource.jansi.AnsiConsole
+import org.jline.reader.EndOfFileException
+import org.jline.reader.LineReaderBuilder
+import org.jline.terminal.TerminalBuilder
+import org.mariuszgromada.math.mxparser.Expression
+import java.io.PrintWriter
 import java.lang.Math as nativeMath
 
 inline infix fun Int.pow(that: Int) = nativeMath.pow(this.toDouble(),
@@ -51,4 +56,16 @@ fun main(args: Array<String>) {
 
     for (n in -1..3)
         println("F(1)^$n = ${Fib.pow(n)}")
+
+    val terminal = TerminalBuilder.terminal()
+    val reader = LineReaderBuilder.builder().terminal(terminal).build()
+    val writer = PrintWriter(terminal.writer())
+    while (true) {
+        try {
+            val answer = Expression(reader.readLine("> ")).calculate()
+            writer.println(ansi().render("@|bold $answer|@"))
+        } catch (e: EndOfFileException) {
+            return
+        }
+    }
 }
