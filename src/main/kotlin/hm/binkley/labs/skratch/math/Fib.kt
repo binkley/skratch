@@ -21,6 +21,7 @@ class Fib(val n: Int) {
     }
 
     fun det() = mat2x2.det()
+    fun trace() = mat2x2.trace()
     fun char() = mat2x2[0, 1]
 
     fun toMat2x2() = mat2x2

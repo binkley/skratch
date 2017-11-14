@@ -29,6 +29,8 @@ data class Mat2x2(val a: Ratio, val b: Ratio, val c: Ratio, val d: Ratio) {
 
     fun det() = a * d - b * c
 
+    fun trace() = a + d
+
     fun inv() = Mat2x2(d, -b, -c, a) * det().inv()
 
     inline infix fun pow(n: Int) = Fib(n)

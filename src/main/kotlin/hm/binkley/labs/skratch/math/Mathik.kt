@@ -21,10 +21,11 @@ fun main(args: Array<String>) {
         val fib = Fib(n)
         println()
         println(ansi().render("""
-@|bold f($n) = ${fib.char()}}|@
+@|bold f($n) = ${fib.char()}|@
 @|green F($n) = $fib|@
 @|blue 1/F($n) = ${fib.toMat2x2().inv()}|@
-@|magenta |F($n)| = ${fib.det()}|@
+@|magenta det(F($n)) = ${fib.det()}|@
+@|yellow Tr(F($n) = ${fib.trace()}|@
 """.trim()))
     }
 
