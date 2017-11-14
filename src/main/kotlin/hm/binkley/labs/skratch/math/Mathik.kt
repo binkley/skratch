@@ -1,5 +1,7 @@
 package hm.binkley.labs.skratch.math
 
+import org.ejml.data.Complex_F64
+import org.ejml.ops.ComplexMath_F64
 import org.fusesource.jansi.Ansi.ansi
 import org.fusesource.jansi.AnsiConsole
 import org.jline.reader.EndOfFileException
@@ -12,6 +14,12 @@ import java.lang.Math as nativeMath
 
 inline infix fun Int.pow(that: Int) = nativeMath.pow(this.toDouble(),
         that.toDouble()).toInt()
+
+operator fun Complex_F64.times(that: Complex_F64): Complex_F64 {
+    val result = Complex_F64()
+    ComplexMath_F64.multiply(this, that, result)
+    return result
+}
 
 fun main(args: Array<String>) {
     AnsiConsole.systemInstall()
@@ -58,6 +66,12 @@ fun main(args: Array<String>) {
 
     for (n in -1..3)
         println("F(1)^$n = ${Fib.pow(n)}")
+
+    println()
+
+    val c1 = Complex_F64(1.0, 2.0)
+    val c2 = Complex_F64(2.0, 1.0)
+    println(c1 * c2)
 
     println()
 
