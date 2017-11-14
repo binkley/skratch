@@ -43,12 +43,12 @@ fun main(args: Array<String>) {
 
     println()
 
-    val p = (-6..6).map(::Fib)
+    val p = (-6..6).map(::Fib).map { it.toMat2x2() }
     val q = (-6..6).map(::Fib).map { it.toMat2x2().inv() }.reversed()
 
+    println(p)
     println(q)
-    println(q)
-    println("FIX ME - p == q ? ${p == q}")
+    println("p == rev(1/p) is ${p == q}")
 
     println()
 
@@ -59,7 +59,7 @@ fun main(args: Array<String>) {
 
     println()
 
-    for (n in -1..3)
+    for (n in -3..3)
         println("F(1)^$n = ${Fib.pow(n)}")
 
     println()

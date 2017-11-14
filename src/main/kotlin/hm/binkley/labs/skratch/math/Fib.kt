@@ -1,5 +1,7 @@
 package hm.binkley.labs.skratch.math
 
+import java.util.Objects
+
 class Fib(val n: Int) {
     private val mat2x2: Mat2x2
 
@@ -25,6 +27,17 @@ class Fib(val n: Int) {
     fun char() = mat2x2[0, 1]
 
     fun toMat2x2() = mat2x2
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as Fib
+
+        return n == other.n
+    }
+
+    override fun hashCode() = Objects.hash(n)
 
     override fun toString() = mat2x2.toString()
 
