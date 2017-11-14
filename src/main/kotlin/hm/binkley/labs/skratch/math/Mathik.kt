@@ -78,15 +78,23 @@ s(n, x) = if( x >= 1, n, s(n+1, x + rUni(0,1) ) )
 
     println()
 
-    val terminal = TerminalBuilder.terminal()
-    val reader = LineReaderBuilder.builder().terminal(terminal).build()
-    val writer = PrintWriter(terminal.writer())
-    while (true) {
-        try {
-            val answer = Expression(reader.readLine("> ")).calculate()
-            writer.println(ansi().render("@|bold $answer|@"))
-        } catch (e: EndOfFileException) {
-            return
+    TerminalBuilder.terminal().use { terminal ->
+        val reader = LineReaderBuilder.builder().
+                terminal(terminal).
+                build()
+        val pout = PrintWriter(terminal.writer())
+        while (true) {
+            try {
+                val line = reader.readLine("> ")
+                val answer = Expression(line).calculate()
+                if (answer.isNaN()) {
+                    System.err.println(ansi().render("@|bold,red $line|@"))
+                    continue
+                }
+                pout.println(ansi().render("@|bold $answer|@"))
+            } catch (e: EndOfFileException) {
+                return
+            }
         }
     }
 }
