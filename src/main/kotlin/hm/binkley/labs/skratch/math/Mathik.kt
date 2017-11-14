@@ -58,6 +58,14 @@ fun main(args: Array<String>) {
     for (n in -1..3)
         println("F(1)^$n = ${Fib.pow(n)}")
 
+    println()
+
+    val s = org.mariuszgromada.math.mxparser.Function("s(n, x) = if( x >= 1, n, s(n+1, x + rUni(0,1) ) )")
+    val e = Expression("avg( i, 1, 10000, s(0,0) )", s)
+    println(e.calculate())
+
+    println()
+
     val terminal = TerminalBuilder.terminal()
     val reader = LineReaderBuilder.builder().terminal(terminal).build()
     val writer = PrintWriter(terminal.writer())
