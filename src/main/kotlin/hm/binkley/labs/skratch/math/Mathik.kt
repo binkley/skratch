@@ -1,7 +1,6 @@
 package hm.binkley.labs.skratch.math
 
 import org.ejml.data.Complex_F64
-import org.ejml.ops.ComplexMath_F64
 import org.fusesource.jansi.Ansi.ansi
 import org.fusesource.jansi.AnsiConsole
 import org.jline.reader.EndOfFileException
@@ -15,11 +14,7 @@ import java.lang.Math as nativeMath
 inline infix fun Int.pow(that: Int) = nativeMath.pow(this.toDouble(),
         that.toDouble()).toInt()
 
-operator fun Complex_F64.times(that: Complex_F64): Complex_F64 {
-    val result = Complex_F64()
-    ComplexMath_F64.multiply(this, that, result)
-    return result
-}
+operator fun Complex_F64.times(that: Complex_F64) = this.times(that)!!
 
 fun main(args: Array<String>) {
     AnsiConsole.systemInstall()
