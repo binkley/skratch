@@ -3,4 +3,4 @@
 (( 0 == $# )) || exit 1
 
 # export MAVEN_OPTS=-Djansi.passthrough=true
-exec ./mvnw -q -DskipTests package exec:java -Dexec.mainClass=hm.binkley.labs.skratch.math.MathikKt
+exec ./mvnw -q -DskipTests -Djansi.passthrough=true package exec:java -Dexec.mainClass=hm.binkley.labs.skratch.math.MathikKt
