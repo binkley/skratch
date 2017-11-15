@@ -2,8 +2,8 @@ package hm.binkley.labs.skratch.math
 
 import java.util.Objects
 
-class Fib(val n: Int) {
-    private val mat2x2: Mat2x2
+class Fib(val n: Int) : Matrix2x2 {
+    private val mat2x2: AnyMatrix2x2
 
     init {
         var mat2x2 = fib1
@@ -22,15 +22,16 @@ class Fib(val n: Int) {
         this.mat2x2 = mat2x2
     }
 
+    override val rank = 2
     val char
         get() = mat2x2[0, 1]
-    val det
+    override val det
         get() = mat2x2.det
-    val trace
+    override val trace
         get() = mat2x2.trace
-    val transpose
+    override val transpose
         get() = this
-    val inv
+    override val inv
         get() = mat2x2.inv
 
     fun toMat2x2() = mat2x2
@@ -49,7 +50,7 @@ class Fib(val n: Int) {
     override fun toString() = mat2x2.toString()
 
     companion object {
-        private val fib1 = Mat2x2(0, 1, 1, 1)
-        fun pow(n: Int) = fib1 pow n
+        private val fib1 = AnyMatrix2x2(0, 1, 1, 1)
+        fun pow(n: Int) = Fib(n)
     }
 }

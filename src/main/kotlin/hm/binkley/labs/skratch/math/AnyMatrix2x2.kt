@@ -1,23 +1,28 @@
 package hm.binkley.labs.skratch.math
 
-data class Mat2x2(val a: Ratio, val b: Ratio, val c: Ratio, val d: Ratio) {
+data class AnyMatrix2x2(
+        val a: Ratio,
+        val b: Ratio,
+        val c: Ratio,
+        val d: Ratio)
+    : Matrix2x2 {
     constructor(a: Long, b: Long, c: Long, d: Long)
             : this(Ratio(a),
             Ratio(b),
             Ratio(c),
             Ratio(d))
 
-    operator fun times(that: Mat2x2) = Mat2x2(
+    operator fun times(that: AnyMatrix2x2) = AnyMatrix2x2(
             a * that.a + b * that.c,
             a * that.b + b * that.d,
             c * that.a + d * that.c,
             c * that.b + d * that.d)
 
     operator fun times(that: Ratio)
-            = Mat2x2(a * that, b * that, c * that,
+            = AnyMatrix2x2(a * that, b * that, c * that,
             d * that)
 
-    operator fun div(that: Mat2x2) = this * that.inv
+    operator fun div(that: AnyMatrix2x2) = this * that.inv
 
     operator fun get(row: Int, col: Int) = when {
         row == 0 && col == 0 -> a
@@ -27,19 +32,17 @@ data class Mat2x2(val a: Ratio, val b: Ratio, val c: Ratio, val d: Ratio) {
         else -> throw IndexOutOfBoundsException("$row, $col")
     }
 
-    val rank = 2
-    val det
+    override val rank = 2
+    override val det
         get() = a * d - b * c
-    val trace
+    override val trace
         get() = a + d
-    val transpose by lazy { Mat2x2(a, c, b, d) }
-    val inv by lazy { Mat2x2(d, -b, -c, a) * det.inv }
-
-    inline infix fun pow(n: Int) = Fib(n)
+    override val transpose by lazy { AnyMatrix2x2(a, c, b, d) }
+    override val inv by lazy { AnyMatrix2x2(d, -b, -c, a) * det.inv }
 
     override fun toString() = if (I == this) "I" else "[$a $b / $c $d]"
 
     companion object {
-        val I = Mat2x2(1, 0, 0, 1)
+        val I = AnyMatrix2x2(1, 0, 0, 1)
     }
 }

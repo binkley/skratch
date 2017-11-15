@@ -54,7 +54,7 @@ fun main(args: Array<String>) {
 
     println()
 
-    val fib1 = Mat2x2(0, 1, 1, 1)
+    val fib1 = AnyMatrix2x2(0, 1, 1, 1)
     println("F(1)^-1 = ${fib1.inv}")
     println("F(1)^-1 * F(1) = ${fib1.inv * fib1}")
     println("F(1) * F(1)^-1 = ${fib1 * fib1.inv}")
