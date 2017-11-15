@@ -17,7 +17,7 @@ data class Mat2x2(val a: Ratio, val b: Ratio, val c: Ratio, val d: Ratio) {
             = Mat2x2(a * that, b * that, c * that,
             d * that)
 
-    operator fun div(that: Mat2x2) = this * that.inv()
+    operator fun div(that: Mat2x2) = this * that.inv
 
     operator fun get(row: Int, col: Int) = when {
         row == 0 && col == 0 -> a
@@ -27,11 +27,13 @@ data class Mat2x2(val a: Ratio, val b: Ratio, val c: Ratio, val d: Ratio) {
         else -> throw IndexOutOfBoundsException("$row, $col")
     }
 
-    fun det() = a * d - b * c
-
-    fun trace() = a + d
-
-    fun inv() = Mat2x2(d, -b, -c, a) * det().inv()
+    val rank = 2
+    val det
+        get() = a * d - b * c
+    val trace
+        get() = a + d
+    val transpose by lazy { Mat2x2(a, c, b, d) }
+    val inv by lazy { Mat2x2(d, -b, -c, a) * det.inv }
 
     inline infix fun pow(n: Int) = Fib(n)
 

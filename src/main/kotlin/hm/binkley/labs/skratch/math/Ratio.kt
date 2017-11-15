@@ -33,11 +33,11 @@ class Ratio(n: Long, d: Long) {
     operator fun times(that: Long) = this * Ratio(
             that)
 
-    operator fun div(that: Ratio) = this * that.inv()
+    operator fun div(that: Ratio) = this * that.inv
     operator fun div(that: Long) = this / Ratio(
             that)
 
-    fun inv() = Ratio(d, n)
+    val inv by lazy { Ratio(d, n) }
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

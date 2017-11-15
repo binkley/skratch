@@ -16,15 +16,22 @@ class Fib(val n: Int) {
             }
             else -> {
                 while (n++ < 0)
-                    mat2x2 *= fib1.inv()
+                    mat2x2 *= fib1.inv
             }
         }
         this.mat2x2 = mat2x2
     }
 
-    fun det() = mat2x2.det()
-    fun trace() = mat2x2.trace()
-    fun char() = mat2x2[0, 1]
+    val char
+        get() = mat2x2[0, 1]
+    val det
+        get() = mat2x2.det
+    val trace
+        get() = mat2x2.trace
+    val transpose
+        get() = this
+    val inv
+        get() = mat2x2.inv
 
     fun toMat2x2() = mat2x2
 
