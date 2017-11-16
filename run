@@ -7,9 +7,9 @@ then
 fi
 
 case $1 in
-    fib ) class=MathikKt ;;
+    fib ) class=Mathik ;;
     sh ) class=shell.Shell ;;
     * ) echo "Usage: $0 fib|sh" >&2 ; exit 2 ;;
 esac
 
-exec ./mvnw -q -DskipTests -Djansi.passthrough=true package exec:java -Dexec.mainClass=hm.binkley.labs.skratch.math.$class
+exec ./mvnw -q -DskipTests -Djansi.passthrough=true package exec:java -Dexec.mainClass=hm.binkley.labs.skratch.math.${class}Kt

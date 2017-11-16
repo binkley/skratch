@@ -12,14 +12,13 @@ operator fun Complex_F64.times(that: Complex_F64) = this.times(that)!!
 
 fun main(args: Array<String>) {
     AnsiConsole.systemInstall()
-    val ansi = ansi()
 
     println(3 pow 4)
 
     for (n in -6..6) {
         val fib = Fib(n)
         println()
-        println(ansi.render("""
+        println(ansi().render("""
 @|bold f($n) = ${fib.char}|@
 @|green F($n) = $fib|@
 @|blue 1/F($n) = ${fib.toMat2x2().inv}|@
