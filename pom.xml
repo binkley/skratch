@@ -23,6 +23,7 @@
         <!-- @formatter:off -->
         <buildplan-maven-plugin.version>1.2</buildplan-maven-plugin.version>
         <ejml.version>0.32</ejml.version>
+        <exp4j.version>0.4.8</exp4j.version>
         <generateBackupPoms>false</generateBackupPoms>
         <jacoco.coverage>0.00</jacoco.coverage>
         <jacoco.version>0.7.10-SNAPSHOT</jacoco.version>
@@ -96,6 +97,11 @@
                     <artifactId>junit</artifactId>
                 </exclusion>
             </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>net.objecthunter</groupId>
+            <artifactId>exp4j</artifactId>
+            <version>${exp4j.version}</version>
         </dependency>
         <dependency>
             <groupId>org.mariuszgromada.math</groupId>

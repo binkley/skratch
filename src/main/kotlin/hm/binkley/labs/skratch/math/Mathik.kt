@@ -3,13 +3,6 @@ package hm.binkley.labs.skratch.math
 import org.ejml.data.Complex_F64
 import org.fusesource.jansi.Ansi.ansi
 import org.fusesource.jansi.AnsiConsole
-import org.jline.reader.EndOfFileException
-import org.jline.reader.LineReaderBuilder
-import org.jline.terminal.TerminalBuilder.terminal
-import org.mariuszgromada.math.mxparser.Expression
-import org.mariuszgromada.math.mxparser.Function
-import java.io.PrintWriter
-import java.lang.System.err
 import java.lang.Math as nativeMath
 
 inline infix fun Int.pow(that: Int) = nativeMath.pow(this.toDouble(),
@@ -69,34 +62,4 @@ fun main(args: Array<String>) {
     val c1 = Complex_F64(1.0, 2.0)
     val c2 = Complex_F64(2.0, 1.0)
     println(c1 * c2)
-
-    println()
-
-    val s = Function("""
-s(n, x) = if( x >= 1, n, s(n+1, x + rUni(0,1) ) )
-""")
-    val e = Expression("avg( i, 1, 10000, s(0,0) )", s)
-    println(e.calculate())
-
-    println()
-
-    terminal().use { terminal ->
-        val reader = LineReaderBuilder.builder().
-                terminal(terminal).
-                build()
-        val writer = PrintWriter(terminal.writer())
-        while (true) {
-            try {
-                val line = reader.readLine("> ")
-                val answer = Expression(line).calculate()
-                if (answer.isNaN()) {
-                    err.println(ansi.render("@|bold,red $line|@"))
-                    continue
-                }
-                writer.println(ansi.render("@|bold $answer|@"))
-            } catch (e: EndOfFileException) {
-                return
-            }
-        }
-    }
 }
