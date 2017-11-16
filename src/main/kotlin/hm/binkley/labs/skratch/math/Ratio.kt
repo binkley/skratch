@@ -53,7 +53,7 @@ class Ratio(n: Long, d: Long) {
     override fun toString() = if (1L == d) n.toString() else "$n/$d"
 
     companion object {
-        private fun gcm(a: Long, b: Long): Long
+        private tailrec fun gcm(a: Long, b: Long): Long
                 = if (b == 0L) a else gcm(b, a % b)
     }
 }
