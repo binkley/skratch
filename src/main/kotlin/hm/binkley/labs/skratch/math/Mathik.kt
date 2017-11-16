@@ -84,7 +84,7 @@ s(n, x) = if( x >= 1, n, s(n+1, x + rUni(0,1) ) )
         val reader = LineReaderBuilder.builder().
                 terminal(terminal).
                 build()
-        val pout = PrintWriter(terminal.writer())
+        val writer = PrintWriter(terminal.writer())
         while (true) {
             try {
                 val line = reader.readLine("> ")
@@ -93,7 +93,7 @@ s(n, x) = if( x >= 1, n, s(n+1, x + rUni(0,1) ) )
                     err.println(ansi.render("@|bold,red $line|@"))
                     continue
                 }
-                pout.println(ansi.render("@|bold $answer|@"))
+                writer.println(ansi.render("@|bold $answer|@"))
             } catch (e: EndOfFileException) {
                 return
             }
