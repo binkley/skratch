@@ -22,13 +22,13 @@ fun main(args: Array<String>) {
         while (true) {
             try {
                 val line = reader.readLine("> ")
-                val answer = parse(line).evaluate()
-
-                if (answer.isNaN()) {
-                    err.println(ansi().render("@|bold,red $line|@"))
+                val answer: Double
+                try {
+                    answer = parse(line).evaluate()
+                } catch (e: Exception) {
+                    err.println(ansi().render("@|bold,red $line|@: $e"))
                     continue
                 }
-
                 writer.println(ansi().render("@|bold $answer|@"))
             } catch (e: EndOfFileException) {
                 return
