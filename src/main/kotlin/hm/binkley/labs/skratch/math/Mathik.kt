@@ -56,6 +56,8 @@ fun main(args: Array<String>) {
     for (n in -3..3)
         println("F(1)^$n = ${Fib.pow(n)}")
 
+    println((-8..8).map { Fib(it) }.map { it.trace }.toList())
+
     println()
 
     val c1 = Complex_F64(1.0, 2.0)
