@@ -41,36 +41,37 @@ fun main(args: Array<String>) {
 
     println()
 
-    val mat1 = AnyMatrix2x2(0, 1, 1, 1)
-    println("F(1)^-1 = ${mat1.inv}")
-    println("F(1)^-1 * F(1) = ${mat1.inv * mat1}")
-    println("F(1) * F(1)^-1 = ${mat1 * mat1.inv}")
-
-    println()
-
     val fib4 = Fib(4)
     for (n in 3 downTo 0)
         println("F(4) / F($n) = ${fib4 / Fib(n)}")
 
     println()
 
-    val fib1 = Fib(1)
-    for (n in -3..3)
-        println("F(1)^$n = ${fib1 pow n}")
-
-    fun rootsum(n: Int): String = when (n) {
+    fun superscript(n: Int): String = when (n) {
         0 -> "\u2070"
-        1 -> "\u00B8"
+        1 -> "\u00B9"
         2 -> "\u00B2"
         3 -> "\u00B3"
         4 -> "\u2074"
-        else -> "\u207B${rootsum(-n)}"
+        5 -> "\u2075"
+        6 -> "\u2076"
+        7 -> "\u2077"
+        8 -> "\u2078"
+        9 -> "\u2079"
+        else -> "\u207B${superscript(-n)}"
     }
 
-    for (n in -4..4 step 2)
-        println("${rootsum(n)}√F(4) = ${fib4 root n}")
+    val fib1 = Fib(1)
+    for (n in -3..3)
+        println("F(1)${superscript(n)} = ${fib1 pow n}")
 
-    println((-8..8).map { Fib(it) }.map { it.trace }.toList())
+    val fib9 = Fib(9)
+    println("${superscript(9)}√F(9) = ${fib9 root 9}")
+    println("${superscript(3)}√F(9) = ${fib9 root 3}")
+    println("${superscript(-3)}√F(9) = ${fib9 root -3}")
+    println("${superscript(-9)}√F(9) = ${fib9 root -9}")
 
     println()
+
+    println((-8..8).map { Fib(it) }.map { it.trace }.toList())
 }

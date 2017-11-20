@@ -39,7 +39,6 @@ class Fib(val n: Int) : Matrix2x2 {
     inline infix fun pow(that: Int) = Fib(n * that)
 
     infix fun root(that: Int) = when {
-        0 == that -> unit
         0 != n % that -> throw ArithmeticException()
         else -> Fib(n / that)
     }
