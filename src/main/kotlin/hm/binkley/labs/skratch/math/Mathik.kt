@@ -5,15 +5,12 @@ import org.fusesource.jansi.Ansi.ansi
 import org.fusesource.jansi.AnsiConsole
 import java.lang.Math as nativeMath
 
-inline infix fun Int.pow(that: Int) = nativeMath.pow(this.toDouble(),
-        that.toDouble()).toInt()
-
-operator fun Complex_F64.times(that: Complex_F64) = this.times(that)!!
 
 fun main(args: Array<String>) {
     AnsiConsole.systemInstall()
 
-    println(3 pow 4)
+    println(Fib(0) pow 4)
+    println(Fib(2) pow 4)
 
     for (n in -6..6) {
         val fib = Fib(n)
