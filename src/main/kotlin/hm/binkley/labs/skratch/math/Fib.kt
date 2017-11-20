@@ -34,6 +34,8 @@ class Fib(val n: Int) : Matrix2x2 {
     override val inv
         get() = mat2x2.inv
 
+    operator fun div(that: Fib) = Fib(n - that.n)
+
     inline infix fun pow(that: Int) = Fib(n * that)
 
     fun toMat2x2() = mat2x2

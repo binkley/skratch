@@ -1,10 +1,8 @@
 package hm.binkley.labs.skratch.math
 
-import org.ejml.data.Complex_F64
 import org.fusesource.jansi.Ansi.ansi
 import org.fusesource.jansi.AnsiConsole
 import java.lang.Math as nativeMath
-
 
 fun main(args: Array<String>) {
     AnsiConsole.systemInstall()
@@ -57,7 +55,9 @@ fun main(args: Array<String>) {
 
     println()
 
-    val c1 = Complex_F64(1.0, 2.0)
-    val c2 = Complex_F64(2.0, 1.0)
-    println(c1 * c2)
+    val fib8 = Fib(4)
+    for (n in 3 downTo 0)
+        println("F(4) / F($n) = ${fib8 / Fib(n)}")
+
+    println()
 }
