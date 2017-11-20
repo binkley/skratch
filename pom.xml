@@ -31,8 +31,8 @@
         <java.charset>UTF-8</java.charset>
         <java.version>1.8</java.version>
         <jline.version>3.5.1</jline.version>
-        <junit.jupiter.version>5.0.2</junit.jupiter.version>
-        <junit.platform.version>1.0.2</junit.platform.version>
+        <junit.jupiter.version>5.1.0-M1</junit.jupiter.version>
+        <junit.platform.version>1.1.0-M1</junit.platform.version>
         <kotlin.version>1.2.0-rc-39</kotlin.version>
         <maven-clean-plugin.version>3.0.0</maven-clean-plugin.version>
         <maven-compiler-plugin.version>3.6.1</maven-compiler-plugin.version>
