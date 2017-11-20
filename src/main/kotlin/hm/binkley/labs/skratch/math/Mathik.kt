@@ -41,23 +41,36 @@ fun main(args: Array<String>) {
 
     println()
 
-    val fib1 = AnyMatrix2x2(0, 1, 1, 1)
-    println("F(1)^-1 = ${fib1.inv}")
-    println("F(1)^-1 * F(1) = ${fib1.inv * fib1}")
-    println("F(1) * F(1)^-1 = ${fib1 * fib1.inv}")
+    val mat1 = AnyMatrix2x2(0, 1, 1, 1)
+    println("F(1)^-1 = ${mat1.inv}")
+    println("F(1)^-1 * F(1) = ${mat1.inv * mat1}")
+    println("F(1) * F(1)^-1 = ${mat1 * mat1.inv}")
 
     println()
 
+    val fib4 = Fib(4)
+    for (n in 3 downTo 0)
+        println("F(4) / F($n) = ${fib4 / Fib(n)}")
+
+    println()
+
+    val fib1 = Fib(1)
     for (n in -3..3)
-        println("F(1)^$n = ${Fib.pow(n)}")
+        println("F(1)^$n = ${fib1 pow n}")
+
+    fun rootsum(n: Int): String = when (n) {
+        0 -> "\u2070"
+        1 -> "\u00B8"
+        2 -> "\u00B2"
+        3 -> "\u00B3"
+        4 -> "\u2074"
+        else -> "\u207B${rootsum(-n)}"
+    }
+
+    for (n in -4..4 step 2)
+        println("${rootsum(n)}√F(4) = ${fib4 root n}")
 
     println((-8..8).map { Fib(it) }.map { it.trace }.toList())
-
-    println()
-
-    val fib8 = Fib(4)
-    for (n in 3 downTo 0)
-        println("F(4) / F($n) = ${fib8 / Fib(n)}")
 
     println()
 }

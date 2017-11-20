@@ -34,9 +34,15 @@ class Fib(val n: Int) : Matrix2x2 {
     override val inv
         get() = mat2x2.inv
 
+    operator fun times(that: Fib) = Fib(n + that.n)
     operator fun div(that: Fib) = Fib(n - that.n)
-
     inline infix fun pow(that: Int) = Fib(n * that)
+
+    infix fun root(that: Int) = when {
+        0 == that -> unit
+        0 != n % that -> throw ArithmeticException()
+        else -> Fib(n / that)
+    }
 
     fun toMat2x2() = mat2x2
 
@@ -55,6 +61,6 @@ class Fib(val n: Int) : Matrix2x2 {
 
     companion object {
         private val fib1 = AnyMatrix2x2(0, 1, 1, 1)
-        fun pow(n: Int) = Fib(n)
+        val unit = Fib(0)
     }
 }
