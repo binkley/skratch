@@ -209,6 +209,14 @@ concat_lines() {
 export MAVEN_PROJECTBASEDIR=${MAVEN_BASEDIR:-$(find_maven_basedir)}
 MAVEN_OPTS="$(concat_lines "$MAVEN_PROJECTBASEDIR/.mvn/jvm.config") $MAVEN_OPTS"
 
+# detect cygwin or mingw pseudo-terminal for Jansi
+# workaround for https://github.com/fusesource/jansi-native/issues/11
+if $cygwin || $mingw; then
+  if [ -t 1 ]; then
+    MAVEN_OPTS="-Djansi.passthrough=true $MAVEN_OPTS"
+  fi
+fi
+
 # For Cygwin, switch paths to Windows format before running java
 if $cygwin; then
   [ -n "$M2_HOME" ] &&
