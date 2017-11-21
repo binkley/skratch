@@ -43,7 +43,7 @@ class Fib(val n: Int) : Matrix2x2<Fib> {
         else -> Fib(n / that)
     }
 
-    fun toMat2x2() = mat2x2
+    fun toMat2x2(): Matrix2x2<*> = mat2x2
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
