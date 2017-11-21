@@ -2,7 +2,7 @@ package hm.binkley.labs.skratch.math
 
 import java.util.Objects
 
-class Fib(val n: Int) : Matrix2x2 {
+class Fib(val n: Int) : Matrix2x2<Fib> {
     private val mat2x2: AnyMatrix2x2
 
     init {

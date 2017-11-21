@@ -5,7 +5,7 @@ data class AnyMatrix2x2(
         val b: Ratio,
         val c: Ratio,
         val d: Ratio)
-    : Matrix2x2 {
+    : Matrix2x2<AnyMatrix2x2> {
     constructor(a: Long, b: Long, c: Long, d: Long)
             : this(Ratio(a),
             Ratio(b),
