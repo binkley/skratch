@@ -32,7 +32,6 @@ data class AnyMatrix2x2(
         else -> throw IndexOutOfBoundsException("$row, $col")
     }
 
-    override val rank = 2
     override val det
         get() = a * d - b * c
     override val trace

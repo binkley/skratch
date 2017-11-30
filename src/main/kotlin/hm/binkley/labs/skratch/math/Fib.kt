@@ -22,7 +22,6 @@ class Fib(val n: Int) : Matrix2x2<Fib> {
         this.mat2x2 = mat2x2
     }
 
-    override val rank = 2
     val char
         get() = mat2x2[0, 1]
     override val det
