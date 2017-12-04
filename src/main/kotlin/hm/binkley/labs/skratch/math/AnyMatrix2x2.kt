@@ -12,6 +12,9 @@ data class AnyMatrix2x2(
             Ratio(c),
             Ratio(d))
 
+    constructor(that: AnyMatrix2x2)
+            : this(that.a, that.b, that.c, that.d)
+
     operator fun times(that: AnyMatrix2x2) = AnyMatrix2x2(
             a * that.a + b * that.c,
             a * that.b + b * that.d,

@@ -3,27 +3,10 @@ package hm.binkley.labs.skratch.math
 import java.util.Objects
 
 class Fib(val n: Int) : Matrix2x2<Fib> {
-    private val mat2x2: AnyMatrix2x2
-
-    init {
-        var mat2x2 = computeFib1
-        var n = this.n - 1
-        when {
-            0 == n -> Unit
-            0 < n -> {
-                while (n-- > 0)
-                    mat2x2 *= computeFib1
-            }
-            else -> {
-                while (n++ < 0)
-                    mat2x2 *= computeFib1.inv
-            }
-        }
-        this.mat2x2 = mat2x2
-    }
+    private val mat2x2 = AnyMatrix2x2(doIt(n))
 
     val char
-        get() = mat2x2[0, 1]
+        get() = mat2x2.b
     override val det
         get() = mat2x2.det
     override val trace
@@ -59,5 +42,22 @@ class Fib(val n: Int) : Matrix2x2<Fib> {
     companion object {
         private val computeFib1 = AnyMatrix2x2(0, 1, 1, 1)
         val UNIT by lazy { Fib(0) }
+
+        private fun doIt(n: Int): AnyMatrix2x2 {
+            var mat2x2 = computeFib1
+            var n = n - 1
+            when {
+                0 == n -> Unit
+                0 < n -> {
+                    while (n-- > 0)
+                        mat2x2 *= computeFib1
+                }
+                else -> {
+                    while (n++ < 0)
+                        mat2x2 *= computeFib1.inv
+                }
+            }
+            return mat2x2
+        }
     }
 }
