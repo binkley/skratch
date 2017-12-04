@@ -6,5 +6,5 @@ interface Matrix2x2<M : Matrix2x2<M>> {
     val det: Ratio
     val trace: Ratio
     val transpose: M
-    val inv: Matrix2x2<*>
+    val inv: M
 }

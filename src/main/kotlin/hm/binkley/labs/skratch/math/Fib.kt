@@ -30,8 +30,7 @@ class Fib(val n: Int) : Matrix2x2<Fib> {
         get() = mat2x2.trace
     override val transpose
         get() = this
-    override val inv
-        get() = mat2x2.inv
+    override val inv: Fib by lazy { Fib(-n) }
 
     operator fun times(that: Fib) = Fib(n + that.n)
     operator fun div(that: Fib) = Fib(n - that.n)
