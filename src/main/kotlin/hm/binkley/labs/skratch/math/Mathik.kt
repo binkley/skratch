@@ -18,14 +18,14 @@ fun main(args: Array<String>) {
 @|green F($n) = $fib|@
 @|blue 1/F($n) = ${AnyMatrix2x2(fib).inv}|@
 @|magenta det(F($n)) = ${fib.det}|@
-@|yellow Tr(F($n) = ${fib.trace}|@
+@|yellow Tr(F($n)) = ${fib.trace}|@
 """.trim()))
     }
 
     println()
 
-    val a = (-6..6).map(::Fib).map(Fib::char)
-    val b = (-6..6).map(::Fib).map { -it.char * it.det }.reversed()
+    val a = (-6..6).map { Fib(it) }.map { it.char }
+    val b = (-6..6).map { Fib(it) }.map { -it.char * it.det }.reversed()
 
     println(a)
     println(b)

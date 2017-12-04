@@ -4,7 +4,7 @@ import java.util.Objects
 
 class Fib(val n: Int) : Matrix2x2<Fib>(doIt(n)) {
     val char
-        get() = b
+        get() = this[1, 2]
     override val transpose
         get() = this
     override val inv: Fib by lazy { Fib(-n) }

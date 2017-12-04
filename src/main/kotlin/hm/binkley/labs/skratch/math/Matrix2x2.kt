@@ -1,8 +1,10 @@
 package hm.binkley.labs.skratch.math
 
 abstract class Matrix2x2<M : Matrix2x2<M>>(
-        val a: Ratio, val b: Ratio, val c: Ratio, val d: Ratio) {
-    constructor(that: AnyMatrix2x2) : this(that.a, that.b, that.c, that.d)
+        private val a: Ratio, private val b: Ratio,
+        private val c: Ratio, private val d: Ratio) {
+    constructor(that: AnyMatrix2x2) : this(that[1, 1], that[1, 2],
+            that[2, 1], that[2, 2])
 
     val rank = 2
     val det
@@ -13,10 +15,10 @@ abstract class Matrix2x2<M : Matrix2x2<M>>(
     abstract val inv: M
 
     operator fun get(row: Int, col: Int) = when {
-        row == 0 && col == 0 -> a
-        row == 0 && col == 1 -> b
-        row == 1 && col == 0 -> c
-        row == 1 && col == 1 -> d
+        row == 1 && col == 1 -> a
+        row == 1 && col == 2 -> b
+        row == 2 && col == 1 -> c
+        row == 2 && col == 2 -> d
         else -> throw IndexOutOfBoundsException("$row, $col")
     }
 
