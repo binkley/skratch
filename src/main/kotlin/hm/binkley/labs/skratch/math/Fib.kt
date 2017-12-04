@@ -6,17 +6,17 @@ class Fib(val n: Int) : Matrix2x2<Fib> {
     private val mat2x2: AnyMatrix2x2
 
     init {
-        var mat2x2 = fib1
+        var mat2x2 = computeFib1
         var n = this.n - 1
         when {
             0 == n -> Unit
             0 < n -> {
                 while (n-- > 0)
-                    mat2x2 *= fib1
+                    mat2x2 *= computeFib1
             }
             else -> {
                 while (n++ < 0)
-                    mat2x2 *= fib1.inv
+                    mat2x2 *= computeFib1.inv
             }
         }
         this.mat2x2 = mat2x2
@@ -57,7 +57,7 @@ class Fib(val n: Int) : Matrix2x2<Fib> {
     override fun toString() = mat2x2.toString()
 
     companion object {
-        private val fib1 = AnyMatrix2x2(0, 1, 1, 1)
-        val unit = Fib(0)
+        private val computeFib1 = AnyMatrix2x2(0, 1, 1, 1)
+        val UNIT by lazy { Fib(0) }
     }
 }
