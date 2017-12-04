@@ -32,8 +32,8 @@ fun main(args: Array<String>) {
 
     println()
 
-    val p = (-6..6).map(::Fib).map { AnyMatrix2x2(it) }
-    val q = (-6..6).map(::Fib).map { AnyMatrix2x2(it).inv }.reversed()
+    val p = (-6..6).map { Fib(it) }.map { AnyMatrix2x2(it) }
+    val q = (-6..6).map { Fib(it) }.map { AnyMatrix2x2(it).inv }.reversed()
 
     println(p)
     println(q)
