@@ -9,8 +9,8 @@ class Fib(val n: Int) : Matrix2x2<Fib>(doIt(n)) {
         get() = this
     override val inv: Fib by lazy { Fib(-n) }
 
-    inline operator fun times(that: Fib) = Fib(n + that.n)
-    inline operator fun div(that: Fib) = Fib(n - that.n)
+    override operator fun times(that: Fib) = Fib(n + that.n)
+    override operator fun div(that: Fib) = Fib(n - that.n)
     inline infix fun pow(that: Int) = Fib(n * that)
 
     infix fun root(that: Int) = when {

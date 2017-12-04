@@ -7,7 +7,7 @@ class AnyMatrix2x2(a: Ratio, b: Ratio, c: Ratio, d: Ratio)
 
     constructor(that: Matrix2x2<*>) : this(that.a, that.b, that.c, that.d)
 
-    operator fun times(that: AnyMatrix2x2) = AnyMatrix2x2(
+    override operator fun times(that: AnyMatrix2x2) = AnyMatrix2x2(
             a * that.a + b * that.c,
             a * that.b + b * that.d,
             c * that.a + d * that.c,
@@ -17,15 +17,7 @@ class AnyMatrix2x2(a: Ratio, b: Ratio, c: Ratio, d: Ratio)
             = AnyMatrix2x2(a * that, b * that, c * that,
             d * that)
 
-    operator fun div(that: AnyMatrix2x2) = this * that.inv
-
-    operator fun get(row: Int, col: Int) = when {
-        row == 0 && col == 0 -> a
-        row == 0 && col == 1 -> b
-        row == 1 && col == 0 -> c
-        row == 1 && col == 1 -> d
-        else -> throw IndexOutOfBoundsException("$row, $col")
-    }
+    override operator fun div(that: AnyMatrix2x2) = this * that.inv
 
     override val transpose by lazy { AnyMatrix2x2(a, c, b, d) }
     override val inv by lazy { AnyMatrix2x2(d, -b, -c, a) * det.inv }
