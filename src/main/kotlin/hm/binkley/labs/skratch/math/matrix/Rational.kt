@@ -5,7 +5,7 @@ import java.util.Objects
 /**
  * @see https://introcs.cs.princeton.edu/java/92symbolic/BigRational.java.html
  */
-class Rational(n: Long, d: Long) : Number<Rational> {
+class Rational(n: Long, d: Long) : Number<Rational>, Comparable<Rational> {
     val n: Long
     val d: Long
 
@@ -43,7 +43,8 @@ class Rational(n: Long, d: Long) : Number<Rational> {
     override fun isZero() = 0L == n
     override fun isUnit() = 1L == n && 1L == d
 
-    override fun toString() = "$n/$d"
+    override fun compareTo(other: Rational)
+            = (n * other.d).compareTo(other.n * d)
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -53,6 +54,8 @@ class Rational(n: Long, d: Long) : Number<Rational> {
     }
 
     override fun hashCode() = Objects.hash(n, d)
+
+    override fun toString() = "$n/$d"
 
     companion object {
         private fun sign(a: Long, b: Long)
