@@ -1,11 +1,11 @@
 package hm.binkley.labs.skratch.math
 
 class AnyMatrix2x2(a: Ratio, b: Ratio, c: Ratio, d: Ratio)
-    : Matrix2x2<AnyMatrix2x2>(a, b, c, d) {
+    : Matrix2x2<Ratio, AnyMatrix2x2>(a, b, c, d) {
     constructor(a: Long, b: Long, c: Long, d: Long)
             : this(Ratio(a), Ratio(b), Ratio(c), Ratio(d))
 
-    constructor(that: Matrix2x2<*>) : this(that[1, 1], that[1, 2],
+    constructor(that: Matrix2x2<Ratio, *>) : this(that[1, 1], that[1, 2],
             that[2, 1], that[2, 2])
 
     override operator fun times(that: AnyMatrix2x2) = AnyMatrix2x2(

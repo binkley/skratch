@@ -2,7 +2,7 @@ package hm.binkley.labs.skratch.math
 
 import java.util.Objects
 
-class Ratio(n: Long, d: Long) {
+class Ratio(n: Long, d: Long) : Rational<Ratio> {
     val n: Long
     val d: Long
 
@@ -14,26 +14,25 @@ class Ratio(n: Long, d: Long) {
 
     constructor(n: Long) : this(n, 1)
 
-    operator fun unaryPlus() = this
-    operator fun unaryMinus() = Ratio(-n, d)
+    override operator fun unaryMinus() = Ratio(-n, d)
 
-    operator fun plus(that: Ratio)
+    override operator fun plus(that: Ratio)
             = Ratio(n * that.d + that.n * d,
             d * that.d)
 
     operator fun plus(that: Long) = this + Ratio(
             that)
 
-    operator fun minus(that: Ratio) = this + -that
+    override operator fun minus(that: Ratio) = this + -that
     operator fun minus(that: Long) = this + -that
 
-    operator fun times(that: Ratio) = Ratio(
+    override operator fun times(that: Ratio) = Ratio(
             n * that.n, d * that.d)
 
     operator fun times(that: Long) = this * Ratio(
             that)
 
-    operator fun div(that: Ratio) = this * that.inv
+    override operator fun div(that: Ratio) = this * that.inv
     operator fun div(that: Long) = this / Ratio(
             that)
 

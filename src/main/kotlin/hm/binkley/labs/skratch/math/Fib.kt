@@ -2,7 +2,7 @@ package hm.binkley.labs.skratch.math
 
 import java.util.Objects
 
-class Fib(val n: Int) : Matrix2x2<Fib>(doIt(n)) {
+class Fib(val n: Int) : Matrix2x2<Ratio, Fib>(doIt(n)) {
     val char
         get() = this[1, 2]
     override val transpose

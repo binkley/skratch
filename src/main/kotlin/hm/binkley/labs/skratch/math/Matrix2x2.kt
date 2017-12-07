@@ -1,6 +1,6 @@
 package hm.binkley.labs.skratch.math
 
-abstract class Matrix2x2<M : Matrix2x2<M>>(
+abstract class Matrix2x2<R : Rational<R>, M : Matrix2x2<R, M>>(
         private val a: Ratio, private val b: Ratio,
         private val c: Ratio, private val d: Ratio) {
     constructor(that: AnyMatrix2x2) : this(that[1, 1], that[1, 2],
