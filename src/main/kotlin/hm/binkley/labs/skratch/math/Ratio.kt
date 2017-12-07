@@ -17,26 +17,20 @@ class Ratio(n: Long, d: Long) : Rational<Ratio> {
     override operator fun unaryMinus() = Ratio(-n, d)
 
     override operator fun plus(that: Ratio)
-            = Ratio(n * that.d + that.n * d,
-            d * that.d)
+            = Ratio(n * that.d + that.n * d, d * that.d)
 
-    operator fun plus(that: Long) = this + Ratio(
-            that)
+    operator fun plus(that: Long) = this + Ratio(that)
 
     override operator fun minus(that: Ratio) = this + -that
     operator fun minus(that: Long) = this + -that
 
-    override operator fun times(that: Ratio) = Ratio(
-            n * that.n, d * that.d)
-
-    operator fun times(that: Long) = this * Ratio(
-            that)
+    override operator fun times(that: Ratio) = Ratio(n * that.n, d * that.d)
+    operator fun times(that: Long) = this * Ratio(that)
 
     override operator fun div(that: Ratio) = this * that.inv
-    operator fun div(that: Long) = this / Ratio(
-            that)
+    operator fun div(that: Long) = this / Ratio(that)
 
-    val inv by lazy { Ratio(d, n) }
+    override val inv by lazy { Ratio(d, n) }
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
