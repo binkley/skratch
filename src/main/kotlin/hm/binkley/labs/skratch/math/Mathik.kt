@@ -17,7 +17,7 @@ fun main(args: Array<String>) {
         println(ansi().render("""
 @|bold f($n) = ${fib.char}|@
 @|green F($n) = $fib|@
-@|blue 1/F($n) = ${AnyMatrix2x2(fib).inv}|@
+@|blue 1/F($n) = ${GeneralMatrix2x2(fib).inv}|@
 @|magenta det(F($n)) = ${fib.det}|@
 @|yellow Tr(F($n)) = ${fib.trace}|@
 """.trim()))
@@ -33,8 +33,10 @@ fun main(args: Array<String>) {
 
     println()
 
-    val p = (-6..6).map { fib(it) }.map { AnyMatrix2x2(it) }
-    val q = (-6..6).map { fib(it) }.map { AnyMatrix2x2(it).inv }.reversed()
+    val p = (-6..6).map { fib(it) }.map { GeneralMatrix2x2(it) }
+    val q = (-6..6).map { fib(it) }.map {
+        GeneralMatrix2x2(it).inv
+    }.reversed()
 
     println(p)
     println(q)

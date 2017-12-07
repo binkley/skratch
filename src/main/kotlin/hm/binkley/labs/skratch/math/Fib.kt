@@ -38,9 +38,9 @@ private constructor(private val n: Int,
             return Fib(n, m[1, 1], m[1, 2], m[2, 1], m[2, 2])
         }
 
-        private val computeFib1 = AnyMatrix2x2(0, 1, 1, 1)
+        private val computeFib1 = GeneralMatrix2x2(0, 1, 1, 1)
 
-        private fun doIt(n: Int): AnyMatrix2x2 {
+        private fun doIt(n: Int): GeneralMatrix2x2 {
             var mat2x2 = computeFib1
             var k = n - 1
             when {

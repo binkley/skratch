@@ -5,9 +5,6 @@ import java.util.Objects
 abstract class Matrix2x2<R : Rational<R>, M : Matrix2x2<R, M>>(
         private val a: Ratio, private val b: Ratio,
         private val c: Ratio, private val d: Ratio) {
-    constructor(that: AnyMatrix2x2) : this(that[1, 1], that[1, 2],
-            that[2, 1], that[2, 2])
-
     val rank = 2
     open val det
         get() = a * d - b * c
@@ -41,6 +38,6 @@ abstract class Matrix2x2<R : Rational<R>, M : Matrix2x2<R, M>>(
     override fun hashCode() = Objects.hash(a, b, c, d)
 
     companion object {
-        val I = AnyMatrix2x2(1, 0, 0, 1)
+        val I = GeneralMatrix2x2(1, 0, 0, 1)
     }
 }
