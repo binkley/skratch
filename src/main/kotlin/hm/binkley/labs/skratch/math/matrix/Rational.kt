@@ -30,7 +30,7 @@ class Rational(n: Long, d: Long) : Number<Rational> {
         get() = this
     override val abs: Rational
         get() = Rational(Math.abs(n), d)
-    override val square: Rational
+    override val sqnorm: Rational
         get() = Rational(d * d, n * n)
 
     override fun isZero() = 0L == n
@@ -47,5 +47,9 @@ class Rational(n: Long, d: Long) : Number<Rational> {
 
         private tailrec fun gcd(a: Long, b: Long): Long
                 = if (b == 0L) a else gcd(b, a % b)
+
+        val ZERO = Rational(0L)
+        val ONE = Rational(1L)
+        val TWO = Rational(2L)
     }
 }

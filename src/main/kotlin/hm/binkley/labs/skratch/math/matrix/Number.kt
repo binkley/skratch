@@ -14,7 +14,7 @@ interface Number<N : Number<N>> {
     val inv: N
     val conj: N
     val abs: N
-    val square: Number<*>
+    val sqnorm: Number<*>
 
     fun isZero(): Boolean
     fun isUnit(): Boolean
