@@ -19,11 +19,13 @@ data class Complex(val re: Rational, val im: Rational) : Number<Complex> {
     override operator fun div(that: Long) = this / Rational(that)
 
     override val inv: Complex
-        get() = conj / (re * re + im * im)
+        get() = conj / square
     override val conj: Complex
         get() = Complex(re, -im)
     override val abs: Complex
         get() = TODO("Abs of a complex is not complex -- help!")
+    override val square: Rational
+        get() = re * re + im * im
 
     override fun isZero() = re.isZero() && im.isZero()
     override fun isUnit() = re.isUnit() && im.isZero()

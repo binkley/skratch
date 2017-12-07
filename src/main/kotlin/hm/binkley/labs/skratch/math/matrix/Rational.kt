@@ -5,10 +5,11 @@ class Rational(n: Long, d: Long) : Number<Rational> {
     val d: Long
 
     init {
-        val (a, b) = sign(n, d)
-        val gcm = gcm(a, b)
-        this.n = a / gcm
-        this.d = b / gcm
+        val (sa, sb) = sign(n, d)
+        val (za, zb) = zero(sa, sb)
+        val gcd = gcd(za, zb)
+        this.n = za / gcd
+        this.d = zb / gcd
     }
 
     constructor(n: Long) : this(n, 1)
@@ -29,6 +30,8 @@ class Rational(n: Long, d: Long) : Number<Rational> {
         get() = this
     override val abs: Rational
         get() = Rational(Math.abs(n), d)
+    override val square: Rational
+        get() = Rational(d * d, n * n)
 
     override fun isZero() = 0L == n
     override fun isUnit() = 1L == n && 1L == d
@@ -39,7 +42,10 @@ class Rational(n: Long, d: Long) : Number<Rational> {
         private fun sign(a: Long, b: Long)
                 = if (b < 0) -a to -b else a to b
 
-        private tailrec fun gcm(a: Long, b: Long): Long
-                = if (b == 0L) a else gcm(b, a % b)
+        private fun zero(a: Long, b: Long)
+                = if (0L == a) 0L to 1L else a to b
+
+        private tailrec fun gcd(a: Long, b: Long): Long
+                = if (b == 0L) a else gcd(b, a % b)
     }
 }

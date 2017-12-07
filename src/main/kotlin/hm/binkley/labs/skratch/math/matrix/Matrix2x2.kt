@@ -11,35 +11,35 @@ abstract class Matrix2x2<N : Number<N>, M : Matrix2x2<N, M>>(
     open val tr
         get() = a + d
     open val T: M
-        get() = ctor(a, c, b, d)
+        get() = matrixCtor(a, c, b, d)
     open val inv: M
         get() = adj / det
     open val conj: M
-        get() = ctor(a.conj, b.conj, c.conj, d.conj)
+        get() = matrixCtor(a.conj, b.conj, c.conj, d.conj)
     open val adj: M
-        get() = ctor(d, -b, -c, a)
+        get() = matrixCtor(d, -b, -c, a)
     open val hermitian: M
         get() = T.conj
 
-    abstract val unit: N
-    abstract fun ctor(a: N, b: N, c: N, d: N): M
+    abstract fun elementCtor(n: Long): N
+    abstract fun matrixCtor(a: N, b: N, c: N, d: N): M
 
     operator fun unaryPlus() = this as M
-    operator fun unaryMinus() = ctor(-a, -b, -c, -d)
+    operator fun unaryMinus() = matrixCtor(-a, -b, -c, -d)
 
     operator fun plus(that: M)
-            = ctor(a + that.a, b * that.b, c + that.c, d + that.d)
+            = matrixCtor(a + that.a, b * that.b, c + that.c, d + that.d)
 
     operator fun minus(that: M) = this + -that
 
     operator fun times(that: M)
-            = ctor(a * that.a + b * that.c,
+            = matrixCtor(a * that.a + b * that.c,
             a * that.b + b * that.d,
             c * that.a + d * that.c,
             c * that.b + d * that.d)
 
     operator fun times(that: N)
-            = ctor(a * that, b * that, c * that, d * that)
+            = matrixCtor(a * that, b * that, c * that, d * that)
 
     operator fun div(that: M): M {
         if (that.isSingular())
@@ -48,7 +48,7 @@ abstract class Matrix2x2<N : Number<N>, M : Matrix2x2<N, M>>(
     }
 
     operator fun div(that: N) = this * that.inv
-    operator fun div(that: Long) = this * (unit / that)
+    operator fun div(that: Long) = this / elementCtor(that)
 
     operator fun get(row: Int, col: Int) = when {
         row == 1 && col == 1 -> a
@@ -70,8 +70,8 @@ abstract class Matrix2x2<N : Number<N>, M : Matrix2x2<N, M>>(
     fun isLowerTriangular() = b.isZero()
     fun isUnitary() = (this.hermitian * this as M).isUnit()
 
-    fun symmetricPart() = (this + T) / (unit * 2L)
-    fun antisymmetricPart() = (this - T) / (unit * 2L)
+    fun symmetricPart() = (this + T) / elementCtor(2L)
+    fun antisymmetricPart() = (this - T) / elementCtor(2L)
     fun eigenvalues(): Pair<N, N> = TODO("Formula at http://www.math" +
             ".harvard.edu/archive/21b_fall_04/exhibits/2dmatrices/ needs " +
             "square root")
