@@ -1,5 +1,8 @@
 package hm.binkley.labs.skratch.math.matrix
 
+/**
+ * @see https://introcs.cs.princeton.edu/java/92symbolic/BigRational.java.html
+ */
 class Rational(n: Long, d: Long) : Number<Rational> {
     val n: Long
     val d: Long
