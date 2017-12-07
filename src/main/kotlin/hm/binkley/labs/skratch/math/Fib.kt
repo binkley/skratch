@@ -11,7 +11,7 @@ class Fib(val n: Int) : Matrix2x2<Ratio, Fib>(doIt(n)) {
 
     override operator fun times(that: Fib) = Fib(n + that.n)
     override operator fun div(that: Fib) = Fib(n - that.n)
-    inline infix fun pow(that: Int) = Fib(n * that)
+    infix fun pow(that: Int) = Fib(n * that)
 
     infix fun root(that: Int) = when {
         0 != n % that -> throw ArithmeticException()
@@ -34,15 +34,15 @@ class Fib(val n: Int) : Matrix2x2<Ratio, Fib>(doIt(n)) {
 
         private fun doIt(n: Int): AnyMatrix2x2 {
             var mat2x2 = computeFib1
-            var n = n - 1
+            var k = n - 1
             when {
-                0 == n -> Unit
-                0 < n -> {
-                    while (n-- > 0)
+                0 == k -> Unit
+                0 < k -> {
+                    while (k-- > 0)
                         mat2x2 *= computeFib1
                 }
                 else -> {
-                    while (n++ < 0)
+                    while (k++ < 0)
                         mat2x2 *= computeFib1.inv
                 }
             }
