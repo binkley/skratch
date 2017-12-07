@@ -3,8 +3,8 @@ package hm.binkley.labs.skratch.math
 import java.util.Objects
 
 abstract class Matrix2x2<R : Rational<R>, M : Matrix2x2<R, M>>(
-        private val a: Ratio, private val b: Ratio,
-        private val c: Ratio, private val d: Ratio) {
+        private val a: R, private val b: R,
+        private val c: R, private val d: R) {
     val rank = 2
     open val det
         get() = a * d - b * c
