@@ -1,5 +1,7 @@
 package hm.binkley.labs.skratch.math
 
+import java.util.Objects
+
 abstract class Matrix2x2<R : Rational<R>, M : Matrix2x2<R, M>>(
         private val a: Ratio, private val b: Ratio,
         private val c: Ratio, private val d: Ratio) {
@@ -7,9 +9,9 @@ abstract class Matrix2x2<R : Rational<R>, M : Matrix2x2<R, M>>(
             that[2, 1], that[2, 2])
 
     val rank = 2
-    val det
+    open val det
         get() = a * d - b * c
-    val trace
+    open val trace
         get() = a + d
     abstract val transpose: M
     abstract val inv: M
@@ -23,9 +25,20 @@ abstract class Matrix2x2<R : Rational<R>, M : Matrix2x2<R, M>>(
     }
 
     abstract operator fun times(that: M): M
-    abstract operator fun div(that: M): M
+    open operator fun div(that: M) = this * that.inv
 
     override fun toString() = if (I == this) "I" else "[$a $b / $c $d]"
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as Matrix2x2<*, *>
+
+        return a == other.a && b == other.b && c == other.c && d == other.d
+    }
+
+    override fun hashCode() = Objects.hash(a, b, c, d)
 
     companion object {
         val I = AnyMatrix2x2(1, 0, 0, 1)

@@ -18,8 +18,6 @@ class AnyMatrix2x2(a: Ratio, b: Ratio, c: Ratio, d: Ratio)
             = AnyMatrix2x2(this[1, 1] * that, this[1, 2] * that,
             this[2, 1] * that, this[2, 2] * that)
 
-    override operator fun div(that: AnyMatrix2x2) = this * that.inv
-
     override val transpose by lazy { AnyMatrix2x2(a, c, b, d) }
     override val inv by lazy { AnyMatrix2x2(d, -b, -c, a) * det.inv }
 }
