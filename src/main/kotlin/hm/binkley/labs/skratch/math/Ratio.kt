@@ -2,7 +2,7 @@ package hm.binkley.labs.skratch.math
 
 import java.util.Objects
 
-class Ratio(n: Long, d: Long) : Rational<Ratio> {
+class Ratio(n: Long, d: Long) : Number<Ratio> {
     val n: Long
     val d: Long
 
@@ -25,12 +25,18 @@ class Ratio(n: Long, d: Long) : Rational<Ratio> {
     operator fun minus(that: Long) = this + -that
 
     override operator fun times(that: Ratio) = Ratio(n * that.n, d * that.d)
-    operator fun times(that: Long) = this * Ratio(that)
+    override operator fun times(that: Long) = this * Ratio(that)
 
     override operator fun div(that: Ratio) = this * that.inv
-    operator fun div(that: Long) = this / Ratio(that)
+    override operator fun div(that: Long) = this / Ratio(that)
 
-    override val inv by lazy { Ratio(d, n) }
+    override val inv
+        get() = Ratio(d, n)
+    override val conj
+        get() = this
+
+    override fun isZero() = 0L == d && 1L == n
+    override fun isUnit() = 1L == d && 1L == n
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

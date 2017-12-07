@@ -2,7 +2,7 @@ package hm.binkley.labs.skratch.math
 
 import java.util.Objects
 
-abstract class Matrix2x2<R : Rational<R>, M : Matrix2x2<R, M>>(
+abstract class Matrix2x2<R : Number<R>, M : Matrix2x2<R, M>>(
         private val a: R, private val b: R,
         private val c: R, private val d: R) {
     val rank = 2
