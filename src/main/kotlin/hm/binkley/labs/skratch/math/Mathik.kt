@@ -1,5 +1,6 @@
 package hm.binkley.labs.skratch.math
 
+import hm.binkley.labs.skratch.math.Fib.Companion.fib
 import org.fusesource.jansi.Ansi.ansi
 import org.fusesource.jansi.AnsiConsole
 import java.lang.Math as nativeMath
@@ -7,11 +8,11 @@ import java.lang.Math as nativeMath
 fun main(args: Array<String>) {
     AnsiConsole.systemInstall()
 
-    println(Fib(0) pow 4)
-    println(Fib(2) pow 4)
+    println(fib(0) pow 4)
+    println(fib(2) pow 4)
 
     for (n in -6..6) {
-        val fib = Fib(n)
+        val fib = fib(n)
         println()
         println(ansi().render("""
 @|bold f($n) = ${fib.char}|@
@@ -24,16 +25,16 @@ fun main(args: Array<String>) {
 
     println()
 
-    val a = (-6..6).map { Fib(it) }.map { it.char }
-    val b = (-6..6).map { Fib(it) }.map { -it.char * it.det }.reversed()
+    val a = (-6..6).map { fib(it) }.map { it.char }
+    val b = (-6..6).map { fib(it) }.map { -it.char * it.det }.reversed()
 
     println(a)
     println(b)
 
     println()
 
-    val p = (-6..6).map { Fib(it) }.map { AnyMatrix2x2(it) }
-    val q = (-6..6).map { Fib(it) }.map { AnyMatrix2x2(it).inv }.reversed()
+    val p = (-6..6).map { fib(it) }.map { AnyMatrix2x2(it) }
+    val q = (-6..6).map { fib(it) }.map { AnyMatrix2x2(it).inv }.reversed()
 
     println(p)
     println(q)
@@ -41,9 +42,9 @@ fun main(args: Array<String>) {
 
     println()
 
-    val fib4 = Fib(4)
+    val fib4 = fib(4)
     for (n in 3 downTo 0)
-        println("F(4) / F($n) = ${fib4 / Fib(n)}")
+        println("F(4) / F($n) = ${fib4 / fib(n)}")
 
     println()
 
@@ -61,11 +62,11 @@ fun main(args: Array<String>) {
         else -> "\u207B${superscript(-n)}"
     }
 
-    val fib1 = Fib(1)
+    val fib1 = fib(1)
     for (n in -3..3)
         println("F(1)${superscript(n)} = ${fib1 pow n}")
 
-    val fib9 = Fib(9)
+    val fib9 = fib(9)
     println("${superscript(9)}√F(9) = ${fib9 root 9}")
     println("${superscript(3)}√F(9) = ${fib9 root 3}")
     println("${superscript(-3)}√F(9) = ${fib9 root -3}")
@@ -73,5 +74,5 @@ fun main(args: Array<String>) {
 
     println()
 
-    println((-8..8).map { Fib(it) }.map { it.trace }.toList())
+    println((-8..8).map { fib(it) }.map { it.trace }.toList())
 }
