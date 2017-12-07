@@ -38,7 +38,7 @@ class Rational(n: Long, d: Long) : Number<Rational> {
     override val abs: Rational
         get() = Rational(Math.abs(n), d)
     override val sqnorm: Rational
-        get() = Rational(d * d, n * n)
+        get() = this * this
 
     override fun isZero() = 0L == n
     override fun isUnit() = 1L == n && 1L == d

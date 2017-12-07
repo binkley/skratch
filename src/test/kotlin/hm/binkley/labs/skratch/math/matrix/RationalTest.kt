@@ -1,5 +1,6 @@
 package hm.binkley.labs.skratch.math.matrix
 
+import hm.binkley.labs.skratch.math.matrix.Rational.Companion.ONE
 import hm.binkley.labs.skratch.math.matrix.Rational.Companion.ZERO
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Test
@@ -25,7 +26,7 @@ internal class RationalTest {
 
     @Test
     fun negativeDenominatorMovedToNumerator() {
-        assertEquals(Rational(-1L, 1L), Rational(1L, -1L))
+        assertEquals(ONE, Rational(-1L, -1L))
     }
 
     @Test
