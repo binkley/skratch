@@ -1,5 +1,7 @@
 package hm.binkley.labs.skratch.math.matrix
 
+import java.util.Objects
+
 /**
  * @see https://introcs.cs.princeton.edu/java/92symbolic/BigRational.java.html
  */
@@ -8,11 +10,13 @@ class Rational(n: Long, d: Long) : Number<Rational> {
     val d: Long
 
     init {
-        val (sa, sb) = sign(n, d)
-        val (za, zb) = zero(sa, sb)
-        val gcd = gcd(za, zb)
-        this.n = za / gcd
-        this.d = zb / gcd
+        if (0L == d) throw ArithmeticException("Denominator is zero")
+
+        val (za, zb) = zero(n, d)
+        val (sa, sb) = sign(za, zb)
+        val gcd = gcd(sa, sb)
+        this.n = sa / gcd
+        this.d = sb / gcd
     }
 
     constructor(n: Long) : this(n, 1)
@@ -39,7 +43,16 @@ class Rational(n: Long, d: Long) : Number<Rational> {
     override fun isZero() = 0L == n
     override fun isUnit() = 1L == n && 1L == d
 
-    override fun toString() = "%d/%d".format(n, d)
+    override fun toString() = "$n/$d"
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is Rational) return false
+
+        return n == other.n && d == other.d
+    }
+
+    override fun hashCode() = Objects.hash(n, d)
 
     companion object {
         private fun sign(a: Long, b: Long)

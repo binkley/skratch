@@ -31,7 +31,7 @@ data class Complex(val re: Rational, val im: Rational) : Number<Complex> {
     override fun isZero() = re.isZero() && im.isZero()
     override fun isUnit() = re.isUnit() && im.isZero()
 
-    override fun toString() = "%s+%si".format(re, im)
+    override fun toString() = "$re+${im}i"
 
     companion object {
         val ZERO = Complex(0L)
