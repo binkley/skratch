@@ -1,6 +1,7 @@
 package hm.binkley.labs.skratch.math.matrix
 
 import java.util.Objects
+import kotlin.math.sign
 
 /**
  * @see https://introcs.cs.princeton.edu/java/92symbolic/BigRational.java.html
@@ -14,8 +15,8 @@ class Rational(n: Long, d: Long)
         if (0L == d) throw ArithmeticException("Denominator is zero")
 
         val (a, b) = sign(zero(n, d))
-        val gcd = gcd(a, b)
-        this.n = a / gcd
+        val gcd = gcd(Math.abs(a), b)
+        this.n = a.sign * a / gcd
         this.d = b / gcd
     }
 
