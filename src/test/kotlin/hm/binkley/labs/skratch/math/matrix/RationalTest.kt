@@ -1,9 +1,11 @@
 package hm.binkley.labs.skratch.math.matrix
 
 import hm.binkley.labs.skratch.math.matrix.Rational.Companion.ONE
+import hm.binkley.labs.skratch.math.matrix.Rational.Companion.TWO
 import hm.binkley.labs.skratch.math.matrix.Rational.Companion.ZERO
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 
@@ -43,5 +45,11 @@ internal class RationalTest {
     @Test
     fun greaterThan() {
         assertTrue(Rational(2L, 4L) > Rational(2L, 5L))
+    }
+
+    @Test
+    @Disabled("Needs an exact root algorithm")
+    fun rootOfFourIsTwo() {
+        assertEquals(TWO, Rational(4L).root)
     }
 }

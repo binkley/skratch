@@ -1,6 +1,7 @@
 package hm.binkley.labs.skratch.math.matrix
 
-data class Complex(val re: Rational, val im: Rational) : Number<Complex> {
+data class Complex(val re: Rational, val im: Rational)
+    : Number<Complex, Rational> {
     constructor(re: Long) : this(Rational(re), Rational(0L))
     constructor(re: Rational) : this(re, Rational(0L))
     constructor(re: Long, im: Long) : this(Rational(re), Rational(im))
@@ -23,8 +24,8 @@ data class Complex(val re: Rational, val im: Rational) : Number<Complex> {
         get() = conj / sqnorm
     override val conj: Complex
         get() = Complex(re, -im)
-    override val abs: Complex
-        get() = TODO("Abs of a complex is not complex -- help!")
+    override val abs: Rational
+        get() = sqnorm.root
     override val sqnorm: Rational
         get() = re * re + im * im
 

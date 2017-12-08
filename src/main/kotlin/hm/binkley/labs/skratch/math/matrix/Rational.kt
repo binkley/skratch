@@ -5,7 +5,8 @@ import java.util.Objects
 /**
  * @see https://introcs.cs.princeton.edu/java/92symbolic/BigRational.java.html
  */
-class Rational(n: Long, d: Long) : Number<Rational>, Comparable<Rational> {
+class Rational(n: Long, d: Long)
+    : Number<Rational, Rational>, Comparable<Rational> {
     val n: Long
     val d: Long
 
@@ -39,6 +40,8 @@ class Rational(n: Long, d: Long) : Number<Rational>, Comparable<Rational> {
         get() = Rational(Math.abs(n), d)
     override val sqnorm: Rational
         get() = this * this
+    val root: Rational
+        get() = root(this)
 
     override fun isZero() = 0L == n
     override fun isUnit() = 1L == n && 1L == d
@@ -66,6 +69,16 @@ class Rational(n: Long, d: Long) : Number<Rational>, Comparable<Rational> {
 
         private tailrec fun gcd(a: Long, b: Long): Long
                 = if (b == 0L) a else gcd(b, a % b)
+
+        private fun root(c: Rational): Rational {
+            TODO("Replace with an exact root algorithm")
+            if (c < ZERO) TODO("Return complex root of negative")
+            val epsilon = Rational(1L, 1000L)
+            var t: Rational = c
+            while (t - c / t > epsilon)
+                t = (c / t + t) / TWO
+            return t
+        }
 
         val ZERO = Rational(0L)
         val ONE = Rational(1L)

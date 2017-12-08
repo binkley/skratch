@@ -1,20 +1,21 @@
 package hm.binkley.labs.skratch.math.matrix
 
-interface Number<N : Number<N>> {
+interface Number<T, Norm>
+        where T : Number<T, Norm>, Norm : Number<Norm, Norm> {
     @Suppress("UNCHECKED_CAST")
-    operator fun unaryPlus(): N = this as N
+    operator fun unaryPlus(): T = this as T
 
-    operator fun unaryMinus(): N
-    operator fun plus(that: N): N
-    operator fun minus(that: N): N
-    operator fun times(that: N): N
-    operator fun times(that: Long): N
-    operator fun div(that: N): N
-    operator fun div(that: Long): N
-    val inv: N
-    val conj: N
-    val abs: N
-    val sqnorm: Number<*>
+    operator fun unaryMinus(): T
+    operator fun plus(that: T): T
+    operator fun minus(that: T): T
+    operator fun times(that: T): T
+    operator fun times(that: Long): T
+    operator fun div(that: T): T
+    operator fun div(that: Long): T
+    val inv: T
+    val conj: T
+    val abs: Norm
+    val sqnorm: Norm
 
     fun isZero(): Boolean
     fun isUnit(): Boolean
