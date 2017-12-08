@@ -39,7 +39,7 @@ class Rational(n: Long, d: Long)
     override val abs: Rational
         get() = Rational(Math.abs(n), d)
     override val sqnorm: Rational
-        get() = this * this
+        get() = this
     val root: Rational
         get() = root(this)
 
