@@ -106,10 +106,10 @@ class Rational(n: Long, d: Long)
             }
         }
 
+        private val EPSILON = Rational(1L, 1_000_000L)
         private fun newtonApproximation(c: Rational): Rational {
-            val epsilon = Rational(1L, 1_000_000L)
             var t = c
-            while ((t - c / t).abs > epsilon * t)
+            while ((t - c / t).abs > EPSILON * t)
                 t = (c / t + t) / TWO
             return t
         }
