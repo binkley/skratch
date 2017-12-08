@@ -13,14 +13,13 @@ class Rational(n: Long, d: Long)
     init {
         if (0L == d) throw ArithmeticException("Denominator is zero")
 
-        val (za, zb) = zero(n, d)
-        val (sa, sb) = sign(za, zb)
-        val gcd = gcd(sa, sb)
-        this.n = sa / gcd
-        this.d = sb / gcd
+        val (a, b) = sign(zero(n, d))
+        val gcd = gcd(a, b)
+        this.n = a / gcd
+        this.d = b / gcd
     }
 
-    constructor(n: Long) : this(n, 1)
+    constructor(n: Long) : this(n, 1L)
 
     override fun unaryMinus() = Rational(-n, d)
     override fun plus(that: Rational)
@@ -61,21 +60,55 @@ class Rational(n: Long, d: Long)
     override fun toString() = "$n/$d"
 
     companion object {
-        private fun sign(a: Long, b: Long)
-                = if (b < 0) -a to -b else a to b
-
         private fun zero(a: Long, b: Long)
                 = if (0L == a) 0L to 1L else a to b
+
+        private fun sign(terms: Pair<Long, Long>)
+                = if (terms.second < 0L) -terms.first to -terms.second else terms
 
         private tailrec fun gcd(a: Long, b: Long): Long
                 = if (b == 0L) a else gcd(b, a % b)
 
         private fun root(c: Rational): Rational {
-            TODO("Replace with an exact root algorithm")
             if (c < ZERO) TODO("Return complex root of negative")
-            val epsilon = Rational(1L, 1000L)
-            var t: Rational = c
-            while (t - c / t > epsilon)
+            val (rn, nexact) = tryExactRoot(c.n)
+            val (rd, dexact) = tryExactRoot(c.d)
+            return when {
+                nexact && dexact -> Rational(rn, rd)
+                else -> newtonApproximation(c)
+            }
+        }
+
+        private fun tryExactRoot(x: Long): Pair<Long, Boolean> {
+            // If x is a perfect square
+            when (x) {
+                0L, 1L -> return x to true
+                else -> {
+                    var start = 1L
+                    var end = x
+                    var ans = 0L
+                    while (start <= end) {
+                        val mid = (start + end) / 2
+                        when {
+                            mid * mid == x -> return mid to true
+                            mid * mid < x -> {
+                                start = mid + 1
+                                ans = mid
+                            }
+                            else -> end = mid - 1
+                        }
+                    }
+                    if (x == ans * ans) throw AssertionError(
+                            "Exact square root; expected approximate")
+                    return ans to false
+                }
+            }
+        }
+
+        private fun newtonApproximation(c: Rational): Rational {
+            val epsilon = Rational(1L, 1_000_000L)
+            var t = c
+            while ((t - c / t).abs > epsilon * t)
                 t = (c / t + t) / TWO
             return t
         }
