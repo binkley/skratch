@@ -1,10 +1,10 @@
 package hm.binkley.labs.skratch.math.matrix
 
-import hm.binkley.labs.skratch.math.Number
 import java.util.Objects
 
-abstract class Matrix2x2<N : Number<N>, M : Matrix2x2<N, M>>(
-        val a: N, val b: N, val c: N, val d: N) {
+abstract class Matrix2x2<N, Norm : Number<Norm, Norm>, M>(
+        val a: N, val b: N, val c: N, val d: N)
+        where N : Number<N, Norm>, M : Matrix2x2<N, Norm, M> {
     val rank = 2
     open val det
         get() = a * d - b * c
@@ -80,7 +80,7 @@ abstract class Matrix2x2<N : Number<N>, M : Matrix2x2<N, M>>(
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
 
-        other as Matrix2x2<*, *>
+        other as Matrix2x2<*, *, *>
 
         return a == other.a && b == other.b && c == other.c && d == other.d
     }

@@ -1,6 +1,7 @@
 package hm.binkley.labs.skratch
 
 import hm.binkley.labs.skratch.Q.Companion.la
+import hm.binkley.labs.skratch.puzzlers.main
 
 typealias F = (Int, Int) -> String
 

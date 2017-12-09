@@ -1,4 +1,4 @@
-package hm.binkley.labs.skratch
+package hm.binkley.labs.skratch.puzzlers
 
 fun printSign(i: Int) {
     if (i < 0) {
