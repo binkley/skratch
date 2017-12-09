@@ -31,32 +31,32 @@ abstract class Matrix2x2<N, Norm : Number<Norm, Norm>, M>(
     abstract fun matrixCtor(a: N, b: N, c: N, d: N): M
 
     operator fun unaryPlus() = this as M
-    operator fun unaryMinus() = matrixCtor(-a, -b, -c, -d)
+    open operator fun unaryMinus() = matrixCtor(-a, -b, -c, -d)
 
-    operator fun plus(that: M)
+    open operator fun plus(that: M)
             = matrixCtor(a + that.a, b * that.b, c + that.c, d + that.d)
 
-    operator fun minus(that: M) = this + -that
+    open operator fun minus(that: M) = this + -that
 
-    operator fun times(that: M)
+    open operator fun times(that: M)
             = matrixCtor(a * that.a + b * that.c,
             a * that.b + b * that.d,
             c * that.a + d * that.c,
             c * that.b + d * that.d)
 
-    operator fun times(other: N)
+    open operator fun times(other: N)
             = matrixCtor(a * other, b * other, c * other, d * other)
 
-    operator fun times(other: Long) = this * elementCtor(other)
+    open operator fun times(other: Long) = this * elementCtor(other)
 
-    operator fun div(that: M): M {
+    open operator fun div(that: M): M {
         if (that.isSingular())
             throw ArithmeticException("Divisor is singular")
         return this * that.inv
     }
 
-    operator fun div(other: N) = this * other.inv
-    operator fun div(other: Long) = this / elementCtor(other)
+    open operator fun div(other: N) = this * other.inv
+    open operator fun div(other: Long) = this / elementCtor(other)
 
     operator fun get(row: Int, col: Int) = when {
         row == 1 && col == 1 -> a
