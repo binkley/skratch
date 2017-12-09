@@ -5,6 +5,12 @@ import java.util.Objects
 abstract class Matrix2x2<N, Norm : Number<Norm, Norm>, M>(
         val a: N, val b: N, val c: N, val d: N)
         where N : Number<N, Norm>, M : Matrix2x2<N, Norm, M> {
+    constructor(m: Holder<N, Norm>) : this(m.a, m.b, m.c, m.d)
+
+    data class Holder<N, Norm : Number<Norm, Norm>>(
+            val a: N, val b: N, val c: N, val d: N)
+            where N : Number<N, Norm>
+
     val rank = 2
     open val det
         get() = a * d - b * c
@@ -38,8 +44,10 @@ abstract class Matrix2x2<N, Norm : Number<Norm, Norm>, M>(
             c * that.a + d * that.c,
             c * that.b + d * that.d)
 
-    operator fun times(that: N)
-            = matrixCtor(a * that, b * that, c * that, d * that)
+    operator fun times(other: N)
+            = matrixCtor(a * other, b * other, c * other, d * other)
+
+    operator fun times(other: Long) = this * elementCtor(other)
 
     operator fun div(that: M): M {
         if (that.isSingular())
@@ -47,8 +55,8 @@ abstract class Matrix2x2<N, Norm : Number<Norm, Norm>, M>(
         return this * that.inv
     }
 
-    operator fun div(that: N) = this * that.inv
-    operator fun div(that: Long) = this / elementCtor(that)
+    operator fun div(other: N) = this * other.inv
+    operator fun div(other: Long) = this / elementCtor(other)
 
     operator fun get(row: Int, col: Int) = when {
         row == 1 && col == 1 -> a
