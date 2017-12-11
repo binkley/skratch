@@ -7,7 +7,7 @@ then
 fi
 
 case $1 in
-    fib ) class=Mathik ;;
+    fib ) class=matrix.Mathik ;;
     sh ) class=shell.Shell ;;
     * ) echo "Usage: $0 fib|sh" >&2 ; exit 2 ;;
 esac

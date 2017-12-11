@@ -1,7 +1,7 @@
 package hm.binkley.labs.skratch.math.matrix
 
+import java.lang.Math.abs
 import java.util.Objects
-import kotlin.math.sign
 
 /**
  * @see https://introcs.cs.princeton.edu/java/92symbolic/BigRational.java.html
@@ -12,10 +12,10 @@ class Rational(n: Long, d: Long)
     val d: Long
 
     init {
-        if (0L == d) throw ArithmeticException("Denominator is zero")
+        if (0L == d) throw ArithmeticException("Denominator is normalizeZero")
 
-        val (a, b) = sign(zero(n, d))
-        val gcd = gcd(Math.abs(a), b)
+        val (a, b) = normalizeSign(normalizeZero(n, d))
+        val gcd = gcd(abs(a), b)
         this.n = a.sign * a / gcd
         this.d = b / gcd
     }
@@ -37,7 +37,7 @@ class Rational(n: Long, d: Long)
     override val conj: Rational
         get() = this
     override val abs: Rational
-        get() = Rational(Math.abs(n), d)
+        get() = Rational(abs(n), d)
     override val sqnorm: Rational
         get() = this
     val root: Rational
@@ -61,10 +61,10 @@ class Rational(n: Long, d: Long)
     override fun toString() = "$n/$d"
 
     companion object {
-        private fun zero(a: Long, b: Long)
+        private fun normalizeZero(a: Long, b: Long)
                 = if (0L == a) 0L to 1L else a to b
 
-        private fun sign(terms: Pair<Long, Long>)
+        private fun normalizeSign(terms: Pair<Long, Long>)
                 = if (terms.second < 0L) -terms.first to -terms.second else terms
 
         private tailrec fun gcd(a: Long, b: Long): Long
@@ -119,3 +119,15 @@ class Rational(n: Long, d: Long)
         val TWO = Rational(2L)
     }
 }
+
+val Long.sign: Int // TODO: This is in Kotlin 1.2 - why not found on Mac?
+    get() = when {
+        this < 0L -> -1
+        this == 0L -> 0
+        else -> 1
+    }
+
+operator fun Long.plus(other: Rational) = Rational(this) + other
+operator fun Long.minus(other: Rational) = Rational(this) - other
+operator fun Long.times(other: Rational) = Rational(this) * other
+operator fun Long.div(other: Rational) = Rational(this) / other
