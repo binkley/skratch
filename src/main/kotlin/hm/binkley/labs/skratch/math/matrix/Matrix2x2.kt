@@ -93,10 +93,11 @@ abstract class Matrix2x2<N, Norm : Number<Norm, Norm>, M>(
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
 
-        other as Matrix2x2<*, *, *>
-
-        return a == other.a && b == other.b && c == other.c && d == other.d
+        return equivalent(other as Matrix2x2<*, *, *>)
     }
+
+    fun equivalent(other: Matrix2x2<*, *, *>)
+            = a == other.a && b == other.b && c == other.c && d == other.c
 
     override fun hashCode() = Objects.hash(a, b, c, d)
 
