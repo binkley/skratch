@@ -1,12 +1,19 @@
 package hm.binkley.labs.skratch.money
 
+import hm.binkley.labs.skratch.money.Money.Companion.one
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
 internal class MoneyTest {
+    private val oneUSDollar = one("USD")
+
+    @Test
+    fun doubleYourMoney() {
+        assertEquals(Money("USD", 2), 2 * oneUSDollar)
+    }
+
     @Test
     fun convertNicely() {
-        val oneUSDollar = Money("USD", 1)
         val exchange = object : CurrencyExchange {
             override fun exchange(money: Money, to: String)
                     = if (to == "SGD") Money("SGD", 1.35)
