@@ -14,6 +14,6 @@ internal class MoneyTest {
         }
 
         assertEquals(Money("SGD", 1.35),
-                oneUSDollar at exchange to "SGD")
+                oneUSDollar at exchange convertTo "SGD")
     }
 }

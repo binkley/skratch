@@ -12,9 +12,10 @@ data class Money(val currency: String, val amount: BigDecimal) {
     constructor(currency: String, amount: Double)
             : this(currency, BigDecimal(amount))
 
-    infix fun at(exchange: CurrencyExchange) = Exchange(this, exchange)
+    infix fun at(exchange: CurrencyExchange) = MoneyChanger(this, exchange)
 
-    class Exchange(val money: Money, val exchange: CurrencyExchange) {
-        infix fun to(to: String) = exchange.exchange(money, to)
+    class MoneyChanger(private val money: Money,
+            private val exchange: CurrencyExchange) {
+        infix fun convertTo(to: String) = exchange.exchange(money, to)
     }
 }
