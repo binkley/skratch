@@ -1,31 +1,28 @@
 package hm.binkley.labs.skratch.money
 
 import java.math.BigDecimal
+import java.util.Objects
 
-data class Money(val currency: String, val amount: BigDecimal) {
-    constructor(currency: String, amount: Int)
-            : this(currency, BigDecimal(amount))
+abstract class Money<M : Money<M>>(
+        val currency: String, val amount: BigDecimal) {
+    abstract fun with(amount: BigDecimal): M
 
-    constructor(currency: String, amount: Long)
-            : this(currency, BigDecimal(amount))
+    operator fun times(other: Int) = with(amount.times(BigDecimal(other)))
+    operator fun times(other: Long) = with(amount.times(BigDecimal(other)))
+    operator fun times(other: BigDecimal) = with(amount.times(other))
 
-    constructor(currency: String, amount: Double)
-            : this(currency, BigDecimal(amount))
+    final override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
 
-    operator fun times(other: Int)
-            = Money(currency, amount.times(BigDecimal(other)))
+        other as Money<*>
 
-    operator fun times(other: Long)
-            = Money(currency, amount.times(BigDecimal(other)))
-
-    operator fun times(other: BigDecimal)
-            = Money(currency, amount.times(other))
-
-    companion object {
-        fun one(currency: String) = Money(currency, 1)
+        return currency == other.currency && amount == other.amount
     }
+
+    final override fun hashCode() = Objects.hash(currency, amount)
 }
 
-operator fun Int.times(other: Money) = other * this
-operator fun Long.times(other: Money) = other * this
-operator fun BigDecimal.times(other: Money) = other * this
+operator fun <M : Money<M>> Int.times(other: M) = other * this
+operator fun <M : Money<M>> Long.times(other: M) = other * this
+operator fun <M : Money<M>> BigDecimal.times(other: M) = other * this

@@ -1,26 +1,28 @@
 package hm.binkley.labs.skratch.money
 
-import hm.binkley.labs.skratch.money.Money.Companion.one
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.fail
 import org.junit.jupiter.api.Test
+import java.math.BigDecimal
+import kotlin.reflect.KClass
 
 internal class MoneyTest {
-    private val oneUSDollar = one("USD")
-
     @Test
     fun doubleYourMoney() {
-        assertEquals(Money("USD", 2), 2 * oneUSDollar)
+        assertEquals(USD(2), 2 * USD(1))
     }
 
     @Test
     fun convertNicely() {
         val exchange = object : CurrencyExchange {
-            override fun exchange(money: Money, to: String)
-                    = if (to == "SGD") Money("SGD", 1.35)
-            else throw UnsupportedOperationException()
+            @Suppress("UNCHECKED_CAST")
+            override fun <M : Money<M>, O : Money<O>> exchange(
+                    money: M, to: KClass<O>) = when (to) {
+                SGD::class -> SGD(BigDecimal(1.35)) as O
+                else -> fail("Unsupported exchange: $money -> $to")
+            }
         }
 
-        assertEquals(Money("SGD", 1.35),
-                oneUSDollar at exchange convertTo "SGD")
+        assertEquals(SGD(1.35), USD(1) at exchange convertTo SGD::class)
     }
 }
