@@ -1,6 +1,7 @@
 package hm.binkley.labs.skratch.money
 
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Assertions.fail
 import org.junit.jupiter.api.Test
 import java.math.BigDecimal
@@ -18,11 +19,18 @@ internal class MoneyTest {
             @Suppress("UNCHECKED_CAST")
             override fun <M : Money<M>, O : Money<O>> exchange(
                     money: M, to: KClass<O>) = when (to) {
-                SGD::class -> SGD(BigDecimal(1.35)) as O
+                SGD::class -> SGD(BigDecimal("1.35")) as O
                 else -> fail("Unsupported exchange: $money -> $to")
             }
         }
 
-        assertEquals(SGD(1.35), USD(1) at exchange convertTo SGD::class)
+        assertEquals(SGD("1.35"), USD(1) at exchange convertTo SGD::class)
+    }
+
+    @Test
+    fun noFractionalMoney() {
+        assertThrows(ArithmeticException::class.java) {
+            USD(1) / 3
+        }
     }
 }
