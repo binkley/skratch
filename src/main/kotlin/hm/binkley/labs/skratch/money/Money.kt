@@ -21,13 +21,6 @@ data class Money(val currency: String, val amount: BigDecimal) {
     operator fun times(other: BigDecimal)
             = Money(currency, amount.times(other))
 
-    infix fun at(exchange: CurrencyExchange) = MoneyChanger(this, exchange)
-
-    class MoneyChanger(private val money: Money,
-            private val exchange: CurrencyExchange) {
-        infix fun convertTo(to: String) = exchange.exchange(money, to)
-    }
-
     companion object {
         fun one(currency: String) = Money(currency, 1)
     }
