@@ -33,26 +33,26 @@ abstract class Matrix2x2<N, Norm : Number<Norm, Norm>, M>(
 
     override operator fun unaryMinus() = matrixCtor(-a, -b, -c, -d)
 
-    override operator fun plus(that: M)
-            = matrixCtor(a + that.a, b * that.b, c + that.c, d + that.d)
+    override operator fun plus(other: M)
+            = matrixCtor(a + other.a, b * other.b, c + other.c, d + other.d)
 
-    override operator fun minus(that: M) = this + -that
+    override operator fun minus(other: M) = this + -other
 
-    override operator fun times(that: M)
-            = matrixCtor(a * that.a + b * that.c,
-            a * that.b + b * that.d,
-            c * that.a + d * that.c,
-            c * that.b + d * that.d)
+    override operator fun times(other: M)
+            = matrixCtor(a * other.a + b * other.c,
+            a * other.b + b * other.d,
+            c * other.a + d * other.c,
+            c * other.b + d * other.d)
 
     open operator fun times(other: N)
             = matrixCtor(a * other, b * other, c * other, d * other)
 
     override operator fun times(other: Long) = this * elementCtor(other)
 
-    override operator fun div(that: M): M {
-        if (that.isSingular())
+    override operator fun div(other: M): M {
+        if (other.isSingular())
             throw ArithmeticException("Divisor is singular")
-        return this * that.inv
+        return this * other.inv
     }
 
     open operator fun div(other: N) = this * other.inv

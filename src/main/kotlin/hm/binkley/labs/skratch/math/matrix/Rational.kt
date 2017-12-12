@@ -23,14 +23,14 @@ class Rational(n: Long, d: Long)
     constructor(n: Long) : this(n, 1L)
 
     override fun unaryMinus() = Rational(-n, d)
-    override fun plus(that: Rational)
-            = Rational(n * that.d + that.n * d, d * that.d)
+    override fun plus(other: Rational)
+            = Rational(n * other.d + other.n * d, d * other.d)
 
-    override fun minus(that: Rational) = this + -that
-    override fun times(that: Rational) = Rational(n * that.n, d * that.d)
-    override fun times(that: Long) = this * Rational(that)
-    override fun div(that: Rational) = this * that.inv
-    override fun div(that: Long) = this / Rational(that)
+    override fun minus(other: Rational) = this + -other
+    override fun times(other: Rational) = Rational(n * other.n, d * other.d)
+    override fun times(other: Long) = this * Rational(other)
+    override fun div(other: Rational) = this * other.inv
+    override fun div(other: Long) = this / Rational(other)
 
     override val inv: Rational
         get() = Rational(d, n)

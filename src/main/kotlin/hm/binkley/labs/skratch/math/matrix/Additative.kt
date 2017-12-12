@@ -5,8 +5,8 @@ interface Additative<T : Additative<T>> {
     operator fun unaryPlus(): T = this as T
 
     operator fun unaryMinus(): T
-    operator fun plus(that: T): T
-    operator fun minus(that: T): T
+    operator fun plus(other: T): T
+    operator fun minus(other: T): T
 
     fun isZero(): Boolean
 }

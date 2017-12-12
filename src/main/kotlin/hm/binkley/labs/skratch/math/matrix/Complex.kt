@@ -7,18 +7,18 @@ data class Complex(val re: Rational, val im: Rational)
     constructor(re: Long, im: Long) : this(Rational(re), Rational(im))
 
     override fun unaryMinus() = Complex(-re, -im)
-    override fun plus(that: Complex) = Complex(re + that.re, im + that.im)
-    override fun minus(that: Complex) = this + -that
+    override fun plus(other: Complex) = Complex(re + other.re, im + other.im)
+    override fun minus(other: Complex) = this + -other
 
-    override fun times(that: Complex) = Complex(
-            re * that.re - im * that.im,
-            re * that.im + im * that.re)
+    override fun times(other: Complex) = Complex(
+            re * other.re - im * other.im,
+            re * other.im + im * other.re)
 
-    operator fun times(that: Rational) = Complex(re * that, im * that)
-    override operator fun times(that: Long) = this * Rational(that)
-    override operator fun div(that: Complex) = this * that.inv
-    operator fun div(that: Rational) = Complex(re / that, im / that)
-    override operator fun div(that: Long) = this / Rational(that)
+    operator fun times(other: Rational) = Complex(re * other, im * other)
+    override operator fun times(other: Long) = this * Rational(other)
+    override operator fun div(other: Complex) = this * other.inv
+    operator fun div(other: Rational) = Complex(re / other, im / other)
+    override operator fun div(other: Long) = this / Rational(other)
 
     override val inv: Complex
         get() = conj / sqnorm

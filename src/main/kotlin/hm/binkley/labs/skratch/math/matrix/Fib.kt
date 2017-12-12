@@ -25,18 +25,18 @@ class Fib(val char: Long) : Matrix2x2<Rational, Rational, Fib>(nthFib(char)) {
             = throw UnsupportedOperationException(
             "No negative of a Fibonacci")
 
-    override fun plus(that: Fib)
+    override fun plus(other: Fib)
             = TODO("Type system should forbid: Fibonaccis not additive")
 
-    override fun minus(that: Fib)
+    override fun minus(other: Fib)
             = TODO("Type system should forbid: Fibonaccis not additive")
 
-    override fun times(that: Fib) = Fib(char + that.char)
+    override fun times(other: Fib) = Fib(char + other.char)
 
     override fun times(other: Rational)
             = TODO("Type system should forbid: Fibonaccis are closed")
 
-    override fun div(that: Fib) = Fib(char - that.char)
+    override fun div(other: Fib) = Fib(char - other.char)
 
     override fun div(other: Rational)
             = TODO("Type system should forbid: Fibonaccis are closed")
