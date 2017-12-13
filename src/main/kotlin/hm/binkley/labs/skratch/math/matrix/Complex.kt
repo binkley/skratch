@@ -32,6 +32,12 @@ data class Complex(val re: Rational, val im: Rational)
     override fun isZero() = re.isZero() && im.isZero()
     override fun isUnit() = re.isUnit() && im.isZero()
 
+    override fun equivalent(other: Number<*, *>) = when (other) {
+        is Complex -> re == other.re && im == other.im
+        is Rational -> Rational.ZERO == im && re.n == other.n && re.d == other.d
+        else -> TODO("BUG: This is a terrible approach")
+    }
+
     override fun toString() = "$re+${im}i"
 
     companion object {

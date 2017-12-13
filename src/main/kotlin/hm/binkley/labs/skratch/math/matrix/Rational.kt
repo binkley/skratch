@@ -56,6 +56,12 @@ class Rational(n: Long, d: Long)
         return n == other.n && d == other.d
     }
 
+    override fun equivalent(other: Number<*, *>) = when (other) {
+        is Rational -> n == other.n && d == other.d
+        is Complex -> ZERO == other.im && n == other.re.n && d == other.re.d
+        else -> TODO("BUG: This is a terrible approach")
+    }
+
     override fun hashCode() = Objects.hash(n, d)
 
     override fun toString() = "$n/$d"
@@ -72,15 +78,15 @@ class Rational(n: Long, d: Long)
 
         private fun root(c: Rational): Rational {
             if (c < ZERO) TODO("Return complex root of negative")
-            val (rn, nexact) = tryExactRoot(c.n)
-            val (rd, dexact) = tryExactRoot(c.d)
+            val (rn, nexact) = maybeExactRoot(c.n)
+            val (rd, dexact) = maybeExactRoot(c.d)
             return when {
                 nexact && dexact -> Rational(rn, rd)
                 else -> newtonApproximation(c)
             }
         }
 
-        private fun tryExactRoot(x: Long): Pair<Long, Boolean> {
+        private fun maybeExactRoot(x: Long): Pair<Long, Boolean> {
             // If x is a perfect square
             when (x) {
                 0L, 1L -> return x to true

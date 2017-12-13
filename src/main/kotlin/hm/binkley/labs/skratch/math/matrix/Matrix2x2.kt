@@ -97,7 +97,10 @@ abstract class Matrix2x2<N, Norm : Number<Norm, Norm>, M>(
     }
 
     fun equivalent(other: Matrix2x2<*, *, *>)
-            = a == other.a && b == other.b && c == other.c && d == other.c
+            = a.equivalent(other.a)
+            && b.equivalent(other.b)
+            && c.equivalent(other.c)
+            && d.equivalent(other.d)
 
     override fun hashCode() = Objects.hash(a, b, c, d)
 
