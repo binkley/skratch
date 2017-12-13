@@ -86,29 +86,23 @@ class Rational(n: Long, d: Long)
             }
         }
 
-        private fun maybeExactRoot(x: Long): Pair<Long, Boolean> {
-            // If x is a perfect square
-            when (x) {
-                0L, 1L -> return x to true
-                else -> {
-                    var start = 1L
-                    var end = x
-                    var ans = 0L
-                    while (start <= end) {
-                        val mid = (start + end) / 2
-                        when {
-                            mid * mid == x -> return mid to true
-                            mid * mid < x -> {
-                                start = mid + 1
-                                ans = mid
-                            }
-                            else -> end = mid - 1
-                        }
-                    }
-                    if (x == ans * ans) throw AssertionError(
-                            "Exact square root; expected approximate")
-                    return ans to false
-                }
+        private fun guessRoot(x: Long, start: Long, end: Long, guess: Long)
+                : Long {
+            if (start > end) return guess
+            val mid = (start + end) / 2
+            val mid2 = mid * mid
+            return when {
+                mid2 == x -> mid
+                mid2 < x -> guessRoot(x, mid + 1, end, mid)
+                else -> guessRoot(x, start, mid - 1, guess)
+            }
+        }
+
+        private fun maybeExactRoot(x: Long) = when (x) {
+            0L, 1L -> x to true
+            else -> {
+                val guess = guessRoot(x, 1L, x, 0L)
+                guess to (x == guess * guess)
             }
         }
 
