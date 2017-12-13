@@ -3,20 +3,17 @@ package hm.binkley.labs.skratch.math.matrix
 import java.lang.Math.abs
 import java.util.Objects
 
-/**
- * @see https://introcs.cs.princeton.edu/java/92symbolic/BigRational.java.html
- */
 class Rational(n: Long, d: Long)
     : Number<Rational, Rational>, Comparable<Rational> {
     val n: Long
     val d: Long
 
     init {
-        if (0L == d) throw ArithmeticException("Denominator is normalizeZero")
+        if (0L == d) throw ArithmeticException("Denominator is zero")
 
-        val (a, b) = normalizeSign(normalizeZero(n, d))
+        val (a, b) = normalizeSign(n, d)
         val gcd = gcd(abs(a), b)
-        this.n = a.sign * a / gcd
+        this.n = a / gcd
         this.d = b / gcd
     }
 
@@ -40,11 +37,13 @@ class Rational(n: Long, d: Long)
         get() = Rational(abs(n), d)
     override val sqnorm: Rational
         get() = this
-    val root: Rational
+    val root: Number<*, Rational>
         get() = root(this)
 
-    override fun isZero() = 0L == n
-    override fun isUnit() = 1L == n && 1L == d
+    override fun isZero() = this == ZERO
+    fun isPositive() = this > ZERO
+    fun isNegative() = this < ZERO
+    override fun isUnit() = this == ONE
 
     override fun compareTo(other: Rational)
             = (n * other.d).compareTo(other.n * d)
@@ -64,20 +63,17 @@ class Rational(n: Long, d: Long)
 
     override fun hashCode() = Objects.hash(n, d)
 
-    override fun toString() = "$n/$d"
+    override fun toString() = if (1L == d) "$n" else "$n/$d"
 
     companion object {
-        private fun normalizeZero(a: Long, b: Long)
-                = if (0L == a) 0L to 1L else a to b
-
-        private fun normalizeSign(terms: Pair<Long, Long>)
-                = if (terms.second < 0L) -terms.first to -terms.second else terms
+        private fun normalizeSign(a: Long, b: Long)
+                = if (b < 0L) -a to -b else a to b
 
         private tailrec fun gcd(a: Long, b: Long): Long
                 = if (b == 0L) a else gcd(b, a % b)
 
-        private fun root(c: Rational): Rational {
-            if (c < ZERO) TODO("Return complex root of negative")
+        private fun root(c: Rational): Number<*, Rational> {
+            if (c < ZERO) return Complex(0L, c.abs.root as Rational)
             val (rn, nexact) = maybeExactRoot(c.n)
             val (rd, dexact) = maybeExactRoot(c.d)
             return when {

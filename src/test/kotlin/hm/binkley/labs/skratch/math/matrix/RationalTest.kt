@@ -10,6 +10,24 @@ import kotlin.test.assertEquals
 
 internal class RationalTest {
     @Test
+    fun normaizesZero() {
+        assertEquals(1L, Rational(0L, 3L).d)
+    }
+
+    @Test
+    fun normalizesNegativeDenominator() {
+        val negative = Rational(3L, -2L)
+
+        assertEquals(2L, negative.d)
+        assertEquals(-3L, negative.n)
+    }
+    
+    @Test
+    fun normalizesNegativeToNegativeRatio() {
+        assertEquals(Rational(3, 2), Rational(-3L, -2L))
+    }
+
+    @Test
     fun twoFourthsIsOneHalf() {
         assertEquals(Rational(1L, 2L), Rational(2L, 4L))
     }
@@ -72,6 +90,21 @@ internal class RationalTest {
     }
 
     @Test
+    fun zero() {
+        assertTrue(Rational(0L).isZero())
+    }
+
+    @Test
+    fun positive() {
+        assertTrue(Rational(4L).isPositive())
+    }
+
+    @Test
+    fun negative() {
+        assertTrue(Rational(-4L).isNegative())
+    }
+
+    @Test
     fun rootOfFourIsTwo() {
         assertEquals(TWO, Rational(4L).root)
     }
@@ -85,5 +118,10 @@ internal class RationalTest {
     @Test
     fun rootOfOneFourthIsOneHalf() {
         assertEquals(Rational(1, 2), Rational(1, 4).root)
+    }
+
+    @Test
+    fun rootOfNegativeFourIs2I() {
+        assertEquals(Complex(0L, 2L), Rational(-4).root)
     }
 }

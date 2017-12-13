@@ -5,6 +5,8 @@ data class Complex(val re: Rational, val im: Rational)
     constructor(re: Long) : this(Rational(re), Rational(0L))
     constructor(re: Rational) : this(re, Rational(0L))
     constructor(re: Long, im: Long) : this(Rational(re), Rational(im))
+    constructor(re: Long, im: Rational) : this(Rational(re), im)
+    constructor(re: Rational, im: Long) : this(re, Rational(im))
 
     override fun unaryMinus() = Complex(-re, -im)
     override fun plus(other: Complex) = Complex(re + other.re, im + other.im)
@@ -25,7 +27,7 @@ data class Complex(val re: Rational, val im: Rational)
     override val conj: Complex
         get() = Complex(re, -im)
     override val abs: Rational
-        get() = sqnorm.root
+        get() = sqnorm.root as Rational
     override val sqnorm: Rational
         get() = re * re + im * im
 
