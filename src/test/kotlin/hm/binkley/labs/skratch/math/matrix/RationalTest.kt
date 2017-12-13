@@ -81,4 +81,9 @@ internal class RationalTest {
     fun rootOfTwoIsApproximate() {
         assertEquals(Rational(665_857L, 470_832L), Rational(2L).root)
     }
+
+    @Test
+    fun rootOfOneFourthIsOneHalf() {
+        assertEquals(Rational(1, 2), Rational(1, 4).root)
+    }
 }
