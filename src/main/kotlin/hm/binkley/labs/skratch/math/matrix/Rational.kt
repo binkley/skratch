@@ -86,8 +86,8 @@ class Rational(n: Long, d: Long)
             }
         }
 
-        private fun guessRoot(x: Long, start: Long, end: Long, guess: Long)
-                : Long {
+        private tailrec fun guessRoot(x: Long, start: Long, end: Long,
+                guess: Long): Long {
             if (start > end) return guess
             val mid = (start + end) / 2
             val mid2 = mid * mid
