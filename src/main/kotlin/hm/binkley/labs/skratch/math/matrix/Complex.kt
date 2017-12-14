@@ -33,6 +33,8 @@ data class Complex(val re: Rational, val im: Rational)
 
     override fun isZero() = re.isZero() && im.isZero()
     override fun isUnit() = re.isUnit() && im.isZero()
+    val isReal get() = im.isZero()
+    val isImaginary get() = re.isZero()
 
     override fun equivalent(other: Number<*, *>) = when (other) {
         is Complex -> re == other.re && im == other.im

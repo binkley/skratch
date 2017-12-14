@@ -41,9 +41,10 @@ class Rational(n: Long, d: Long)
         get() = root(this)
 
     override fun isZero() = this == ZERO
-    fun isPositive() = this > ZERO
-    fun isNegative() = this < ZERO
+    val positive get() = this > ZERO
+    val negative get() = this < ZERO
     override fun isUnit() = this == ONE
+    val whole get() = 1L == d
 
     override fun compareTo(other: Rational)
             = (n * other.d).compareTo(other.n * d)
@@ -63,7 +64,7 @@ class Rational(n: Long, d: Long)
 
     override fun hashCode() = Objects.hash(n, d)
 
-    override fun toString() = if (1L == d) "$n" else "$n/$d"
+    override fun toString() = if (whole) "$n" else "$n/$d"
 
     companion object {
         private fun normalizeSign(a: Long, b: Long)
@@ -73,7 +74,7 @@ class Rational(n: Long, d: Long)
                 = if (b == 0L) a else gcd(b, a % b)
 
         private fun root(c: Rational): Number<*, Rational> {
-            if (c < ZERO) return Complex(0L, c.abs.root as Rational)
+            if (c.negative) return Complex(0L, c.abs.root as Rational)
             val (rn, nexact) = maybeExactRoot(c.n)
             val (rd, dexact) = maybeExactRoot(c.d)
             return when {

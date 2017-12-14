@@ -21,7 +21,7 @@ internal class RationalTest {
         assertEquals(2L, negative.d)
         assertEquals(-3L, negative.n)
     }
-    
+
     @Test
     fun normalizesNegativeToNegativeRatio() {
         assertEquals(Rational(3, 2), Rational(-3L, -2L))
@@ -96,12 +96,12 @@ internal class RationalTest {
 
     @Test
     fun positive() {
-        assertTrue(Rational(4L).isPositive())
+        assertTrue(Rational(4L).positive)
     }
 
     @Test
     fun negative() {
-        assertTrue(Rational(-4L).isNegative())
+        assertTrue(Rational(-4L).negative)
     }
 
     @Test
