@@ -19,7 +19,7 @@ abstract class Matrix2x2<N, Norm : Number<Norm, Norm>, M>(
         get() = a + d
     open val T: M
         get() = matrixCtor(a, c, b, d)
-    override val inv: M
+    override val multInv: M
         get() = adj / det
     open val conj: M
         get() = matrixCtor(a.conj, b.conj, c.conj, d.conj)
@@ -52,10 +52,10 @@ abstract class Matrix2x2<N, Norm : Number<Norm, Norm>, M>(
     override operator fun div(other: M): M {
         if (other.isSingular())
             throw ArithmeticException("Divisor is singular")
-        return this * other.inv
+        return this * other.multInv
     }
 
-    open operator fun div(other: N) = this * other.inv
+    open operator fun div(other: N) = this * other.multInv
     override operator fun div(other: Long) = this / elementCtor(other)
 
     operator fun get(row: Int, col: Int) = when {

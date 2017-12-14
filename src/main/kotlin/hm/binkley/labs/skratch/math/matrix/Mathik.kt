@@ -16,7 +16,7 @@ fun main(args: Array<String>) {
         println(ansi().render("""
 @|bold f($n) = ${fib.char}|@
 @|green F($n) = $fib|@
-@|blue 1/F($n) = ${fib.inv}|@
+@|blue 1/F($n) = ${fib.multInv}|@
 @|magenta det(F($n)) = ${fib.det}|@
 @|yellow tr(F($n)) = ${fib.tr}|@
 """.trim()))
@@ -33,7 +33,7 @@ fun main(args: Array<String>) {
     println()
 
     val p = (-6L..6).map { Fib(it) }
-    val q = (-6..6).map { Fib(it) }.map { it.inv }.reversed()
+    val q = (-6..6).map { Fib(it) }.map { it.multInv }.reversed()
 
     println(p)
     println(q)

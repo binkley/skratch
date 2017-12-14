@@ -18,11 +18,11 @@ data class Complex(val re: Rational, val im: Rational)
 
     operator fun times(other: Rational) = Complex(re * other, im * other)
     override operator fun times(other: Long) = this * Rational(other)
-    override operator fun div(other: Complex) = this * other.inv
+    override operator fun div(other: Complex) = this * other.multInv
     operator fun div(other: Rational) = Complex(re / other, im / other)
     override operator fun div(other: Long) = this / Rational(other)
 
-    override val inv: Complex
+    override val multInv: Complex
         get() = conj / sqnorm
     override val conj: Complex
         get() = Complex(re, -im)

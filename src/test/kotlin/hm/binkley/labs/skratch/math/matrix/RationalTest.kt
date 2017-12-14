@@ -96,12 +96,12 @@ internal class RationalTest {
 
     @Test
     fun positive() {
-        assertTrue(Rational(4L).positive)
+        assertTrue(Rational(4L).isPositive)
     }
 
     @Test
     fun negative() {
-        assertTrue(Rational(-4L).negative)
+        assertTrue(Rational(-4L).isNegative)
     }
 
     @Test
