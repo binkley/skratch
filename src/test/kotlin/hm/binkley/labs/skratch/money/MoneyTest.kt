@@ -28,6 +28,20 @@ internal class MoneyTest {
     }
 
     @Test
+    fun nicelyConvert() {
+        val exchange = object : CurrencyExchange {
+            @Suppress("UNCHECKED_CAST")
+            override fun <M : Money<M>, O : Money<O>> exchange(
+                    money: M, to: KClass<O>) = when (to) {
+                SGD::class -> SGD(BigDecimal("1.35")) as O
+                else -> fail("Unsupported exchange: $money -> $to")
+            }
+        }
+
+        assertEquals(SGD("1.35"), USD(1) convertTo SGD::class at exchange)
+    }
+
+    @Test
     fun noFractionalMoney() {
         assertThrows(ArithmeticException::class.java) {
             USD(1) / 3
