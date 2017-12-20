@@ -9,6 +9,13 @@ import kotlin.reflect.KClass
 
 internal class MoneyTest {
     @Test
+    fun dollarsAndCents() {
+        assertThrows(ArithmeticException::class.java) {
+            USD(BigDecimal("1.234"))
+        }
+    }
+
+    @Test
     fun doubleYourMoney() {
         assertEquals(USD(2), 2 * USD(1))
     }

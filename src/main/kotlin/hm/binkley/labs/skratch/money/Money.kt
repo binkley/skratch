@@ -7,24 +7,22 @@ import java.util.Objects
 abstract class Money<M : Money<M>>(
         val currency: String, val amount: BigDecimal) {
     protected abstract fun with(amount: BigDecimal): M
-    protected abstract fun valid(amount: BigDecimal): BigDecimal
-    private fun make(amount: BigDecimal) = with(valid(amount))
 
-    operator fun unaryMinus() = make(-amount)
+    operator fun unaryMinus() = with(-amount)
     @Suppress("UNCHECKED_CAST")
     operator fun unaryPlus(): M = this as M
 
-    operator fun plus(other: M) = make(amount + other.amount)
-    operator fun minus(other: M) = make(amount - other.amount)
+    operator fun plus(other: M) = with(amount + other.amount)
+    operator fun minus(other: M) = with(amount - other.amount)
 
     operator fun times(other: Int) = this * other.toLong()
     operator fun times(other: Long) = this * BigDecimal(other)
-    operator fun times(other: BigDecimal) = make(amount * other)
+    operator fun times(other: BigDecimal) = with(amount * other)
 
     operator fun div(other: Int): M = this / other.toLong()
     operator fun div(other: Long): M = this / BigDecimal(other)
-    operator fun div(other: BigDecimal): M = make(
-            amount.divide(other, amount.scale(), UNNECESSARY))
+    operator fun div(other: BigDecimal): M
+            = with(amount.divide(other, amount.scale(), UNNECESSARY))
 
     final override fun equals(other: Any?): Boolean {
         if (this === other) return true
