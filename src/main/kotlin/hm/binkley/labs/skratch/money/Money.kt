@@ -17,14 +17,14 @@ abstract class Money<M : Money<M>>(
     operator fun plus(other: M) = make(amount + other.amount)
     operator fun minus(other: M) = make(amount - other.amount)
 
-    operator fun times(other: Int) = make(amount * BigDecimal(other))
-    operator fun times(other: Long) = make(amount * BigDecimal(other))
+    operator fun times(other: Int) = this * other.toLong()
+    operator fun times(other: Long) = this * BigDecimal(other)
+    operator fun times(other: BigDecimal) = make(amount * other)
 
-    operator fun div(other: Int): M = make(
-            amount.divide(BigDecimal(other), amount.scale(), UNNECESSARY))
-
-    operator fun div(other: Long): M = make(
-            amount.divide(BigDecimal(other), amount.scale(), UNNECESSARY))
+    operator fun div(other: Int): M = this / other.toLong()
+    operator fun div(other: Long): M = this / BigDecimal(other)
+    operator fun div(other: BigDecimal): M = make(
+            amount.divide(other, amount.scale(), UNNECESSARY))
 
     final override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -42,3 +42,4 @@ abstract class Money<M : Money<M>>(
 
 operator fun <M : Money<M>> Int.times(other: M) = other * this
 operator fun <M : Money<M>> Long.times(other: M) = other * this
+operator fun <M : Money<M>> BigDecimal.times(other: M) = other * this
