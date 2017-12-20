@@ -8,8 +8,8 @@ interface CurrencyExchange {
 
     class MoneyChanger<M : Money<M>>(private val money: M,
             private val exchange: CurrencyExchange) {
-        infix fun <O : Money<O>> convertTo(to: KClass<O>) = exchange.exchange(
-                money, to)
+        infix fun <O : Money<O>> convertTo(to: KClass<O>)
+                = exchange.exchange(money, to)
     }
 }
 
