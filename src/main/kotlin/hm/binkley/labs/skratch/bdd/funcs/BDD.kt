@@ -17,21 +17,21 @@ data class Qed(
     }
 
     object Given {
-        inline fun upon(action: () -> Unit): When {
+        inline fun act(action: () -> Unit): When {
             action.invoke()
             return When()
         }
     }
 
     data class When(val GIVEN: String = caller()) {
-        inline fun upon(action: () -> Unit): Then {
+        inline fun act(action: () -> Unit): Then {
             action.invoke()
             return Then(GIVEN)
         }
     }
 
     data class Then(val GIVEN: String, val WHEN: String = caller()) {
-        inline fun upon(action: () -> Unit): Qed {
+        inline fun act(action: () -> Unit): Qed {
             action.invoke()
             return Qed(GIVEN, WHEN)
         }
