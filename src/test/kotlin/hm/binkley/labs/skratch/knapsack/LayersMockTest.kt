@@ -1,12 +1,12 @@
 package hm.binkley.labs.skratch.knapsack
 
-import com.nhaarman.mockito_kotlin.mock
+import io.mockk.mockk
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 internal class LayersMockTest {
-    private val database: Database = mock()
+    private val database = mockk<Database>()
 
     @Test
     fun shouldStartEmpty() {

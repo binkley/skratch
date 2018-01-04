@@ -1,22 +1,19 @@
 package hm.binkley.labs.skratch.knapsack
 
-import com.nhaarman.mockito_kotlin.any
-import com.nhaarman.mockito_kotlin.argumentCaptor
-import com.nhaarman.mockito_kotlin.doReturn
-import com.nhaarman.mockito_kotlin.mock
-import com.nhaarman.mockito_kotlin.spy
-import com.nhaarman.mockito_kotlin.times
-import com.nhaarman.mockito_kotlin.verify
-import com.nhaarman.mockito_kotlin.whenever
 import hm.binkley.labs.skratch.knapsack.Value.Nonce
 import hm.binkley.labs.skratch.knapsack.Value.RuleValue
+import io.mockk.every
+import io.mockk.mockk
+import io.mockk.slot
+import io.mockk.spyk
+import io.mockk.verify
 import org.junit.jupiter.api.Assertions.assertSame
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 internal class ValueMapMockTest {
-    private val database: Database = mock()
+    private val database = mockk<Database>()
     private val layer = 0
     private val key = "foo"
 
@@ -27,57 +24,54 @@ internal class ValueMapMockTest {
 
     @Test
     fun shouldForwardWhenSettingNonce() {
-        val set = spy(ValueSet(layer))
-        doReturn(true).whenever(set).add(any())
+        val set = spyk(ValueSet(layer))
+        val element = slot<ValueEntry>()
+        every { set.add(capture(element)) } returns true
         val map = ValueMap(database, layer, set)
 
         map[key] = null
 
-        argumentCaptor<ValueEntry>().apply {
-            verify(set, times(1)).add(capture())
-            assertEquals(key, firstValue.key)
-            assertSame(Nonce, firstValue.value)
-        }
+        verify(exactly = 1) { set.add(element.captured) }
+        assertEquals(key, element.captured.key)
+        assertSame(Nonce, element.captured.value)
     }
 
     @Test
     fun shouldForwardWhenSettingValue() {
         val value = "3"
-        val set = spy(ValueSet(layer))
-        doReturn(true).whenever(set).add(any())
+        val set = spyk(ValueSet(layer))
+        val element = slot<ValueEntry>()
+        every { set.add(capture(element)) } returns true
         val map = ValueMap(database, layer, set)
 
         map[key] = value
 
-        argumentCaptor<ValueEntry>().apply {
-            verify(set, times(1)).add(capture())
-            assertEquals(key, firstValue.key)
-            assertEquals(database.value(value), firstValue.value)
-        }
+        verify(exactly = 1) { set.add(element.captured) }
+        assertEquals(key, element.captured.key)
+        assertSame(database.value(value), element.captured.value)
     }
 
     @Test
     fun shouldForwardWhenSettingRule() {
         val rule: Rule<Int> = { _, _ -> 3 }
-        val set = spy(ValueSet(layer))
-        doReturn(true).whenever(set).add(any())
+        val set = spyk(ValueSet(layer))
+        val element = slot<ValueEntry>()
+        every { set.add(capture(element)) } returns true
         val map = ValueMap(database, layer, set)
 
         map[key] = rule
 
-        argumentCaptor<ValueEntry>().apply {
-            verify(set, times(1)).add(capture())
-            assertEquals(key, firstValue.key)
-            assertEquals(RuleValue(rule), firstValue.value)
-        }
+        verify(exactly = 1) { set.add(element.captured) }
+        assertEquals(key, element.captured.key)
+        assertEquals(RuleValue(rule), element.captured.value)
     }
 
     @Test
     fun shouldForwardWhenRemoving() {
         val entry = ValueEntry(key, RuleValue { _, _ -> 3 })
         val dummy = mutableSetOf(entry)
-        val set = spy(ValueSet(layer, mutableSetOf(entry)))
-        doReturn(dummy.iterator()).whenever(set).iterator()
+        val set = spyk(ValueSet(layer, mutableSetOf(entry)))
+        every { set.iterator() } returns dummy.iterator()
         val map = ValueMap(database, layer, set)
 
         map.remove(key)

@@ -1,10 +1,9 @@
 package hm.binkley.labs.skratch.knapsack
 
-import com.nhaarman.mockito_kotlin.mock
-import com.nhaarman.mockito_kotlin.verify
-import com.nhaarman.mockito_kotlin.verifyZeroInteractions
 import hm.binkley.labs.skratch.knapsack.Value.Nonce
 import hm.binkley.labs.skratch.knapsack.Value.RuleValue
+import io.mockk.mockk
+import io.mockk.verify
 import org.junit.jupiter.api.Assertions.assertSame
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Test
@@ -12,7 +11,7 @@ import org.junit.jupiter.api.Test
 internal class ValueMockTest {
     private val layer = 0
     private val key = "foo"
-    private val database: Database = mock()
+    private val database = mockk<Database>()
     private val value = database.value("3")
 
     @Test
@@ -40,21 +39,21 @@ internal class ValueMockTest {
     fun shouldRemoveFromDatabase() {
         value.remove(layer, key)
 
-        verify(database).remove(layer, key)
+        verify { database.remove(layer, key) }
     }
 
     @Test
     fun shouldRemoveWhenReplacedByNothing() {
         value.replaceWith(layer, key, Nonce)
 
-        verify(database).remove(layer, key)
+        verify { database.remove(layer, key) }
     }
 
     @Test
     fun shouldRemoveWhenReplacedByRule() {
         value.replaceWith(layer, key, RuleValue { _, _ -> 3 })
 
-        verify(database).remove(layer, key)
+        verify { database.remove(layer, key) }
     }
 
     @Test
@@ -62,14 +61,14 @@ internal class ValueMockTest {
         val other = database.value("4")
         value.replaceWith(layer, key, other)
 
-        verifyZeroInteractions(database)
+        // verifyZeroInteractions(database) -- should fail because no spec?
     }
 
     @Test
     fun shouldAddToDatabase() {
         value.add(layer, key)
 
-        verify(database).upsert(layer, key, value.value)
+        verify { database.upsert(layer, key, value.value) }
     }
 
     @Test
