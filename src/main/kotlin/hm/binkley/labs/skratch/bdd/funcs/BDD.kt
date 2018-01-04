@@ -1,7 +1,9 @@
 package hm.binkley.labs.skratch.bdd.funcs
 
-data class Qed(val GIVEN: String, val WHEN: String,
-        val THEN: String = caller()) {
+data class Qed(
+        private val GIVEN: String,
+        private val WHEN: String,
+        private val THEN: String = caller()) {
     override fun toString() = "GIVEN $GIVEN WHEN $WHEN THEN $THEN"
 
     companion object {
