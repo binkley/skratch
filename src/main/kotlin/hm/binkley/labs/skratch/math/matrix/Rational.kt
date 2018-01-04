@@ -1,7 +1,8 @@
 package hm.binkley.labs.skratch.math.matrix
 
-import java.lang.Math.abs
 import java.util.Objects
+import kotlin.math.abs
+import kotlin.math.sign
 
 class Rational(n: Long, d: Long)
     : Number<Rational, Rational>, Comparable<Rational> {
@@ -67,8 +68,8 @@ class Rational(n: Long, d: Long)
     override fun toString() = if (isWhole) "$n" else "$n/$d"
 
     companion object {
-        private fun normalizeSign(a: Long, b: Long)
-                = if (b < 0L) -a to -b else a to b
+        private fun normalizeSign(a: Long, b: Long) 
+                = if (-1 == b.sign) -a to -b else a to b
 
         private tailrec fun gcd(a: Long, b: Long): Long
                 = if (b == 0L) a else gcd(b, a % b)
