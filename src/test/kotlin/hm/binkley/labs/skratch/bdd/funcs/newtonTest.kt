@@ -12,7 +12,7 @@ import hm.binkley.labs.skratch.bdd.funcs.Qed.When
 import org.junit.jupiter.api.Test
 
 class newtonTest {
-    lateinit private var apple: Apple
+    private lateinit var apple: Apple
 
     infix fun Given.`an apple`(WHEN: When) = upon {
         apple = Apple(Newton(thinking = false))

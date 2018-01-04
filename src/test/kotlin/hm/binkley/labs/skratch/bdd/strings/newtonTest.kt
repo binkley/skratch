@@ -7,7 +7,7 @@ import hm.binkley.labs.skratch.bdd.strings.BDD.Companion.upon
 import org.junit.jupiter.api.Test
 
 class newtonTest {
-    lateinit var apple: Apple
+    private lateinit var apple: Apple
 
     @Test
     fun shouldThink() {
