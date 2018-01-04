@@ -1,18 +1,12 @@
 package hm.binkley.labs.skratch.knapsack
 
-import io.mockk.Runs
-import io.mockk.every
-import io.mockk.mockk
+import com.nhaarman.mockito_kotlin.mock
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 internal class LayersMockTest {
-    private val database = mockk<Database>()
-
-    init {
-        every { database.upsert(any(), any(), any()) } just Runs
-    }
+    private val database: Database = mock()
 
     @Test
     fun shouldStartEmpty() {
