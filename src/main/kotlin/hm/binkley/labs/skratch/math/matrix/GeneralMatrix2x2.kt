@@ -5,6 +5,6 @@ class GeneralMatrix2x2<N : Number<N, Rational>>
     : Matrix2x2<N, Rational, GeneralMatrix2x2<N>>(a, b, c, d) {
     override fun elementCtor(n: Long) = elementCtor.invoke(n)
 
-    override fun matrixCtor(a: N, b: N, c: N, d: N)
-            = GeneralMatrix2x2(a, b, c, d, elementCtor)
+    override fun matrixCtor(a: N, b: N, c: N, d: N) = GeneralMatrix2x2(a, b,
+            c, d, elementCtor)
 }

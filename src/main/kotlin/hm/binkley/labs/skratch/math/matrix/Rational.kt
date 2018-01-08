@@ -21,8 +21,8 @@ class Rational(n: Long, d: Long)
     constructor(n: Long) : this(n, 1L)
 
     override fun unaryMinus() = Rational(-n, d)
-    override fun plus(other: Rational)
-            = Rational(n * other.d + other.n * d, d * other.d)
+    override fun plus(other: Rational) = Rational(n * other.d + other.n * d,
+            d * other.d)
 
     override fun minus(other: Rational) = this + -other
     override fun times(other: Rational) = Rational(n * other.n, d * other.d)
@@ -47,8 +47,8 @@ class Rational(n: Long, d: Long)
     override fun isUnit() = this == ONE
     val isWhole get() = 1L == d
 
-    override fun compareTo(other: Rational)
-            = (n * other.d).compareTo(other.n * d)
+    override fun compareTo(other: Rational) = (n * other.d).compareTo(
+            other.n * d)
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -68,11 +68,11 @@ class Rational(n: Long, d: Long)
     override fun toString() = if (isWhole) "$n" else "$n/$d"
 
     companion object {
-        private fun normalizeSign(a: Long, b: Long) 
-                = if (-1 == b.sign) -a to -b else a to b
+        private fun normalizeSign(a: Long,
+                b: Long) = if (-1 == b.sign) -a to -b else a to b
 
-        private tailrec fun gcd(a: Long, b: Long): Long
-                = if (b == 0L) a else gcd(b, a % b)
+        private tailrec fun gcd(a: Long,
+                b: Long): Long = if (b == 0L) a else gcd(b, a % b)
 
         private fun root(c: Rational): Number<*, Rational> {
             if (c.isNegative) return Complex(0L, c.abs.root as Rational)

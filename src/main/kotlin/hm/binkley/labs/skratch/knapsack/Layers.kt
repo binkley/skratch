@@ -10,17 +10,12 @@ class Layers(private val list: MutableList<ValueMap> = ArrayList())
 
     override fun get(index: Int) = list[index]
 
-    operator fun get(key: String) = list.
-            mapNotNull { it[key] }.
-            filter { it is DatabaseValue }.
-            map { (it as DatabaseValue).value }
+    operator fun get(
+            key: String) = list.mapNotNull { it[key] }.filter { it is DatabaseValue }.map { (it as DatabaseValue).value }
 
     operator fun <T> invoke(key: String) = rule<T>(key)(key, this)
 
     @Suppress("UNCHECKED_CAST")
-    private fun <T> rule(key: String) = list.
-            mapNotNull { it[key] }.
-            filter { it is RuleValue<*> }.
-            map { (it as RuleValue<T>).rule }.
-            last()
+    private fun <T> rule(
+            key: String) = list.mapNotNull { it[key] }.filter { it is RuleValue<*> }.map { (it as RuleValue<T>).rule }.last()
 }

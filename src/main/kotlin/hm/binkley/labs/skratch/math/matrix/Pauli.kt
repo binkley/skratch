@@ -8,8 +8,8 @@ sealed class Pauli(a: Complex, b: Complex, c: Complex, d: Complex)
     : Matrix2x2<Complex, Rational, Pauli>(a, b, c, d) {
     override fun elementCtor(n: Long) = Complex(n)
 
-    override fun matrixCtor(a: Complex, b: Complex, c: Complex, d: Complex)
-            = pauli(GeneralMatrix2x2(a, b, c, d, { Complex(it) }))
+    override fun matrixCtor(a: Complex, b: Complex, c: Complex,
+            d: Complex) = pauli(GeneralMatrix2x2(a, b, c, d, { Complex(it) }))
 
     private class I : Pauli(ONE, ZERO, ZERO, ONE)
     private class nI : Pauli(-ONE, ZERO, ZERO, -ONE)

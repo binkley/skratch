@@ -9,8 +9,7 @@ class ValueSet(
     override val size: Int
         get() = set.size
 
-    override fun iterator(): MutableIterator<ValueEntry>
-            = object : MutableIterator<ValueEntry> {
+    override fun iterator(): MutableIterator<ValueEntry> = object : MutableIterator<ValueEntry> {
         private val it = set.iterator()
         private lateinit var next: ValueEntry
 
@@ -43,8 +42,8 @@ class ValueSet(
         }
     }
 
-    private fun replaceWith(previous: ValueEntry, element: ValueEntry)
-            = when (element.value) {
+    private fun replaceWith(previous: ValueEntry,
+            element: ValueEntry) = when (element.value) {
         Nonce -> remove(previous)
         previous.value -> false
         else -> {

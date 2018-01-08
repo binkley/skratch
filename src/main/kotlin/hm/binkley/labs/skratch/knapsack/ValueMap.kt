@@ -18,12 +18,11 @@ class ValueMap(
         return previous?.value
     }
 
-    operator fun set(key: String, nonce: Nothing?)
-            = put(key, Nonce)
+    operator fun set(key: String, nonce: Nothing?) = put(key, Nonce)
 
-    operator fun set(key: String, value: String)
-            = put(key, database.value(value))
+    operator fun set(key: String, value: String) = put(key,
+            database.value(value))
 
-    operator fun <T> set(key: String, rule: Rule<T>)
-            = put(key, RuleValue(rule))
+    operator fun <T> set(key: String, rule: Rule<T>) = put(key,
+            RuleValue(rule))
 }

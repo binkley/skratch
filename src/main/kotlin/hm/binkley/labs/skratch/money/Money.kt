@@ -21,8 +21,8 @@ abstract class Money<M : Money<M>>(
 
     operator fun div(other: Int): M = this / other.toLong()
     operator fun div(other: Long): M = this / BigDecimal(other)
-    operator fun div(other: BigDecimal): M
-            = with(amount.divide(other, amount.scale(), UNNECESSARY))
+    operator fun div(other: BigDecimal): M = with(
+            amount.divide(other, amount.scale(), UNNECESSARY))
 
     final override fun equals(other: Any?): Boolean {
         if (this === other) return true

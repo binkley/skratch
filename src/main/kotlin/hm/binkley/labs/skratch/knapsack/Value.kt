@@ -8,20 +8,20 @@ sealed class Value {
     open fun add(layer: Int, key: String) = Unit
 
     object Nonce : Value() {
-        override fun remove(layer: Int, key: String)
-                = throw IllegalStateException()
+        override fun remove(layer: Int,
+                key: String) = throw IllegalStateException()
 
-        override fun replaceWith(layer: Int, key: String, other: Value)
-                = throw IllegalStateException()
+        override fun replaceWith(layer: Int, key: String,
+                other: Value) = throw IllegalStateException()
 
-        override fun add(layer: Int, key: String)
-                = throw IllegalStateException()
+        override fun add(layer: Int,
+                key: String) = throw IllegalStateException()
     }
 
     class DatabaseValue(private val database: Database, val value: String)
         : Value() {
-        override fun remove(layer: Int, key: String)
-                = database.remove(layer, key)
+        override fun remove(layer: Int, key: String) = database.remove(layer,
+                key)
 
         override fun replaceWith(layer: Int, key: String, other: Value) {
             when (other) {
@@ -31,8 +31,8 @@ sealed class Value {
             }
         }
 
-        override fun add(layer: Int, key: String)
-                = database.upsert(layer, key, value)
+        override fun add(layer: Int, key: String) = database.upsert(layer,
+                key, value)
 
         override fun equals(other: Any?): Boolean {
             if (this === other) return true

@@ -14,27 +14,27 @@ fun main(args: Array<String>) {
     AnsiConsole.systemInstall()
 
     TerminalBuilder.terminal().use { terminal ->
-        val reader = LineReaderBuilder.builder().
-                terminal(terminal).
-                build()
-        val writer = PrintWriter(terminal.writer())
+                val reader = LineReaderBuilder.builder().terminal(
+                        terminal).build()
+                val writer = PrintWriter(terminal.writer())
 
-        while (true) {
-            try {
-                val line = reader.readLine("> ")
-                val answer: Double
-                try {
-                    answer = parse(line).evaluate()
-                } catch (e: Exception) {
-                    err.println(ansi().render("@|bold,red $line|@: $e"))
-                    continue
+                while (true) {
+                    try {
+                        val line = reader.readLine("> ")
+                        val answer: Double
+                        try {
+                            answer = parse(line).evaluate()
+                        } catch (e: Exception) {
+                            err.println(
+                                    ansi().render("@|bold,red $line|@: $e"))
+                            continue
+                        }
+                        writer.println(ansi().render("@|bold $answer|@"))
+                    } catch (e: EndOfFileException) {
+                        return
+                    }
                 }
-                writer.println(ansi().render("@|bold $answer|@"))
-            } catch (e: EndOfFileException) {
-                return
             }
-        }
-    }
 }
 
 private val comma = Regex(" *, *")
@@ -56,10 +56,10 @@ private fun parse(line: String): Expression {
 private fun parseVars(parts: List<String>) =
         if (1 == parts.size) mapOf()
         else comma.split(parts[1]).map {
-            equal.split(it)
-        }.map {
-            it[0].trim() to parseValue(it[1])
-        }.toMap()
+                    equal.split(it)
+                }.map {
+                    it[0].trim() to parseValue(it[1])
+                }.toMap()
 
 private fun parseValue(expr: String) =
         ExpressionBuilder(expr).build().evaluate()

@@ -11,8 +11,8 @@ class ValueEntry(override val key: String, override val value: Value)
 
     fun remove(layer: Int) = value.remove(layer, key)
 
-    fun replaceWith(layer: Int, element: ValueEntry)
-            = value.replaceWith(layer, key, element.value)
+    fun replaceWith(layer: Int, element: ValueEntry) = value.replaceWith(
+            layer, key, element.value)
 
     fun add(layer: Int) = value.add(layer, key)
 

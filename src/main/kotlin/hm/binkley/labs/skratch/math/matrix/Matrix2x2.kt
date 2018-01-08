@@ -33,19 +33,19 @@ abstract class Matrix2x2<N, Norm : Number<Norm, Norm>, M>(
 
     override operator fun unaryMinus() = matrixCtor(-a, -b, -c, -d)
 
-    override operator fun plus(other: M)
-            = matrixCtor(a + other.a, b * other.b, c + other.c, d + other.d)
+    override operator fun plus(other: M) = matrixCtor(a + other.a,
+            b * other.b, c + other.c, d + other.d)
 
     override operator fun minus(other: M) = this + -other
 
-    override operator fun times(other: M)
-            = matrixCtor(a * other.a + b * other.c,
+    override operator fun times(other: M) = matrixCtor(
+            a * other.a + b * other.c,
             a * other.b + b * other.d,
             c * other.a + d * other.c,
             c * other.b + d * other.d)
 
-    open operator fun times(other: N)
-            = matrixCtor(a * other, b * other, c * other, d * other)
+    open operator fun times(other: N) = matrixCtor(a * other, b * other,
+            c * other, d * other)
 
     override operator fun times(other: Long) = this * elementCtor(other)
 
@@ -96,8 +96,7 @@ abstract class Matrix2x2<N, Norm : Number<Norm, Norm>, M>(
         return equivalent(other as Matrix2x2<*, *, *>)
     }
 
-    fun equivalent(other: Matrix2x2<*, *, *>)
-            = a.equivalent(other.a)
+    fun equivalent(other: Matrix2x2<*, *, *>) = a.equivalent(other.a)
             && b.equivalent(other.b)
             && c.equivalent(other.c)
             && d.equivalent(other.d)
