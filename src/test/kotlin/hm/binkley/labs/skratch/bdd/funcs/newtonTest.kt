@@ -38,4 +38,22 @@ class newtonTest {
             "Expected: `GIVEN an apple WHEN it falls THEN Newton thinks`, got: $bdd"
         }
     }
+
+    @Test
+    fun shouldMamba() = scenario {
+        -(GIVEN `an apple` WHEN `it falls` THEN `Newton thinks` QED)
+
+        assert("$it" == "GIVEN an apple WHEN it falls THEN Newton thinks") {
+            "Expected: `GIVEN an apple WHEN it falls THEN Newton thinks`, got: $it"
+        }
+    }
+
+    private fun scenario(test: GWT.() -> Unit) = GWT().apply(test)
+
+    class GWT {
+        lateinit var it: Qed
+        operator fun Qed.unaryMinus() {
+            it = this
+        }
+    }
 }
