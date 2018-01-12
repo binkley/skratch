@@ -1,19 +1,43 @@
 #!/bin/bash
 
-function usage {
-    echo "Usage: $0 fib|sh"
+export PS4='+${BASH_SOURCE}:${LINENO}:${FUNCNAME[0]:+${FUNCNAME[0]}():} '
+
+set -e
+set -u
+set -o pipefail
+
+function -print-usage {
+    echo "Usage: $0 MAIN"
 }
 
-if ! (( 1 == $# ))
-then
-    usage >&2
-    exit 2
-fi
+function -print-help {
+    -print-usage
+    cat <<EOH
+Runs a MAIN entry point in Skratch.
 
-case $1 in
-    fib ) class=matrix.Mathik ;;
-    sh ) class=shell.Shell ;;
-    * ) usage >&2 ; exit 2 ;;
+MAIN can be one of:
+   * benchmarks
+EOH
+}
+
+while getopts :-: opt
+do
+    [[ - == $opt ]] && opt=${OPTARG%%=*} OPTARG=${OPTARG#*=}
+    case $opt in
+        h | help ) -print-help ; exit 0 ;;
+        * ) -print-usage >&2 ; exit 2 ;;
+    esac
+done
+shift $((OPTIND - 1))
+
+case $# in
+    0 ) -print-usage >&2 ; exit 2 ;;
+    * ) cmd=$1 ; shift ;;
 esac
 
-exec ./mvnw -q -DskipTests -Djansi.passthrough=true package exec:java -Dexec.mainClass=hm.binkley.labs.skratch.math.${class}Kt
+case $cmd in
+    benchmarks ) main=hm.binkley.labs.skratch.benchmark.JustInTimeConstantsKt ;;
+    * ) -print-usage >&2 ; exit 2 ;;
+esac
+
+java -jar target/skratch-0-SNAPSHOT-shaded.jar "$main" "$@"
