@@ -311,10 +311,10 @@
             <plugin>
                 <artifactId>maven-failsafe-plugin</artifactId>
                 <version>${maven-surefire-plugin.version}</version>
-                <configuration>
-                    <argLine>-javaagent:${project.build.finalName}.jar
-                    </argLine>
-                </configuration>
+                <!--<configuration>-->
+                    <!--<argLine>-javaagent:${project.build.finalName}.jar-->
+                    <!--</argLine>-->
+                <!--</configuration>-->
                 <dependencies>
                     <dependency>
                         <groupId>org.junit.platform</groupId>
