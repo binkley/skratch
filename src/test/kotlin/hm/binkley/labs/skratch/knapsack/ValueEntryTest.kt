@@ -4,6 +4,7 @@ import hm.binkley.labs.skratch.knapsack.Value.Nonce
 import hm.binkley.labs.skratch.knapsack.Value.RuleValue
 import io.mockk.Runs
 import io.mockk.every
+import io.mockk.just
 import io.mockk.spyk
 import io.mockk.verify
 import org.junit.jupiter.api.Assertions.assertSame
