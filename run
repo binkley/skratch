@@ -43,4 +43,4 @@ case $cmd in
     * ) -print-usage >&2 ; exit 2 ;;
 esac
 
-java -cp target/skratch-0-SNAPSHOT-shaded.jar "hm.binkley.labs.skratch.$main" "$@"
+java -javaagent:target/skratch-0-SNAPSHOT-shaded.jar -cp target/skratch-0-SNAPSHOT-shaded.jar "hm.binkley.labs.skratch.$main" "$@"
