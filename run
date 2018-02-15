@@ -37,7 +37,7 @@ case $# in
 esac
 
 case $cmd in
-    agent ) main=jvmagent.AgentXKt ;;
+    agent ) main=jvmagent.AgentX ;;
     benchmarks ) main=benchmark.JustInTimeConstantsKt ;;
     fibs ) main=math.matrix.MathikKt ;;
     * ) -print-usage >&2 ; exit 2 ;;
