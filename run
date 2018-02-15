@@ -17,6 +17,7 @@ Runs a MAIN entry point in Skratch.
 
 MAIN can be one of:
    * benchmarks
+   * fibs
 EOH
 }
 
@@ -36,8 +37,10 @@ case $# in
 esac
 
 case $cmd in
-    benchmarks ) main=hm.binkley.labs.skratch.benchmark.JustInTimeConstantsKt ;;
+    agent ) main=jvmagent.AgentXKt ;;
+    benchmarks ) main=benchmark.JustInTimeConstantsKt ;;
+    fibs ) main=math.matrix.MathikKt ;;
     * ) -print-usage >&2 ; exit 2 ;;
 esac
 
-java -jar target/skratch-0-SNAPSHOT-shaded.jar "$main" "$@"
+java -cp target/skratch-0-SNAPSHOT-shaded.jar "hm.binkley.labs.skratch.$main" "$@"

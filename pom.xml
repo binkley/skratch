@@ -294,20 +294,20 @@
                 <version>${maven-shade-plugin.version}</version>
                 <configuration>
                     <shadedArtifactAttached>true</shadedArtifactAttached>
-                    <transformers>
-                        <transformer
-                                implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                            <!-- TODO: Why does it not use the archiver plugin? -->
-                            <manifestEntries>
-                                <Main-Class>
-                                    hm.binkley.labs.skratch.jvmagent.AgentX
-                                </Main-Class>
-                                <Premain-Class>
-                                    hm.binkley.labs.skratch.jvmagent.AgentX
-                                </Premain-Class>
-                            </manifestEntries>
-                        </transformer>
-                    </transformers>
+                    <!--<transformers>-->
+                    <!--<transformer-->
+                    <!--implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">-->
+                    <!--&lt;!&ndash; TODO: Why does it not use the archiver plugin? &ndash;&gt;-->
+                    <!--<manifestEntries>-->
+                    <!--<Main-Class>-->
+                    <!--hm.binkley.labs.skratch.jvmagent.AgentX-->
+                    <!--</Main-Class>-->
+                    <!--<Premain-Class>-->
+                    <!--hm.binkley.labs.skratch.jvmagent.AgentXKt-->
+                    <!--</Premain-Class>-->
+                    <!--</manifestEntries>-->
+                    <!--</transformer>-->
+                    <!--</transformers>-->
                 </configuration>
                 <executions>
                     <execution>
@@ -322,8 +322,8 @@
                 <artifactId>maven-failsafe-plugin</artifactId>
                 <version>${maven-surefire-plugin.version}</version>
                 <!--<configuration>-->
-                    <!--<argLine>-javaagent:${project.build.finalName}.jar-->
-                    <!--</argLine>-->
+                <!--<argLine>-javaagent:${project.build.finalName}.jar-->
+                <!--</argLine>-->
                 <!--</configuration>-->
                 <dependencies>
                     <dependency>
