@@ -4,10 +4,5 @@
          xsi:schemaLocation="http://mojo.codehaus.org/versions-maven-plugin/rule/2.0.0
          http://mojo.codehaus.org/versions-maven-plugin/xsd/rule-2.0.0.xsd">
     <rules>
-        <rule groupId="org.jetbrains.kotlin">
-            <ignoreVersions>
-                <ignoreVersion>1.2.0-beta-31</ignoreVersion>
-            </ignoreVersions>
-        </rule>
     </rules>
 </ruleset>
