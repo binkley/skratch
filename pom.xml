@@ -26,6 +26,7 @@
         <ejml.version>0.33</ejml.version>
         <exp4j.version>0.4.8</exp4j.version>
         <failIfNoTests>true</failIfNoTests>
+        <failsafe.printSummary>false</failsafe.printSummary>
         <generateBackupPoms>false</generateBackupPoms>
         <jacoco.coverage>0.00</jacoco.coverage>
         <jacoco.version>0.8.1-SNAPSHOT</jacoco.version>
