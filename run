@@ -16,6 +16,7 @@ function -print-help {
 Runs a MAIN entry point in Skratch.
 
 MAIN can be one of:
+   * agent
    * benchmarks
    * fibs
 EOH
