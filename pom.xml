@@ -39,7 +39,7 @@
         <junit-base.version>1.0</junit-base.version>
         <junit.jupiter.version>5.${junit-base.version}</junit.jupiter.version>
         <junit.platform.version>1.${junit-base.version}</junit.platform.version>
-        <kotlin.version>1.2.40-eap-16</kotlin.version>
+        <kotlin.version>1.2.40</kotlin.version>
         <kotlinx-coroutines.version>0.22.3</kotlinx-coroutines.version>
         <maven-clean-plugin.version>3.0.0</maven-clean-plugin.version>
         <maven-compiler-plugin.version>3.7.0</maven-compiler-plugin.version>
