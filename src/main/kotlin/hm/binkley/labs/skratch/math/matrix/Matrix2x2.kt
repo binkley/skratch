@@ -23,20 +23,13 @@ abstract class Matrix2x2<N, Norm : GeneralNumber<Norm, Norm>, M>(
         val d: N,
     ) where N : GeneralNumber<N, Norm>
 
-    override val det
-        get() = a * d - b * c
-    override val tr
-        get() = a + d
-    open val T: M
-        get() = matrixCtor(a, c, b, d)
-    override val multiplicativeInverse: M
-        get() = adj / det
-    override val conj: M
-        get() = matrixCtor(a.conj, b.conj, c.conj, d.conj)
-    override val adj: M
-        get() = matrixCtor(d, -b, -c, a)
-    override val hermitian: M
-        get() = T.conj
+    override val det get() = a * d - b * c
+    override val tr get() = a + d
+    open val T: M get() = matrixCtor(a, c, b, d)
+    override val multiplicativeInverse: M get() = adj / det
+    override val conj: M get() = matrixCtor(a.conj, b.conj, c.conj, d.conj)
+    override val adj: M get() = matrixCtor(d, -b, -c, a)
+    override val hermitian: M get() = T.conj
 
     abstract fun elementCtor(n: Long): N
     abstract fun matrixCtor(a: N, b: N, c: N, d: N): M

@@ -3,7 +3,9 @@ package hm.binkley.labs.skratch.math.matrix
 import hm.binkley.labs.skratch.math.matrix.Rational.Companion.ONE
 import hm.binkley.labs.skratch.math.matrix.Rational.Companion.ZERO
 
-class Fib(val char: Long) : Matrix2x2<Rational, Rational, Fib>(nthFib(char)) {
+class Fib(
+    val char: Long,
+) : Matrix2x2<Rational, Rational, Fib>(nthFib(char)) {
     constructor(char: Int) : this(char.toLong())
 
     override fun elementCtor(n: Long) = Rational(n)
@@ -14,36 +16,19 @@ class Fib(val char: Long) : Matrix2x2<Rational, Rational, Fib>(nthFib(char)) {
     ) = throw AssertionError(
         "BUG: Did not override other method")
 
-    override val T: Fib
-        get() = this
-    override val multiplicativeInverse: Fib
-        get() = Fib(-char)
-    override val conj: Fib
-        get() = this
-    override val adj: Fib
-        get() = TODO("No adj of a Fibonacci")
+    override val T: Fib get() = this
+    override val multiplicativeInverse: Fib get() = Fib(-char)
+    override val conj: Fib get() = this
+    override val adj: Fib get() = TODO("No adj of a Fibonacci")
 
-    override fun unaryMinus() = throw UnsupportedOperationException(
-        "No negative of a Fibonacci")
-
-    override fun plus(other: Fib) = TODO(
-        "Type system should forbid: Fibonaccis not additive")
-
-    override fun minus(other: Fib) = TODO(
-        "Type system should forbid: Fibonaccis not additive")
-
+    override fun unaryMinus() = TODO("Think through")
+    override fun plus(other: Fib) = TODO("Think through")
+    override fun minus(other: Fib) = TODO("Think through")
     override fun times(other: Fib) = Fib(char + other.char)
-
-    override fun times(other: Rational) = TODO(
-        "Type system should forbid: Fibonaccis are closed")
-
+    override fun times(other: Rational) = TODO("Think through")
     override fun div(other: Fib) = Fib(char - other.char)
-
-    override fun div(other: Rational) = TODO(
-        "Type system should forbid: Fibonaccis are closed")
-
-    override fun div(other: Long) = TODO(
-        "Type system should forbid: Fibonaccis are closed")
+    override fun div(other: Rational) = TODO("Think through")
+    override fun div(other: Long) = TODO("Think through")
 
     infix fun pow(other: Long) = Fib(char * other)
     infix fun pow(other: Int) = pow(other.toLong())
