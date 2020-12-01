@@ -48,6 +48,7 @@ fun main() {
     q["mary"] = S("Mary")
     q["howard"] = la("Fooby-do!")
 
+    @Suppress("UNCHECKED_CAST")
     for ((k, v) in q)
         println("$k -> ${
             when (v) {

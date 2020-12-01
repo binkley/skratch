@@ -11,17 +11,20 @@ import hm.binkley.labs.skratch.bdd.funcs.Qed.Then
 import hm.binkley.labs.skratch.bdd.funcs.Qed.When
 import org.junit.jupiter.api.Test
 
-class newtonTest {
+internal class NewtonTest {
     private lateinit var apple: Apple
 
+    @Suppress("UNUSED_PARAMETER")
     infix fun Given.`an apple`(WHEN: When) = act {
         apple = Apple(Newton(thinking = false))
     }
 
+    @Suppress("UNUSED_PARAMETER")
     infix fun When.`it falls`(THEN: Then) = act {
         apple.falls()
     }
 
+    @Suppress("UNUSED_PARAMETER")
     infix fun Then.`Newton thinks`(QED: Qed) = act {
         assert(apple.physicist.thinking) {
             "Newton is still sleeping"
@@ -48,7 +51,7 @@ class newtonTest {
         }
     }
 
-    private fun scenario(test: GWT.() -> Unit) = GWT().apply(test)
+    private fun scenario(test: GWT.() -> Unit) = GWT().let(test)
 
     class GWT {
         lateinit var it: Qed

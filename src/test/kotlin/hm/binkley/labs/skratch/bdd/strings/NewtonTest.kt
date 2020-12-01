@@ -6,7 +6,7 @@ import hm.binkley.labs.skratch.bdd.strings.BDD.Companion.So
 import hm.binkley.labs.skratch.bdd.strings.BDD.Companion.upon
 import org.junit.jupiter.api.Test
 
-class newtonTest {
+internal class NewtonTest {
     private lateinit var apple: Apple
 
     @Test

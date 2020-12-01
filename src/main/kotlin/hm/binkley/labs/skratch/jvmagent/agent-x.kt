@@ -6,6 +6,8 @@ import java.lang.instrument.Instrumentation
 
 fun premain(arguments: String?, instrumentation: Instrumentation) {
     println("Hello from AgentX 'premain'!")
+    println("ARGUMENTS -> $arguments")
+    println("INSTRUMENTATION -> $instrumentation")
 }
 
 fun main() {

@@ -33,7 +33,7 @@
         <jacoco-maven-plugin.version>0.8.6</jacoco-maven-plugin.version>
         <jansi.version>2.0.1</jansi.version>
         <java.charset>UTF-8</java.charset>
-        <java.version>1.9</java.version>
+        <jdk.version>11</jdk.version>
         <jline.version>3.17.1</jline.version>
         <jmh.version>1.26</jmh.version>
         <junit.version>5.7.0</junit.version>
@@ -255,25 +255,14 @@
                 </executions>
             </plugin>
             <plugin>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>${maven-compiler-plugin.version}</version>
-                <configuration>
-                    <compilerArgs>
-                        <compilerArg>-parameters</compilerArg>
-                        <compilerArg>-Xlint:all</compilerArg>
-                    </compilerArgs>
-                    <debug>true</debug>
-                    <source>${java.version}</source>
-                    <target>${java.version}</target>
-                </configuration>
-            </plugin>
-            <plugin>
                 <groupId>org.jetbrains.kotlin</groupId>
                 <artifactId>kotlin-maven-plugin</artifactId>
                 <version>${kotlin.version}</version>
                 <configuration>
-                    <experimentalCoroutines>enable</experimentalCoroutines>
-                    <jvmTarget>1.8</jvmTarget>
+                    <args>
+                        <arg>-Werror</arg>
+                    </args>
+                    <jvmTarget>${jdk.version}</jvmTarget>
                 </configuration>
                 <executions>
                     <execution>
@@ -289,6 +278,20 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven-compiler-plugin.version}</version>
+                <configuration>
+                    <compilerArgs>
+                        <compilerArg>-parameters</compilerArg>
+                        <compilerArg>-Werror</compilerArg>
+                        <compilerArg>-Xlint:all</compilerArg>
+                    </compilerArgs>
+                    <debug>true</debug>
+                    <source>${jdk.version}</source>
+                    <target>${jdk.version}</target>
+                </configuration>
             </plugin>
             <plugin>
                 <artifactId>maven-surefire-plugin</artifactId>

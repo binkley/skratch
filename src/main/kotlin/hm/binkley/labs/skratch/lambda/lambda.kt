@@ -17,6 +17,7 @@ inline infix fun <T : Psyche, reified R> T.doit(block: T.() -> R): R {
 
 inline infix fun <T, R> T.doit(block: T.() -> R) = block(this)
 
+@Suppress("DEPRECATION")
 inline fun <reified T> lamb(): T = T::class.java.newInstance()
 
 fun main() {
