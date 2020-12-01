@@ -30,6 +30,7 @@ class FibMatrix(
     override fun div(other: Rational) = TODO("Think through")
     override fun div(other: Long) = TODO("Think through")
 
+    // TODO: Use rationals, not integers; integers are a special case
     infix fun pow(other: Long) = FibMatrix(char * other)
     infix fun pow(other: Int) = pow(other.toLong())
     infix fun root(other: Long) = when {
