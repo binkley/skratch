@@ -3,9 +3,9 @@ package hm.binkley.labs.skratch.math.matrix
 import hm.binkley.labs.skratch.math.matrix.Rational.Companion.ONE
 import hm.binkley.labs.skratch.math.matrix.Rational.Companion.ZERO
 
-class Fib(
+class FibMatrix(
     val char: Long,
-) : Matrix2x2<Rational, Rational, Fib>(nthFib(char)) {
+) : Matrix2x2<Rational, Rational, FibMatrix>(nthFib(char)) {
     constructor(char: Int) : this(char.toLong())
 
     override fun elementCtor(n: Long) = Rational(n)
@@ -16,25 +16,25 @@ class Fib(
     ) = throw AssertionError(
         "BUG: Did not override other method")
 
-    override val T: Fib get() = this
-    override val multiplicativeInverse: Fib get() = Fib(-char)
-    override val conj: Fib get() = this
-    override val adj: Fib get() = TODO("No adj of a Fibonacci")
+    override val T: FibMatrix get() = this
+    override val multiplicativeInverse: FibMatrix get() = FibMatrix(-char)
+    override val conj: FibMatrix get() = this
+    override val adj: FibMatrix get() = TODO("No adj of a Fibonacci")
 
     override fun unaryMinus() = TODO("Think through")
-    override fun plus(other: Fib) = TODO("Think through")
-    override fun minus(other: Fib) = TODO("Think through")
-    override fun times(other: Fib) = Fib(char + other.char)
+    override fun plus(other: FibMatrix) = TODO("Think through")
+    override fun minus(other: FibMatrix) = TODO("Think through")
+    override fun times(other: FibMatrix) = FibMatrix(char + other.char)
     override fun times(other: Rational) = TODO("Think through")
-    override fun div(other: Fib) = Fib(char - other.char)
+    override fun div(other: FibMatrix) = FibMatrix(char - other.char)
     override fun div(other: Rational) = TODO("Think through")
     override fun div(other: Long) = TODO("Think through")
 
-    infix fun pow(other: Long) = Fib(char * other)
+    infix fun pow(other: Long) = FibMatrix(char * other)
     infix fun pow(other: Int) = pow(other.toLong())
     infix fun root(other: Long) = when {
         0L != char % other -> throw ArithmeticException()
-        else -> Fib(char / other)
+        else -> FibMatrix(char / other)
     }
 
     infix fun root(other: Int) = root(other.toLong())

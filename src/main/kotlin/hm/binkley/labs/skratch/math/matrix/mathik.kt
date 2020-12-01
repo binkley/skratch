@@ -6,11 +6,11 @@ import org.fusesource.jansi.AnsiConsole
 fun main() {
     AnsiConsole.systemInstall()
 
-    println(Fib(0) pow 4)
-    println(Fib(2) pow 4)
+    println(FibMatrix(0) pow 4)
+    println(FibMatrix(2) pow 4)
 
     for (n in -6..6) {
-        val fib = Fib(n)
+        val fib = FibMatrix(n)
         println()
         println(ansi().format("""
 @|bold f($n) = ${fib.char}|@
@@ -23,17 +23,18 @@ fun main() {
 
     println()
 
-    val a = (-6..6).map { Fib(it) }.map { it.char }
-    val b = (-6..6).map { Fib(it) }.map { -it.char * it.det }.reversed()
+    val a = (-6..6).map { FibMatrix(it) }.map { it.char }
+    val b = (-6..6).map { FibMatrix(it) }.map { -it.char * it.det }.reversed()
 
     println(a)
     println(b)
 
     println()
 
-    val p = (-6L..6).map { Fib(it) }
+    val p = (-6L..6).map { FibMatrix(it) }
     val q =
-        (-6..6).map { Fib(it) }.map { it.multiplicativeInverse }.reversed()
+        (-6..6).map { FibMatrix(it) }.map { it.multiplicativeInverse }
+            .reversed()
 
     println(p)
     println(q)
@@ -41,9 +42,9 @@ fun main() {
 
     println()
 
-    val fib4 = Fib(4)
+    val fib4 = FibMatrix(4)
     for (n in 3 downTo 0)
-        println("F(4) / F($n) = ${fib4 / Fib(n)}")
+        println("F(4) / F($n) = ${fib4 / FibMatrix(n)}")
 
     println()
 
@@ -61,11 +62,11 @@ fun main() {
         else -> "\u207B${superscript(-n)}"
     }
 
-    val fib1 = Fib(1)
+    val fib1 = FibMatrix(1)
     for (n in -3..3)
         println("F(1)${superscript(n)} = ${fib1 pow n}")
 
-    val fib9 = Fib(9)
+    val fib9 = FibMatrix(9)
     println("${superscript(9)}√F(9) = ${fib9 root 9}")
     println("${superscript(3)}√F(9) = ${fib9 root 3}")
     println("${superscript(-3)}√F(9) = ${fib9 root -3}")
@@ -73,5 +74,5 @@ fun main() {
 
     println()
 
-    println((-8..8).map { Fib(it) }.map { it.tr }.toList())
+    println((-8..8).map { FibMatrix(it) }.map { it.tr }.toList())
 }
