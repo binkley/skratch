@@ -3,7 +3,7 @@ package hm.binkley.labs.skratch.delegation
 interface Fooby {
     fun foo() = println("Fooby:foo")
     fun bar()
-    fun baz(): Unit
+    fun baz()
 }
 
 class Bob : Fooby {
