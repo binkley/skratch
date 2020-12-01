@@ -17,9 +17,9 @@ inline infix fun <T : Psyche, reified R> T.doit(block: T.() -> R): R {
 
 inline infix fun <T, R> T.doit(block: T.() -> R) = block(this)
 
-inline fun <reified T> lamb() = T::class.java.newInstance()!!
+inline fun <reified T> lamb(): T = T::class.java.newInstance()
 
-fun main(args: Array<String>) {
+fun main() {
     val lamb: Lambda = lamb()
     val sheep: Beta = lamb()
 

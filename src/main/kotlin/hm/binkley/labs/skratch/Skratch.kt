@@ -23,9 +23,9 @@ class S(private val s: String) {
     override fun toString() = s
 }
 
-fun main(args: Array<String>) {
-    open class Named<in T>(val name: String, check: (T) -> Boolean)
-        : (T) -> Boolean by check {
+fun main() {
+    open class Named<in T>(val name: String, check: (T) -> Boolean) :
+            (T) -> Boolean by check {
         override fun toString() = name
     }
 
@@ -49,8 +49,10 @@ fun main(args: Array<String>) {
     q["howard"] = la("Fooby-do!")
 
     for ((k, v) in q)
-        println("$k -> ${when (v) {
-            is Function<*> -> (v as F)(1, 2)
-            else -> v
-        }}")
+        println("$k -> ${
+            when (v) {
+                is Function<*> -> (v as F)(1, 2)
+                else -> v
+            }
+        }")
 }

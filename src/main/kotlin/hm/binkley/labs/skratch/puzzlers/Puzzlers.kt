@@ -10,7 +10,7 @@ fun printSign(i: Int) {
     }.let { println(it) }
 }
 
-fun main(args: Array<String>) {
+fun main() {
     printSign(-1)
     printSign(0)
     printSign(1)

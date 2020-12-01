@@ -2,9 +2,8 @@ package hm.binkley.labs.skratch.math.matrix
 
 import org.fusesource.jansi.Ansi.ansi
 import org.fusesource.jansi.AnsiConsole
-import java.lang.Math as nativeMath
 
-fun main(args: Array<String>) {
+fun main() {
     AnsiConsole.systemInstall()
 
     println(Fib(0) pow 4)
@@ -13,7 +12,7 @@ fun main(args: Array<String>) {
     for (n in -6..6) {
         val fib = Fib(n)
         println()
-        println(ansi().render("""
+        println(ansi().format("""
 @|bold f($n) = ${fib.char}|@
 @|green F($n) = $fib|@
 @|blue 1/F($n) = ${fib.multInv}|@

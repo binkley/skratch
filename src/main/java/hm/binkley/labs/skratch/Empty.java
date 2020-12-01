@@ -1,3 +1,4 @@
 package hm.binkley.labs.skratch;
 
-public final class Empty { }
+public final class Empty {
+}

@@ -3,13 +3,14 @@ package hm.binkley.labs.skratch.math.matrix
 import java.util.Objects
 
 abstract class Matrix2x2<N, Norm : Number<Norm, Norm>, M>(
-        val a: N, val b: N, val c: N, val d: N)
-    : Additative<M>, Multiplicative<M>, Scalable<M>
+    val a: N, val b: N, val c: N, val d: N,
+) : Additative<M>, Multiplicative<M>, Scalable<M>
         where N : Number<N, Norm>, M : Matrix2x2<N, Norm, M> {
     constructor(m: Holder<N, Norm>) : this(m.a, m.b, m.c, m.d)
 
     data class Holder<N, Norm : Number<Norm, Norm>>(
-            val a: N, val b: N, val c: N, val d: N)
+        val a: N, val b: N, val c: N, val d: N,
+    )
             where N : Number<N, Norm>
 
     val rank = 2
@@ -34,18 +35,18 @@ abstract class Matrix2x2<N, Norm : Number<Norm, Norm>, M>(
     override operator fun unaryMinus() = matrixCtor(-a, -b, -c, -d)
 
     override operator fun plus(other: M) = matrixCtor(a + other.a,
-            b * other.b, c + other.c, d + other.d)
+        b * other.b, c + other.c, d + other.d)
 
     override operator fun minus(other: M) = this + -other
 
     override operator fun times(other: M) = matrixCtor(
-            a * other.a + b * other.c,
-            a * other.b + b * other.d,
-            c * other.a + d * other.c,
-            c * other.b + d * other.d)
+        a * other.a + b * other.c,
+        a * other.b + b * other.d,
+        c * other.a + d * other.c,
+        c * other.b + d * other.d)
 
     open operator fun times(other: N) = matrixCtor(a * other, b * other,
-            c * other, d * other)
+        c * other, d * other)
 
     override operator fun times(other: Long) = this * elementCtor(other)
 
@@ -72,6 +73,7 @@ abstract class Matrix2x2<N, Norm : Number<Norm, Norm>, M>(
     override fun isZero() = isDiagonal() && a.isZero() && d.isZero()
     override fun isUnit() = isDiagonal() && a.isUnit() && d.isUnit()
     fun isSingular() = det.isZero()
+
     @Suppress("UNCHECKED_CAST")
     fun isIdempotent() = this == this as M * this
 
@@ -80,6 +82,7 @@ abstract class Matrix2x2<N, Norm : Number<Norm, Norm>, M>(
 
     fun isUpperTriangular() = c.isZero()
     fun isLowerTriangular() = b.isZero()
+
     @Suppress("UNCHECKED_CAST")
     fun isUnitary() = (this.hermitian * this as M).isUnit()
 

@@ -4,12 +4,14 @@ import hm.binkley.labs.skratch.math.matrix.Complex.Companion.ONE
 import hm.binkley.labs.skratch.math.matrix.Complex.Companion.ZERO
 import hm.binkley.labs.skratch.math.matrix.Pauli.Companion.pauli
 
-sealed class Pauli(a: Complex, b: Complex, c: Complex, d: Complex)
-    : Matrix2x2<Complex, Rational, Pauli>(a, b, c, d) {
+sealed class Pauli(a: Complex, b: Complex, c: Complex, d: Complex) :
+    Matrix2x2<Complex, Rational, Pauli>(a, b, c, d) {
     override fun elementCtor(n: Long) = Complex(n)
 
-    override fun matrixCtor(a: Complex, b: Complex, c: Complex,
-            d: Complex) = pauli(GeneralMatrix2x2(a, b, c, d, { Complex(it) }))
+    override fun matrixCtor(
+        a: Complex, b: Complex, c: Complex,
+        d: Complex,
+    ) = pauli(GeneralMatrix2x2(a, b, c, d, { Complex(it) }))
 
     private class I : Pauli(ONE, ZERO, ZERO, ONE)
     private class nI : Pauli(-ONE, ZERO, ZERO, -ONE)
@@ -53,19 +55,19 @@ sealed class Pauli(a: Complex, b: Complex, c: Complex, d: Complex)
         val niσ3: Pauli = niσ3()
 
         val group = arrayOf(
-                I, nI, iI, niI,
-                σ1, nσ1, iσ1, niσ1,
-                σ2, nσ2, iσ2, niσ2,
-                σ3, nσ3, iσ3, niσ3)
+            I, nI, iI, niI,
+            σ1, nσ1, iσ1, niσ1,
+            σ2, nσ2, iσ2, niσ2,
+            σ3, nσ3, iσ3, niσ3)
 
         fun pauli(p: Matrix2x2<Complex, Rational, *>) =
-                group.find { it.equivalent(p) } ?: TODO(
-                        "BUG: How to downgrade type when multiplying Pauli by non-{one,zero,i}? $p")
+            group.find { it.equivalent(p) } ?: TODO(
+                "BUG: How to downgrade type when multiplying Pauli by non-{one,zero,i}? $p")
     }
 }
 
 operator fun Complex.times(other: Pauli): Pauli {
     val p = GeneralMatrix2x2(this * other.a, this * other.b, this * other.c,
-            this * other.d) { Complex(it) }
+        this * other.d) { Complex(it) }
     return pauli(p)
 }

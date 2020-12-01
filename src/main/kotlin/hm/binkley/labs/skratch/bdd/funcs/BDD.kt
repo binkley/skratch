@@ -1,9 +1,10 @@
 package hm.binkley.labs.skratch.bdd.funcs
 
 data class Qed(
-        private val GIVEN: String,
-        private val WHEN: String,
-        private val THEN: String = caller()) {
+    private val GIVEN: String,
+    private val WHEN: String,
+    private val THEN: String = caller(),
+) {
     override fun toString() = "GIVEN $GIVEN WHEN $WHEN THEN $THEN"
 
     companion object {
@@ -13,7 +14,9 @@ data class Qed(
         val QED = Qed("-", "-")
 
         // `caller` is inline to preserve the stack trace
-        private inline fun caller() = Throwable().stackTrace[1].methodName!!
+        @Suppress("NOTHING_TO_INLINE")
+        private inline fun caller(): String =
+            Throwable().stackTrace[1].methodName
     }
 
     object Given {

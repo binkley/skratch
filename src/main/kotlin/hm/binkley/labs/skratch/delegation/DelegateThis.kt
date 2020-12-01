@@ -2,7 +2,7 @@ package hm.binkley.labs.skratch.delegation
 
 interface Fooby {
     fun foo() = println("Fooby:foo")
-    fun bar(): Unit
+    fun bar()
     fun baz(): Unit
 }
 
@@ -14,7 +14,6 @@ class Bob : Fooby {
     override fun baz() {
         println("Bob:Baz")
     }
-
 }
 
 class DelegateThis : Fooby by Bob() {
@@ -23,7 +22,7 @@ class DelegateThis : Fooby by Bob() {
     }
 }
 
-fun main(args: Array<String>) {
+fun main() {
     val x = DelegateThis()
     x.foo()
     x.bar()

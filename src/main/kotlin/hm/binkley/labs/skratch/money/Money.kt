@@ -5,10 +5,12 @@ import java.math.RoundingMode.UNNECESSARY
 import java.util.Objects
 
 abstract class Money<M : Money<M>>(
-        val currency: String, val amount: BigDecimal) {
+    val currency: String, val amount: BigDecimal,
+) {
     protected abstract fun with(amount: BigDecimal): M
 
     operator fun unaryMinus() = with(-amount)
+
     @Suppress("UNCHECKED_CAST")
     operator fun unaryPlus(): M = this as M
 
@@ -22,7 +24,7 @@ abstract class Money<M : Money<M>>(
     operator fun div(other: Int): M = this / other.toLong()
     operator fun div(other: Long): M = this / BigDecimal(other)
     operator fun div(other: BigDecimal): M = with(
-            amount.divide(other, amount.scale(), UNNECESSARY))
+        amount.divide(other, amount.scale(), UNNECESSARY))
 
     final override fun equals(other: Any?): Boolean {
         if (this === other) return true

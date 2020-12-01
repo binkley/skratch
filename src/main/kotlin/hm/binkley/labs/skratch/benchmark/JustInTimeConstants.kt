@@ -12,15 +12,15 @@ import org.openjdk.jmh.annotations.Warmup
 import java.util.concurrent.TimeUnit.NANOSECONDS
 import java.util.concurrent.TimeUnit.SECONDS
 
-@Warmup(iterations = 5, time = 1, timeUnit = SECONDS)
-@Measurement(iterations = 5, time = 1, timeUnit = SECONDS)
-@Fork(3)
 @BenchmarkMode(AverageTime)
+@Fork(3)
+@Measurement(iterations = 5, time = 1, timeUnit = SECONDS)
 @OutputTimeUnit(NANOSECONDS)
 @State(Scope.Benchmark)
+@Warmup(iterations = 5, time = 1, timeUnit = SECONDS)
 class JustInTimeConstants {
-    internal val x_inst_final = java.lang.Long.getLong("divisor", 1000)!!
-    internal var x_inst = java.lang.Long.getLong("divisor", 1000)!!
+    internal val x_inst_final = java.lang.Long.getLong("divisor", 1000)
+    internal var x_inst = java.lang.Long.getLong("divisor", 1000)
 
     @Benchmark
     fun _static_final(): Long {
@@ -44,8 +44,8 @@ class JustInTimeConstants {
 
     companion object {
         internal val x_static_final = java.lang.Long.getLong("divisor",
-                1000)!!
-        internal var x_static = java.lang.Long.getLong("divisor", 1000)!!
+            1000)
+        internal var x_static = java.lang.Long.getLong("divisor", 1000)
 
         object BenchmarkRunner {
             @Throws(Exception::class)

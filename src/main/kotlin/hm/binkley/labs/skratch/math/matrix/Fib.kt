@@ -9,9 +9,10 @@ class Fib(val char: Long) : Matrix2x2<Rational, Rational, Fib>(nthFib(char)) {
     override fun elementCtor(n: Long) = Rational(n)
 
     override fun matrixCtor(
-            a: Rational, b: Rational, c: Rational,
-            d: Rational) = throw AssertionError(
-            "BUG: Did not override other method")
+        a: Rational, b: Rational, c: Rational,
+        d: Rational,
+    ) = throw AssertionError(
+        "BUG: Did not override other method")
 
     override val T: Fib
         get() = this
@@ -23,26 +24,26 @@ class Fib(val char: Long) : Matrix2x2<Rational, Rational, Fib>(nthFib(char)) {
         get() = TODO("No adj of a Fibonacci")
 
     override fun unaryMinus() = throw UnsupportedOperationException(
-            "No negative of a Fibonacci")
+        "No negative of a Fibonacci")
 
     override fun plus(other: Fib) = TODO(
-            "Type system should forbid: Fibonaccis not additive")
+        "Type system should forbid: Fibonaccis not additive")
 
     override fun minus(other: Fib) = TODO(
-            "Type system should forbid: Fibonaccis not additive")
+        "Type system should forbid: Fibonaccis not additive")
 
     override fun times(other: Fib) = Fib(char + other.char)
 
     override fun times(other: Rational) = TODO(
-            "Type system should forbid: Fibonaccis are closed")
+        "Type system should forbid: Fibonaccis are closed")
 
     override fun div(other: Fib) = Fib(char - other.char)
 
     override fun div(other: Rational) = TODO(
-            "Type system should forbid: Fibonaccis are closed")
+        "Type system should forbid: Fibonaccis are closed")
 
     override fun div(other: Long) = TODO(
-            "Type system should forbid: Fibonaccis are closed")
+        "Type system should forbid: Fibonaccis are closed")
 
     infix fun pow(other: Long) = Fib(char * other)
     infix fun pow(other: Int) = pow(other.toLong())

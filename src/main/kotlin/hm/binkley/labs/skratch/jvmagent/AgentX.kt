@@ -8,6 +8,6 @@ fun premain(arguments: String?, instrumentation: Instrumentation) {
     println("Hello from AgentX 'premain'!")
 }
 
-fun main(args: Array<String>) {
+fun main() {
     println("Hello from AgentX 'main'!")
 }

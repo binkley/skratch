@@ -29,7 +29,7 @@ class newtonTest {
     }
 
     @Test
-    fun shouldThink() {
+    fun `should think`() {
         val bdd = GIVEN `an apple`
                 WHEN `it falls`
                 THEN `Newton thinks`
@@ -40,7 +40,7 @@ class newtonTest {
     }
 
     @Test
-    fun shouldMamba() = scenario {
+    fun `should mamba`() = scenario {
         -(GIVEN `an apple` WHEN `it falls` THEN `Newton thinks` QED)
 
         assert("$it" == "GIVEN an apple WHEN it falls THEN Newton thinks") {

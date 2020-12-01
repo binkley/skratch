@@ -1,6 +1,7 @@
 package hm.binkley.labs.skratch.awaitility
 
-import kotlinx.coroutines.experimental.async
+import kotlinx.coroutines.async
+import kotlinx.coroutines.runBlocking
 import org.awaitility.Awaitility.await
 import org.junit.Test
 import org.junit.jupiter.api.BeforeEach
@@ -23,7 +24,7 @@ internal class AwaitilityTest {
         }
     }
 
-    private fun slow() {
+    private fun slow() = runBlocking {
         async {
             sleep(100L)
             x = 1
