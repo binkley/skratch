@@ -267,6 +267,8 @@
                 <executions>
                     <execution>
                         <id>compile-kotlin</id>
+                        <!-- phase needed when mixing Java & Kotlin -->
+                        <phase>process-sources</phase>
                         <goals>
                             <goal>compile</goal>
                         </goals>
