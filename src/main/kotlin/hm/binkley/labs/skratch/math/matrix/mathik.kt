@@ -15,7 +15,7 @@ fun main() {
         println(ansi().format("""
 @|bold f($n) = ${fib.char}|@
 @|green F($n) = $fib|@
-@|blue 1/F($n) = ${fib.multInv}|@
+@|blue 1/F($n) = ${fib.multiplicativeInverse}|@
 @|magenta det(F($n)) = ${fib.det}|@
 @|yellow tr(F($n)) = ${fib.tr}|@
 """.trim()))
@@ -32,7 +32,8 @@ fun main() {
     println()
 
     val p = (-6L..6).map { Fib(it) }
-    val q = (-6..6).map { Fib(it) }.map { it.multInv }.reversed()
+    val q =
+        (-6..6).map { Fib(it) }.map { it.multiplicativeInverse }.reversed()
 
     println(p)
     println(q)

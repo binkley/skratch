@@ -4,7 +4,7 @@ import java.util.Objects
 import kotlin.math.abs
 import kotlin.math.sign
 
-class Rational(n: Long, d: Long) : Number<Rational, Rational>,
+class Rational(n: Long, d: Long) : GeneralNumber<Rational, Rational>,
     Comparable<Rational> {
     val n: Long
     val d: Long
@@ -27,18 +27,18 @@ class Rational(n: Long, d: Long) : Number<Rational, Rational>,
     override fun minus(other: Rational) = this + -other
     override fun times(other: Rational) = Rational(n * other.n, d * other.d)
     override fun times(other: Long) = this * Rational(other)
-    override fun div(other: Rational) = this * other.multInv
+    override fun div(other: Rational) = this * other.multiplicativeInverse
     override fun div(other: Long) = this / Rational(other)
 
-    override val multInv: Rational
+    override val multiplicativeInverse: Rational
         get() = Rational(d, n)
     override val conj: Rational
         get() = this
-    override val abs: Rational
+    override val absoluteValue: Rational
         get() = Rational(abs(n), d)
-    override val sqnorm: Rational
+    override val squareNorm: Rational
         get() = this
-    val root: Number<*, Rational>
+    val root: GeneralNumber<*, Rational>
         get() = root(this)
 
     override fun isZero() = this == ZERO
@@ -57,7 +57,7 @@ class Rational(n: Long, d: Long) : Number<Rational, Rational>,
         return n == other.n && d == other.d
     }
 
-    override fun equivalent(other: Number<*, *>) = when (other) {
+    override fun equivalent(other: GeneralNumber<*, *>) = when (other) {
         is Rational -> n == other.n && d == other.d
         is Complex -> ZERO == other.im && n == other.re.n && d == other.re.d
         else -> TODO("BUG: This is a terrible approach")
@@ -78,8 +78,9 @@ class Rational(n: Long, d: Long) : Number<Rational, Rational>,
             b: Long,
         ): Long = if (b == 0L) a else gcd(b, a % b)
 
-        private fun root(c: Rational): Number<*, Rational> {
-            if (c.isNegative) return Complex(0L, c.abs.root as Rational)
+        private fun root(c: Rational): GeneralNumber<*, Rational> {
+            if (c.isNegative) return Complex(0L,
+                c.absoluteValue.root as Rational)
             val (rn, nexact) = maybeExactRoot(c.n)
             val (rd, dexact) = maybeExactRoot(c.d)
             return when {
@@ -113,7 +114,7 @@ class Rational(n: Long, d: Long) : Number<Rational, Rational>,
         private val EPSILON = Rational(1L, 1_000_000L)
         private fun newtonApproximation(c: Rational): Rational {
             var t = c
-            while ((t - c / t).abs > EPSILON * t)
+            while ((t - c / t).absoluteValue > EPSILON * t)
                 t = (c / t + t) / TWO
             return t
         }

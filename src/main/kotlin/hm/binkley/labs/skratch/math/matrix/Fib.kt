@@ -16,7 +16,7 @@ class Fib(val char: Long) : Matrix2x2<Rational, Rational, Fib>(nthFib(char)) {
 
     override val T: Fib
         get() = this
-    override val multInv: Fib
+    override val multiplicativeInverse: Fib
         get() = Fib(-char)
     override val conj: Fib
         get() = this

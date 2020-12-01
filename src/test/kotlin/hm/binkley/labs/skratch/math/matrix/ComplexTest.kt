@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test
 internal class ComplexTest {
     @Test
     fun norm() {
-        assertEquals(Rational(5L), Complex(3L, 4L).abs)
+        assertEquals(Rational(5L), Complex(3L, 4L).absoluteValue)
     }
 
     @Test

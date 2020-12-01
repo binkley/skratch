@@ -2,16 +2,25 @@ package hm.binkley.labs.skratch.math.matrix
 
 import java.util.Objects
 
-abstract class Matrix2x2<N, Norm : Number<Norm, Norm>, M>(
-    val a: N, val b: N, val c: N, val d: N,
-) : Additative<M>, Multiplicative<M>, Scalable<M>
-        where N : Number<N, Norm>, M : Matrix2x2<N, Norm, M> {
+abstract class Matrix2x2<N, Norm : GeneralNumber<Norm, Norm>, M>(
+    val a: N,
+    val b: N,
+    val c: N,
+    val d: N,
+) :
+    Additive<M>,
+    Multiplicative<M>,
+    Scalable<M>
+        where N : GeneralNumber<N, Norm>,
+              M : Matrix2x2<N, Norm, M> {
     constructor(m: Holder<N, Norm>) : this(m.a, m.b, m.c, m.d)
 
-    data class Holder<N, Norm : Number<Norm, Norm>>(
-        val a: N, val b: N, val c: N, val d: N,
-    )
-            where N : Number<N, Norm>
+    data class Holder<N, Norm : GeneralNumber<Norm, Norm>>(
+        val a: N,
+        val b: N,
+        val c: N,
+        val d: N,
+    ) where N : GeneralNumber<N, Norm>
 
     val rank = 2
     open val det
@@ -20,7 +29,7 @@ abstract class Matrix2x2<N, Norm : Number<Norm, Norm>, M>(
         get() = a + d
     open val T: M
         get() = matrixCtor(a, c, b, d)
-    override val multInv: M
+    override val multiplicativeInverse: M
         get() = adj / det
     open val conj: M
         get() = matrixCtor(a.conj, b.conj, c.conj, d.conj)
@@ -53,10 +62,10 @@ abstract class Matrix2x2<N, Norm : Number<Norm, Norm>, M>(
     override operator fun div(other: M): M {
         if (other.isSingular())
             throw ArithmeticException("Divisor is singular")
-        return this * other.multInv
+        return this * other.multiplicativeInverse
     }
 
-    open operator fun div(other: N) = this * other.multInv
+    open operator fun div(other: N) = this * other.multiplicativeInverse
     override operator fun div(other: Long) = this / elementCtor(other)
 
     operator fun get(row: Int, col: Int) = when {

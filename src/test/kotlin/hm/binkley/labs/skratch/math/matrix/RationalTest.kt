@@ -66,7 +66,7 @@ internal class RationalTest {
 
     @Test
     fun absoluteValue() {
-        assertEquals(Rational(1L, 2L), Rational(-1L, 2L).abs)
+        assertEquals(Rational(1L, 2L), Rational(-1L, 2L).absoluteValue)
     }
 
     @Test
