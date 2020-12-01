@@ -1,6 +1,5 @@
 package hm.binkley.labs.skratch.math.matrix
 
-import my.stuff.hm.binkley.labs.skratch.math.matrix.SquareMatrix
 import java.util.Objects
 
 abstract class Matrix2x2<N, Norm : GeneralNumber<Norm, Norm>, M>(

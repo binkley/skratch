@@ -1,9 +1,4 @@
-package my.stuff.hm.binkley.labs.skratch.math.matrix
-
-import hm.binkley.labs.skratch.math.matrix.Additive
-import hm.binkley.labs.skratch.math.matrix.GeneralNumber
-import hm.binkley.labs.skratch.math.matrix.Multiplicative
-import hm.binkley.labs.skratch.math.matrix.Scalable
+package hm.binkley.labs.skratch.math.matrix
 
 abstract class SquareMatrix<N, Norm : GeneralNumber<Norm, Norm>, M>(
     val rank: Int,
