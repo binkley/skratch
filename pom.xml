@@ -212,7 +212,7 @@
                 <version>${versions-maven-plugin.version}</version>
                 <configuration>
                     <rulesUri>
-                        file:///${session.executionRootDirectory}/maven-version-rules.xml
+                        file:///${project.basedir}/maven-version-rules.xml
                     </rulesUri>
                 </configuration>
                 <executions>
