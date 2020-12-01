@@ -11,7 +11,7 @@ sealed class Pauli(a: Complex, b: Complex, c: Complex, d: Complex) :
     override fun matrixCtor(
         a: Complex, b: Complex, c: Complex,
         d: Complex,
-    ) = pauli(GeneralMatrix2x2(a, b, c, d, { Complex(it) }))
+    ) = pauli(GenericMatrix2x2(a, b, c, d, { Complex(it) }))
 
     private class I : Pauli(ONE, ZERO, ZERO, ONE)
     private class nI : Pauli(-ONE, ZERO, ZERO, -ONE)
@@ -67,7 +67,7 @@ sealed class Pauli(a: Complex, b: Complex, c: Complex, d: Complex) :
 }
 
 operator fun Complex.times(other: Pauli): Pauli {
-    val p = GeneralMatrix2x2(this * other.a, this * other.b, this * other.c,
+    val p = GenericMatrix2x2(this * other.a, this * other.b, this * other.c,
         this * other.d) { Complex(it) }
     return pauli(p)
 }

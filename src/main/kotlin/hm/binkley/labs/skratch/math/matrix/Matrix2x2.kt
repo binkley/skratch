@@ -1,5 +1,6 @@
 package hm.binkley.labs.skratch.math.matrix
 
+import my.stuff.hm.binkley.labs.skratch.math.matrix.SquareMatrix
 import java.util.Objects
 
 abstract class Matrix2x2<N, Norm : GeneralNumber<Norm, Norm>, M>(
@@ -8,6 +9,7 @@ abstract class Matrix2x2<N, Norm : GeneralNumber<Norm, Norm>, M>(
     val c: N,
     val d: N,
 ) :
+    SquareMatrix<N, Norm, M>(2),
     Additive<M>,
     Multiplicative<M>,
     Scalable<M>
@@ -22,20 +24,19 @@ abstract class Matrix2x2<N, Norm : GeneralNumber<Norm, Norm>, M>(
         val d: N,
     ) where N : GeneralNumber<N, Norm>
 
-    val rank = 2
-    open val det
+    override val det
         get() = a * d - b * c
-    open val tr
+    override val tr
         get() = a + d
     open val T: M
         get() = matrixCtor(a, c, b, d)
     override val multiplicativeInverse: M
         get() = adj / det
-    open val conj: M
+    override val conj: M
         get() = matrixCtor(a.conj, b.conj, c.conj, d.conj)
-    open val adj: M
+    override val adj: M
         get() = matrixCtor(d, -b, -c, a)
-    open val hermitian: M
+    override val hermitian: M
         get() = T.conj
 
     abstract fun elementCtor(n: Long): N
@@ -76,42 +77,31 @@ abstract class Matrix2x2<N, Norm : GeneralNumber<Norm, Norm>, M>(
         else -> throw IndexOutOfBoundsException("$row, $col")
     }
 
-    fun isDiagonal() = b.isZero() && c.isZero()
-    fun isSymmetric() = b == c
-    fun isHermitian() = b == c.conj
+    override fun isDiagonal() = b.isZero() && c.isZero()
+    override fun isSymmetric() = b == c
+    override fun isHermitian() = b == c.conj
     override fun isZero() = isDiagonal() && a.isZero() && d.isZero()
     override fun isUnit() = isDiagonal() && a.isUnit() && d.isUnit()
-    fun isSingular() = det.isZero()
+
+    override fun isUpperTriangular() = c.isZero()
+    override fun isLowerTriangular() = b.isZero()
+
+    override fun symmetricPart() = (this + T) / elementCtor(2L)
+    override fun antisymmetricPart() = (this - T) / elementCtor(2L)
+
+    fun equivalent(other: Matrix2x2<*, *, *>) =
+        a.equivalent(other.a)
+                && b.equivalent(other.b)
+                && c.equivalent(other.c)
+                && d.equivalent(other.d)
 
     @Suppress("UNCHECKED_CAST")
-    fun isIdempotent() = this == this as M * this
-
-    @Suppress("UNCHECKED_CAST")
-    fun isNilpotent() = (this as M * this).isZero()
-
-    fun isUpperTriangular() = c.isZero()
-    fun isLowerTriangular() = b.isZero()
-
-    @Suppress("UNCHECKED_CAST")
-    fun isUnitary() = (this.hermitian * this as M).isUnit()
-
-    fun symmetricPart() = (this + T) / elementCtor(2L)
-    fun antisymmetricPart() = (this - T) / elementCtor(2L)
-    fun eigenvalues(): Pair<N, N> = TODO("Formula at http://www.math" +
-            ".harvard.edu/archive/21b_fall_04/exhibits/2dmatrices/ needs " +
-            "square root")
-
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
 
-        return equivalent(other as Matrix2x2<*, *, *>)
+        return equivalent(other as M)
     }
-
-    fun equivalent(other: Matrix2x2<*, *, *>) = a.equivalent(other.a)
-            && b.equivalent(other.b)
-            && c.equivalent(other.c)
-            && d.equivalent(other.d)
 
     override fun hashCode() = Objects.hash(a, b, c, d)
 

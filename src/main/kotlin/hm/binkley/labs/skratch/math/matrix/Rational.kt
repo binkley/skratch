@@ -4,7 +4,9 @@ import java.util.Objects
 import kotlin.math.abs
 import kotlin.math.sign
 
-class Rational(n: Long, d: Long) : GeneralNumber<Rational, Rational>,
+// TODO: Reuse FixedBigRational from kotlin-rational project
+class Rational(n: Long, d: Long) :
+    GeneralNumber<Rational, Rational>,
     Comparable<Rational> {
     val n: Long
     val d: Long
