@@ -22,12 +22,12 @@ data class Complex(
     operator fun times(other: Rational) = Complex(re * other, im * other)
     override operator fun times(other: Long) = this * Rational(other)
     override operator fun div(other: Complex) =
-        this * other.multiplicativeInverse
+        this * other.multInv
 
     operator fun div(other: Rational) = Complex(re / other, im / other)
     override operator fun div(other: Long) = this / Rational(other)
 
-    override val multiplicativeInverse: Complex
+    override val multInv: Complex
         get() = conj / squareNorm
     override val conj: Complex
         get() = Complex(re, -im)

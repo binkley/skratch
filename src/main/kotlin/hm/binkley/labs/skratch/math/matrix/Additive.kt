@@ -1,7 +1,7 @@
 package hm.binkley.labs.skratch.math.matrix
 
 interface Additive<T : Additive<T>> {
-    val additiveInverse get() = unaryMinus()
+    val addInv get() = unaryMinus()
 
     @Suppress("UNCHECKED_CAST")
     operator fun unaryPlus(): T = this as T

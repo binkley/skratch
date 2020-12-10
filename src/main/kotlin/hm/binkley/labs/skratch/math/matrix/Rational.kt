@@ -29,10 +29,10 @@ class Rational(n: Long, d: Long) :
     override fun minus(other: Rational) = this + -other
     override fun times(other: Rational) = Rational(n * other.n, d * other.d)
     override fun times(other: Long) = this * Rational(other)
-    override fun div(other: Rational) = this * other.multiplicativeInverse
+    override fun div(other: Rational) = this * other.multInv
     override fun div(other: Long) = this / Rational(other)
 
-    override val multiplicativeInverse: Rational
+    override val multInv: Rational
         get() = Rational(d, n)
     override val conj: Rational
         get() = this

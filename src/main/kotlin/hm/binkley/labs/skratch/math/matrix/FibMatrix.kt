@@ -17,7 +17,7 @@ class FibMatrix(
         "BUG: Did not override other method")
 
     override val T: FibMatrix get() = this
-    override val multiplicativeInverse: FibMatrix get() = FibMatrix(-char)
+    override val multInv: FibMatrix get() = FibMatrix(-char)
     override val conj: FibMatrix get() = this
     override val adj: FibMatrix get() = TODO("No adj of a Fibonacci")
 
