@@ -9,17 +9,17 @@ private fun interface Self<T> : Onto<Self<T>, T>
 
 private fun <T> fixedPointGenerator(): Onto<FF<T>, F<T>> {
     val yCombinator: Self<Onto<FF<T>, F<T>>> =
-        Self { a ->
+        Self { y ->
             Onto { f ->
                 Onto {
-                    f(a(a)(f))(it)
+                    f(y(y)(f))(it)
                 }
             }
         }
     return yCombinator(yCombinator)
 }
 
-private fun <T> recursiveF(higherOrderF: FF<T>) =
+private fun <T> recursiveFor(higherOrderF: FF<T>) =
     fixedPointGenerator<T>()(higherOrderF)
 
 // See https://gist.github.com/aruld/3965968/
@@ -32,7 +32,7 @@ fun main() {
             }
         }
     }
-    val fact = recursiveF(higherOrderFact)
+    val fact = recursiveFor(higherOrderFact)
 
     (0..9).forEach {
         println("$it -> ${fact(it)}")
