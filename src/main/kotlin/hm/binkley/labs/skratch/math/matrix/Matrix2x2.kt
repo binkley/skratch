@@ -9,8 +9,6 @@ abstract class Matrix2x2<N, Norm : GeneralNumber<Norm, Norm>, M>(
     val d: N,
 ) :
     SquareMatrix<N, Norm, M>(2),
-    Additive<M>,
-    Multiplicative<M>,
     Scalable<M>
         where N : GeneralNumber<N, Norm>,
               M : Matrix2x2<N, Norm, M> {
@@ -25,6 +23,7 @@ abstract class Matrix2x2<N, Norm : GeneralNumber<Norm, Norm>, M>(
 
     override val det get() = a * d - b * c
     override val tr get() = a + d
+    // TODO: Why is this named "T"?
     open val T: M get() = matrixCtor(a, c, b, d)
     override val multInv: M get() = adj / det
     override val conj: M get() = matrixCtor(a.conj, b.conj, c.conj, d.conj)
