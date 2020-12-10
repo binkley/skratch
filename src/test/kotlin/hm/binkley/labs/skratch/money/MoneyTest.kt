@@ -9,19 +9,19 @@ import kotlin.reflect.KClass
 
 internal class MoneyTest {
     @Test
-    fun dollarsAndCents() {
+    fun `dollars and cents`() {
         assertThrows(ArithmeticException::class.java) {
             USD(BigDecimal("1.234"))
         }
     }
 
     @Test
-    fun doubleYourMoney() {
+    fun `double your money`() {
         assertEquals(USD(2), 2 * USD(1))
     }
 
     @Test
-    fun convertNicely() {
+    fun `convert nicely`() {
         val exchange = object : CurrencyExchange {
             @Suppress("UNCHECKED_CAST")
             override fun <M : Money<M>, O : Money<O>> exchange(
@@ -36,7 +36,7 @@ internal class MoneyTest {
     }
 
     @Test
-    fun nicelyConvert() {
+    fun `nicely convert`() {
         val exchange = object : CurrencyExchange {
             @Suppress("UNCHECKED_CAST")
             override fun <M : Money<M>, O : Money<O>> exchange(
@@ -51,7 +51,7 @@ internal class MoneyTest {
     }
 
     @Test
-    fun noFractionalMoney() {
+    fun `no non-decimal dollars`() {
         assertThrows(ArithmeticException::class.java) {
             USD(1) / 3
         }
