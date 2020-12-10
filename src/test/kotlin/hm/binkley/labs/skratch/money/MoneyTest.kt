@@ -25,7 +25,7 @@ internal class MoneyTest {
         val exchange = object : CurrencyExchange {
             @Suppress("UNCHECKED_CAST")
             override fun <M : Money<M>, O : Money<O>> exchange(
-                money: M, to: KClass<O>
+                money: M, to: KClass<O>,
             ) = when (to) {
                 SGD::class -> SGD(BigDecimal("1.35")) as O
                 else -> fail("Unsupported exchange: $money -> $to")
@@ -40,7 +40,7 @@ internal class MoneyTest {
         val exchange = object : CurrencyExchange {
             @Suppress("UNCHECKED_CAST")
             override fun <M : Money<M>, O : Money<O>> exchange(
-                money: M, to: KClass<O>
+                money: M, to: KClass<O>,
             ) = when (to) {
                 SGD::class -> SGD(BigDecimal("1.35")) as O
                 else -> fail("Unsupported exchange: $money -> $to")
