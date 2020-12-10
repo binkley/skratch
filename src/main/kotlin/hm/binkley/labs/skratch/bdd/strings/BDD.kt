@@ -1,7 +1,9 @@
 package hm.binkley.labs.skratch.bdd.strings
 
 data class BDD constructor(
-    val GIVEN: String, val WHEN: String, val THEN: String,
+    val GIVEN: String,
+    val WHEN: String,
+    val THEN: String,
 ) {
     init {
         (actions[GIVEN] ?: throw IllegalArgumentException(
@@ -15,6 +17,7 @@ data class BDD constructor(
     companion object {
         val So = So()
         private val actions = HashMap<String, () -> Unit>()
+
         fun upon(clause: String, action: () -> Unit) {
             actions[clause] = action
         }

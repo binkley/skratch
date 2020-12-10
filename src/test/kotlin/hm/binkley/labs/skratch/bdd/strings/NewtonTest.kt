@@ -10,7 +10,7 @@ internal class NewtonTest {
     private lateinit var apple: Apple
 
     @Test
-    fun shouldThink() {
+    fun `should think`() {
         upon(an_apple) {
             apple = Apple(Newton(thinking = false))
         }
