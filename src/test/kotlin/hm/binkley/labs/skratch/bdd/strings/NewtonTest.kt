@@ -1,3 +1,5 @@
+@file:Suppress("LocalVariableName")
+
 package hm.binkley.labs.skratch.bdd.strings
 
 import hm.binkley.labs.skratch.bdd.Apple
@@ -11,6 +13,7 @@ internal class NewtonTest {
 
     @Test
     fun `should think`() {
+        val Thinking = "Thinking"
         upon(an_apple) {
             apple = Apple(Newton(thinking = false))
         }
@@ -24,7 +27,7 @@ internal class NewtonTest {
         }
 
         // TODO: Breaking these across lines confuses Kotlin compiler
-        So GIVEN an_apple WHEN it_falls THEN Newton_thinks
+        So SCENARIO Thinking GIVEN an_apple WHEN it_falls THEN Newton_thinks
     }
 
     companion object {

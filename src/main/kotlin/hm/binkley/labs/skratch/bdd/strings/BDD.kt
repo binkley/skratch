@@ -1,6 +1,9 @@
+@file:Suppress("FunctionName")
+
 package hm.binkley.labs.skratch.bdd.strings
 
 data class BDD constructor(
+    val SCENARIO: String,
     val GIVEN: String,
     val WHEN: String,
     val THEN: String,
@@ -24,14 +27,22 @@ data class BDD constructor(
     }
 
     class So {
-        infix fun GIVEN(GIVEN: String) = Given(GIVEN)
-        data class Given(private val GIVEN: String) {
-            infix fun WHEN(WHEN: String) = When(GIVEN, WHEN)
-            data class When(
+        infix fun SCENARIO(SCENARIO: String) = Scenario(SCENARIO)
+        data class Scenario(private val SCENARIO: String) {
+            infix fun GIVEN(GIVEN: String) = Given(SCENARIO, GIVEN)
+            data class Given(
+                private val SCENARIO: String,
                 private val GIVEN: String,
-                private val WHEN: String,
             ) {
-                infix fun THEN(THEN: String) = BDD(GIVEN, WHEN, THEN)
+                infix fun WHEN(WHEN: String) = When(SCENARIO, GIVEN, WHEN)
+                data class When(
+                    private val SCENARIO: String,
+                    private val GIVEN: String,
+                    private val WHEN: String,
+                ) {
+                    infix fun THEN(THEN: String) =
+                        BDD(SCENARIO, GIVEN, WHEN, THEN)
+                }
             }
         }
     }

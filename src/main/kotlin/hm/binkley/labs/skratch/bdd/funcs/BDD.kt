@@ -1,17 +1,20 @@
 package hm.binkley.labs.skratch.bdd.funcs
 
 data class Qed(
+    private val SCENARIO: String,
     private val GIVEN: String,
     private val WHEN: String,
     private val THEN: String = caller(),
 ) {
-    override fun toString() = "GIVEN $GIVEN WHEN $WHEN THEN $THEN"
+    override fun toString() =
+        "SCENARIO $SCENARIO: GIVEN $GIVEN WHEN $WHEN THEN $THEN"
 
     companion object {
-        val GIVEN = Given
-        val WHEN = When()
-        val THEN = Then("-")
-        val QED = Qed("-", "-")
+        val SCENARIO = Scenario
+        val GIVEN = Given()
+        val WHEN = When("-")
+        val THEN = Then("-", "-")
+        val QED = Qed("-", "-", "-")
 
         // `caller` is inline to preserve the stack trace
         @Suppress("NOTHING_TO_INLINE")
@@ -19,24 +22,40 @@ data class Qed(
             Throwable().stackTrace[1].methodName
     }
 
-    object Given {
+    object Scenario {
+        inline fun act(action: () -> Unit): Given {
+            action.invoke()
+            return Given()
+        }
+    }
+
+    data class Given(
+        val SCENARIO: String = caller(),
+    ) {
         inline fun act(action: () -> Unit): When {
             action.invoke()
-            return When()
+            return When(SCENARIO)
         }
     }
 
-    data class When(val GIVEN: String = caller()) {
+    data class When(
+        val SCENARIO: String,
+        val GIVEN: String = caller(),
+    ) {
         inline fun act(action: () -> Unit): Then {
             action.invoke()
-            return Then(GIVEN)
+            return Then(SCENARIO, GIVEN)
         }
     }
 
-    data class Then(val GIVEN: String, val WHEN: String = caller()) {
+    data class Then(
+        val SCENARIO: String,
+        val GIVEN: String,
+        val WHEN: String = caller(),
+    ) {
         inline fun act(action: () -> Unit): Qed {
             action.invoke()
-            return Qed(GIVEN, WHEN)
+            return Qed(SCENARIO, GIVEN, WHEN)
         }
     }
 }
