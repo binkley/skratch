@@ -56,20 +56,6 @@
         <!-- @formatter:on -->
     </properties>
 
-    <repositories>
-        <repository>
-            <id>Kotlin Bintray EAP</id>
-            <url>http://dl.bintray.com/kotlin/kotlin-eap/</url>
-        </repository>
-    </repositories>
-
-    <pluginRepositories>
-        <pluginRepository>
-            <id>Kotlin Bintray EAP</id>
-            <url>http://dl.bintray.com/kotlin/kotlin-eap/</url>
-        </pluginRepository>
-    </pluginRepositories>
-
     <dependencies>
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
