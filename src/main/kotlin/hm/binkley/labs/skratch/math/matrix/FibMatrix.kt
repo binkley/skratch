@@ -13,8 +13,7 @@ class FibMatrix(
     override fun matrixCtor(
         a: Rational, b: Rational, c: Rational,
         d: Rational,
-    ) = throw AssertionError(
-        "BUG: Did not override other method")
+    ) = throw AssertionError("BUG: Did not override other method")
 
     override val T: FibMatrix get() = this
     override val multInv: FibMatrix get() = FibMatrix(-char)

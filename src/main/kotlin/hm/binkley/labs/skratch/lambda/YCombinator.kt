@@ -19,20 +19,27 @@ private fun <T> fixedPointGenerator(): Onto<FF<T>, F<T>> {
     return yCombinator(yCombinator)
 }
 
+private fun <T> higherOrderFor(original: (t: T, f: F<T>) -> T): FF<T> =
+    FF { f ->
+        Onto {
+            original(it, f)
+        }
+    }
+
 private fun <T> recursiveFor(higherOrderF: FF<T>) =
     fixedPointGenerator<T>()(higherOrderF)
 
+private fun <T> recursiveFor(original: (t: T, f: F<T>) -> T): F<T> =
+    recursiveFor(higherOrderFor(original))
+
 // See https://gist.github.com/aruld/3965968/
 fun main() {
-    val higherOrderFact = FF { fact: F<Int> ->
-        Onto {
-            when (it) {
-                0 -> 1
-                else -> it * fact(it - 1)
-            }
+    val fact = recursiveFor<Int> { it, fact ->
+        when (it) {
+            0 -> 1
+            else -> it * fact(it - 1)
         }
     }
-    val fact = recursiveFor(higherOrderFact)
 
     (0..9).forEach {
         println("$it -> ${fact(it)}")
