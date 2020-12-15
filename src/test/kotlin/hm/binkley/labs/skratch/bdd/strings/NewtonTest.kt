@@ -4,7 +4,7 @@ package hm.binkley.labs.skratch.bdd.strings
 
 import hm.binkley.labs.skratch.bdd.Apple
 import hm.binkley.labs.skratch.bdd.Newton
-import hm.binkley.labs.skratch.bdd.strings.BDD.Companion.So
+import hm.binkley.labs.skratch.bdd.strings.BDD.Companion.SO
 import hm.binkley.labs.skratch.bdd.strings.BDD.Companion.upon
 import org.junit.jupiter.api.Test
 
@@ -27,7 +27,7 @@ internal class NewtonTest {
         }
 
         // TODO: Breaking these across lines confuses Kotlin compiler
-        So SCENARIO Thinking GIVEN an_apple WHEN it_falls THEN Newton_thinks
+        SO SCENARIO Thinking GIVEN an_apple WHEN it_falls THEN Newton_thinks
     }
 
     companion object {

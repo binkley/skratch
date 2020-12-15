@@ -18,7 +18,7 @@ data class BDD constructor(
     }
 
     companion object {
-        val So = So()
+        val SO = So()
         private val actions = HashMap<String, () -> Unit>()
 
         fun upon(clause: String, action: () -> Unit) {
@@ -26,6 +26,7 @@ data class BDD constructor(
         }
     }
 
+    // TODO: Meld SO and SCENARIO together
     class So {
         infix fun SCENARIO(SCENARIO: String) = Scenario(SCENARIO)
         data class Scenario(private val SCENARIO: String) {

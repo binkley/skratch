@@ -16,7 +16,11 @@ data class Qed(
         val THEN = Then("-", "-")
         val QED = Qed("-", "-", "-")
 
-        // `caller` is inline to preserve the stack trace
+        /**
+         * Inline to preserve the stack trace.
+         *
+         * @todo Can this come from a stdlib/reflection feature?
+         */
         @Suppress("NOTHING_TO_INLINE")
         private inline fun caller(): String =
             Throwable().stackTrace[1].methodName
