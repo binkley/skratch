@@ -51,8 +51,8 @@ internal class NewtonTest {
                     QED
         }
 
-        assert(e.message == "Newton is still thinking") {
-            "Newton is still thinking"
+        assert(e.message == "Failed THEN in SCENARIO Sleeping: GIVEN an apple WHEN it falls THEN Newton sleeps: java.lang.AssertionError: Newton is still thinking") {
+            "Expected: `Newton is still thinking`; got: `${e.message}`"
         }
     }
 
