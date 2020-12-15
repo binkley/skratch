@@ -26,7 +26,6 @@ data class BDD constructor(
         }
     }
 
-    // TODO: Meld SO and SCENARIO together
     class So {
         infix fun SCENARIO(SCENARIO: String) = Scenario(SCENARIO)
         data class Scenario(private val SCENARIO: String) {

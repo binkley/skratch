@@ -1,4 +1,4 @@
-@file:Suppress("LocalVariableName")
+@file:Suppress("LocalVariableName", "ObjectPropertyName")
 
 package hm.binkley.labs.skratch.bdd.strings
 
@@ -14,25 +14,25 @@ internal class NewtonTest {
     @Test
     fun `should think`() {
         val Thinking = "Thinking"
-        upon(an_apple) {
+        upon(`an apple`) {
             apple = Apple(Newton(thinking = false))
         }
-        upon(it_falls) {
+        upon(`it falls`) {
             apple.falls()
         }
-        upon(Newton_thinks) {
+        upon(`Newton thinks`) {
             assert(apple.physicist.thinking) {
                 "Newton is sleeping"
             }
         }
 
         // TODO: Breaking these across lines confuses Kotlin compiler
-        SO SCENARIO Thinking GIVEN an_apple WHEN it_falls THEN Newton_thinks
+        SO SCENARIO Thinking GIVEN `an apple` WHEN `it falls` THEN `Newton thinks`
     }
 
     companion object {
-        private const val an_apple = "an apple"
-        private const val it_falls = "it falls"
-        private const val Newton_thinks = "Newton thinks"
+        private const val `an apple` = "an apple"
+        private const val `it falls` = "it falls"
+        private const val `Newton thinks` = "Newton thinks"
     }
 }

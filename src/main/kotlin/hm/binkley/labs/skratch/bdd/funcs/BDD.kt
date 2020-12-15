@@ -16,40 +16,30 @@ data class Qed(
         val THEN = Then("-", "-")
         val QED = Qed("-", "-", "-")
 
-        /**
-         * Inline to preserve the stack trace.
-         *
-         * @todo Can this come from a stdlib/reflection feature?
-         */
+        /** Inline to preserve the stack trace. */
         @Suppress("NOTHING_TO_INLINE")
         private inline fun caller(): String =
             Throwable().stackTrace[1].methodName
     }
 
     object Scenario {
-        inline fun act(action: () -> Unit): Given {
-            action.invoke()
-            return Given()
-        }
+        inline fun act(action: () -> Unit) =
+            action().run { Given() }
     }
 
     data class Given(
         val SCENARIO: String = caller(),
     ) {
-        inline fun act(action: () -> Unit): When {
-            action.invoke()
-            return When(SCENARIO)
-        }
+        inline fun act(action: () -> Unit) =
+            action().run { When(SCENARIO) }
     }
 
     data class When(
         val SCENARIO: String,
         val GIVEN: String = caller(),
     ) {
-        inline fun act(action: () -> Unit): Then {
-            action.invoke()
-            return Then(SCENARIO, GIVEN)
-        }
+        inline fun act(action: () -> Unit) =
+            action().run { Then(SCENARIO, GIVEN) }
     }
 
     data class Then(
@@ -57,9 +47,7 @@ data class Qed(
         val GIVEN: String,
         val WHEN: String = caller(),
     ) {
-        inline fun act(action: () -> Unit): Qed {
-            action.invoke()
-            return Qed(SCENARIO, GIVEN, WHEN)
-        }
+        inline fun act(action: () -> Unit) =
+            action().run { Qed(SCENARIO, GIVEN, WHEN) }
     }
 }
