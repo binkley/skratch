@@ -1,9 +1,9 @@
 package hm.binkley.labs.skratch.bdd.funcs
 
 data class Qed(
-    private val SCENARIO: String,
-    private val GIVEN: String,
-    private val WHEN: String,
+    private val SCENARIO: String? = null,
+    private val GIVEN: String? = null,
+    private val WHEN: String? = null,
     private val THEN: String = caller(),
 ) {
     override fun toString() =
@@ -12,9 +12,9 @@ data class Qed(
     companion object {
         val SCENARIO = Scenario
         val GIVEN = Given()
-        val WHEN = When("-")
-        val THEN = Then("-", "-")
-        val QED = Qed("-", "-", "-")
+        val WHEN = When()
+        val THEN = Then()
+        val QED = Qed()
 
         /** Inline to preserve the stack trace. */
         @Suppress("NOTHING_TO_INLINE")
@@ -35,7 +35,7 @@ data class Qed(
     }
 
     data class When(
-        val SCENARIO: String,
+        val SCENARIO: String? = null,
         val GIVEN: String = caller(),
     ) {
         inline fun act(action: () -> Unit) =
@@ -43,8 +43,8 @@ data class Qed(
     }
 
     data class Then(
-        val SCENARIO: String,
-        val GIVEN: String,
+        val SCENARIO: String? = null,
+        val GIVEN: String? = null,
         val WHEN: String = caller(),
     ) {
         inline fun act(action: () -> Unit) =
