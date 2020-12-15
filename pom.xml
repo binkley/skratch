@@ -31,10 +31,10 @@
         <generateBackupPoms>false</generateBackupPoms>
         <jacoco.coverage>0.00</jacoco.coverage>
         <jacoco-maven-plugin.version>0.8.6</jacoco-maven-plugin.version>
-        <jansi.version>2.1.0</jansi.version>
+        <jansi.version>2.1.1</jansi.version>
         <java.charset>UTF-8</java.charset>
         <jdk.version>11</jdk.version>
-        <jline.version>3.17.1</jline.version>
+        <jline.version>3.18.0</jline.version>
         <jmh.version>1.27</jmh.version>
         <junit.version>5.7.0</junit.version>
         <kotlin.version>1.4.21</kotlin.version>
