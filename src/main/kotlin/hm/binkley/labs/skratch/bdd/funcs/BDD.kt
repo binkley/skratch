@@ -1,6 +1,6 @@
 package hm.binkley.labs.skratch.bdd.funcs
 
-data class Qed(
+data class BDD(
     private val SCENARIO: Scenario,
     private val GIVEN: Given,
     private val WHEN: When,
@@ -22,7 +22,7 @@ data class Qed(
             val x = AssertionError("Failed $label in $this: $e")
             x.stackTrace = e.stackTrace.filter {
                 // Provide *super clear* stack traces for failed tests
-                !it.className.startsWith(Qed::class.qualifiedName!!)
+                !it.className.startsWith(BDD::class.qualifiedName!!)
             }.toTypedArray()
             throw x
         }
@@ -36,7 +36,7 @@ data class Qed(
         val GIVEN = Given(SCENARIO)
         val WHEN = When(SCENARIO, GIVEN)
         val THEN = Then(SCENARIO, GIVEN, WHEN)
-        val QED = Qed(SCENARIO, GIVEN, WHEN, THEN)
+        val QED = BDD(SCENARIO, GIVEN, WHEN, THEN)
 
         /** Inline to preserve the stack trace. */
         @Suppress("NOTHING_TO_INLINE")
@@ -110,7 +110,7 @@ data class Qed(
 
         fun act(action: () -> Unit) = run {
             this.action = action
-            Qed(SCENARIO, GIVEN, WHEN, this)
+            BDD(SCENARIO, GIVEN, WHEN, this)
         }
 
         override fun invoke() = action()

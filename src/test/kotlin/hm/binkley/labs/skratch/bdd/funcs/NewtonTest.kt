@@ -4,15 +4,15 @@ package hm.binkley.labs.skratch.bdd.funcs
 
 import hm.binkley.labs.skratch.bdd.Apple
 import hm.binkley.labs.skratch.bdd.Newton
-import hm.binkley.labs.skratch.bdd.funcs.Qed.Companion.GIVEN
-import hm.binkley.labs.skratch.bdd.funcs.Qed.Companion.QED
-import hm.binkley.labs.skratch.bdd.funcs.Qed.Companion.SCENARIO
-import hm.binkley.labs.skratch.bdd.funcs.Qed.Companion.THEN
-import hm.binkley.labs.skratch.bdd.funcs.Qed.Companion.WHEN
-import hm.binkley.labs.skratch.bdd.funcs.Qed.Given
-import hm.binkley.labs.skratch.bdd.funcs.Qed.Scenario
-import hm.binkley.labs.skratch.bdd.funcs.Qed.Then
-import hm.binkley.labs.skratch.bdd.funcs.Qed.When
+import hm.binkley.labs.skratch.bdd.funcs.BDD.Companion.GIVEN
+import hm.binkley.labs.skratch.bdd.funcs.BDD.Companion.QED
+import hm.binkley.labs.skratch.bdd.funcs.BDD.Companion.SCENARIO
+import hm.binkley.labs.skratch.bdd.funcs.BDD.Companion.THEN
+import hm.binkley.labs.skratch.bdd.funcs.BDD.Companion.WHEN
+import hm.binkley.labs.skratch.bdd.funcs.BDD.Given
+import hm.binkley.labs.skratch.bdd.funcs.BDD.Scenario
+import hm.binkley.labs.skratch.bdd.funcs.BDD.Then
+import hm.binkley.labs.skratch.bdd.funcs.BDD.When
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 
@@ -66,13 +66,13 @@ internal class NewtonTest {
         apple.falls()
     }
 
-    private infix fun Then.`Newton thinks`(QED: Qed) = act {
+    private infix fun Then.`Newton thinks`(QED: BDD) = act {
         assert(apple.physicist.thinking) {
             "Newton is still sleeping"
         }
     }
 
-    private infix fun Then.`Newton sleeps`(QED: Qed) = act {
+    private infix fun Then.`Newton sleeps`(QED: BDD) = act {
         assert(!apple.physicist.thinking) {
             "Newton is still thinking"
         }
