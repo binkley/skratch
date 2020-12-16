@@ -50,6 +50,7 @@
         <maven-surefire-plugin.version>3.0.0-M5</maven-surefire-plugin.version>
         <mockito-kotlin.version>1.6.0</mockito-kotlin.version>
         <mockk.version>1.10.3</mockk.version>
+        <picocli.version>4.5.2</picocli.version>
         <project.build.sourceEncoding>${java.charset}</project.build.sourceEncoding>
         <project.reporting.outputEncoding>${java.charset}</project.reporting.outputEncoding>
         <surefire.printSummary>false</surefire.printSummary>
@@ -73,11 +74,7 @@
             <artifactId>kotlinx-coroutines-core</artifactId>
             <version>${kotlinx-coroutines.version}</version>
         </dependency>
-        <dependency>
-            <groupId>org.jetbrains.kotlinx</groupId>
-            <artifactId>kotlinx-cli-jvm</artifactId>
-            <version>${kotlinx-cli.version}</version>
-        </dependency>
+
         <dependency>
             <groupId>org.openjdk.jmh</groupId>
             <artifactId>jmh-core</artifactId>
@@ -87,6 +84,23 @@
             <groupId>org.openjdk.jmh</groupId>
             <artifactId>jmh-generator-annprocess</artifactId>
             <version>${jmh.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jetbrains.kotlinx</groupId>
+            <artifactId>kotlinx-cli-jvm</artifactId>
+            <version>${kotlinx-cli.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>info.picocli</groupId>
+            <artifactId>picocli</artifactId>
+            <version>${picocli.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>info.picocli</groupId>
+            <artifactId>picocli-codegen</artifactId>
+            <version>${picocli.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -100,6 +114,12 @@
             <version>${jline.version}</version>
         </dependency>
         <dependency>
+            <groupId>net.objecthunter</groupId>
+            <artifactId>exp4j</artifactId>
+            <version>${exp4j.version}</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.ejml</groupId>
             <artifactId>ejml-all</artifactId>
             <version>${ejml.version}</version>
@@ -110,11 +130,7 @@
                 </exclusion>
             </exclusions>
         </dependency>
-        <dependency>
-            <groupId>net.objecthunter</groupId>
-            <artifactId>exp4j</artifactId>
-            <version>${exp4j.version}</version>
-        </dependency>
+
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
@@ -133,6 +149,7 @@
             <version>${kotlin.version}</version>
             <scope>test</scope>
         </dependency>
+
         <dependency>
             <groupId>io.mockk</groupId>
             <artifactId>mockk</artifactId>
@@ -145,6 +162,7 @@
             <version>${mockito-kotlin.version}</version>
             <scope>test</scope>
         </dependency>
+
         <dependency>
             <groupId>org.awaitility</groupId>
             <artifactId>awaitility</artifactId>
