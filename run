@@ -1,47 +1,40 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-export PS4='+${BASH_SOURCE}:${LINENO}:${FUNCNAME[0]:+${FUNCNAME[0]}():} '
+package=hm.binkley.labs.skratch
+jar=target/skratch-0-SNAPSHOT-jar-with-dependencies.jar
 
-set -e
-set -u
-set -o pipefail
-
-function -print-usage {
-    echo "Usage: $0 MAIN"
+function rebuild-if-needed() {
+    [[ ! -e "$jar" || -n "$(find src -type f -newer "$jar")" ]]
 }
 
-function -print-help {
-    -print-usage
-    cat <<EOH
-Runs a MAIN entry point in Skratch.
+function mangle-classname() {
+    local IFS=.
 
-MAIN can be one of:
-   * agent
-   * benchmarks
-   * fibs
-EOH
-}
+    local -a parts
+    read -r -a parts <<<"$1"
+    local last="${parts[-1]}"
 
-while getopts :-: opt
-do
-    [[ - == $opt ]] && opt=${OPTARG%%=*} OPTARG=${OPTARG#*=}
-    case $opt in
-        h | help ) -print-help ; exit 0 ;;
-        * ) -print-usage >&2 ; exit 2 ;;
+    case "$last" in
+    *-*|*Kt) ;;
+    *) last="${last}Kt" ;;
     esac
-done
-shift $((OPTIND - 1))
+    last="${last//-/_}"
+    last=""${last^}
+
+    parts[-1]="$last"
+
+    echo "${parts[*]}"
+}
 
 case $# in
-    0 ) -print-usage >&2 ; exit 2 ;;
-    * ) cmd=$1 ; shift ;;
+0) class="-jar $jar" ;;
+1) class="-cp $jar $package.$(mangle-classname "$1")" ;;
+*)
+    echo "Usage: $0 [FILE-NAME]" >&2
+    exit 2
+    ;;
 esac
 
-case $cmd in
-    agent ) main=jvmagent.AgentX ;;
-    benchmarks ) main=benchmark.JustInTimeConstantsKt ;;
-    fibs ) main=math.matrix.MathikKt ;;
-    * ) -print-usage >&2 ; exit 2 ;;
-esac
+rebuild-if-needed && ./mvnw -C package
 
-java -javaagent:target/skratch-0-SNAPSHOT-shaded.jar -cp target/skratch-0-SNAPSHOT-shaded.jar "hm.binkley.labs.skratch.$main" "$@"
+exec java "$class"
