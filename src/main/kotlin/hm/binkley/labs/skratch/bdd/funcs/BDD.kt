@@ -1,20 +1,18 @@
 package hm.binkley.labs.skratch.bdd.funcs
 
 data class Qed(
-    private val SCENARIO: Scenario?,
-    private val GIVEN: Given?,
-    private val WHEN: When?,
-    private val THEN: Then?,
+    private val SCENARIO: Scenario,
+    private val GIVEN: Given,
+    private val WHEN: When,
+    private val THEN: Then,
     private val previousText: String = caller(),
 ) {
     init {
-        THEN?.text = previousText
+        THEN.text = previousText
 
-        if (null != GIVEN) {
-            execute("GIVEN", GIVEN)
-            execute("WHEN", WHEN!!)
-            execute("THEN", THEN!!)
-        }
+        execute("GIVEN", GIVEN)
+        execute("WHEN", WHEN)
+        execute("THEN", THEN)
     }
 
     private inline fun execute(label: String, action: () -> Unit) {
@@ -31,10 +29,10 @@ data class Qed(
 
     companion object {
         val SCENARIO = Scenario()
-        val GIVEN = Given(null)
-        val WHEN = When(null, null)
-        val THEN = Then(null, null, null)
-        val QED = Qed(null, null, null, null)
+        val GIVEN = Given(SCENARIO)
+        val WHEN = When(SCENARIO, GIVEN)
+        val THEN = Then(SCENARIO, GIVEN, WHEN)
+        val QED = Qed(SCENARIO, GIVEN, WHEN, THEN)
 
         /** Inline to preserve the stack trace. */
         @Suppress("NOTHING_TO_INLINE")
@@ -56,13 +54,13 @@ data class Qed(
     }
 
     data class Given(
-        val SCENARIO: Scenario?,
+        val SCENARIO: Scenario,
         private var action: () -> Unit = {},
         internal var text: String? = null,
         private val previousText: String = caller(),
     ) : () -> Unit {
         init {
-            SCENARIO?.text = previousText
+            SCENARIO.text = previousText
         }
 
         fun act(action: () -> Unit) = run {
@@ -75,14 +73,14 @@ data class Qed(
     }
 
     data class When(
-        val SCENARIO: Scenario?,
-        val GIVEN: Given?,
+        val SCENARIO: Scenario,
+        val GIVEN: Given,
         private var action: () -> Unit = {},
         internal var text: String? = null,
         private val previousText: String = caller(),
     ) : () -> Unit {
         init {
-            GIVEN?.text = previousText
+            GIVEN.text = previousText
         }
 
         fun act(action: () -> Unit) = run {
@@ -95,15 +93,15 @@ data class Qed(
     }
 
     data class Then(
-        val SCENARIO: Scenario?,
-        val GIVEN: Given?,
-        val WHEN: When?,
+        val SCENARIO: Scenario,
+        val GIVEN: Given,
+        val WHEN: When,
         private var action: () -> Unit = {},
         internal var text: String? = null,
         private val previousText: String = caller(),
     ) : () -> Unit {
         init {
-            WHEN?.text = previousText
+            WHEN.text = previousText
         }
 
         fun act(action: () -> Unit) = run {
