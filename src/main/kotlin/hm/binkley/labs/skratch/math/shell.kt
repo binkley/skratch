@@ -12,6 +12,8 @@ import org.jline.reader.LineReaderBuilder
 import org.jline.terminal.TerminalBuilder
 import java.lang.System.err
 
+private var DEBUG = false
+
 fun main(args: Array<String>) {
     val cli = ArgParser("math.shell")
     val debug by cli.option(
@@ -21,6 +23,8 @@ fun main(args: Array<String>) {
         description = "Enable debug output",
     ).default(false)
     cli.parse(args)
+
+    DEBUG = debug
 
     AnsiConsole.systemInstall()
 
@@ -34,7 +38,7 @@ fun main(args: Array<String>) {
             val line = reader.readLine("> ")
             val answer: Double
             try {
-                answer = parse(line, debug).evaluate()
+                answer = parseExpression(line).evaluate()
             } catch (e: Exception) {
                 err.println(ansi()
                     .bold().fgRed()
@@ -56,28 +60,44 @@ fun main(args: Array<String>) {
 private val comma = Regex(" *, *")
 private val equal = Regex(" *= *")
 
-private fun parse(line: String, debug: Boolean = false): Expression {
-    val parts = line.split('|',
-        ignoreCase = false, limit = 2)
-    val vars = parseVars(parts)
+private fun parseExpression(line: String): Expression {
+    val parts = line.split('|', ignoreCase = false, limit = 2)
 
-    val builder = ExpressionBuilder(parts[0])
+    if (DEBUG) println("parts: $parts")
+
+    val vars: Map<String, Double>
+    val builder: ExpressionBuilder
+    when (parts.size) {
+        1 -> {
+            vars = mapOf()
+            builder = ExpressionBuilder(parts[0])
+        }
+        else -> {
+            vars = parseVars(parts[0])
+            builder = ExpressionBuilder(parts[1])
+        }
+    }
     builder.variables(vars.keys)
-    val expression = builder.build()
-    expression.setVariables(vars)
+    val expr = builder.build()
+    expr.setVariables(vars)
 
-    if (debug) err.println(expression)
-
-    return expression
+    return expr
 }
 
-private fun parseVars(parts: List<String>) =
-    if (1 == parts.size) mapOf()
-    else comma.split(parts[1]).map {
+private fun parseVars(parts: String): Map<String, Double> {
+    val vars = comma.split(parts).map {
         equal.split(it)
     }.map {
-        it[0].trim() to parseValue(it[1])
+        it[0].trim() to evaluateAssignedValue(it[1])
     }.toMap()
 
-private fun parseValue(expr: String) =
-    ExpressionBuilder(expr).build().evaluate()
+    if (DEBUG) println("vars: $vars")
+
+    return vars
+}
+
+private fun evaluateAssignedValue(expr: String): Double {
+    if (DEBUG) println("expr: $expr")
+
+    return ExpressionBuilder(expr).build().evaluate()
+}
