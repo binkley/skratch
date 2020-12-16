@@ -20,9 +20,9 @@ internal class NewtonTest {
     private lateinit var apple: Apple
 
     // The scenario extension functions need to be:
-    // 1. Class functions, not local functions in the tests
-    // 2. Inline
-    // This lets the framework handle G-W-T correctly
+    // 1. Non-local functions
+    // 2. Infix
+    // This lets the framework handle G-W-T correctly, and spells nicely
 
     private infix fun Scenario.Thinking(GIVEN: Given) = act { }
 
