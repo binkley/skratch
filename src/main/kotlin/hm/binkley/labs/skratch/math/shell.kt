@@ -23,7 +23,7 @@ private var DEBUG = false
     name = "math.shell",
     version = ["0-SNAPSHOT"],
 )
-class MathShell : Runnable {
+class Options : Runnable {
     override fun run() {}
 
     @Option(
@@ -40,19 +40,15 @@ class MathShell : Runnable {
 }
 
 fun main(args: Array<String>) {
-    val cliExpression: String
-
-    val shell = MathShell()
-    val cli = CommandLine(shell)
-    val xxx = cli.execute(*args)
-
-    println("FIGURE THIS OUT: $xxx")
+    val options = Options()
+    val cli = CommandLine(options)
+    cli.execute(*args)
 
     if (cli.isUsageHelpRequested || cli.isVersionHelpRequested) return
 
-    DEBUG = shell.debug
+    DEBUG = options.debug
 
-    cliExpression = shell.expression.joinToString(" ")
+    val cliExpression = options.expression.joinToString(" ")
 
     if (cliExpression.isNotEmpty()) {
         println(parseExpression(cliExpression).evaluate())
