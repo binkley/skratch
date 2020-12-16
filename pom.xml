@@ -38,6 +38,7 @@
         <jmh.version>1.27</jmh.version>
         <junit.version>5.7.0</junit.version>
         <kotlin.version>1.4.21</kotlin.version>
+        <kotlinx-cli.version>0.3</kotlinx-cli.version>
         <kotlinx-coroutines.version>1.4.2</kotlinx-coroutines.version>
         <main.class>hm.binkley.labs.skratch.SkratchKt</main.class>
         <maven-assembly-plugin.version>3.3.0</maven-assembly-plugin.version>
@@ -71,6 +72,11 @@
             <groupId>org.jetbrains.kotlinx</groupId>
             <artifactId>kotlinx-coroutines-core</artifactId>
             <version>${kotlinx-coroutines.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jetbrains.kotlinx</groupId>
+            <artifactId>kotlinx-cli-jvm</artifactId>
+            <version>${kotlinx-cli.version}</version>
         </dependency>
         <dependency>
             <groupId>org.openjdk.jmh</groupId>
@@ -345,4 +351,11 @@
             </plugin>
         </plugins>
     </build>
+
+    <repositories>
+        <repository>
+            <id>kotlinx</id>
+            <url>https://kotlin.bintray.com/kotlinx</url>
+        </repository>
+    </repositories>
 </project>

@@ -1,5 +1,8 @@
 package hm.binkley.labs.skratch.math
 
+import kotlinx.cli.ArgParser
+import kotlinx.cli.ArgType
+import kotlinx.cli.default
 import net.objecthunter.exp4j.Expression
 import net.objecthunter.exp4j.ExpressionBuilder
 import org.fusesource.jansi.Ansi.ansi
@@ -9,7 +12,16 @@ import org.jline.reader.LineReaderBuilder
 import org.jline.terminal.TerminalBuilder
 import java.lang.System.err
 
-fun main() {
+fun main(args: Array<String>) {
+    val cli = ArgParser("math.shell")
+    val debug by cli.option(
+        ArgType.Boolean,
+        shortName = "d",
+        fullName = "debug",
+        description = "Enable debug output",
+    ).default(false)
+    cli.parse(args)
+
     AnsiConsole.systemInstall()
 
     TerminalBuilder.terminal().use { terminal ->
@@ -22,7 +34,7 @@ fun main() {
             val line = reader.readLine("> ")
             val answer: Double
             try {
-                answer = parse(line).evaluate()
+                answer = parse(line, debug).evaluate()
             } catch (e: Exception) {
                 err.println(ansi()
                     .bold().fgRed()
@@ -44,7 +56,7 @@ fun main() {
 private val comma = Regex(" *, *")
 private val equal = Regex(" *= *")
 
-private fun parse(line: String): Expression {
+private fun parse(line: String, debug: Boolean = false): Expression {
     val parts = line.split('|',
         ignoreCase = false, limit = 2)
     val vars = parseVars(parts)
@@ -53,6 +65,8 @@ private fun parse(line: String): Expression {
     builder.variables(vars.keys)
     val expression = builder.build()
     expression.setVariables(vars)
+
+    if (debug) err.println(expression)
 
     return expression
 }
