@@ -4,15 +4,15 @@ package hm.binkley.labs.skratch.bdd.funcs
 
 import hm.binkley.labs.skratch.bdd.Apple
 import hm.binkley.labs.skratch.bdd.Newton
-import hm.binkley.labs.skratch.bdd.funcs.BDD.Companion.GIVEN
-import hm.binkley.labs.skratch.bdd.funcs.BDD.Companion.QED
-import hm.binkley.labs.skratch.bdd.funcs.BDD.Companion.SCENARIO
-import hm.binkley.labs.skratch.bdd.funcs.BDD.Companion.THEN
-import hm.binkley.labs.skratch.bdd.funcs.BDD.Companion.WHEN
-import hm.binkley.labs.skratch.bdd.funcs.BDD.Given
-import hm.binkley.labs.skratch.bdd.funcs.BDD.Scenario
-import hm.binkley.labs.skratch.bdd.funcs.BDD.Then
-import hm.binkley.labs.skratch.bdd.funcs.BDD.When
+import hm.binkley.labs.skratch.bdd.funcs.QED.Companion.GIVEN
+import hm.binkley.labs.skratch.bdd.funcs.QED.Companion.QED
+import hm.binkley.labs.skratch.bdd.funcs.QED.Companion.SCENARIO
+import hm.binkley.labs.skratch.bdd.funcs.QED.Companion.THEN
+import hm.binkley.labs.skratch.bdd.funcs.QED.Companion.WHEN
+import hm.binkley.labs.skratch.bdd.funcs.QED.Given
+import hm.binkley.labs.skratch.bdd.funcs.QED.Scenario
+import hm.binkley.labs.skratch.bdd.funcs.QED.Then
+import hm.binkley.labs.skratch.bdd.funcs.QED.When
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 
@@ -51,8 +51,6 @@ internal class NewtonTest {
                     QED
         }
 
-        e.printStackTrace()
-
         assert(e.message == "Failed THEN in SCENARIO Sleeping: GIVEN an apple WHEN it falls THEN Newton sleeps: java.lang.AssertionError: Newton is still thinking") {
             "Expected: `Newton is still thinking`; got: `${e.message}`"
         }
@@ -66,13 +64,13 @@ internal class NewtonTest {
         apple.falls()
     }
 
-    private infix fun Then.`Newton thinks`(QED: BDD) = act {
+    private infix fun Then.`Newton thinks`(QED: QED) = act {
         assert(apple.physicist.thinking) {
             "Newton is still sleeping"
         }
     }
 
-    private infix fun Then.`Newton sleeps`(QED: BDD) = act {
+    private infix fun Then.`Newton sleeps`(QED: QED) = act {
         assert(!apple.physicist.thinking) {
             "Newton is still thinking"
         }

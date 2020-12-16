@@ -1,6 +1,8 @@
 package hm.binkley.labs.skratch.bdd.funcs
 
-data class BDD(
+private const val BUG = "<BUG: Clause name misassigned>"
+
+data class QED(
     private val SCENARIO: Scenario,
     private val GIVEN: Given,
     private val WHEN: When,
@@ -22,7 +24,7 @@ data class BDD(
             val x = AssertionError("Failed $label in $this: $e")
             x.stackTrace = e.stackTrace.filter {
                 // Provide *super clear* stack traces for failed tests
-                !it.className.startsWith(BDD::class.qualifiedName!!)
+                !it.className.startsWith(QED::class.qualifiedName!!)
             }.toTypedArray()
             throw x
         }
@@ -36,17 +38,17 @@ data class BDD(
         val GIVEN = Given(SCENARIO)
         val WHEN = When(SCENARIO, GIVEN)
         val THEN = Then(SCENARIO, GIVEN, WHEN)
-        val QED = BDD(SCENARIO, GIVEN, WHEN, THEN)
+        val QED = QED(SCENARIO, GIVEN, WHEN, THEN)
 
         /** Inline to preserve the stack trace. */
         @Suppress("NOTHING_TO_INLINE")
-        private inline fun caller(): String =
+        private inline fun caller() =
             Throwable().stackTrace[2].methodName
     }
 
     data class Scenario(
         private var action: () -> Unit = {},
-        internal var text: String? = null,
+        internal var text: String = BUG,
     ) : () -> Unit {
         fun act(action: () -> Unit) = run {
             this.action = action
@@ -60,7 +62,7 @@ data class BDD(
     data class Given(
         val SCENARIO: Scenario,
         private var action: () -> Unit = {},
-        internal var text: String? = null,
+        internal var text: String = BUG,
         private val previousText: String = caller(),
     ) : () -> Unit {
         init {
@@ -80,7 +82,7 @@ data class BDD(
         val SCENARIO: Scenario,
         val GIVEN: Given,
         private var action: () -> Unit = {},
-        internal var text: String? = null,
+        internal var text: String = BUG,
         private val previousText: String = caller(),
     ) : () -> Unit {
         init {
@@ -101,7 +103,7 @@ data class BDD(
         val GIVEN: Given,
         val WHEN: When,
         private var action: () -> Unit = {},
-        internal var text: String? = null,
+        internal var text: String = BUG,
         private val previousText: String = caller(),
     ) : () -> Unit {
         init {
@@ -110,7 +112,7 @@ data class BDD(
 
         fun act(action: () -> Unit) = run {
             this.action = action
-            BDD(SCENARIO, GIVEN, WHEN, this)
+            QED(SCENARIO, GIVEN, WHEN, this)
         }
 
         override fun invoke() = action()
