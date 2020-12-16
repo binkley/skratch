@@ -53,7 +53,7 @@ case $# in
     set - -cp "$jar" "$(mangle-classname "$package.$class")" "$@"
     ;;
 esac
-$debug && set -x  # "set - ..." clears the -x flag
+$debug && set -x # "set - ..." clears the -x flag
 
 rebuild-if-needed && ./mvnw -C package
 
