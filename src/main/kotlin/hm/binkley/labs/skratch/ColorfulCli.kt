@@ -1,5 +1,6 @@
 package hm.binkley.labs.skratch
 
+import org.fusesource.jansi.Ansi
 import org.fusesource.jansi.AnsiConsole
 import org.jline.reader.LineReader
 import org.jline.reader.LineReaderBuilder
@@ -35,6 +36,13 @@ class ColorfulCli<T>(
             exitProcess(0)
         code
     }
+
+    /**
+     * For more control over the terminal
+     *
+     * @todo Contrast jansi & jline, possibly picking just jline
+     */
+    fun ansi() = Ansi.ansi()
 
     // Conflict between Terminal and LineReader
     override fun close() = terminal.close()
