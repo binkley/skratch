@@ -39,19 +39,19 @@
         <junit.version>5.7.0</junit.version>
         <kotlin.version>1.4.21</kotlin.version>
         <kotlinx-coroutines.version>1.4.2</kotlinx-coroutines.version>
+        <main.class>hm.binkley.labs.skratch.SkratchKt</main.class>
+        <maven-assembly-plugin.version>3.3.0</maven-assembly-plugin.version>
         <maven-clean-plugin.version>3.1.0</maven-clean-plugin.version>
         <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
         <maven-dependency-plugin.version>3.1.2</maven-dependency-plugin.version>
         <maven-help-plugin.version>3.2.0</maven-help-plugin.version>
         <maven-jar-plugin.version>3.2.0</maven-jar-plugin.version>
-        <maven-shade-plugin.version>3.2.4</maven-shade-plugin.version>
         <maven-surefire-plugin.version>3.0.0-M5</maven-surefire-plugin.version>
         <mockito-kotlin.version>1.6.0</mockito-kotlin.version>
         <mockk.version>1.10.3</mockk.version>
         <project.build.sourceEncoding>${java.charset}</project.build.sourceEncoding>
         <project.reporting.outputEncoding>${java.charset}</project.reporting.outputEncoding>
         <surefire.printSummary>false</surefire.printSummary>
-        <versions-maven-plugin.phase>none</versions-maven-plugin.phase>
         <versions-maven-plugin.version>2.8.1</versions-maven-plugin.version>
         <!-- @formatter:on -->
     </properties>
@@ -196,20 +196,6 @@
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>versions-maven-plugin</artifactId>
                 <version>${versions-maven-plugin.version}</version>
-                <configuration>
-                    <rulesUri>
-                        file:///${project.basedir}/maven-version-rules.xml
-                    </rulesUri>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>update-dependencies</id>
-                        <phase>${versions-maven-plugin.phase}</phase>
-                        <goals>
-                            <goal>update-properties</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
             <plugin>
                 <artifactId>maven-clean-plugin</artifactId>
@@ -290,26 +276,25 @@
                 <version>${maven-jar-plugin.version}</version>
             </plugin>
             <plugin>
-                <artifactId>maven-shade-plugin</artifactId>
-                <version>${maven-shade-plugin.version}</version>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>${maven-assembly-plugin.version}</version>
                 <configuration>
-                    <shadedArtifactAttached>true</shadedArtifactAttached>
-                    <transformers>
-                        <transformer
-                                implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                            <manifestEntries>
-                                <Premain-Class>
-                                    hm.binkley.labs.skratch.jvmagent.AgentX
-                                </Premain-Class>
-                            </manifestEntries>
-                        </transformer>
-                    </transformers>
+                    <archive>
+                        <manifest>
+                            <mainClass>${main.class}</mainClass>
+                        </manifest>
+                    </archive>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
                 </configuration>
                 <executions>
                     <execution>
-                        <id>jvm-agent-jar</id>
+                        <id>make-assembly</id>
+                        <phase>package</phase>
                         <goals>
-                            <goal>shade</goal>
+                            <goal>single</goal>
                         </goals>
                     </execution>
                 </executions>
