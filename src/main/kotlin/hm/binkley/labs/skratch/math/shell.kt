@@ -17,16 +17,24 @@ import kotlin.system.exitProcess
 private var DEBUG = false
 
 fun main(args: Array<String>) {
-    val cli = ArgParser("math.shell")
+    val cli = ArgParser(
+        programName = "math.shell",
+        skipExtraArguments = true,
+    )
     val debug by cli.option(
-        ArgType.Boolean,
-        shortName = "d",
-        fullName = "debug",
         description = "Enable debug output",
+        fullName = "debug",
+        shortName = "d",
+        type = ArgType.Boolean,
     ).default(false)
     cli.parse(args)
 
     DEBUG = debug
+
+    if (args.isNotEmpty()) {
+        println(parseExpression(args.joinToString(" ")).evaluate())
+        exitProcess(0)
+    }
 
     AnsiConsole.systemInstall()
 
