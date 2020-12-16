@@ -1,8 +1,5 @@
 package hm.binkley.labs.skratch.math
 
-import kotlinx.cli.ArgParser
-import kotlinx.cli.ArgType
-import kotlinx.cli.default
 import net.objecthunter.exp4j.Expression
 import net.objecthunter.exp4j.ExpressionBuilder
 import org.fusesource.jansi.Ansi.ansi
@@ -21,7 +18,7 @@ import kotlin.system.exitProcess
 private var DEBUG = false
 
 @Command(
-    description = ["@|math shell|@"],
+    description = ["Math shell"],
     mixinStandardHelpOptions = true,
     name = "math.shell",
     version = ["0-SNAPSHOT"],
@@ -30,13 +27,13 @@ class MathShell : Runnable {
     override fun run() {}
 
     @Option(
-        description = ["Enable debug output"],
+        description = ["Enable debug output."],
         names = ["-d", "--debug"],
     )
     var debug = false
 
     @Parameters(
-        description = ["Optional expression to evaluate"],
+        description = ["Optional expression to evaluate."],
         paramLabel = "EXPRESSION",
     )
     var expression = arrayOf<String>()
@@ -45,43 +42,17 @@ class MathShell : Runnable {
 fun main(args: Array<String>) {
     val cliExpression: String
 
-    if (true) {
-        val shell = MathShell()
-        val cli = CommandLine(shell)
-        val xxx = cli.execute(*args)
+    val shell = MathShell()
+    val cli = CommandLine(shell)
+    val xxx = cli.execute(*args)
 
-        println("FIGURE THIS OUT: $xxx")
+    println("FIGURE THIS OUT: $xxx")
 
-        println("help? ${cli.isUsageHelpRequested}")
-        if (cli.isUsageHelpRequested) {
-            cli.usage(System.out)
-            return
-        }
-        println("version? ${cli.isVersionHelpRequested}")
-        if (cli.isVersionHelpRequested) {
-            cli.printVersionHelp(System.out)
-            return
-        }
+    if (cli.isUsageHelpRequested || cli.isVersionHelpRequested) return
 
-        println("DID NOT EXIT")
-        DEBUG = shell.debug
-        cliExpression = shell.expression.joinToString(" ")
-    } else {
-        val cli = ArgParser(
-            programName = "math.shell",
-            skipExtraArguments = true,
-        )
-        val debug by cli.option(
-            description = "Enable debug output",
-            fullName = "debug",
-            shortName = "d",
-            type = ArgType.Boolean,
-        ).default(false)
-        cli.parse(args)
+    DEBUG = shell.debug
 
-        DEBUG = debug
-        cliExpression = args.joinToString(" ")
-    }
+    cliExpression = shell.expression.joinToString(" ")
 
     if (cliExpression.isNotEmpty()) {
         println(parseExpression(cliExpression).evaluate())
