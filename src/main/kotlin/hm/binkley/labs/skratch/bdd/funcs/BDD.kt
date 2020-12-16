@@ -28,6 +28,7 @@ data class Qed(
     override fun toString() = "$SCENARIO: $GIVEN $WHEN $THEN"
 
     companion object {
+        // Dummy values to provide nice syntax in test writing
         val SCENARIO = Scenario()
         val GIVEN = Given(SCENARIO)
         val WHEN = When(SCENARIO, GIVEN)
