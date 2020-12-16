@@ -20,7 +20,10 @@ data class Qed(
             action()
         } catch (e: AssertionError) {
             val x = AssertionError("Failed $label in $this: $e")
-            x.stackTrace = e.stackTrace
+            x.stackTrace = e.stackTrace.filter {
+                // Provide *super clear* stack traces for failed tests
+                !it.className.startsWith(Qed::class.qualifiedName!!)
+            }.toTypedArray()
             throw x
         }
     }
