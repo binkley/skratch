@@ -31,7 +31,7 @@ function mangle-classname() {
 }
 
 function rebuild-if-needed() {
-    [[ -e "$jar" && -z "$(find src -type f -newer "$jar")" ]] && return
+    [[ -e "$jar" && -z "$(find src/main -type f -newer "$jar")" ]] && return
 
     ./mvnw -C -Dmaven.test.skip=true package
 }
