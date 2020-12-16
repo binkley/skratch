@@ -9,8 +9,10 @@ import org.fusesource.jansi.Ansi.ansi
 import org.fusesource.jansi.AnsiConsole
 import org.jline.reader.EndOfFileException
 import org.jline.reader.LineReaderBuilder
+import org.jline.reader.UserInterruptException
 import org.jline.terminal.TerminalBuilder
 import java.lang.System.err
+import kotlin.system.exitProcess
 
 private var DEBUG = false
 
@@ -53,6 +55,8 @@ fun main(args: Array<String>) {
                 .reset())
         } catch (e: EndOfFileException) {
             return
+        } catch (e: UserInterruptException) {
+            exitProcess(128 + 2) // Linux SIGINT
         }
     }
 }
