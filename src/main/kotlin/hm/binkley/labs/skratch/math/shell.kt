@@ -1,4 +1,4 @@
-package hm.binkley.labs.skratch.math.shell
+package hm.binkley.labs.skratch.math
 
 import net.objecthunter.exp4j.Expression
 import net.objecthunter.exp4j.ExpressionBuilder
@@ -7,32 +7,36 @@ import org.fusesource.jansi.AnsiConsole
 import org.jline.reader.EndOfFileException
 import org.jline.reader.LineReaderBuilder
 import org.jline.terminal.TerminalBuilder
-import java.io.PrintWriter
 import java.lang.System.err
 
 fun main() {
     AnsiConsole.systemInstall()
 
     TerminalBuilder.terminal().use { terminal ->
-        val reader = LineReaderBuilder.builder().terminal(
-            terminal).build()
-        val writer = PrintWriter(terminal.writer())
+        val reader = LineReaderBuilder.builder()
+            .terminal(terminal)
+            .build()
+        val writer = terminal.writer()
 
-        while (true) {
+        while (true) try {
+            val line = reader.readLine("> ")
+            val answer: Double
             try {
-                val line = reader.readLine("> ")
-                val answer: Double
-                try {
-                    answer = parse(line).evaluate()
-                } catch (e: Exception) {
-                    err.println(
-                        ansi().format("@|bold,red $line|@: $e"))
-                    continue
-                }
-                writer.println(ansi().format("@|bold $answer|@"))
-            } catch (e: EndOfFileException) {
-                return
+                answer = parse(line).evaluate()
+            } catch (e: Exception) {
+                err.println(ansi()
+                    .bold().fgRed()
+                    .format("%s", line)
+                    .reset()
+                    .format(": %s", e.message))
+                continue
             }
+            writer.println(ansi()
+                .bold()
+                .format("%s", answer)
+                .reset())
+        } catch (e: EndOfFileException) {
+            return
         }
     }
 }
