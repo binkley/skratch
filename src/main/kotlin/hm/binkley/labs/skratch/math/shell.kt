@@ -1,26 +1,23 @@
 package hm.binkley.labs.skratch.math
 
+import hm.binkley.labs.skratch.ColorfulCli
 import net.objecthunter.exp4j.Expression
 import net.objecthunter.exp4j.ExpressionBuilder
-import org.fusesource.jansi.Ansi.ansi
-import org.fusesource.jansi.AnsiConsole
 import org.jline.reader.EndOfFileException
-import org.jline.reader.LineReaderBuilder
 import org.jline.reader.UserInterruptException
-import org.jline.terminal.TerminalBuilder
-import picocli.CommandLine
 import picocli.CommandLine.Command
 import picocli.CommandLine.Option
 import picocli.CommandLine.Parameters
-import java.lang.System.err
 import kotlin.system.exitProcess
+
+private const val name = "math.shell"
 
 private var DEBUG = false
 
 @Command(
     description = ["Math shell"],
     mixinStandardHelpOptions = true,
-    name = "math.shell",
+    name = name,
     version = ["0-SNAPSHOT"],
 )
 class Options : Runnable {
@@ -40,46 +37,28 @@ class Options : Runnable {
 }
 
 fun main(args: Array<String>) {
-    val options = Options()
-    val cli = CommandLine(options)
-    cli.execute(*args)
+    val cli = ColorfulCli(name, Options())
+    cli.parse(args)
 
-    if (cli.isUsageHelpRequested || cli.isVersionHelpRequested) return
+    DEBUG = cli.options.debug
 
-    DEBUG = options.debug
-
-    val cliExpression = options.expression.joinToString(" ")
-
+    val cliExpression = cli.options.expression.joinToString(" ")
     if (cliExpression.isNotEmpty()) {
         println(parseExpression(cliExpression).evaluate())
         exitProcess(0)
     }
 
-    AnsiConsole.systemInstall()
-
-    TerminalBuilder.terminal().use { terminal ->
-        val reader = LineReaderBuilder.builder()
-            .terminal(terminal)
-            .build()
-        val writer = terminal.writer()
-
+    cli.use {
         while (true) try {
-            val line = reader.readLine("> ")
+            val line = it.readLine("> ")
             val answer: Double
             try {
                 answer = parseExpression(line).evaluate()
             } catch (e: Exception) {
-                err.println(ansi()
-                    .bold().fgRed()
-                    .format("%s", line)
-                    .reset()
-                    .format(": %s", e.message))
+                it.err.println("@|bold,red %s|@: %s", line, e.message)
                 continue
             }
-            writer.println(ansi()
-                .bold()
-                .format("%s", answer)
-                .reset())
+            it.println("@|bold %s|@", answer)
         } catch (e: EndOfFileException) {
             return
         } catch (e: UserInterruptException) {
