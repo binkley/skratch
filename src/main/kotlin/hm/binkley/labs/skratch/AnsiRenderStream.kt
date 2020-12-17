@@ -21,37 +21,33 @@ open class AnsiRenderStream(
     out: OutputStream,
     autoFlush: Boolean = false,
 ) : PrintStream(out, autoFlush) {
-    override fun print(s: String?) {
+    override fun print(s: String?) =
         if (null != s && s.contains(BEGIN_TOKEN)) super.print(render(s))
         else super.print(s)
-    }
 
     fun println(format: String, vararg args: Any?) =
         println(format.format(*args))
 }
 
-private fun render(ansi: Ansi, vararg codes: String): Ansi {
-    for (code in codes) render(ansi, code)
-    return ansi
+private fun Ansi.render(vararg codes: String) = apply {
+    for (code in codes) render(code)
 }
 
-private fun render(input: String) =
-    render(input, StringBuilder()).toString()
+private fun render(input: String) = render(input, StringBuilder()).toString()
 
 private fun render(text: String, vararg codes: String) =
-    render(ansi(), *codes).a(text).reset().toString()
+    ansi().render(*codes).a(text).reset().toString()
 
-private fun render(ansi: Ansi, name: String): Ansi {
+private fun Ansi.render(name: String) = apply {
     val code = Code.valueOf(name.toUpperCase(ENGLISH))
 
-    if (code.isColor) {
-        if (code.isBackground) ansi.bg(code.getColor())
-        else ansi.fg(code.getColor())
-    } else if (code.isAttribute) {
-        ansi.a(code.getAttribute())
+    when {
+        code.isColor ->
+            if (code.isForeground) fg(code.color)
+            else bg(code.color)
+        code.isAttribute -> a(code.attribute)
+        else -> error("BUG: Neither a color nor an attribute")
     }
-
-    return ansi
 }
 
 private fun render(input: String, target: Appendable): Appendable {
@@ -76,14 +72,16 @@ private fun render(input: String, target: Appendable): Appendable {
         }
         j += BEGIN_TOKEN_LEN
         val spec = input.substring(j, k)
-        val items =
-            spec.split(CODE_TEXT_SEPARATOR.toRegex(), 2).toTypedArray()
+        val items = spec
+            .split(CODE_TEXT_SEPARATOR.toRegex(), 2)
+            .toTypedArray()
         if (1 == items.size) {
             target.append(input)
             return target
         }
-        val replacement: String = render(items[1], *items[0].split(
-            CODE_LIST_SEPARATOR.toRegex()).toTypedArray())
+        val replacement: String = render(items[1], *items[0]
+            .split(CODE_LIST_SEPARATOR.toRegex())
+            .toTypedArray())
         target.append(replacement)
         i = k + END_TOKEN_LEN
     }
@@ -143,11 +141,9 @@ private enum class Code constructor(
     BOLD(Attribute.INTENSITY_BOLD),
     FAINT(Attribute.INTENSITY_FAINT);
 
+    val isForeground get() = !isBackground
     val isColor get() = n is Color
-
-    fun getColor(): Color = n as Color
-
+    val color get() = n as Color
     val isAttribute get() = n is Attribute
-
-    fun getAttribute() = n as Attribute
+    val attribute get() = n as Attribute
 }
