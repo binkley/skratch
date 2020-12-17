@@ -1,7 +1,6 @@
 package hm.binkley.labs.skratch.math
 
 import hm.binkley.labs.skratch.ColorfulCli
-import net.objecthunter.exp4j.Expression
 import net.objecthunter.exp4j.ExpressionBuilder
 import org.jline.reader.EndOfFileException
 import org.jline.reader.UserInterruptException
@@ -44,21 +43,25 @@ fun main(args: Array<String>) {
 
     val cliExpression = cli.options.expression.joinToString(" ")
     if (cliExpression.isNotEmpty()) {
-        println(parseExpression(cliExpression).evaluate())
+        println(evaluateExpression(cliExpression, mapOf()).first)
         exitProcess(0)
     }
+
+    val existingVars = mutableMapOf<String, Double>()
 
     cli.use {
         while (true) try {
             val line = it.readLine("> ")
-            val answer: Double
             try {
-                answer = parseExpression(line).evaluate()
+                val parsed = evaluateExpression(line, existingVars)
+                val answer = parsed.first
+                it.println("@|bold %s|@", answer)
+                existingVars += parsed.second
+                existingVars["_"] = answer
             } catch (e: Exception) {
                 it.err.println("@|bold,red %s|@: %s", line, e.message)
                 continue
             }
-            it.println("@|bold %s|@", answer)
         } catch (e: EndOfFileException) {
             return
         } catch (e: UserInterruptException) {
@@ -70,35 +73,42 @@ fun main(args: Array<String>) {
 private val comma = Regex(" *, *")
 private val equal = Regex(" *= *")
 
-private fun parseExpression(line: String): Expression {
+private fun evaluateExpression(
+    line: String,
+    existingVars: Map<String, Double>,
+): Pair<Double, Map<String, Double>> {
     val parts = line.split('|', ignoreCase = false, limit = 2)
 
     if (DEBUG) println("parts: $parts")
 
-    val vars: Map<String, Double>
+    val newVars: Map<String, Double>
     val builder: ExpressionBuilder
     when (parts.size) {
         1 -> {
-            vars = mapOf()
+            newVars = mapOf()
             builder = ExpressionBuilder(parts[0])
         }
         else -> {
-            vars = parseVars(parts[0])
+            newVars = parseVars(parts[0])
             builder = ExpressionBuilder(parts[1])
         }
     }
+
+    val vars = existingVars + newVars
     builder.variables(vars.keys)
     val expr = builder.build()
     expr.setVariables(vars)
 
-    return expr
+    return expr.evaluate() to newVars
 }
 
 private fun parseVars(parts: String): Map<String, Double> {
     val vars = comma.split(parts).map {
         equal.split(it)
     }.map {
-        it[0].trim() to evaluateAssignedValue(it[1])
+        val variable = it[0].trim()
+        if ("_" == variable) error("Variable `_` is reserved")
+        variable to evaluateAssignedValue(it[1])
     }.toMap()
 
     if (DEBUG) println("vars: $vars")
