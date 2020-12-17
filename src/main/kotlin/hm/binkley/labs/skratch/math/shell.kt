@@ -117,9 +117,11 @@ private fun parseVars(parts: String) =
     comma.split(parts).map {
         equal.split(it)
     }.map {
-        val variable = it[0].trim()
-        if ("_" == variable) error("Variable `_` is reserved")
-        variable to evaluateAssignedValue(it[1])
+        when (val variable = it[0].trim()) {
+            "_" -> error("Variable `_` is reserved in assignment")
+            "" -> error("Missing variable in assignment")
+            else -> variable to evaluateAssignedValue(it[1])
+        }
     }.toMap()
 
 private fun evaluateAssignedValue(expr: String) =
