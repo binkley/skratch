@@ -5,6 +5,7 @@ import org.fusesource.jansi.AnsiConsole
 import org.jline.reader.LineReader
 import org.jline.reader.LineReaderBuilder
 import org.jline.terminal.MouseEvent
+import org.jline.terminal.Size
 import org.jline.terminal.Terminal
 import org.jline.terminal.TerminalBuilder
 import picocli.CommandLine
@@ -49,3 +50,5 @@ class ColorfulCli<T>(
     override fun flush() = terminal.flush()
     override fun readMouseEvent(): MouseEvent = terminal.readMouseEvent()
 }
+
+fun Terminal.isTty() = Size(0, 0) != size

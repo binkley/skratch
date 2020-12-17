@@ -1,6 +1,7 @@
 package hm.binkley.labs.skratch.math
 
 import hm.binkley.labs.skratch.ColorfulCli
+import hm.binkley.labs.skratch.isTty
 import net.objecthunter.exp4j.ExpressionBuilder
 import org.jline.reader.EndOfFileException
 import org.jline.reader.UserInterruptException
@@ -49,9 +50,23 @@ fun main(args: Array<String>) {
 
     val existingVars = mutableMapOf<String, Double>()
 
+    if (!cli.terminal.isTty()) {
+        generateSequence(::readLine).forEach {
+            val parsed = evaluateExpression(it, existingVars)
+            val answer = parsed.first
+            println(answer)
+            existingVars["_"] = answer
+            existingVars += parsed.second
+        }
+
+        return
+    }
+
     cli.use {
         while (true) try {
-            val line = it.readLine("> ")
+            val line = it.readLine("> ").trim()
+            if ("" == line) continue
+
             try {
                 val parsed = evaluateExpression(line, existingVars)
                 val answer = parsed.first
