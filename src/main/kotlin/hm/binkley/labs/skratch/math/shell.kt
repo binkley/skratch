@@ -113,17 +113,14 @@ private fun evaluateExpression(
     return Answer(answer, pretty, newVars)
 }
 
-private fun parseVars(parts: String): Map<String, Double> {
-    val vars = comma.split(parts).map {
+private fun parseVars(parts: String) =
+    comma.split(parts).map {
         equal.split(it)
     }.map {
         val variable = it[0].trim()
         if ("_" == variable) error("Variable `_` is reserved")
         variable to evaluateAssignedValue(it[1])
     }.toMap()
-
-    return vars
-}
 
 private fun evaluateAssignedValue(expr: String) =
     ExpressionBuilder(expr).build().evaluate()
