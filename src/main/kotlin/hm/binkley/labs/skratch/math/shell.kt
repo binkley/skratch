@@ -56,8 +56,8 @@ fun main(args: Array<String>) {
                 val parsed = evaluateExpression(line, existingVars)
                 val answer = parsed.first
                 it.println("@|bold %s|@", answer)
-                existingVars += parsed.second
                 existingVars["_"] = answer
+                existingVars += parsed.second
             } catch (e: Exception) {
                 it.err.println("@|bold,red %s|@: %s", line, e.message)
                 continue
@@ -79,7 +79,7 @@ private fun evaluateExpression(
 ): Pair<Double, Map<String, Double>> {
     val parts = line.split('|', ignoreCase = false, limit = 2)
 
-    if (DEBUG) println("parts: $parts")
+    if (DEBUG) println("- parts: $parts")
 
     val newVars: Map<String, Double>
     val builder: ExpressionBuilder
@@ -111,13 +111,13 @@ private fun parseVars(parts: String): Map<String, Double> {
         variable to evaluateAssignedValue(it[1])
     }.toMap()
 
-    if (DEBUG) println("vars: $vars")
+    if (DEBUG) println("- vars: $vars")
 
     return vars
 }
 
 private fun evaluateAssignedValue(expr: String): Double {
-    if (DEBUG) println("expr: $expr")
+    if (DEBUG) println("- expr: $expr")
 
     return ExpressionBuilder(expr).build().evaluate()
 }
