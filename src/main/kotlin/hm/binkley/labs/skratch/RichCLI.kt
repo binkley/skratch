@@ -35,13 +35,13 @@ class RichCLI<T>(
 
     val err get() = AnsiRenderStream(System.err)
 
-    fun parse(args: Array<String>) = with(CommandLine(options)) {
+    fun parse(args: Array<String>) = (CommandLine(options)).apply {
         val code = execute(*args)
         // TODO: How to tie this to @Command settings for exit codes?
-        // TODO: How to automate picocli to exit for me?
-        if (isUsageHelpRequested || isVersionHelpRequested)
-            exitProcess(0)
-        code
+        when {
+            isUsageHelpRequested || isVersionHelpRequested -> exitProcess(0)
+            0 != code -> exitProcess(code)
+        }
     }
 
     /**
