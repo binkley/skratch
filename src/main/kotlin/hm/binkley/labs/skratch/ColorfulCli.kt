@@ -16,7 +16,7 @@ import kotlin.system.exitProcess
 
 class ColorfulCli<T>(
     name: String,
-    val options: T, // picocli needs a union type, not a Kotlin thing (yet)
+    val options: T, // picocli needs a union type: not (yet) a Kotlin thing
     private val terminal: Terminal = TerminalBuilder.builder()
         .name(name)
         .build(),
