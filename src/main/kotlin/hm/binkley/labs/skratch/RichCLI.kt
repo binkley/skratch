@@ -25,24 +25,26 @@ class RichCLI<T>(
         .completer(completer)
         .terminal(terminal)
         .build(),
+    vararg args: String,
 ) : AnsiRenderStream(terminal.output()),
     Terminal by terminal,
     LineReader by lineReader {
     init {
         AnsiConsole.systemInstall()
         AutosuggestionWidgets(lineReader).enable()
+
+        CommandLine(options).apply {
+            val code = execute(*args)
+            // TODO: How to tie this to @Command settings for exit codes?
+            when {
+                isUsageHelpRequested || isVersionHelpRequested ->
+                    exitProcess(0)
+                0 != code -> exitProcess(code)
+            }
+        }
     }
 
     val err get() = AnsiRenderStream(System.err)
-
-    fun parse(args: Array<String>) = (CommandLine(options)).apply {
-        val code = execute(*args)
-        // TODO: How to tie this to @Command settings for exit codes?
-        when {
-            isUsageHelpRequested || isVersionHelpRequested -> exitProcess(0)
-            0 != code -> exitProcess(code)
-        }
-    }
 
     /**
      * For more control over the terminal

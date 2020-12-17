@@ -28,8 +28,10 @@ class Options : Runnable {
 }
 
 fun main(args: Array<String>) {
-    val cli = RichCLI(name, Options())
-    cli.parse(args)
+    val cli = RichCLI(
+        name = name,
+        options = Options(),
+        args = args)
 
     val cliExpression = cli.options.expression.joinToString(" ")
     if (cliExpression.isNotEmpty()) {
