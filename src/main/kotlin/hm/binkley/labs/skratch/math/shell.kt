@@ -44,7 +44,7 @@ fun main(args: Array<String>) {
 
     val cliExpression = cli.options.expression.joinToString(" ")
     if (cliExpression.isNotEmpty()) {
-        println(evaluateExpression(cliExpression, mapOf()).first)
+        println(evaluateExpression(cliExpression, mapOf()).pretty)
         exitProcess(0)
     }
 
@@ -52,11 +52,10 @@ fun main(args: Array<String>) {
 
     if (!cli.terminal.isTty()) {
         generateSequence(::readLine).forEach {
-            val parsed = evaluateExpression(it, existingVars)
-            val answer = parsed.first
-            println(answer)
-            existingVars["_"] = answer
-            existingVars += parsed.second
+            val answer = evaluateExpression(it, existingVars)
+            println(answer.pretty)
+            existingVars["_"] = answer.value
+            existingVars += answer.newVars
         }
 
         return
@@ -68,11 +67,10 @@ fun main(args: Array<String>) {
             if ("" == line) continue
 
             try {
-                val parsed = evaluateExpression(line, existingVars)
-                val answer = parsed.first
-                it.println("@|bold %s|@", answer)
-                existingVars["_"] = answer
-                existingVars += parsed.second
+                val answer = evaluateExpression(line, existingVars)
+                it.println("@|bold %s|@", answer.pretty)
+                existingVars["_"] = answer.value
+                existingVars += answer.newVars
             } catch (e: Exception) {
                 it.err.println("@|bold,red %s|@: %s", line, e.message)
                 continue
@@ -88,10 +86,16 @@ fun main(args: Array<String>) {
 private val comma = Regex(" *, *")
 private val equal = Regex(" *= *")
 
+private data class Answer(
+    val value: Double,
+    val pretty: String,
+    val newVars: Map<String, Double>,
+)
+
 private fun evaluateExpression(
     line: String,
     existingVars: Map<String, Double>,
-): Pair<Double, Map<String, Double>> {
+): Answer {
     val parts = line.split('|', ignoreCase = false, limit = 2)
 
     if (DEBUG) println("- parts: $parts")
@@ -114,7 +118,10 @@ private fun evaluateExpression(
     val expr = builder.build()
     expr.setVariables(vars)
 
-    return expr.evaluate() to newVars
+    val answer = expr.evaluate()
+    val pretty = answer.toBigDecimal().stripTrailingZeros().toString()
+
+    return Answer(answer, pretty, newVars)
 }
 
 private fun parseVars(parts: String): Map<String, Double> {
