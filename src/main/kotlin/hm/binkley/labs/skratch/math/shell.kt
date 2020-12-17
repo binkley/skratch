@@ -6,13 +6,10 @@ import net.objecthunter.exp4j.ExpressionBuilder
 import org.jline.reader.EndOfFileException
 import org.jline.reader.UserInterruptException
 import picocli.CommandLine.Command
-import picocli.CommandLine.Option
 import picocli.CommandLine.Parameters
 import kotlin.system.exitProcess
 
 private const val name = "math.shell"
-
-private var DEBUG = false
 
 @Command(
     description = ["Math shell"],
@@ -22,12 +19,6 @@ private var DEBUG = false
 )
 class Options : Runnable {
     override fun run() {}
-
-    @Option(
-        description = ["Enable debug output."],
-        names = ["-d", "--debug"],
-    )
-    var debug = false
 
     @Parameters(
         description = ["Optional expression to evaluate."],
@@ -39,8 +30,6 @@ class Options : Runnable {
 fun main(args: Array<String>) {
     val cli = RichCLI(name, Options())
     cli.parse(args)
-
-    DEBUG = cli.options.debug
 
     val cliExpression = cli.options.expression.joinToString(" ")
     if (cliExpression.isNotEmpty()) {
@@ -98,8 +87,6 @@ private fun evaluateExpression(
 ): Answer {
     val parts = line.split('|', ignoreCase = false, limit = 2)
 
-    if (DEBUG) println("- parts: $parts")
-
     val newVars: Map<String, Double>
     val builder: ExpressionBuilder
     when (parts.size) {
@@ -133,13 +120,8 @@ private fun parseVars(parts: String): Map<String, Double> {
         variable to evaluateAssignedValue(it[1])
     }.toMap()
 
-    if (DEBUG) println("- vars: $vars")
-
     return vars
 }
 
-private fun evaluateAssignedValue(expr: String): Double {
-    if (DEBUG) println("- expr: $expr")
-
-    return ExpressionBuilder(expr).build().evaluate()
-}
+private fun evaluateAssignedValue(expr: String) =
+    ExpressionBuilder(expr).build().evaluate()
