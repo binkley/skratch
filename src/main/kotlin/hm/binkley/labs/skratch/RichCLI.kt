@@ -14,7 +14,7 @@ import org.jline.widget.AutosuggestionWidgets
 import picocli.CommandLine
 import kotlin.system.exitProcess
 
-class ColorfulCli<T>(
+class RichCLI<T>(
     name: String,
     val options: T, // picocli needs a union type: not (yet) a Kotlin thing
     private val terminal: Terminal = TerminalBuilder.builder()
@@ -57,4 +57,5 @@ class ColorfulCli<T>(
     override fun readMouseEvent(): MouseEvent = terminal.readMouseEvent()
 }
 
+/** @todo This is a hack */
 fun Terminal.isTty() = Size(0, 0) != size

@@ -1,6 +1,6 @@
 package hm.binkley.labs.skratch.math
 
-import hm.binkley.labs.skratch.ColorfulCli
+import hm.binkley.labs.skratch.RichCLI
 import hm.binkley.labs.skratch.isTty
 import net.objecthunter.exp4j.ExpressionBuilder
 import org.jline.reader.EndOfFileException
@@ -37,7 +37,7 @@ class Options : Runnable {
 }
 
 fun main(args: Array<String>) {
-    val cli = ColorfulCli(name, Options())
+    val cli = RichCLI(name, Options())
     cli.parse(args)
 
     DEBUG = cli.options.debug
