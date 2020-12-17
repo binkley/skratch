@@ -24,7 +24,6 @@
         <awaitility.version>4.0.3</awaitility.version>
         <buildplan-maven-plugin.version>1.4</buildplan-maven-plugin.version>
         <build-helper-maven-plugin.version>3.2.0</build-helper-maven-plugin.version>
-        <ejml.version>0.40</ejml.version>
         <exp4j.version>0.4.8</exp4j.version>
         <failIfNoTests>true</failIfNoTests>
         <failsafe.printSummary>false</failsafe.printSummary>
@@ -118,18 +117,6 @@
             <groupId>net.objecthunter</groupId>
             <artifactId>exp4j</artifactId>
             <version>${exp4j.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.ejml</groupId>
-            <artifactId>ejml-all</artifactId>
-            <version>${ejml.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>junit</groupId>
-                    <artifactId>junit</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
 
         <dependency>
