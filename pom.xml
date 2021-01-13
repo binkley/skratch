@@ -24,7 +24,6 @@
         <arrow.version>0.11.0</arrow.version>
         <awaitility.version>4.0.3</awaitility.version>
         <buildplan-maven-plugin.version>1.4</buildplan-maven-plugin.version>
-        <build-helper-maven-plugin.version>3.2.0</build-helper-maven-plugin.version>
         <exp4j.version>0.4.8</exp4j.version>
         <failIfNoTests>true</failIfNoTests>
         <failsafe.printSummary>false</failsafe.printSummary>
@@ -179,43 +178,17 @@
 
     <build>
         <defaultGoal>clean verify</defaultGoal>
+        <sourceDirectory>
+            ${project.basedir}/src/main/kotlin
+        </sourceDirectory>
+        <testSourceDirectory>
+            ${project.basedir}/src/test/kotlin
+        </testSourceDirectory>
+
         <plugins>
             <plugin>
                 <artifactId>maven-help-plugin</artifactId>
                 <version>${maven-help-plugin.version}</version>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>build-helper-maven-plugin</artifactId>
-                <version>${build-helper-maven-plugin.version}</version>
-                <executions>
-                    <execution>
-                        <id>add-source</id>
-                        <phase>generate-sources</phase>
-                        <goals>
-                            <goal>add-source</goal>
-                        </goals>
-                        <configuration>
-                            <sources>
-                                <source>${project.basedir}/src/main/kotlin
-                                </source>
-                            </sources>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>add-test-source</id>
-                        <phase>generate-test-sources</phase>
-                        <goals>
-                            <goal>add-test-source</goal>
-                        </goals>
-                        <configuration>
-                            <sources>
-                                <source>${project.basedir}/src/test/kotlin
-                                </source>
-                            </sources>
-                        </configuration>
-                    </execution>
-                </executions>
             </plugin>
             <plugin>
                 <groupId>fr.jcgay.maven.plugins</groupId>
@@ -269,14 +242,15 @@
                 <executions>
                     <execution>
                         <id>compile-kotlin</id>
-                        <!-- phase needed when mixing Java & Kotlin -->
-                        <phase>process-sources</phase>
                         <goals>
                             <goal>compile</goal>
                         </goals>
                     </execution>
                     <execution>
                         <id>test-compile-kotlin</id>
+                        <configuration>
+                            <skip>${maven.test.skip}</skip>
+                        </configuration>
                         <goals>
                             <goal>test-compile</goal>
                         </goals>
@@ -286,16 +260,18 @@
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>${maven-compiler-plugin.version}</version>
-                <configuration>
-                    <compilerArgs>
-                        <compilerArg>-parameters</compilerArg>
-                        <compilerArg>-Werror</compilerArg>
-                        <compilerArg>-Xlint:all</compilerArg>
-                    </compilerArgs>
-                    <debug>true</debug>
-                    <source>${jdk.version}</source>
-                    <target>${jdk.version}</target>
-                </configuration>
+                <executions>
+                    <!-- Replacing default-compile as it is treated specially by maven -->
+                    <execution>
+                        <id>default-compile</id>
+                        <phase>none</phase>
+                    </execution>
+                    <!-- Replacing default-testCompile as it is treated specially by maven -->
+                    <execution>
+                        <id>default-testCompile</id>
+                        <phase>none</phase>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <artifactId>maven-surefire-plugin</artifactId>
