@@ -1,6 +1,6 @@
 package hm.binkley.labs.skratch.math.matrix
 
-import java.util.Objects
+import java.util.Objects.hash
 
 abstract class Matrix2x2<N, Norm : GeneralNumber<Norm, Norm>, M>(
     val a: N,
@@ -80,20 +80,17 @@ abstract class Matrix2x2<N, Norm : GeneralNumber<Norm, Norm>, M>(
     override fun antisymmetricPart() = (this - T) / elementCtor(2L)
 
     fun equivalent(other: Matrix2x2<*, *, *>) =
-        a.equivalent(other.a)
-                && b.equivalent(other.b)
-                && c.equivalent(other.c)
-                && d.equivalent(other.d)
+        a.equivalent(other.a) &&
+                b.equivalent(other.b) &&
+                c.equivalent(other.c) &&
+                d.equivalent(other.d)
 
     @Suppress("UNCHECKED_CAST")
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
+    override fun equals(other: Any?) = this === other ||
+            javaClass == other?.javaClass &&
+            equivalent(other as M)
 
-        return equivalent(other as M)
-    }
-
-    override fun hashCode() = Objects.hash(a, b, c, d)
+    override fun hashCode() = hash(a, b, c, d)
 
     override fun toString() = if (isUnit()) "I" else "[$a $b / $c $d]"
 }

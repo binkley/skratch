@@ -13,7 +13,7 @@ fun main() {
         val fib = FibMatrix(n)
         println()
         println(AUTO.string("""
-@|bold Characteristic ${fib.char}|@
+@|bold Characteristic ${fib.characteristic}|@
 @|green F($n) = $fib|@
 @|blue 1/F($n) = ${fib.multInv}|@
 @|magenta det(F($n)) = ${fib.det}|@
@@ -23,8 +23,16 @@ fun main() {
 
     println()
 
-    val a = (-6..6).map { FibMatrix(it) }.map { it.char }
-    val b = (-6..6).map { FibMatrix(it) }.map { -it.char * it.det }.reversed()
+    val a = (-6..6).map {
+        FibMatrix(it)
+    }.map {
+        it.characteristic
+    }
+    val b = (-6..6).map {
+        FibMatrix(it)
+    }.map {
+        -it.characteristic * it.det
+    }.reversed()
 
     println(a)
     println(b)
