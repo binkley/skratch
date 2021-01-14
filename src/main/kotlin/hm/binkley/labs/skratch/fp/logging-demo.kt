@@ -60,7 +60,7 @@ inline fun <reified E : Exception, R : Any?> withLogging(
         log.businessInfo("SUCCESS: $label")
         return r
     } catch (e: Exception) {
-        val type = if (e is E) "FAILURE" else "ABNORMAL"
+        val type = if (e is E) "FAILURE" else "ERROR"
         log.businessError("$type: $label: $e")
         throw e
     }
