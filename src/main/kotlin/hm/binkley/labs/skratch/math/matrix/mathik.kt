@@ -82,5 +82,11 @@ fun main() {
 
     println()
 
-    println((-8..8).map { FibMatrix(it) }.map { it.tr }.toList())
+    (-8..8).map {
+        FibMatrix(it)
+    }.map {
+        "%2s | %2s | %3s".format(it.characteristic, it.det, it.tr)
+    }.forEach {
+        println(it)
+    }
 }
