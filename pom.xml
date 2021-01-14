@@ -57,6 +57,18 @@
         <!-- @formatter:on -->
     </properties>
 
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>io.arrow-kt</groupId>
+                <artifactId>arrow-stack</artifactId>
+                <version>${arrow.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
     <dependencies>
         <dependency>
             <!-- TODO: Remove when kotlinx-coroutines catches up -->
@@ -83,18 +95,23 @@
         <dependency>
             <groupId>io.arrow-kt</groupId>
             <artifactId>arrow-meta</artifactId>
-            <version>${arrow.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>io.arrow-kt</groupId>
             <artifactId>arrow-core</artifactId>
-            <version>${arrow.version}</version>
         </dependency>
         <dependency>
             <groupId>io.arrow-kt</groupId>
             <artifactId>arrow-syntax</artifactId>
-            <version>${arrow.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.arrow-kt</groupId>
+            <artifactId>arrow-fx</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.arrow-kt</groupId>
+            <artifactId>arrow-optics</artifactId>
         </dependency>
 
         <dependency>
@@ -240,6 +257,21 @@
                     <jvmTarget>${jdk.version}</jvmTarget>
                 </configuration>
                 <executions>
+<!--                    <execution>-->
+<!--                        <id>kapt</id>-->
+<!--                        <configuration>-->
+<!--                            <annotationProcessorPaths>-->
+<!--                                <annotationProcessorPath>-->
+<!--                                    <groupId>io.arrow-kt</groupId>-->
+<!--                                    <artifactId>arrow-meta</artifactId>-->
+<!--                                    <version>${arrow.version}</version>-->
+<!--                                </annotationProcessorPath>-->
+<!--                            </annotationProcessorPaths>-->
+<!--                        </configuration>-->
+<!--                        <goals>-->
+<!--                            <goal>kapt</goal>-->
+<!--                        </goals>-->
+<!--                    </execution>-->
                     <execution>
                         <id>compile-kotlin</id>
                         <goals>
