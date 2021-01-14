@@ -1,7 +1,7 @@
 package hm.binkley.labs.skratch.math.matrix
 
-import org.fusesource.jansi.Ansi.ansi
 import org.fusesource.jansi.AnsiConsole
+import picocli.CommandLine.Help.Ansi.AUTO
 
 fun main() {
     AnsiConsole.systemInstall()
@@ -12,7 +12,7 @@ fun main() {
     for (n in -6..6) {
         val fib = FibMatrix(n)
         println()
-        println(ansi().format("""
+        println(AUTO.string("""
 @|bold f($n) = ${fib.char}|@
 @|green F($n) = $fib|@
 @|blue 1/F($n) = ${fib.multInv}|@
