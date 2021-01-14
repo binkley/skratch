@@ -27,17 +27,25 @@ abstract class Matrix2x2<N, Norm : GeneralNumber<Norm, Norm>, M>(
     // TODO: Why is this named "T"?
     open val T: M get() = matrixCtor(a, c, b, d)
     override val multInv: M get() = adj / det
-    override val conj: M get() = matrixCtor(a.conj, b.conj, c.conj, d.conj)
+    override val conjugate: M
+        get() = matrixCtor(
+            a.conjugate,
+            b.conjugate,
+            c.conjugate,
+            d.conjugate)
     override val adj: M get() = matrixCtor(d, -b, -c, a)
-    override val hermitian: M get() = T.conj
+    override val hermitian: M get() = T.conjugate
 
     abstract fun elementCtor(n: Long): N
     abstract fun matrixCtor(a: N, b: N, c: N, d: N): M
 
     override operator fun unaryMinus() = matrixCtor(-a, -b, -c, -d)
 
-    override operator fun plus(other: M) = matrixCtor(a + other.a,
-        b * other.b, c + other.c, d + other.d)
+    override operator fun plus(other: M) = matrixCtor(
+        a + other.a,
+        b * other.b,
+        c + other.c,
+        d + other.d)
 
     override operator fun times(other: M) = matrixCtor(
         a * other.a + b * other.c,
@@ -45,16 +53,18 @@ abstract class Matrix2x2<N, Norm : GeneralNumber<Norm, Norm>, M>(
         c * other.a + d * other.c,
         c * other.b + d * other.d)
 
-    open operator fun times(other: N) = matrixCtor(a * other, b * other,
-        c * other, d * other)
+    open operator fun times(other: N) = matrixCtor(
+        a * other,
+        b * other,
+        c * other,
+        d * other)
 
     override operator fun times(other: Long) = this * elementCtor(other)
 
-    override operator fun div(other: M): M {
+    override operator fun div(other: M): M =
         if (other.isSingular())
             throw ArithmeticException("Divisor is singular")
-        return this * other.multInv
-    }
+        else this * other.multInv
 
     open operator fun div(other: N) = this * other.multInv
     override operator fun div(other: Long) = this / elementCtor(other)
@@ -64,12 +74,13 @@ abstract class Matrix2x2<N, Norm : GeneralNumber<Norm, Norm>, M>(
         row == 1 && col == 2 -> b
         row == 2 && col == 1 -> c
         row == 2 && col == 2 -> d
-        else -> throw IndexOutOfBoundsException("$row, $col")
+        else -> throw IndexOutOfBoundsException(
+            "Matrices use 1-based indexing: $row, $col")
     }
 
     override fun isDiagonal() = b.isZero() && c.isZero()
     override fun isSymmetric() = b == c
-    override fun isHermitian() = b == c.conj
+    override fun isHermitian() = b == c.conjugate
     override fun isZero() = isDiagonal() && a.isZero() && d.isZero()
     override fun isUnit() = isDiagonal() && a.isUnit() && d.isUnit()
 

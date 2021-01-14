@@ -1,37 +1,46 @@
+@file:Suppress("NonAsciiCharacters")
+
 package hm.binkley.labs.skratch.math.matrix
 
 import hm.binkley.labs.skratch.math.matrix.Complex.Companion.ONE
 import hm.binkley.labs.skratch.math.matrix.Complex.Companion.ZERO
 import hm.binkley.labs.skratch.math.matrix.Pauli.Companion.pauli
 
-sealed class Pauli(a: Complex, b: Complex, c: Complex, d: Complex) :
+sealed class Pauli(
+    val symbol: String,
+    a: Complex,
+    b: Complex,
+    c: Complex,
+    d: Complex,
+) :
     Matrix2x2<Complex, Rational, Pauli>(a, b, c, d) {
     override fun elementCtor(n: Long) = Complex(n)
 
     override fun matrixCtor(
-        a: Complex, b: Complex, c: Complex,
-        d: Complex,
+        a: Complex, b: Complex, c: Complex, d: Complex,
     ) = pauli(GenericMatrix2x2(a, b, c, d, { Complex(it) }))
 
-    private class I : Pauli(ONE, ZERO, ZERO, ONE)
-    private class nI : Pauli(-ONE, ZERO, ZERO, -ONE)
-    private class iI : Pauli(Complex.I, ZERO, ZERO, Complex.I)
-    private class niI : Pauli(-Complex.I, ZERO, ZERO, -Complex.I)
+    override fun toString(): String = "($symbol)${super.toString()}"
 
-    private class σ1 : Pauli(ZERO, ONE, ONE, ZERO)
-    private class nσ1 : Pauli(ZERO, -ONE, -ONE, ZERO)
-    private class iσ1 : Pauli(ZERO, Complex.I, Complex.I, ZERO)
-    private class niσ1 : Pauli(ZERO, -Complex.I, -Complex.I, ZERO)
+    private class I : Pauli("I", ONE, ZERO, ZERO, ONE)
+    private class nI : Pauli("-I", -ONE, ZERO, ZERO, -ONE)
+    private class iI : Pauli("iI", Complex.I, ZERO, ZERO, Complex.I)
+    private class niI : Pauli("-iI", -Complex.I, ZERO, ZERO, -Complex.I)
 
-    private class σ2 : Pauli(ZERO, -Complex.I, Complex.I, ZERO)
-    private class nσ2 : Pauli(ZERO, Complex.I, -Complex.I, ZERO)
-    private class iσ2 : Pauli(ZERO, ONE, -ONE, ZERO)
-    private class niσ2 : Pauli(ZERO, -ONE, ONE, ZERO)
+    private class σ1 : Pauli("σ1", ZERO, ONE, ONE, ZERO)
+    private class nσ1 : Pauli("-σ1", ZERO, -ONE, -ONE, ZERO)
+    private class iσ1 : Pauli("iσ1", ZERO, Complex.I, Complex.I, ZERO)
+    private class niσ1 : Pauli("-iσ1", ZERO, -Complex.I, -Complex.I, ZERO)
 
-    private class σ3 : Pauli(ONE, ZERO, ZERO, -ONE)
-    private class nσ3 : Pauli(-ONE, ZERO, ZERO, ONE)
-    private class iσ3 : Pauli(Complex.I, ZERO, ZERO, -Complex.I)
-    private class niσ3 : Pauli(-Complex.I, ZERO, ZERO, Complex.I)
+    private class σ2 : Pauli("σ2", ZERO, -Complex.I, Complex.I, ZERO)
+    private class nσ2 : Pauli("-σ2", ZERO, Complex.I, -Complex.I, ZERO)
+    private class iσ2 : Pauli("iσ2", ZERO, ONE, -ONE, ZERO)
+    private class niσ2 : Pauli("-σ2", ZERO, -ONE, ONE, ZERO)
+
+    private class σ3 : Pauli("σ3", ONE, ZERO, ZERO, -ONE)
+    private class nσ3 : Pauli("-σ3", -ONE, ZERO, ZERO, ONE)
+    private class iσ3 : Pauli("iσ3", Complex.I, ZERO, ZERO, -Complex.I)
+    private class niσ3 : Pauli("-iσ3", -Complex.I, ZERO, ZERO, Complex.I)
 
     companion object {
         val I: Pauli = I()
@@ -54,7 +63,7 @@ sealed class Pauli(a: Complex, b: Complex, c: Complex, d: Complex) :
         val iσ3: Pauli = iσ3()
         val niσ3: Pauli = niσ3()
 
-        val group = arrayOf(
+        val group = listOf(
             I, nI, iI, niI,
             σ1, nσ1, iσ1, niσ1,
             σ2, nσ2, iσ2, niσ2,
@@ -67,7 +76,13 @@ sealed class Pauli(a: Complex, b: Complex, c: Complex, d: Complex) :
 }
 
 operator fun Complex.times(other: Pauli): Pauli {
-    val p = GenericMatrix2x2(this * other.a, this * other.b, this * other.c,
-        this * other.d) { Complex(it) }
+    val p = GenericMatrix2x2(
+        this * other.a,
+        this * other.b,
+        this * other.c,
+        this * other.d) {
+        Complex(it)
+    }
+
     return pauli(p)
 }

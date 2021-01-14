@@ -20,7 +20,7 @@ class FibMatrix(
 
     override val T: FibMatrix get() = this
     override val multInv: FibMatrix get() = FibMatrix(-characteristic)
-    override val conj: FibMatrix get() = this
+    override val conjugate: FibMatrix get() = this
     override val adj: FibMatrix get() = TODO("No adj of a Fibonacci")
 
     override fun unaryMinus() = TODO("Think through")

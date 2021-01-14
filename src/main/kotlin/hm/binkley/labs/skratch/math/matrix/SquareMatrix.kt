@@ -10,7 +10,7 @@ abstract class SquareMatrix<N, Norm : GeneralNumber<Norm, Norm>, M>(
               M : SquareMatrix<N, Norm, M> {
     abstract val det: N
     abstract val tr: N
-    abstract val conj: M
+    abstract val conjugate: M
     abstract val adj: M
     abstract val hermitian: M
 

@@ -1,5 +1,7 @@
 package hm.binkley.labs.skratch.math.matrix
 
+import hm.binkley.labs.skratch.math.matrix.Rational.Companion
+
 data class Complex(
     val re: Rational,
     val im: Rational,
@@ -26,8 +28,8 @@ data class Complex(
     override operator fun div(other: Long) = this / Rational(other)
 
     override val multInv: Complex
-        get() = conj / squareNorm
-    override val conj: Complex
+        get() = conjugate / squareNorm
+    override val conjugate: Complex
         get() = Complex(re, -im)
     override val absoluteValue: Rational
         get() = squareNorm.root as Rational
@@ -45,7 +47,18 @@ data class Complex(
         else -> TODO("BUG: This is a terrible approach")
     }
 
-    override fun toString() = "$re+${im}i"
+    override fun toString(): String {
+        if (isReal) return "$re"
+
+        val simpleI = when (im) {
+            Rational.ONE -> "i"
+            -Rational.ONE -> "-i"
+            else -> "${im}i"
+        }
+
+        return if (isImaginary) simpleI
+        else "$re+$simpleI"
+    }
 
     companion object {
         val ZERO = Complex(0L)

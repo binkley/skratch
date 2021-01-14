@@ -8,7 +8,7 @@ interface GeneralNumber<T, Norm> :
     Normed<T, Norm>
         where T : GeneralNumber<T, Norm>,
               Norm : GeneralNumber<Norm, Norm> {
-    val conj: T
+    val conjugate: T
 
     fun equivalent(other: GeneralNumber<*, *>): Boolean
 }

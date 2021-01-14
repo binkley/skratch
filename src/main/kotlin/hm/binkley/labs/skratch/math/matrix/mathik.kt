@@ -81,6 +81,7 @@ fun main() {
     println("${superscript(-9)}√F(9) = ${fib9 root -9}")
 
     println()
+    println("== CHARACTERISTIC VS DETERMINANT VS TRACE")
 
     (-8..8).map {
         FibMatrix(it)
@@ -89,4 +90,9 @@ fun main() {
     }.forEach {
         println(it)
     }
+
+    println()
+    println("== PAULI SPIN MATRICES")
+
+    println(Pauli.group)
 }
