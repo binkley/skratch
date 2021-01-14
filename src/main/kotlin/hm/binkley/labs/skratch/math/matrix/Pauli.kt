@@ -1,4 +1,4 @@
-@file:Suppress("NonAsciiCharacters")
+@file:Suppress("NonAsciiCharacters", "ClassName", "ObjectPropertyName")
 
 package hm.binkley.labs.skratch.math.matrix
 
@@ -22,6 +22,10 @@ sealed class Pauli(
 
     override fun toString(): String = "($symbol)${super.toString()}"
 
+    fun toGeneric() = GenericMatrix2x2(a, b, c, d) {
+        Complex(it)
+    }
+
     private class I : Pauli("I", ONE, ZERO, ZERO, ONE)
     private class nI : Pauli("-I", -ONE, ZERO, ZERO, -ONE)
     private class iI : Pauli("iI", Complex.I, ZERO, ZERO, Complex.I)
@@ -42,7 +46,7 @@ sealed class Pauli(
     private class iσ3 : Pauli("iσ3", Complex.I, ZERO, ZERO, -Complex.I)
     private class niσ3 : Pauli("-iσ3", -Complex.I, ZERO, ZERO, Complex.I)
 
-    companion object {
+    companion object : AbstractList<Pauli>() {
         val I: Pauli = I()
         val nI: Pauli = nI()
         val iI: Pauli = iI()
@@ -63,15 +67,19 @@ sealed class Pauli(
         val iσ3: Pauli = iσ3()
         val niσ3: Pauli = niσ3()
 
-        val group = listOf(
+        private val group = listOf(
             I, nI, iI, niI,
             σ1, nσ1, iσ1, niσ1,
             σ2, nσ2, iσ2, niσ2,
             σ3, nσ3, iσ3, niσ3)
 
-        fun pauli(p: Matrix2x2<Complex, Rational, *>) =
-            group.find { it.equivalent(p) } ?: TODO(
-                "BUG: How to downgrade type when multiplying Pauli by non-{one,zero,i}? $p")
+        fun pauli(p: Matrix2x2<Complex, Rational, *>) = group.find {
+            it.equivalent(p)
+        } ?: TODO(
+            "BUG: How to downgrade type when multiplying Pauli by non-{one,zero,i}? $p")
+
+        override val size: Int = group.size
+        override fun get(index: Int): Pauli = group[index]
     }
 }
 

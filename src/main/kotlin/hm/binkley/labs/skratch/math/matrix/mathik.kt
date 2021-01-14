@@ -1,5 +1,6 @@
 package hm.binkley.labs.skratch.math.matrix
 
+import arrow.core.extensions.list.apply.product
 import org.fusesource.jansi.AnsiConsole
 import picocli.CommandLine.Help.Ansi.AUTO
 
@@ -94,5 +95,16 @@ fun main() {
     println()
     println("== PAULI SPIN MATRICES")
 
-    println(Pauli.group)
+    println(Pauli)
+
+    println("PRODUCTS")
+    Pauli.product(Pauli).map {
+        val (m, n) = it
+        val x = m * n
+        val y = n * m
+        val diff = x.toGeneric() - y.toGeneric()
+        "${m.symbol} * ${n.symbol} -> ${(m * n).symbol}; ${m.symbol} / ${n.symbol} -> ${(m / n).symbol}; [${m.symbol}, ${n.symbol}] -> $diff"
+    }.sorted().forEach {
+        println(it)
+    }
 }
