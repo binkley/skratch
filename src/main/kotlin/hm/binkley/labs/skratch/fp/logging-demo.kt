@@ -5,8 +5,10 @@ import picocli.CommandLine.Help.Ansi.AUTO
 
 interface BusinessLogger {
     fun debug(message: String, vararg args: Any?)
+    fun info(message: String, vararg args: Any?)
+    fun error(message: String, vararg args: Any?)
     fun businessInfo(message: String, vararg args: Any?)
-    fun businessError(message: String, vararg args: Any?)
+    fun businessFailure(message: String, vararg args: Any?)
 }
 
 object ConsoleLogger : BusinessLogger {
@@ -14,54 +16,70 @@ object ConsoleLogger : BusinessLogger {
         AnsiConsole.systemInstall()
     }
 
-    override fun debug(message: String, vararg args: Any?) {
+    override fun debug(message: String, vararg args: Any?) =
         println(AUTO.string("""
             @|faint DEBUG: ${message.format(args)}|@
         """.trimIndent()))
-    }
 
-    override fun businessInfo(message: String, vararg args: Any?) {
+    override fun info(message: String, vararg args: Any?) =
+        println(AUTO.string("""
+            INFO: ${message.format(args)}
+        """.trimIndent()))
+
+    override fun error(message: String, vararg args: Any?) =
+        println(AUTO.string("""
+            @|bold,magenta ERROR: ${message.format(args)}|@
+        """.trimIndent()))
+
+    override fun businessInfo(message: String, vararg args: Any?) =
         println(AUTO.string("""
             [AUDIT] INFO: ${message.format(args)}
         """.trimIndent()))
-    }
 
-    override fun businessError(message: String, vararg args: Any?) {
+    override fun businessFailure(message: String, vararg args: Any?) =
         println(AUTO.string("""
             @|bold,red [AUDIT] ERROR: ${message.format(args)}|@
         """.trimIndent()))
-    }
 }
 
 class BusinessException(reason: String) : Exception(reason)
 
-fun <T> check(thing: T): T =
+fun succeed(thing: String): String = thing
+fun fail(thing: String): String =
     throw BusinessException("This is not the right thing: $thing")
+
+fun error(thing: String): String =
+    throw IndexOutOfBoundsException("Write the code for $thing")
 
 fun main() {
     val thing = "Veggie burger"
     val log = ConsoleLogger
 
-    withLogging<BusinessException, Unit>(log, "Thing") {
-        check(thing)
-    }.also {
-        println(it)
-    }
+    println(log.handle<BusinessException, String>("Thing", "HOKEY!") {
+        succeed(thing)
+    })
+    println(log.handle<BusinessException, String>("Thing", "HOKEY!") {
+        fail(thing)
+    })
+    println(log.handle<BusinessException, String>("Thing", "HOKEY!") {
+        error(thing)
+    })
 }
 
-inline fun <reified E : Exception, R : Any?> withLogging(
-    log: BusinessLogger,
+inline fun <reified E : Exception, R : Any> BusinessLogger.handle(
     label: String,
+    default: R,
     block: () -> R,
-): R {
-    log.debug("Trying $label")
-    try {
-        val r = block()
-        log.businessInfo("SUCCESS: $label")
-        return r
-    } catch (e: Exception) {
-        val type = if (e is E) "FAILURE" else "ERROR"
-        log.businessError("$type: $label: $e")
+): R = try {
+    debug("Trying $label")
+    block().also {
+        businessInfo("SUCCESS: $label")
+    }
+} catch (e: Exception) {
+    if (e !is E) {
+        error("ERROR: $label: $e")
         throw e
     }
+    businessFailure("FAILURE: $label: $e")
+    default
 }
