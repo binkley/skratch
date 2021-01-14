@@ -11,15 +11,15 @@ import kotlin.test.assertEquals
 internal class RationalTest {
     @Test
     fun normaizesZero() {
-        assertEquals(1L, Rational(0L, 3L).d)
+        assertEquals(1L, Rational(0L, 3L).denominator)
     }
 
     @Test
     fun normalizesNegativeDenominator() {
         val negative = Rational(3L, -2L)
 
-        assertEquals(2L, negative.d)
-        assertEquals(-3L, negative.n)
+        assertEquals(2L, negative.denominator)
+        assertEquals(-3L, negative.numerator)
     }
 
     @Test

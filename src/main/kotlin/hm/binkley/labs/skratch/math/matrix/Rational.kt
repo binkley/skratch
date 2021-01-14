@@ -8,36 +8,38 @@ import kotlin.math.sign
 class Rational(n: Long, d: Long) :
     GeneralNumber<Rational, Rational>,
     Comparable<Rational> {
-    val n: Long
-    val d: Long
+    val numerator: Long
+    val denominator: Long
 
     init {
         if (0L == d) throw ArithmeticException("Denominator is zero")
 
         val (a, b) = normalizeSign(n, d)
         val gcd = gcd(abs(a), b)
-        this.n = a / gcd
-        this.d = b / gcd
+        this.numerator = a / gcd
+        this.denominator = b / gcd
     }
 
     constructor(n: Long) : this(n, 1L)
 
-    override fun unaryMinus() = Rational(-n, d)
-    override fun plus(other: Rational) = Rational(n * other.d + other.n * d,
-        d * other.d)
+    override fun unaryMinus() = Rational(-numerator, denominator)
+    override fun plus(other: Rational) =
+        Rational(numerator * other.denominator + other.numerator * denominator,
+            denominator * other.denominator)
 
-    override fun minus(other: Rational) = this + -other
-    override fun times(other: Rational) = Rational(n * other.n, d * other.d)
+    override fun times(other: Rational) =
+        Rational(numerator * other.numerator, denominator * other.denominator)
+
     override fun times(other: Long) = this * Rational(other)
     override fun div(other: Rational) = this * other.multInv
     override fun div(other: Long) = this / Rational(other)
 
     override val multInv: Rational
-        get() = Rational(d, n)
+        get() = Rational(denominator, numerator)
     override val conj: Rational
         get() = this
     override val absoluteValue: Rational
-        get() = Rational(abs(n), d)
+        get() = Rational(abs(numerator), denominator)
     override val squareNorm: Rational
         get() = this
     val root: GeneralNumber<*, Rational>
@@ -47,27 +49,29 @@ class Rational(n: Long, d: Long) :
     val isPositive get() = this > ZERO
     val isNegative get() = this < ZERO
     override fun isUnit() = this == ONE
-    val isWhole get() = 1L == d
+    val isWhole get() = 1L == denominator
 
-    override fun compareTo(other: Rational) = (n * other.d).compareTo(
-        other.n * d)
+    override fun compareTo(other: Rational) =
+        (numerator * other.denominator).compareTo(
+            other.numerator * denominator)
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other !is Rational) return false
 
-        return n == other.n && d == other.d
+        return numerator == other.numerator && denominator == other.denominator
     }
 
     override fun equivalent(other: GeneralNumber<*, *>) = when (other) {
-        is Rational -> n == other.n && d == other.d
-        is Complex -> ZERO == other.im && n == other.re.n && d == other.re.d
+        is Rational -> numerator == other.numerator && denominator == other.denominator
+        is Complex -> ZERO == other.im && numerator == other.re.numerator && denominator == other.re.denominator
         else -> TODO("BUG: This is a terrible approach")
     }
 
-    override fun hashCode() = Objects.hash(n, d)
+    override fun hashCode() = Objects.hash(numerator, denominator)
 
-    override fun toString() = if (isWhole) "$n" else "$n/$d"
+    override fun toString() =
+        if (isWhole) "$numerator" else "$numerator/$denominator"
 
     companion object {
         private fun normalizeSign(
@@ -83,8 +87,8 @@ class Rational(n: Long, d: Long) :
         private fun root(c: Rational): GeneralNumber<*, Rational> {
             if (c.isNegative) return Complex(0L,
                 c.absoluteValue.root as Rational)
-            val (rn, nexact) = maybeExactRoot(c.n)
-            val (rd, dexact) = maybeExactRoot(c.d)
+            val (rn, nexact) = maybeExactRoot(c.numerator)
+            val (rd, dexact) = maybeExactRoot(c.denominator)
             return when {
                 nexact && dexact -> Rational(rn, rd)
                 else -> newtonApproximation(c)

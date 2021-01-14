@@ -13,7 +13,7 @@ fun main() {
         val fib = FibMatrix(n)
         println()
         println(AUTO.string("""
-@|bold f($n) = ${fib.char}|@
+@|bold Characteristic ${fib.char}|@
 @|green F($n) = $fib|@
 @|blue 1/F($n) = ${fib.multInv}|@
 @|magenta det(F($n)) = ${fib.det}|@

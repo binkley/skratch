@@ -5,10 +5,9 @@ interface Additive<T : Additive<T>> {
 
     @Suppress("UNCHECKED_CAST")
     operator fun unaryPlus(): T = this as T
-
     operator fun unaryMinus(): T
     operator fun plus(other: T): T
-    operator fun minus(other: T): T
+    operator fun minus(other: T): T = this + -other
 
     fun isZero(): Boolean
 }

@@ -23,6 +23,7 @@ abstract class Matrix2x2<N, Norm : GeneralNumber<Norm, Norm>, M>(
 
     override val det get() = a * d - b * c
     override val tr get() = a + d
+
     // TODO: Why is this named "T"?
     open val T: M get() = matrixCtor(a, c, b, d)
     override val multInv: M get() = adj / det
@@ -37,8 +38,6 @@ abstract class Matrix2x2<N, Norm : GeneralNumber<Norm, Norm>, M>(
 
     override operator fun plus(other: M) = matrixCtor(a + other.a,
         b * other.b, c + other.c, d + other.d)
-
-    override operator fun minus(other: M) = this + -other
 
     override operator fun times(other: M) = matrixCtor(
         a * other.a + b * other.c,
