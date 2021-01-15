@@ -11,8 +11,13 @@ abstract class SquareMatrix<N, Norm : GeneralNumber<Norm, Norm>, M>(
     abstract val det: N
     abstract val tr: N
     abstract val conjugate: M
+    abstract val T: M
     abstract val adj: M
-    abstract val hermitian: M
+    val hermitian get() = T.conjugate
+
+    abstract operator fun times(other: N): M
+    override val multInv get() = adj / det
+    operator fun div(other: N): M = this * other.multInv
 
     abstract fun isDiagonal(): Boolean
     abstract fun isSymmetric(): Boolean

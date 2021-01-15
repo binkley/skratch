@@ -2,14 +2,35 @@ package hm.binkley.labs.skratch.math.matrix
 
 import java.util.Objects.hash
 
+interface HasB<N, Norm : GeneralNumber<Norm, Norm>, M> :
+    HasA<N, Norm, M>
+        where N : GeneralNumber<N, Norm>,
+              M : SquareMatrix<N, Norm, M> {
+    val b: N
+}
+
+interface HasC<N, Norm : GeneralNumber<Norm, Norm>, M> :
+    HasB<N, Norm, M>
+        where N : GeneralNumber<N, Norm>,
+              M : SquareMatrix<N, Norm, M> {
+    val c: N
+}
+
+interface HasD<N, Norm : GeneralNumber<Norm, Norm>, M> :
+    HasC<N, Norm, M>
+        where N : GeneralNumber<N, Norm>,
+              M : SquareMatrix<N, Norm, M> {
+    val d: N
+}
+
 abstract class Matrix2x2<N, Norm : GeneralNumber<Norm, Norm>, M>(
-    val a: N,
-    val b: N,
-    val c: N,
-    val d: N,
+    override val a: N,
+    override val b: N,
+    override val c: N,
+    override val d: N,
 ) :
     SquareMatrix<N, Norm, M>(2),
-    Scalable<M>
+    HasD<N, Norm, M>
         where N : GeneralNumber<N, Norm>,
               M : Matrix2x2<N, Norm, M> {
     constructor(m: Holder<N, Norm>) : this(m.a, m.b, m.c, m.d)
@@ -24,17 +45,14 @@ abstract class Matrix2x2<N, Norm : GeneralNumber<Norm, Norm>, M>(
     override val det get() = a * d - b * c
     override val tr get() = a + d
 
-    // TODO: Why is this named "T"?
-    open val T: M get() = matrixCtor(a, c, b, d)
-    override val multInv: M get() = adj / det
     override val conjugate: M
         get() = matrixCtor(
             a.conjugate,
             b.conjugate,
             c.conjugate,
             d.conjugate)
+    override val T get() = matrixCtor(a, c, b, d)
     override val adj: M get() = matrixCtor(d, -b, -c, a)
-    override val hermitian: M get() = T.conjugate
 
     abstract fun elementCtor(n: Long): N
     abstract fun matrixCtor(a: N, b: N, c: N, d: N): M
@@ -53,7 +71,7 @@ abstract class Matrix2x2<N, Norm : GeneralNumber<Norm, Norm>, M>(
         c * other.a + d * other.c,
         c * other.b + d * other.d)
 
-    open operator fun times(other: N) = matrixCtor(
+    override operator fun times(other: N) = matrixCtor(
         a * other,
         b * other,
         c * other,
@@ -66,7 +84,6 @@ abstract class Matrix2x2<N, Norm : GeneralNumber<Norm, Norm>, M>(
             throw ArithmeticException("Divisor is singular")
         else this * other.multInv
 
-    open operator fun div(other: N) = this * other.multInv
     override operator fun div(other: Long) = this / elementCtor(other)
 
     operator fun get(row: Int, col: Int) = when {

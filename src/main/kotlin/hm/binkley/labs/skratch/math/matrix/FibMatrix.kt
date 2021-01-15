@@ -33,7 +33,6 @@ class FibMatrix(
     override fun div(other: FibMatrix) =
         FibMatrix(characteristic - other.characteristic)
 
-    override fun div(other: Rational) = TODO("Think through")
     override fun div(other: Long) = TODO("Think through")
 
     // TODO: Use rationals, not integers; integers are a special case

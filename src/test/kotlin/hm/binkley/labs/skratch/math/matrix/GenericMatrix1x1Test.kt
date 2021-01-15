@@ -3,15 +3,15 @@ package hm.binkley.labs.skratch.math.matrix
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 
-internal class GenericMatrix2X2Test {
+internal class GenericMatrix1x1Test {
     @Test
     fun equivalentIfTypesEquivalent() {
-        val left = GenericMatrix2x2(
-            Rational.ONE, Rational.ZERO, Rational.ZERO, Rational.ONE) {
+        val left = GenericMatrix1x1(
+            Rational.ONE) {
             Rational(it)
         }
-        val right = GenericMatrix2x2(
-            Complex.ONE, Complex.ZERO, Complex.ZERO, Complex.ONE) {
+        val right = GenericMatrix1x1(
+            Complex.ONE) {
             Complex(it)
         }
 
