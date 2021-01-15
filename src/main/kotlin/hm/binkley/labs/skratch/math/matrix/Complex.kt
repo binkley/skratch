@@ -1,7 +1,5 @@
 package hm.binkley.labs.skratch.math.matrix
 
-import hm.binkley.labs.skratch.math.matrix.Rational.Companion
-
 data class Complex(
     val re: Rational,
     val im: Rational,
@@ -21,20 +19,15 @@ data class Complex(
 
     operator fun times(other: Rational) = Complex(re * other, im * other)
     override operator fun times(other: Long) = this * Rational(other)
-    override operator fun div(other: Complex) =
-        this * other.multInv
+    override operator fun div(other: Complex) = this * other.multInv
 
     operator fun div(other: Rational) = Complex(re / other, im / other)
     override operator fun div(other: Long) = this / Rational(other)
 
-    override val multInv: Complex
-        get() = conjugate / squareNorm
-    override val conjugate: Complex
-        get() = Complex(re, -im)
-    override val absoluteValue: Rational
-        get() = squareNorm.root as Rational
-    override val squareNorm: Rational
-        get() = re * re + im * im
+    override val multInv get() = conj / squareNorm
+    override val conj get() = Complex(re, -im)
+    override val absoluteValue get() = squareNorm.root as Rational
+    override val squareNorm get() = re * re + im * im
 
     override fun isZero() = re.isZero() && im.isZero()
     override fun isUnit() = re.isUnit() && im.isZero()

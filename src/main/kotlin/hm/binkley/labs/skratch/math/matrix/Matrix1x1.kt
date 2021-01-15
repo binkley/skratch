@@ -24,7 +24,7 @@ abstract class Matrix1x1<N, Norm : GeneralNumber<Norm, Norm>, M>(
     override val det get() = a
     override val tr get() = a
 
-    override val conjugate get() = matrixCtor(a.conjugate)
+    override val conj get() = matrixCtor(a.conj)
     override val T get() = matrixCtor(a)
     override val adj get() = matrixCtor(a)
 

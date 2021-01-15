@@ -45,12 +45,12 @@ abstract class Matrix2x2<N, Norm : GeneralNumber<Norm, Norm>, M>(
     override val det get() = a * d - b * c
     override val tr get() = a + d
 
-    override val conjugate: M
+    override val conj: M
         get() = matrixCtor(
-            a.conjugate,
-            b.conjugate,
-            c.conjugate,
-            d.conjugate)
+            a.conj,
+            b.conj,
+            c.conj,
+            d.conj)
     override val T get() = matrixCtor(a, c, b, d)
     override val adj: M get() = matrixCtor(d, -b, -c, a)
 
@@ -97,7 +97,7 @@ abstract class Matrix2x2<N, Norm : GeneralNumber<Norm, Norm>, M>(
 
     override fun isDiagonal() = b.isZero() && c.isZero()
     override fun isSymmetric() = b == c
-    override fun isHermitian() = b == c.conjugate
+    override fun isHermitian() = b == c.conj
     override fun isZero() = isDiagonal() && a.isZero() && d.isZero()
     override fun isUnit() = isDiagonal() && a.isUnit() && d.isUnit()
 

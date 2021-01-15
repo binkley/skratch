@@ -36,7 +36,7 @@ class Rational(n: Long, d: Long) :
 
     override val multInv: Rational
         get() = Rational(denominator, numerator)
-    override val conjugate: Rational
+    override val conj: Rational
         get() = this
     override val absoluteValue: Rational
         get() = Rational(abs(numerator), denominator)

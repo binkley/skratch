@@ -10,10 +10,10 @@ abstract class SquareMatrix<N, Norm : GeneralNumber<Norm, Norm>, M>(
               M : SquareMatrix<N, Norm, M> {
     abstract val det: N
     abstract val tr: N
-    abstract val conjugate: M
+    abstract val conj: M
     abstract val T: M
     abstract val adj: M
-    val hermitian get() = T.conjugate
+    val hermitian get() = T.conj
 
     abstract operator fun times(other: N): M
     override val multInv get() = adj / det
