@@ -24,12 +24,9 @@ interface HasD<N, Norm : GeneralNumber<Norm, Norm>, M> :
 }
 
 abstract class Matrix2x2<N, Norm : GeneralNumber<Norm, Norm>, M>(
-    override val a: N,
-    override val b: N,
-    override val c: N,
-    override val d: N,
+    a: N, b: N, c: N, d: N,
 ) :
-    SquareMatrix<N, Norm, M>(2),
+    SquareMatrix<N, Norm, M>(2, listOf(a, b, c, d)),
     HasD<N, Norm, M>
         where N : GeneralNumber<N, Norm>,
               M : Matrix2x2<N, Norm, M> {
@@ -42,8 +39,12 @@ abstract class Matrix2x2<N, Norm : GeneralNumber<Norm, Norm>, M>(
         val d: N,
     ) where N : GeneralNumber<N, Norm>
 
+    override val a: N get() = this[1, 1]
+    override val b: N get() = this[1, 2]
+    override val c: N get() = this[2, 1]
+    override val d: N get() = this[2, 2]
+
     override val det get() = a * d - b * c
-    override val tr get() = a + d
 
     override val conj: M
         get() = matrixCtor(
@@ -54,8 +55,10 @@ abstract class Matrix2x2<N, Norm : GeneralNumber<Norm, Norm>, M>(
     override val T get() = matrixCtor(a, c, b, d)
     override val adj: M get() = matrixCtor(d, -b, -c, a)
 
-    abstract fun elementCtor(n: Long): N
-    abstract fun matrixCtor(a: N, b: N, c: N, d: N): M
+    protected abstract fun elementCtor(n: Long): N
+    protected abstract fun matrixCtor(a: N, b: N, c: N, d: N): M
+    override fun matrixCtor(values: List<N>) =
+        matrixCtor(values[0], values[1], values[2], values[3])
 
     override operator fun unaryMinus() = matrixCtor(-a, -b, -c, -d)
 
@@ -86,18 +89,8 @@ abstract class Matrix2x2<N, Norm : GeneralNumber<Norm, Norm>, M>(
 
     override operator fun div(other: Long) = this / elementCtor(other)
 
-    operator fun get(row: Int, col: Int) = when {
-        row == 1 && col == 1 -> a
-        row == 1 && col == 2 -> b
-        row == 2 && col == 1 -> c
-        row == 2 && col == 2 -> d
-        else -> throw IndexOutOfBoundsException(
-            "Matrices use 1-based indexing: $row, $col")
-    }
-
     override fun isDiagonal() = b.isZero() && c.isZero()
     override fun isSymmetric() = b == c
-    override fun isHermitian() = b == c.conj
     override fun isZero() = isDiagonal() && a.isZero() && d.isZero()
     override fun isUnit() = isDiagonal() && a.isUnit() && d.isUnit()
 
@@ -106,12 +99,6 @@ abstract class Matrix2x2<N, Norm : GeneralNumber<Norm, Norm>, M>(
 
     override fun symmetricPart() = (this + T) / elementCtor(2L)
     override fun antisymmetricPart() = (this - T) / elementCtor(2L)
-
-    fun equivalent(other: Matrix2x2<*, *, *>) =
-        a.equivalent(other.a) &&
-                b.equivalent(other.b) &&
-                c.equivalent(other.c) &&
-                d.equivalent(other.d)
 
     @Suppress("UNCHECKED_CAST")
     override fun equals(other: Any?) = this === other ||

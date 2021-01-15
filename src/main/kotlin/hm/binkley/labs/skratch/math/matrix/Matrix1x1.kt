@@ -9,9 +9,9 @@ interface HasA<N, Norm : GeneralNumber<Norm, Norm>, M>
 }
 
 abstract class Matrix1x1<N, Norm : GeneralNumber<Norm, Norm>, M>(
-    override val a: N,
+    a: N,
 ) :
-    SquareMatrix<N, Norm, M>(1),
+    SquareMatrix<N, Norm, M>(1, listOf(a)),
     HasA<N, Norm, M>
         where N : GeneralNumber<N, Norm>,
               M : Matrix1x1<N, Norm, M> {
@@ -21,18 +21,22 @@ abstract class Matrix1x1<N, Norm : GeneralNumber<Norm, Norm>, M>(
         val a: N,
     ) where N : GeneralNumber<N, Norm>
 
+    override val a: N get() = this[1, 1]
+
     override val det get() = a
-    override val tr get() = a
 
-    override val conj get() = matrixCtor(a.conj)
+    override val conj: M get() = matrixCtor(a.conj)
     override val T get() = matrixCtor(a)
-    override val adj get() = matrixCtor(a)
+    override val adj: M get() = matrixCtor(a)
 
-    abstract fun elementCtor(n: Long): N
-    abstract fun matrixCtor(a: N): M
+    protected abstract fun elementCtor(n: Long): N
+    protected abstract fun matrixCtor(a: N): M
+    override fun matrixCtor(values: List<N>) = matrixCtor(values[0])
 
     override operator fun unaryMinus() = matrixCtor(-a)
+
     override operator fun plus(other: M) = matrixCtor(a + other.a)
+
     override operator fun times(other: M) = matrixCtor(a * other.a)
     override operator fun times(other: N) = matrixCtor(a * other)
     override operator fun times(other: Long) = this * elementCtor(other)
@@ -44,15 +48,8 @@ abstract class Matrix1x1<N, Norm : GeneralNumber<Norm, Norm>, M>(
 
     override operator fun div(other: Long) = this / elementCtor(other)
 
-    operator fun get(row: Int, col: Int) = when {
-        row == 1 && col == 1 -> a
-        else -> throw IndexOutOfBoundsException(
-            "Matrices use 1-based indexing: $row, $col")
-    }
-
     override fun isDiagonal() = true
     override fun isSymmetric() = true
-    override fun isHermitian() = true
     override fun isZero() = isDiagonal() && a.isZero()
     override fun isUnit() = isDiagonal() && a.isUnit()
 
@@ -61,8 +58,6 @@ abstract class Matrix1x1<N, Norm : GeneralNumber<Norm, Norm>, M>(
 
     override fun symmetricPart() = (this + T) / elementCtor(2L)
     override fun antisymmetricPart() = (this - T) / elementCtor(2L)
-
-    fun equivalent(other: Matrix1x1<*, *, *>) = a.equivalent(other.a)
 
     @Suppress("UNCHECKED_CAST")
     override fun equals(other: Any?) = this === other ||

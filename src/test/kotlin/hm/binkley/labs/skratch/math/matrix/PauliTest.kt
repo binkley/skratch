@@ -1,3 +1,5 @@
+@file:Suppress("TestFunctionName", "NonAsciiCharacters")
+
 package hm.binkley.labs.skratch.math.matrix
 
 import hm.binkley.labs.skratch.math.matrix.Pauli.Companion.I

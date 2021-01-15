@@ -27,6 +27,7 @@ class Rational(n: Long, d: Long) :
         Rational(numerator * other.denominator + other.numerator * denominator,
             denominator * other.denominator)
 
+    override fun unaryDiv() = Rational(denominator, numerator)
     override fun times(other: Rational) =
         Rational(numerator * other.numerator, denominator * other.denominator)
 
@@ -34,8 +35,6 @@ class Rational(n: Long, d: Long) :
     override fun div(other: Rational) = this * other.multInv
     override fun div(other: Long) = this / Rational(other)
 
-    override val multInv: Rational
-        get() = Rational(denominator, numerator)
     override val conj: Rational
         get() = this
     override val absoluteValue: Rational

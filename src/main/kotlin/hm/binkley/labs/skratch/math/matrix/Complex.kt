@@ -13,6 +13,8 @@ data class Complex(
     override fun unaryMinus() = Complex(-re, -im)
     override fun plus(other: Complex) = Complex(re + other.re, im + other.im)
 
+    override fun unaryDiv() = conj / squareNorm
+
     override fun times(other: Complex) = Complex(
         re * other.re - im * other.im,
         re * other.im + im * other.re)
@@ -24,7 +26,6 @@ data class Complex(
     operator fun div(other: Rational) = Complex(re / other, im / other)
     override operator fun div(other: Long) = this / Rational(other)
 
-    override val multInv get() = conj / squareNorm
     override val conj get() = Complex(re, -im)
     override val absoluteValue get() = squareNorm.root as Rational
     override val squareNorm get() = re * re + im * im

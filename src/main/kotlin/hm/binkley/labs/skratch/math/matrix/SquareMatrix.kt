@@ -2,26 +2,26 @@ package hm.binkley.labs.skratch.math.matrix
 
 abstract class SquareMatrix<N, Norm : GeneralNumber<Norm, Norm>, M>(
     val rank: Int,
+    values: List<N>,
 ) :
+    Matrix<N, Norm, M>(rank, rank, values),
     Additive<M>,
     Multiplicative<M>,
     Scalable<M>
         where N : GeneralNumber<N, Norm>,
               M : SquareMatrix<N, Norm, M> {
-    abstract val det: N
-    abstract val tr: N
-    abstract val conj: M
-    abstract val T: M
-    abstract val adj: M
-    val hermitian get() = T.conj
+    abstract val det: N // TODO: General algorithm for determinant
+    val tr
+        get() = (1..rank).map {
+            this[it, it]
+        }.reduce { acc, n -> acc + n }
 
-    abstract operator fun times(other: N): M
-    override val multInv get() = adj / det
-    operator fun div(other: N): M = this * other.multInv
+    abstract val adj: M // TODO: adjoint vs adjugate
+
+    override fun unaryDiv() = adj / det
 
     abstract fun isDiagonal(): Boolean
     abstract fun isSymmetric(): Boolean
-    abstract fun isHermitian(): Boolean
     fun isSingular() = det.isZero()
 
     @Suppress("UNCHECKED_CAST")
@@ -32,9 +32,6 @@ abstract class SquareMatrix<N, Norm : GeneralNumber<Norm, Norm>, M>(
 
     abstract fun isUpperTriangular(): Boolean
     abstract fun isLowerTriangular(): Boolean
-
-    @Suppress("UNCHECKED_CAST")
-    fun isUnitary() = (this.hermitian * this as M).isUnit()
 
     abstract fun symmetricPart(): M
     abstract fun antisymmetricPart(): M

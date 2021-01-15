@@ -19,16 +19,17 @@ class FibMatrix(
     ) = throw AssertionError("BUG: Did not override other method")
 
     override val T: FibMatrix get() = this
-    override val multInv: FibMatrix get() = FibMatrix(-characteristic)
     override val conj: FibMatrix get() = this
     override val adj: FibMatrix get() = TODO("No adj of a Fibonacci")
 
+    /** TODO: Consider `-Fib(n) ≡ Fib(-n)`? */
     override fun unaryMinus() = TODO("Think through")
     override fun plus(other: FibMatrix) = TODO("Think through")
     override fun minus(other: FibMatrix) = TODO("Think through")
     override fun times(other: FibMatrix) =
         FibMatrix(characteristic + other.characteristic)
 
+    override fun unaryDiv() = FibMatrix(-characteristic)
     override fun times(other: Rational) = TODO("Think through")
     override fun div(other: FibMatrix) =
         FibMatrix(characteristic - other.characteristic)
