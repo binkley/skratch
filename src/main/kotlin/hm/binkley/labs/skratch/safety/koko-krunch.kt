@@ -10,10 +10,10 @@ import java.nio.ByteBuffer.allocate
 inline fun <reified T> ByteArray.read(): T = read(T::class.java)
 
 /** @todo Freeze/thaw supertype fields */
-fun <T> ByteArray.read(expectedClazz: Class<T>): T {
+fun <T> ByteArray.read(expectedClass: Class<T>): T {
     val buf = ByteBuffer.wrap(this)
 
-    val expectedClassName = expectedClazz.name
+    val expectedClassName = expectedClass.name
     val actualClassName = buf.readString()
     assert(expectedClassName == actualClassName) {
         "TODO: Supertype and interfaces for target expected class: expected $expectedClassName; got $actualClassName"
@@ -23,7 +23,7 @@ fun <T> ByteArray.read(expectedClazz: Class<T>): T {
     @Suppress("UNCHECKED_CAST") val instance =
         unsafe.allocateInstance(actualClazz) as T
 
-    val expectedFieldCount = expectedClazz.serializedFields.size
+    val expectedFieldCount = expectedClass.serializedFields.size
     val actualFieldCount = buf.readInt()
     assert(expectedFieldCount == actualFieldCount) {
         "Field counts changed between class versions: expected $expectedFieldCount; got $actualFieldCount"
