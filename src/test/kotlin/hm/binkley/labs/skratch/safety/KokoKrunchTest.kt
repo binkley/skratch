@@ -5,10 +5,11 @@ import org.junit.jupiter.api.assertThrows
 import kotlin.test.assertEquals
 
 private val written = TestFoo(
-    b = 3.toByte(),
+    bool = true,
+    byte = 3.toByte(),
     d = null,
     i = 13,
-    s = "BOB",
+    text = "BOB",
 )
 
 internal class KokoKrunchTest {
@@ -21,7 +22,7 @@ internal class KokoKrunchTest {
     }
 
     @Test
-    fun `should complain on bad sentinel`() {
+    fun `should complain about bad sentinel`() {
         val bytes = written.write().apply {
             this[size - 1] = 1.toByte()
         }
@@ -32,7 +33,7 @@ internal class KokoKrunchTest {
     }
 
     @Test
-    fun `should complain on extra bytes`() {
+    fun `should complain about extra bytes`() {
         val bytes = with(written.write()) {
             copyOf(size + 1)
         }
@@ -41,11 +42,30 @@ internal class KokoKrunchTest {
             bytes.read<TestFoo>()
         }
     }
+
+    @Test
+    fun `should complain about missing fields`() {
+        val bytes = written.write()
+
+        assertThrows<AssertionError> {
+            bytes.read<TestFoo_NextGen>()
+        }
+    }
 }
 
 private data class TestFoo(
-    val s: String,
-    val b: Byte,
-    val i: Int,
+    val text: String,
+    val byte: Byte,
+    val bool: Boolean,
     val d: Double?,
+    val i: Int,
+)
+
+private data class TestFoo_NextGen(
+    val text: String,
+    val byte: Byte,
+    val bool: Boolean,
+    val d: Double?,
+    val i: Int,
+    val new: Long,
 )
