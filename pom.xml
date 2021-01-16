@@ -39,6 +39,7 @@
         <kotlin.version>1.4.21</kotlin.version>
         <kotlinx-cli.version>0.3</kotlinx-cli.version>
         <kotlinx-coroutines.version>1.4.2</kotlinx-coroutines.version>
+        <lz4-java.version>1.7.1</lz4-java.version>
         <main.class>hm.binkley.labs.skratch.SkratchKt</main.class>
         <maven-assembly-plugin.version>3.3.0</maven-assembly-plugin.version>
         <maven-clean-plugin.version>3.1.0</maven-clean-plugin.version>
@@ -140,6 +141,12 @@
             <groupId>net.objecthunter</groupId>
             <artifactId>exp4j</artifactId>
             <version>${exp4j.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.lz4</groupId>
+            <artifactId>lz4-java</artifactId>
+            <version>${lz4-java.version}</version>
         </dependency>
 
         <dependency>
