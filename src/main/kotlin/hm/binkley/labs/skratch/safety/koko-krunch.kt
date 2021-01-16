@@ -1,10 +1,66 @@
 package hm.binkley.labs.skratch.safety
 
+import sun.misc.Unsafe
 import java.lang.reflect.Field
 import java.lang.reflect.Modifier.isStatic
 import java.lang.reflect.Modifier.isTransient
 import java.nio.ByteBuffer
 import java.nio.ByteBuffer.allocate
+
+fun <T> ByteArray.read(): T {
+    val buf = ByteBuffer.wrap(this)
+
+    val className = buf.readString()
+
+    @Suppress("UNCHECKED_CAST") val clazz =
+        Class.forName(className) as Class<T>
+    @Suppress("UNCHECKED_CAST") val instance =
+        unsafe.allocateInstance(clazz) as T
+
+    buf.int
+    val count = buf.int
+    buf.get()
+
+    // TODO: Validate field count the same
+
+    for (n in 1..count) {
+        val fieldName = buf.readString()
+        val field = clazz.getDeclaredField(fieldName).apply {
+            isAccessible = true
+        }
+
+        val fieldClassName = buf.readString()
+
+        val len = buf.int
+        val value: Any?
+        if (-1 == len) {
+            value = null
+        } else {
+            value = when (fieldClassName) {
+                Boolean::class.java.name -> 0.toByte() != buf.get()
+                Byte::class.java.name -> buf.get()
+                Char::class.java.name -> buf.char
+                Double::class.java.name -> buf.double
+                Float::class.java.name -> buf.float
+                Int::class.java.name -> buf.int
+                Long::class.java.name -> buf.long
+                String::class.java.name -> {
+                    val tmp = ByteArray(len)
+                    buf.get(tmp)
+                    String(tmp)
+                }
+                else -> TODO("All the rest")
+            }
+        }
+        buf.get()
+
+        field.set(instance, value)
+    }
+
+    buf.get()
+
+    return instance
+}
 
 /**
  * Write out byte array representing a serialized object:
@@ -48,6 +104,18 @@ fun Any.write(): ByteArray {
     buf.put(0)
 
     return buf.array()
+}
+
+private val unsafe = Unsafe::class.java.getDeclaredField("theUnsafe").apply {
+    isAccessible = true
+}.get(null) as Unsafe
+
+private fun ByteBuffer.readString(): String {
+    val len = int
+    val tmp = ByteArray(len)
+    get(tmp)
+    get()
+    return String(tmp)
 }
 
 private val Field.isStatic get() = isStatic(modifiers)

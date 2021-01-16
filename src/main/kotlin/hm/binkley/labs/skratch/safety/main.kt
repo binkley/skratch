@@ -12,15 +12,16 @@ fun main() {
     )
     val bytes = cereal.write()
 
-    println("$cereal -> ${bytes.pretty()}")
-    bytes.dump()
+    println("WRITE -> $cereal")
+    println("BYTES -> ${bytes.pretty()}")
+    println("READ -> ${bytes.read<Cereal>()}")
 }
 
-private val unsafe = Unsafe::class.java.getDeclaredField("theUnsafe").apply {
-    isAccessible = true
-}.get(null) as Unsafe
-
 private fun ByteArray.dump() {
+    val unsafe = Unsafe::class.java.getDeclaredField("theUnsafe").apply {
+        isAccessible = true
+    }.get(null) as Unsafe
+
     val buf = ByteBuffer.wrap(this)
 
     var len = buf.int
