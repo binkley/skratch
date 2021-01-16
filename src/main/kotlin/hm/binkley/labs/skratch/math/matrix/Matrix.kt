@@ -24,37 +24,28 @@ abstract class Matrix<N, Norm : GeneralNumber<Norm, Norm>, M>(
     operator fun get(row: Int, col: Int) =
         values[(row - 1) * cols + (col - 1)]
 
-    private inner class Row(private val row: Int) {
-        val values: List<N>
-            get() {
-                val n = row - 1
-                return this@Matrix.values.filterIndexed { index, _ ->
-                    n == (index / cols)
-                }
-            }
+    private inner class Row(n: Int) : List<N> by row(n)
 
-        operator fun times(col: Col) = values.zip(col.values)
-            .map { (a, b) -> a * b }
-            .reduce { acc, it -> acc + it }
+    private val Int.asRowNumber get() = (this / cols) + 1
+    private fun row(row: Int) = values.filterIndexed { index, _ ->
+        row == index.asRowNumber
     }
 
-    private inner class Col(private val col: Int) {
-        val values: List<N>
-            get() {
-                val n = col - 1
-                return this@Matrix.values.filterIndexed { index, _ ->
-                    n == (index % cols)
-                }
-            }
+    private inner class Col(n: Int) : List<N> by col(n)
+
+    private val Int.asColNumber get() = (this % cols) + 1
+    private fun col(col: Int) = values.filterIndexed { index, _ ->
+        col == index.asColNumber
     }
 
-    override operator fun times(other: M): M {
-        val values: MutableList<N> = ArrayList(values.size)
-        for (i in 1..rows)
-            for (j in 1..cols)
-                values.add(Row(i) * Col(j))
-        return matrixCtor(values)
-    }
+    private operator fun Row.times(col: Col) = this.zip(col)
+        .map { (r, c) -> r * c }
+        .reduce { acc, it -> acc + it }
+
+    override operator fun times(other: M) = matrixCtor(
+        (1..rows).map { Row(it) }
+            .flatMap { row -> (1..cols).map { row to Col(it) } }
+            .map { (row, col) -> row * col })
 
     open operator fun times(other: N) = matrixCtor(values.map {
         it * other
