@@ -16,13 +16,55 @@ fun main() {
 
 private fun ByteArray.dump() {
     val buf = ByteBuffer.wrap(this)
-    val length = buf.int
-    println("CLASS NAME LENGTH -> $length")
-    val className = String(buf.slice(buf.position(), length).array())
-    println("CLASS NAME -> $className")
-    assert(buf.int == 4)
-    val fieldCount = buf.int
-    println("FIELD COUNT -> $fieldCount")
+
+    var len = buf.int
+    var tmp = ByteArray(len)
+    buf.get(tmp)
+    buf.get()
+    println("CLASS NAME -> ${String(tmp)}")
+
+    buf.int
+    val count = buf.int
+    buf.get()
+    println("FIELD COUNT -> $count")
+
+    for (n in 1..count) {
+        println("FIELD #$n")
+
+        len = buf.int
+        tmp = ByteArray(len)
+        buf.get(tmp)
+        buf.get()
+        val fieldName = String(tmp)
+        println("FIELD NAME -> $fieldName")
+
+        len = buf.int
+        tmp = ByteArray(len)
+        buf.get(tmp)
+        buf.get()
+        val fieldClassName = String(tmp)
+        println("FIELD CLASS NAME -> $fieldClassName")
+
+        len = buf.int
+        val value = when (fieldClassName) {
+            Byte::class.java.name -> buf.get()
+            Char::class.java.name -> buf.char
+            Double::class.java.name -> buf.double
+            Float::class.java.name -> buf.float
+            Int::class.java.name -> buf.int
+            Long::class.java.name -> buf.long
+            String::class.java.name -> {
+                tmp = ByteArray(len)
+                buf.get(tmp)
+                String(tmp)
+            }
+            else -> TODO("All the rest")
+        }
+        buf.get()
+        println("FIELD VALUE -> $value")
+    }
+
+    buf.get()
 }
 
 /**
