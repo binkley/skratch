@@ -94,7 +94,3 @@ private fun ByteArray.dump() {
 
     println("INSTANCE -> $instance")
 }
-
-private fun ByteArray.pretty() = joinToString(" ", "[", "]") {
-    "\\x%02x".format(it)
-}

@@ -11,7 +11,6 @@ fun <T> ByteArray.read(): T {
     val buf = ByteBuffer.wrap(this)
 
     val className = buf.readString()
-
     @Suppress("UNCHECKED_CAST") val clazz =
         Class.forName(className) as Class<T>
     @Suppress("UNCHECKED_CAST") val instance =
@@ -19,7 +18,7 @@ fun <T> ByteArray.read(): T {
 
     buf.int
     val count = buf.int
-    buf.get()
+    buf.assertSentinel()
 
     // TODO: Validate field count the same
 
@@ -52,12 +51,13 @@ fun <T> ByteArray.read(): T {
                 else -> TODO("All the rest")
             }
         }
-        buf.get()
+        buf.assertSentinel()
 
         field.set(instance, value)
     }
 
-    buf.get()
+    buf.assertSentinel()
+    buf.assertComplete()
 
     return instance
 }
@@ -114,7 +114,7 @@ private fun ByteBuffer.readString(): String {
     val len = int
     val tmp = ByteArray(len)
     get(tmp)
-    get()
+    assertSentinel()
     return String(tmp)
 }
 
@@ -124,8 +124,7 @@ private val Field.isTransient get() = isTransient(modifiers)
 private typealias Prep = Pair<Int, (ByteBuffer) -> ByteBuffer>
 
 private val Prep.allocateSize
-    get() =
-        Int.SIZE_BYTES + (if (-1 == first) 0 else first) + 1
+    get() = Int.SIZE_BYTES + (if (-1 == first) 0 else first) + 1
 
 private fun Prep.writeTo(buf: ByteBuffer) = buf.apply {
     putInt(first)
@@ -163,4 +162,21 @@ private data class ClassInfo(
         typeName,
         value
     ).map { it.study() }
+}
+
+private fun ByteBuffer.assertSentinel() = get().also {
+    assert(0.toByte() == it) {
+        "Corrupted terminal: ${it.pretty()} @ ${position() - 1}"
+    }
+}
+
+private fun ByteBuffer.assertComplete() = assert(0 == remaining()) {
+    "Extra bytes remaining after object read from buffer: ${
+        slice().array().pretty()
+    } @ ${position() - 1}"
+}
+
+internal fun Byte.pretty() = "\\x%02x".format(this)
+internal fun ByteArray.pretty() = joinToString(" ", "[", "]") {
+    it.pretty()
 }
