@@ -68,18 +68,6 @@ abstract class Matrix2x2<N, Norm : GeneralNumber<Norm, Norm>, M>(
         c + other.c,
         d + other.d)
 
-    override operator fun times(other: M) = matrixCtor(
-        a * other.a + b * other.c,
-        a * other.b + b * other.d,
-        c * other.a + d * other.c,
-        c * other.b + d * other.d)
-
-    override operator fun times(other: N) = matrixCtor(
-        a * other,
-        b * other,
-        c * other,
-        d * other)
-
     override operator fun times(other: Long) = this * elementCtor(other)
 
     override operator fun div(other: M): M =

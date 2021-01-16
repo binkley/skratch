@@ -37,8 +37,6 @@ abstract class Matrix1x1<N, Norm : GeneralNumber<Norm, Norm>, M>(
 
     override operator fun plus(other: M) = matrixCtor(a + other.a)
 
-    override operator fun times(other: M) = matrixCtor(a * other.a)
-    override operator fun times(other: N) = matrixCtor(a * other)
     override operator fun times(other: Long) = this * elementCtor(other)
 
     override operator fun div(other: M): M =
