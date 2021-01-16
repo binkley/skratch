@@ -1,117 +1,10 @@
 package hm.binkley.labs.skratch.safety
 
-import sun.misc.Unsafe
 import java.lang.reflect.Field
 import java.lang.reflect.Modifier.isStatic
 import java.lang.reflect.Modifier.isTransient
 import java.nio.ByteBuffer
 import java.nio.ByteBuffer.allocate
-
-fun main() {
-    val cereal = Cereal(
-        byte = 0b01010101,
-        d = null,
-        int = 3,
-        string = "THREE",
-    )
-    val bytes = cereal.write()
-
-    println("$cereal -> ${bytes.pretty()}")
-    bytes.dump()
-}
-
-private val unsafe = Unsafe::class.java.getDeclaredField("theUnsafe").apply {
-    isAccessible = true
-}.get(null) as Unsafe
-
-private fun ByteArray.dump() {
-    val buf = ByteBuffer.wrap(this)
-
-    var len = buf.int
-    var tmp = ByteArray(len)
-    buf.get(tmp)
-    buf.get()
-    val className = String(tmp)
-
-    val clazz = Class.forName(className)
-    val instance = unsafe.allocateInstance(clazz)
-
-    println("CLASS NAME -> $className -> BLANK: $instance")
-
-    buf.int
-    val count = buf.int
-    buf.get()
-    println("FIELD COUNT -> $count")
-
-    // TODO: Validate field count the same
-
-    for (n in 1..count) {
-        println("FIELD #$n")
-
-        len = buf.int
-        tmp = ByteArray(len)
-        buf.get(tmp)
-        buf.get()
-        val fieldName = String(tmp)
-        val field = clazz.getDeclaredField(fieldName).apply {
-            isAccessible = true
-        }
-
-        println("FIELD NAME -> $fieldName -> $field")
-
-        len = buf.int
-        tmp = ByteArray(len)
-        buf.get(tmp)
-        buf.get()
-        val fieldClassName = String(tmp)
-        println("FIELD CLASS NAME -> $fieldClassName")
-
-        len = buf.int
-        val value: Any?
-        if (-1 == len) {
-            value = null
-        } else {
-            value = when (fieldClassName) {
-                Boolean::class.java.name -> 0.toByte() != buf.get()
-                Byte::class.java.name -> buf.get()
-                Char::class.java.name -> buf.char
-                Double::class.java.name -> buf.double
-                Float::class.java.name -> buf.float
-                Int::class.java.name -> buf.int
-                Long::class.java.name -> buf.long
-                String::class.java.name -> {
-                    tmp = ByteArray(len)
-                    buf.get(tmp)
-                    String(tmp)
-                }
-                else -> TODO("All the rest")
-            }
-        }
-        buf.get()
-        println("FIELD VALUE -> $value")
-
-        field.set(instance, value)
-    }
-
-    buf.get()
-
-    println("INSTANCE -> $instance")
-}
-
-private data class ClassInfo(
-    val name: String,
-    val typeName: String,
-    val value: Any?,
-) {
-    constructor(field: Field, o: Any)
-            : this(field.name, field.type.name, field.get(o))
-
-    fun study() = listOf(
-        name,
-        typeName,
-        value
-    ).map { it.study() }
-}
 
 /**
  * Write out byte array representing a serialized object:
@@ -145,8 +38,10 @@ fun Any.write(): ByteArray {
         it.study()
     }
 
-    val preps = listOf(this::class.java.name.study(), fields.size.study()) +
-            fieldPreps
+    val preps = listOf(
+        this::class.java.name.study(),
+        fields.size.study()
+    ) + fieldPreps
     val buf = allocate(preps.map { it.allocateSize }.sum() + 1)
 
     preps.forEach { it.writeTo(buf) }
@@ -158,7 +53,7 @@ fun Any.write(): ByteArray {
 private val Field.isStatic get() = isStatic(modifiers)
 private val Field.isTransient get() = isTransient(modifiers)
 
-typealias Prep = Pair<Int, (ByteBuffer) -> ByteBuffer>
+private typealias Prep = Pair<Int, (ByteBuffer) -> ByteBuffer>
 
 private val Prep.allocateSize
     get() =
@@ -187,13 +82,17 @@ private fun <T> T?.study(): Prep = when (this) {
     else -> TODO("Other types? Recursion for embedded objs: $this")
 }
 
-private fun ByteArray.pretty() = joinToString(" ", "[", "]") {
-    "\\x%02x".format(it)
-}
+private data class ClassInfo(
+    val name: String,
+    val typeName: String,
+    val value: Any?,
+) {
+    constructor(field: Field, o: Any)
+            : this(field.name, field.type.name, field.get(o))
 
-private data class Cereal(
-    val string: String,
-    val int: Int,
-    val byte: Byte,
-    val d: Double?,
-)
+    fun study() = listOf(
+        name,
+        typeName,
+        value
+    ).map { it.study() }
+}
