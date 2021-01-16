@@ -4,7 +4,7 @@ abstract class SquareMatrix<N, Norm : GeneralNumber<Norm, Norm>, M>(
     val rank: Int,
     values: List<N>,
 ) :
-    Matrix<N, Norm, M>(rank, rank, values),
+    GeneralMatrix<N, Norm, M>(rank, rank, values),
     Additive<M>,
     Multiplicative<M>,
     Scalable<M>

@@ -1,6 +1,6 @@
 package hm.binkley.labs.skratch.math.matrix
 
-abstract class Matrix<N, Norm : GeneralNumber<Norm, Norm>, M>(
+abstract class GeneralMatrix<N, Norm : GeneralNumber<Norm, Norm>, M>(
     val rows: Int,
     val cols: Int,
     private val values: List<N>,
@@ -9,7 +9,7 @@ abstract class Matrix<N, Norm : GeneralNumber<Norm, Norm>, M>(
     Multiplicative<M>,
     Scalable<M>
         where N : GeneralNumber<N, Norm>, // TODO: Conjugable
-              M : Matrix<N, Norm, M> {
+              M : GeneralMatrix<N, Norm, M> {
     abstract val conj: M // TODO: Implement conjugate algorithm
     abstract val T: M // TODO: Implement transpose algorithm
     val hermitian get() = T.conj
@@ -58,7 +58,7 @@ abstract class Matrix<N, Norm : GeneralNumber<Norm, Norm>, M>(
     @Suppress("UNCHECKED_CAST")
     fun isUnitary() = (hermitian * this as M).isUnit()
 
-    fun equivalent(other: Matrix<*, *, *>) =
+    fun equivalent(other: GeneralMatrix<*, *, *>) =
         values.size == other.values.size &&
                 values.zip(other.values) { a, b -> a.equivalent(b) }
                     .reduce { acc, it -> acc && it }
