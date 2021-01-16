@@ -9,22 +9,25 @@ import java.io.Serializable
 import java.lang.System.out
 
 fun main() {
-    val buf = ByteArrayOutputStream()
-    val serialOut = ObjectOutputStream(buf)
-
     val safe = Foo("OK")
     println("SAFE -> $safe")
 
-    serialOut.writeObject(safe)
-
-    val data = buf.toByteArray()
+    val data = write(safe)
 
     prettyPrint(out, data)
 
-    val serialIn = ObjectInputStream(ByteArrayInputStream(data))
-    val wonky = serialIn.readObject() as Foo
-
+    val wonky = read<Foo>(data)
     println("WONKY -> $wonky")
+}
+
+@Suppress("UNCHECKED_CAST")
+private fun <T> read(data: ByteArray): T =
+    ObjectInputStream(ByteArrayInputStream(data)).readObject() as T
+
+private fun write(o: Any): ByteArray {
+    val buf = ByteArrayOutputStream()
+    ObjectOutputStream(buf).writeObject(o)
+    return buf.toByteArray()
 }
 
 private fun prettyPrint(out: PrintStream, data: ByteArray) {
