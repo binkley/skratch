@@ -20,16 +20,13 @@ fun main() {
     println("WONKY -> $wonky")
 }
 
-@Suppress("UNCHECKED_CAST")
-private fun <T> read(data: ByteArray): T =
-    ObjectInputStream(ByteArrayInputStream(data)).readObject() as T
-
 private fun write(o: Any): ByteArray {
     val buf = ByteArrayOutputStream()
     ObjectOutputStream(buf).writeObject(o)
     return buf.toByteArray()
 }
 
+@Suppress("SameParameterValue")
 private fun prettyPrint(out: PrintStream, data: ByteArray) {
     out.println(data.joinToString(" ", "[", "]") {
         "\\x%02X".format(it)
@@ -40,6 +37,10 @@ private fun prettyPrint(out: PrintStream, data: ByteArray) {
         'K'.toByte() -> data[i] = 'O'.toByte()
     }
 }
+
+@Suppress("UNCHECKED_CAST")
+private fun <T> read(data: ByteArray): T =
+    ObjectInputStream(ByteArrayInputStream(data)).readObject() as T
 
 data class Foo(val s: String) : Serializable {
     init {
