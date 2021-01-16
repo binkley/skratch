@@ -8,38 +8,58 @@ import java.nio.ByteBuffer
 import java.nio.ByteBuffer.allocate
 
 fun main() {
-    val cereal = Cereal(3, "THREE")
-    println("$cereal -> ${cereal.write().pretty()}")
+    val cereal = Cereal(s = "THREE", i = 3)
+    val bytes = cereal.write()
+
+    println("$cereal -> ${bytes.pretty()}")
+    bytes.dump()
 }
 
-// TODO: Richer return type -- eg, ByteArray, streams, et al
-private fun Any.write(): ByteArray {
-    val type = this::class.java.name
-    val typePrep = type.prep()
+private fun ByteArray.dump() {
+    val buf = ByteBuffer.wrap(this)
+    val length = buf.int
+    println("CLASS NAME LENGTH -> $length")
+    val className = String(buf.slice(buf.position(), length).array())
+    println("CLASS NAME -> $className")
+    assert(buf.int == 4)
+    val fieldCount = buf.int
+    println("FIELD COUNT -> $fieldCount")
+}
 
+/**
+ * Write out byte array representing a serialized object:
+ * - Each record has 3 parts:
+ *   1. Byte count of the value payload
+ *   2. The value payload in bytes
+ *   3. A terminating sentinel 0 byte
+ * - The complete byte array has an additional terminating sentinel 0 byte
+ * - First record is the object class name
+ * - Second record is a count of serialized fields
+ * - Following records are for each non-static, non-transient field, sorted by
+ *   field name alphabetically, each field contributing 3 more records:
+ *   1. The field name
+ *   2. The field type
+ *   3. The field value for the serialized object
+ */
+private fun Any.write(): ByteArray {
     val fields = this::class.java.declaredFields.filterNot {
         it.isStatic || it.isTransient
     }
-    val fieldCountPrep = fields.size.prep()
 
-    val fieldBufs = fields.onEach {
+    val fieldPreps = fields.onEach {
         if (!it.trySetAccessible())
             throw InaccessibleObjectException("Cannot read: $it")
     }.sortedWith { a, b ->
         a.name.compareTo(b.name)
-    }.map {
-        it.write(this)
+    }.flatMap {
+        listOf(it.name.study(), it.type.name.study(), it.get(0).study())
     }
 
-    val buf = allocate(
-        typePrep.allocateSize +
-                fieldCountPrep.allocateSize +
-                fieldBufs.map { it.size }.sum() +
-                1)
+    val preps = listOf(this::class.java.name.study(), fields.size.study()) +
+            fieldPreps
+    val buf = allocate(preps.map { it.allocateSize }.sum() + 1)
 
-    typePrep.writeTo(buf)
-    fieldCountPrep.writeTo(buf)
-    fieldBufs.forEach { buf.put(it) }
+    preps.forEach { it.writeTo(buf) }
     buf.put(0)
 
     return buf.array()
@@ -53,7 +73,7 @@ typealias Prep = Pair<Int, (Int, ByteBuffer) -> ByteBuffer>
 private val Prep.allocateSize get() = Int.SIZE_BYTES + first + 1
 private fun Prep.writeTo(buf: ByteBuffer) = second(first, buf)
 
-private fun <T> T.prep(): Prep = when (this) {
+private fun <T> T.study(): Prep = when (this) {
     is Byte -> Byte.SIZE_BYTES to { size, buf ->
         buf.putInt(size)
         buf.put(this)
@@ -100,27 +120,8 @@ private fun <T> T.prep(): Prep = when (this) {
     else -> TODO("Other types? Recursion for embedded objs: $this")
 }
 
-private fun Field.write(o: Any): ByteArray {
-    val namePrep = name.prep()
-    val typePrep = type.name.prep()
-    val valuePrep = get(o).prep()
-
-    val buf = allocate(
-        namePrep.allocateSize +
-                typePrep.allocateSize +
-                valuePrep.allocateSize +
-                1)
-
-    namePrep.writeTo(buf)
-    typePrep.writeTo(buf)
-    valuePrep.writeTo(buf)
-    buf.put(0)
-
-    return buf.array()
-}
-
 private fun ByteArray.pretty() = joinToString(" ", "[", "]") {
     "\\x%02x".format(it)
 }
 
-private data class Cereal(val i: Int, val s: String)
+private data class Cereal(val s: String, val i: Int)
