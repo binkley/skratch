@@ -27,7 +27,7 @@ fun <T> ByteArray.read(clazz: Class<T>): T = try {
 
     instance
 } catch (e: BufferUnderflowException) {
-    throw AssertionError("Missing bytes: possibly corrupted, or class version changed")
+    throw AssertionError("Missing bytes: possibly truncated or corrupted, or class version changed")
 }
 
 /**
