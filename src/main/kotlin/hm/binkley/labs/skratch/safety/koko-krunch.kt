@@ -1,7 +1,6 @@
 package hm.binkley.labs.skratch.safety
 
 import java.lang.reflect.Field
-import java.lang.reflect.InaccessibleObjectException
 import java.lang.reflect.Modifier.isStatic
 import java.lang.reflect.Modifier.isTransient
 import java.nio.ByteBuffer
@@ -41,18 +40,17 @@ private fun ByteArray.dump() {
  *   2. The field type
  *   3. The field value for the serialized object
  */
-private fun Any.write(): ByteArray {
+fun Any.write(): ByteArray {
     val fields = this::class.java.declaredFields.filterNot {
         it.isStatic || it.isTransient
     }
 
     val fieldPreps = fields.onEach {
-        if (!it.trySetAccessible())
-            throw InaccessibleObjectException("Cannot read: $it")
+        it.isAccessible = true
     }.sortedWith { a, b ->
         a.name.compareTo(b.name)
     }.flatMap {
-        listOf(it.name.study(), it.type.name.study(), it.get(0).study())
+        listOf(it.name.study(), it.type.name.study(), it.get(this).study())
     }
 
     val preps = listOf(this::class.java.name.study(), fields.size.study()) +

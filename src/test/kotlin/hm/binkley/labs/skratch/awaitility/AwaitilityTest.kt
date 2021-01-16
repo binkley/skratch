@@ -3,8 +3,8 @@ package hm.binkley.labs.skratch.awaitility
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
 import org.awaitility.Awaitility.await
-import org.junit.Test
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 import java.lang.Thread.sleep
 import java.util.concurrent.TimeUnit.SECONDS
 
