@@ -4,69 +4,30 @@ import sun.misc.Unsafe
 import java.lang.reflect.Field
 import java.lang.reflect.Modifier.isStatic
 import java.lang.reflect.Modifier.isTransient
+import java.nio.BufferUnderflowException
 import java.nio.ByteBuffer
 import java.nio.ByteBuffer.allocate
 
 inline fun <reified T> ByteArray.read(): T = read(T::class.java)
 
 /** @todo Freeze/thaw supertype fields */
-fun <T> ByteArray.read(expectedClass: Class<T>): T {
+fun <T> ByteArray.read(clazz: Class<T>): T = try {
     val buf = ByteBuffer.wrap(this)
 
-    val expectedClassName = expectedClass.name
-    val actualClassName = buf.readString()
-    assert(expectedClassName == actualClassName) {
-        "TODO: Supertype and interfaces for target expected class: expected $expectedClassName; got $actualClassName"
-    }
-    @Suppress("UNCHECKED_CAST") val actualClazz =
-        Class.forName(actualClassName) as Class<T>
-    @Suppress("UNCHECKED_CAST") val instance =
-        unsafe.allocateInstance(actualClazz) as T
+    val instance = clazz.readFrom(buf) { blankInstance(it) }
+    val fieldCount = clazz.readFrom(buf) { fieldCount(it) }
 
-    val expectedFieldCount = expectedClass.serializedFields.size
-    val actualFieldCount = buf.readInt()
-    assert(expectedFieldCount == actualFieldCount) {
-        "Field counts changed between class versions: expected $expectedFieldCount; got $actualFieldCount"
-    }
-
-    for (n in 1..actualFieldCount) {
-        val fieldName = buf.readString()
-        val field = actualClazz.getDeclaredField(fieldName).apply {
-            isAccessible = true
-        }
-
-        val fieldClassName = buf.readString()
-
-        val len = buf.int
-        val value: Any?
-        if (-1 == len) {
-            value = null
-        } else {
-            value = when (fieldClassName) {
-                Boolean::class.java.name -> 0.toByte() != buf.get()
-                Byte::class.java.name -> buf.get()
-                Char::class.java.name -> buf.char
-                Double::class.java.name -> buf.double
-                Float::class.java.name -> buf.float
-                Int::class.java.name -> buf.int
-                Long::class.java.name -> buf.long
-                String::class.java.name -> {
-                    val tmp = ByteArray(len)
-                    buf.get(tmp)
-                    String(tmp)
-                }
-                else -> TODO("All the rest")
-            }
-        }
-        buf.assertSentinel()
-
+    for (n in 1..fieldCount) {
+        val (field, value) = clazz.readFrom(buf) { nextField(it) }
         field.set(instance, value)
     }
 
     buf.assertSentinel()
     buf.assertComplete()
 
-    return instance
+    instance
+} catch (e: BufferUnderflowException) {
+    throw AssertionError("Missing bytes: possibly corrupted, or class version changed")
 }
 
 /**
@@ -115,16 +76,81 @@ private val <T> Class<T>.serializedFields
         it.isAccessible = true
     }
 
+private fun <T> Class<T>.getSerializedField(name: String) = try {
+    getDeclaredField(name).apply {
+        isAccessible = true
+    }
+} catch (e: NoSuchFieldException) {
+    throw AssertionError("Bad field name: $name")
+}
+
+/** @todo Syntactic sugar causes cancer of the semicolon */
+private fun <T, R> Class<T>.readFrom(
+    buf: ByteBuffer,
+    block: ByteBuffer.(Class<T>) -> R,
+): R = buf.block(this)
+
+private fun <T> ByteBuffer.blankInstance(expectedClass: Class<T>): T {
+    val expectedClassName = expectedClass.name
+    val actualClassName = readString()
+    assert(expectedClassName == actualClassName) {
+        "TODO: Supertype and interfaces for target expected class: expected $expectedClassName; got $actualClassName"
+    }
+    @Suppress("UNCHECKED_CAST")
+    return unsafe.allocateInstance(expectedClass) as T
+}
+
+/**
+ * @todo Structure as a ByteBuffer extension method:
+ *       1. Read field count initially, returning an `Iterable<Field>`
+ *       2. Assertion that iterator does not run out of fields
+ *       3. After iterator finishes, assertion method on field count found
+ */
+private fun <T> ByteBuffer.fieldCount(expectedClass: Class<T>) =
+    readInt().also {
+        val expectedFieldCount = expectedClass.serializedFields.size
+        assert(expectedFieldCount == it) {
+            "Field counts changed between class versions: expected $expectedFieldCount; got $it"
+        }
+    }
+
+private fun <T> ByteBuffer.nextField(clazz: Class<T>): Pair<Field, Any?> {
+    val field = readField(clazz)
+
+    val len = int
+    val value: Any?
+    if (-1 == len) {
+        value = null
+    } else {
+        value = when (field.type.name) {
+            Boolean::class.java.name -> 0.toByte() != get()
+            Byte::class.java.name -> get()
+            Char::class.java.name -> char
+            Double::class.java.name -> double
+            Float::class.java.name -> float
+            Int::class.java.name -> int
+            Long::class.java.name -> long
+            String::class.java.name -> ByteArray(len).let {
+                get(it)
+                String(it)
+            }
+            else -> TODO("All the rest")
+        }
+    }
+
+    assertSentinel()
+
+    return field to value
+}
+
 private val unsafe = Unsafe::class.java.getDeclaredField("theUnsafe").apply {
     isAccessible = true
 }.get(null) as Unsafe
 
-private fun ByteBuffer.readString(): String {
-    val len = int
-    val tmp = ByteArray(len)
-    get(tmp)
+private fun ByteBuffer.readString() = ByteArray(int).let {
+    get(it)
     assertSentinel()
-    return String(tmp)
+    String(it)
 }
 
 private fun ByteBuffer.readInt(): Int {
@@ -132,9 +158,9 @@ private fun ByteBuffer.readInt(): Int {
     assert(Int.SIZE_BYTES == len) {
         "Expected int to be ${Int.SIZE_BYTES} bytes, not $len"
     }
-    val value = int
-    assertSentinel()
-    return value
+    return int.also {
+        assertSentinel()
+    }
 }
 
 private val Field.isStatic get() = isStatic(modifiers)
@@ -189,18 +215,20 @@ private fun ByteBuffer.assertSentinel() = get().also {
     }
 }
 
-/**
- * @todo Structure as a ByteBuffer extension method:
- *       1. Read field count initially, returning an `Iterable<Field>`
- *       2. Assertion that iterator does not run out of fields
- *       3. After iterator finishes, assertion method on field count found
- */
-private fun ByteBuffer.assertAllFieldsPresent(
-    expected: Int,
-    actual: Int,
-) = assert(expected == actual) {
-    "Missing fields: expected $expected, got $actual"
-}
+private fun <T> ByteBuffer.readField(clazz: Class<T>) =
+    readString().let { fieldName ->
+        val field = try {
+            clazz.getSerializedField(fieldName)
+        } catch (e: NoSuchFieldException) {
+            throw AssertionError("Bad field name: $fieldName")
+        }
+        val expectedFieldTypeName = field.type.name
+        val actualFieldTypeName = readString()
+        assert(expectedFieldTypeName == actualFieldTypeName) {
+            "Field type changed between class versions: expected $expectedFieldTypeName; got $actualFieldTypeName"
+        }
+        field
+    }
 
 private fun ByteBuffer.assertComplete() = assert(0 == remaining()) {
     "Extra bytes remaining after object read from buffer: ${

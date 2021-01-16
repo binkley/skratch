@@ -1,21 +1,22 @@
 package hm.binkley.labs.skratch.safety
 
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
 import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
 
 private val written = TestFoo(
     bool = true,
     byte = 3.toByte(),
     d = null,
-    i = 13,
     text = "BOB",
+    z = 13,
 )
 
 internal class KokoKrunchTest {
     @Test
     fun `should round trip`() {
         val bytes = written.write()
+
         val read = bytes.read<TestFoo>()
 
         assertEquals(written, read)
@@ -27,7 +28,65 @@ internal class KokoKrunchTest {
             this[size - 1] = 1.toByte()
         }
 
-        assertThrows<AssertionError> {
+        assertFailsWith<AssertionError> {
+            bytes.read<TestFoo>()
+        }
+    }
+
+    @Test
+    fun `should complain about wrong class type`() {
+        val bytes = written.write().apply {
+            this[indexOf('F'.toByte())] = 'G'.toByte()
+        }
+
+        assertFailsWith<AssertionError> {
+            bytes.read<TestFoo>()
+        }
+    }
+
+    @Test
+    fun `should complain about wrong int size`() {
+        val bytes = written.write().apply {
+            this[indexOf(4.toByte())] = 3.toByte()
+        }
+
+        assertFailsWith<AssertionError> {
+            bytes.read<TestFoo>()
+        }
+    }
+
+    @Test
+    fun `should complain about wrong field count for class`() {
+        val bytes = written.write().apply {
+            this[indexOf(5.toByte())] = 4.toByte()
+        }
+
+        assertFailsWith<AssertionError> {
+            bytes.read<TestFoo>()
+        }
+    }
+
+    @Test
+    fun `should complain about too few fields`() {
+        val bytes = with(written.write()) {
+            // Last field, "z" is an Int
+            val truncated = copyOf(size - Int.SIZE_BYTES - Int.SIZE_BYTES)
+            truncated[truncated.size - 1] = 0.toByte()
+            truncated
+        }
+
+        assertFailsWith<AssertionError> {
+            bytes.read<TestFoo>()
+        }
+    }
+
+    @Test
+    fun `should complain about wrong field type`() {
+        val bytes = written.write().apply {
+            this[indexOf('y'.toByte())] = 'z'.toByte()
+        }
+
+        assertFailsWith<AssertionError> {
             bytes.read<TestFoo>()
         }
     }
@@ -38,17 +97,8 @@ internal class KokoKrunchTest {
             copyOf(size + 1)
         }
 
-        assertThrows<AssertionError> {
+        assertFailsWith<AssertionError> {
             bytes.read<TestFoo>()
-        }
-    }
-
-    @Test
-    fun `should complain about missing fields`() {
-        val bytes = written.write()
-
-        assertThrows<AssertionError> {
-            bytes.read<TestFoo_NextGen>()
         }
     }
 }
@@ -58,14 +108,5 @@ private data class TestFoo(
     val byte: Byte,
     val bool: Boolean,
     val d: Double?,
-    val i: Int,
-)
-
-private data class TestFoo_NextGen(
-    val text: String,
-    val byte: Byte,
-    val bool: Boolean,
-    val d: Double?,
-    val i: Int,
-    val new: Long,
+    val z: Int,
 )
