@@ -15,12 +15,8 @@ fun <T> ByteArray.read(clazz: Class<T>): T = try {
     val buf = ByteBuffer.wrap(this)
 
     val instance = clazz.readFrom(buf) { blankInstance(it) }
-    val fieldCount = clazz.readFrom(buf) { fieldCount(it) }
-
-    for (n in 1..fieldCount) {
-        val (field, value) = clazz.readFrom(buf) { nextField(it) }
+    for ((field, value) in clazz.readFrom(buf) { fields(it) })
         field.set(instance, value)
-    }
 
     buf.assertSentinel()
     buf.assertComplete()
@@ -99,6 +95,26 @@ private fun <T> ByteBuffer.blankInstance(expectedClass: Class<T>): T {
     @Suppress("UNCHECKED_CAST")
     return unsafe.allocateInstance(expectedClass) as T
 }
+
+private class FieldIterable<T>(
+    private val buf: ByteBuffer,
+    private val clazz: Class<T>,
+    private val fieldCount: Int = clazz.readFrom(buf) { fieldCount(it) },
+) : Iterable<Pair<Field, Any?>> {
+    override fun iterator() = FieldIterator()
+
+    inner class FieldIterator : Iterator<Pair<Field, Any?>> {
+        private var n = 0
+
+        override fun hasNext() = fieldCount != n
+        override fun next() = clazz.readFrom(buf) { nextField(it) }.also {
+            ++n
+        }
+    }
+}
+
+private fun <T> ByteBuffer.fields(clazz: Class<T>) =
+    FieldIterable(this, clazz)
 
 /**
  * @todo Structure as a ByteBuffer extension method:
