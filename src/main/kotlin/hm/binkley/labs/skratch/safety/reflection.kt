@@ -22,6 +22,7 @@ internal val <T> Class<T>.serializedFields
         it.isAccessible = true
     }
 
+/** @todo Non-grossly move assertion to `validating.kt` */
 internal fun <T> Class<T>.getSerializedField(name: String) = try {
     getDeclaredField(name).apply {
         isAccessible = true

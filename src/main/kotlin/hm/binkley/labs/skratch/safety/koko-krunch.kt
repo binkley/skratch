@@ -2,13 +2,12 @@ package hm.binkley.labs.skratch.safety
 
 import java.lang.reflect.Field
 import java.nio.ByteBuffer
-import java.nio.ByteBuffer.allocate
 
 inline fun <reified T> ByteArray.read(): T = read(T::class.java)
 
 /** @todo Freeze/thaw supertype fields */
 fun <T> ByteArray.read(clazz: Class<T>): T =
-    ByteBuffer.wrap(this).assertEnoughData(clazz) {
+    toByteBuffer().assertEnoughData(clazz) {
         val instance = clazz.readFrom(this) { blankInstance(it) }
         for ((field, value) in clazz.readFrom(this) { fields(it) })
             field.set(instance, value)
@@ -37,20 +36,8 @@ fun <T> ByteArray.read(clazz: Class<T>): T =
  *   do not write a value
  */
 fun Any.write(): ByteArray {
-    val fields = this::class.java.serializedFields
-    val fieldPreps = fields.sortedWith { a, b ->
-        a.name.compareTo(b.name)
-    }.map {
-        ClassInfo(it, this)
-    }.flatMap {
-        it.study()
-    }
-
-    val preps = listOf(
-        this::class.java.name.study(),
-        fields.size.study()
-    ) + fieldPreps
-    val buf = allocate(preps.map { it.allocateSize }.sum() + 1)
+    val preps = classAndFieldPreps()
+    val buf = preps.newBuffer()
 
     preps.forEach { it.writeTo(buf) }
     buf.put(0)
@@ -58,23 +45,38 @@ fun Any.write(): ByteArray {
     return buf.array()
 }
 
-private fun <T> ByteBuffer.blankInstance(expectedClass: Class<T>): T {
-    assertClassName(expectedClass)
+private fun Any.classAndFieldPreps(): List<Prep> {
+    val fields = this::class.java.serializedFields.sortedWith { a, b ->
+        a.name.compareTo(b.name)
+    }
 
-    return expectedClass.newBlankInstance()
+    val classPreps = listOf(
+        this::class.java.name,
+        fields.size,
+    ).map { it.study() }
+
+    val fieldPreps = fields
+        .map { it.info(this) }
+        .flatMap { it.study() }
+
+    return classPreps + fieldPreps
 }
 
-private data class ClassInfo(
+private fun <T> ByteBuffer.blankInstance(expectedClass: Class<T>) =
+    assertClassName(expectedClass).let {
+        expectedClass.newBlankInstance()
+    }
+
+private data class FieldInfo(
     val name: String,
     val typeName: String,
     val value: Any?,
 ) {
-    constructor(field: Field, o: Any)
-            : this(field.name, field.type.name, field.get(o))
-
     fun study() = listOf(
         name,
         typeName,
         value
     ).map { it.study() }
 }
+
+private fun Field.info(o: Any) = FieldInfo(name, type.name, get(o))

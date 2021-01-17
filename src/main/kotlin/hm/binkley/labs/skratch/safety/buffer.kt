@@ -2,6 +2,11 @@ package hm.binkley.labs.skratch.safety
 
 import java.nio.ByteBuffer
 
+internal fun Iterable<Prep>.newBuffer() =
+    ByteBuffer.allocate(map { it.allocateSize }.sum() + 1)
+
+internal fun ByteArray.toByteBuffer() = ByteBuffer.wrap(this)
+
 /** @todo Syntactic sugar causes cancer of the semicolon */
 internal fun <T, R> Class<T>.readFrom(
     buf: ByteBuffer,
