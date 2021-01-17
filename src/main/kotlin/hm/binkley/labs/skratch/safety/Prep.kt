@@ -1,6 +1,5 @@
 package hm.binkley.labs.skratch.safety
 
-import java.lang.reflect.Field
 import java.nio.ByteBuffer
 
 internal typealias Prep = Pair<Int, (ByteBuffer) -> ByteBuffer>
