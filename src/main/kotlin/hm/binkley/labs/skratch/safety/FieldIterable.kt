@@ -1,6 +1,7 @@
 package hm.binkley.labs.skratch.safety
 
 import java.lang.reflect.Field
+import java.math.BigInteger
 import java.nio.ByteBuffer
 
 internal fun <T> ByteBuffer.fields(clazz: Class<T>)
@@ -49,6 +50,10 @@ private fun ByteBuffer.readValue(
     field: Field,
     len: Int,
 ) = when (field.type.name) {
+    BigInteger::class.java.name -> ByteArray(len).let {
+        get(it)
+        BigInteger(it)
+    }
     Boolean::class.java.name -> 0.toByte() != get()
     Byte::class.java.name -> get()
     Char::class.java.name -> char

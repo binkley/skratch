@@ -1,10 +1,13 @@
 package hm.binkley.labs.skratch.safety
 
 import org.junit.jupiter.api.Test
+import java.math.BigInteger
+import java.math.BigInteger.TWO
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 
 private val written = TestFoo(
+    bint = TWO.pow(1_234),
     bool = true,
     byte = 3.toByte(),
     d = null,
@@ -58,7 +61,8 @@ internal class KokoKrunchTest {
     @Test
     fun `should complain about wrong field count for class`() {
         val bytes = written.write().apply {
-            this[indexOf(5.toByte())] = 4.toByte()
+            // Keep track of field count, presently:
+            this[indexOf(6.toByte())] = 5.toByte()
         }
 
         assertFailsWith<AssertionError> {
@@ -104,6 +108,7 @@ internal class KokoKrunchTest {
 }
 
 private data class TestFoo(
+    val bint: BigInteger,
     val text: String,
     val byte: Byte,
     val bool: Boolean,

@@ -1,5 +1,6 @@
 package hm.binkley.labs.skratch.safety
 
+import java.math.BigInteger
 import java.nio.ByteBuffer
 
 internal typealias Prep = Pair<Int, (ByteBuffer) -> ByteBuffer>
@@ -15,6 +16,9 @@ internal fun Prep.writeTo(buf: ByteBuffer) = buf.apply {
 
 internal fun <T> T?.study(): Prep = when (this) {
     null -> -1 to { it }
+    is BigInteger -> with(toByteArray()) {
+        size to { it.put(this) }
+    }
     is Boolean -> Byte.SIZE_BYTES to { it.put(if (this) 1 else 0) }
     is Byte -> Byte.SIZE_BYTES to { it.put(this) }
     is Char -> Char.SIZE_BYTES to { it.putChar(this) }
