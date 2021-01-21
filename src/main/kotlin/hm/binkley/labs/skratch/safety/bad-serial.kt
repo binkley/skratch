@@ -42,7 +42,7 @@ private fun prettyPrint(out: PrintStream, data: ByteArray) {
 private fun <T> read(data: ByteArray): T =
     ObjectInputStream(ByteArrayInputStream(data)).readObject() as T
 
-data class Foo(val s: String) : Serializable {
+private data class Foo(val s: String) : Serializable {
     init {
         if (s != "OK") throw IllegalArgumentException("Not OK: $s")
     }

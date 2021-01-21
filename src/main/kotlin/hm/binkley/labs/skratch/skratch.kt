@@ -29,17 +29,17 @@ fun main() {
         override fun toString() = name
     }
 
-    fun do_the_three_thing() {
+    fun `do the three things`() {
         println("Breakfast, lunch, dinner")
     }
 
-    fun maybe_three(check: (Int) -> Boolean) {
-        if (check(3)) do_the_three_thing()
+    fun `maybe three`(check: (Int) -> Boolean) {
+        if (check(3)) `do the three things`()
         else println("$check says do not pass go")
     }
 
-    maybe_three(Named("Is it three?") { i -> 3 == i })
-    maybe_three(Named("Is it four?") { i -> 4 == i })
+    `maybe three`(Named("Is it three?") { i -> 3 == i })
+    `maybe three`(Named("Is it four?") { i -> 4 == i })
 
     println(::main)
     println(X("abc"))
@@ -51,9 +51,6 @@ fun main() {
     @Suppress("UNCHECKED_CAST")
     for ((k, v) in q)
         println("$k -> ${
-            when (v) {
-                is Function<*> -> (v as F)(1, 2)
-                else -> v
-            }
+            if (v is Function<*>) (v as F)(1, 2) else v
         }")
 }

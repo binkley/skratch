@@ -1,4 +1,4 @@
-package hm.binkley.labs.skratch
+package hm.binkley.labs.skratch.testing
 
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.whenever
@@ -7,7 +7,7 @@ import io.mockk.mockk
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 
-internal class MixMockkAndMockito {
+internal class MixMockkAndMockitoTest {
     @Test
     fun withMockk() {
         val bob = mockk<Bob>()
