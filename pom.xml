@@ -36,7 +36,7 @@
         <jline.version>3.18.0</jline.version>
         <jmh.version>1.27</jmh.version>
         <junit.version>5.7.0</junit.version>
-        <kotlin.version>1.4.21</kotlin.version>
+        <kotlin.version>1.4.30-RC</kotlin.version>
         <kotlinx-cli.version>0.3</kotlinx-cli.version>
         <kotlinx-coroutines.version>1.4.2</kotlinx-coroutines.version>
         <lz4-java.version>1.7.1</lz4-java.version>
@@ -255,6 +255,7 @@
                     <args>
                         <arg>-Werror</arg>
                     </args>
+                    <languageVersion>1.5</languageVersion>
                     <jvmTarget>${jdk.version}</jvmTarget>
                 </configuration>
                 <executions>
