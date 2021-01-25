@@ -255,7 +255,6 @@
                     <args>
                         <arg>-Werror</arg>
                     </args>
-                    <languageVersion>1.5</languageVersion>
                     <jvmTarget>${jdk.version}</jvmTarget>
                 </configuration>
                 <executions>
