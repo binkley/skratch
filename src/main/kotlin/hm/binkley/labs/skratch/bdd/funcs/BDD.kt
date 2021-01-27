@@ -21,11 +21,13 @@ data class QED(
         try {
             action()
         } catch (e: AssertionError) {
+            // Throw an assertion restating the BDD failure spot, but do not
+            // lose any of the original assertion failure info
             val x = AssertionError("Failed $label in $this: $e")
             x.stackTrace = e.stackTrace.filter {
-                // Provide *super clear* stack traces for failed tests
                 !it.className.startsWith(QED::class.qualifiedName!!)
             }.toTypedArray()
+            e.suppressed.forEach { x.addSuppressed(it) }
             throw x
         }
     }
