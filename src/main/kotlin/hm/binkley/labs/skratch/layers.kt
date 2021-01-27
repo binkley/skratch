@@ -1,12 +1,11 @@
 package hm.binkley.labs.skratch
 
 import java.util.AbstractMap.SimpleEntry
-import kotlin.collections.Map.Entry
 
 class SimpleLayers : Layers, AbstractMap<String, Any>() {
     // Sequence by newest to oldest
-    private val top = mutableListOf<Map<String, Ding<Any>>>()
-    override val entries: Set<Entry<String, Any>>
+    private val top = mutableListOf<Map<String, Entry<Any>>>()
+    override val entries: Set<Map.Entry<String, Any>>
         get() = top.flatMap {
             it.keys
         }.distinct().map {
@@ -15,7 +14,7 @@ class SimpleLayers : Layers, AbstractMap<String, Any>() {
 
     init {
         top.add(mapOf(
-            "a" to object : RuleDing<String> {
+            "a" to object : Rule<String> {
                 override fun invoke(
                     key: String,
                     values: List<String>,
@@ -33,7 +32,7 @@ class SimpleLayers : Layers, AbstractMap<String, Any>() {
             "b" to 3.ding(),
         ))
         top.add(mapOf(
-            "a" to object : RuleDing<String> {
+            "a" to object : Rule<String> {
                 override fun invoke(
                     key: String,
                     values: List<String>,
@@ -42,7 +41,7 @@ class SimpleLayers : Layers, AbstractMap<String, Any>() {
 
                 override fun toString() = "UPCASE"
             },
-            "b" to object : RuleDing<Int> {
+            "b" to object : Rule<Int> {
                 override fun invoke(
                     key: String,
                     values: List<Int>,
@@ -55,16 +54,15 @@ class SimpleLayers : Layers, AbstractMap<String, Any>() {
     }
 
     @Suppress("UNCHECKED_CAST")
-    private fun x(key: String, top: List<Map<String, Ding<*>>>): Any {
-        var rule: RuleDing<Any>? = null
+    private fun x(key: String, top: List<Map<String, Entry<*>>>): Any {
+        var rule: Rule<Any>? = null
         val values = ArrayList<Any>(top.size)
 
         for (layer in top) {
-            val ding = layer[key] ?: continue
-            when (ding) {
-                is RuleDing<*> -> if (null == rule) rule =
-                    (ding as RuleDing<Any>)
-                else -> values.add((ding as ValueDing<Any>).value)
+            val entry = layer[key] ?: continue
+            when (entry) {
+                is Rule<*> -> if (null == rule) rule = (entry as Rule<Any>)
+                else -> values.add((entry as Value<Any>).value)
             }
         }
 
@@ -85,13 +83,12 @@ fun main() {
 interface Layer : Map<String, Any>
 interface Layers : Map<String, Any>
 
-interface Ding<out T>
+interface Entry<out T>
 
-data class ValueDing<out T>(
+data class Value<out T>(
     val value: T,
-) : Ding<T>
+) : Entry<T>
 
-fun <T> T.ding() = ValueDing(this)
+fun <T> T.ding() = Value(this)
 
-interface RuleDing</* out */ T> : Ding<T>,
-        (String, List<T>, Layers) -> T
+interface Rule</* out */ T> : Entry<T>, (String, List<T>, Layers) -> T
