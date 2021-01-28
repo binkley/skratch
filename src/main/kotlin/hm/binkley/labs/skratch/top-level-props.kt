@@ -14,4 +14,6 @@ private class APropDelegate {
 fun main() {
     println("A -> $a")
     println("B -> $b")
+    b = "def"
+    println("B -> $b")
 }
