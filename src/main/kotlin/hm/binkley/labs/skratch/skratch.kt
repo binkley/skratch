@@ -53,4 +53,20 @@ fun main() {
         println("$k -> ${
             if (v is Function<*>) (v as F)(1, 2) else v
         }")
+
+    println()
+    println("== FAKE CTOR")
+    val tripled = A(3) { 3 * it }
+    println("TRIPLED -> $tripled")
+}
+
+data class A<T>(val list: List<T>) {
+    // Equivalent secondary ctor to the fake ctor:
+    // constructor(size: Int, init: (Int) -> T) : this(List(size, init))
+}
+
+fun <T> A(size: Int, init: (Int) -> T): A<T> {
+    val list = ArrayList<T>(size)
+    repeat(size) { list.add(init(it)) }
+    return A(list)
 }
