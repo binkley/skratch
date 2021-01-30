@@ -5,5 +5,8 @@ internal open class MutableLayer<M : MutableLayer<M>>(
     _map: MutableMap<String, Any> = mutableMapOf(),
 ) : Layer<M>(_map),
     MutableMap<String, Any> by _map {
-    fun edit(block: MutableMap<String, Any>.() -> Unit) = this.block()
+    fun edit(block: MutableMap<String, Any>.() -> Unit): M {
+        block()
+        return self
+    }
 }

@@ -3,7 +3,7 @@ package hm.binkley.labs.skratch.generics
 import java.util.Objects
 
 internal open class Layers<L : Layer<L>, M : MutableLayer<M>>(
-    private val _layers: MutableList<MutableLayer<M>>,
+    private val _layers: MutableList<M>,
 ) {
     @Suppress("UNCHECKED_CAST")
     val layers: List<L>

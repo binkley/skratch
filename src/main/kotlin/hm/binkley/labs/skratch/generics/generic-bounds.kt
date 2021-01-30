@@ -1,13 +1,13 @@
 package hm.binkley.labs.skratch.generics
 
 fun main() {
-    val x: MutableList<MutableLayer<Q>> = mutableListOf(Q())
+    val x: MutableList<Q> = mutableListOf(Q())
     val l = Layers<P, Q>(x)
     println(l)
-    l.edit {
+    val ll = l.edit {
         this["a"] = 3
     }
-    println(l)
+    println(ll)
     l.nextLayer { Q() }
     println(l)
 }
