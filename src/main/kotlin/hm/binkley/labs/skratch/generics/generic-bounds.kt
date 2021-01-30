@@ -4,7 +4,7 @@ import java.util.Objects.hash
 
 fun main() {
     val x: MutableList<MutableLayer<Q>> = mutableListOf(Q())
-    val l = Layers<P, Q, Layers<P, Q, *>>(x)
+    val l = Layers<P, Q>(x)
     println(l)
     l.edit {
         this["a"] = 3
@@ -14,13 +14,9 @@ fun main() {
     println(l)
 }
 
-private open class Layers<L : Layer<L>, M : MutableLayer<M>, S : Layers<L, M, S>>(
+private open class Layers<L : Layer<L>, M : MutableLayer<M>>(
     private val _layers: MutableList<MutableLayer<M>>,
 ) {
-    @Suppress("UNCHECKED_CAST")
-    val self: S
-        get() = this as S
-
     @Suppress("UNCHECKED_CAST")
     val layers: List<L>
         get() = _layers as List<L>
@@ -28,13 +24,14 @@ private open class Layers<L : Layer<L>, M : MutableLayer<M>, S : Layers<L, M, S>
     fun edit(block: MutableMap<String, Any>.() -> Unit) =
         _layers.last().edit(block)
 
-    fun nextLayer(new: () -> M): S {
-        _layers.add(new())
-        return self
+    fun nextLayer(new: () -> M): M {
+        val it = new()
+        _layers.add(it)
+        return it
     }
 
     override fun equals(other: Any?) = this === other ||
-            other is Layers<*, *, *> &&
+            other is Layers<*, *> &&
             layers == other.layers
 
     override fun hashCode() = hash(layers)
