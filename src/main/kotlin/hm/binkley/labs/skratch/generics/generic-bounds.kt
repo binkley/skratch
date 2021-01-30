@@ -1,8 +1,7 @@
 package hm.binkley.labs.skratch.generics
 
 fun main() {
-    val x: MutableList<Q> = mutableListOf(Q())
-    val l = Layers<P, Q>(x)
+    val l = Layers.new<P, Q>(::Q)
     println(l)
     val ll = l.edit {
         this["a"] = 3

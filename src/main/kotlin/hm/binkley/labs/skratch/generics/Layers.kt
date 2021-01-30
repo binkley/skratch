@@ -24,4 +24,23 @@ internal open class Layers<L : Layer<L>, M : MutableLayer<M>>(
 
     override fun hashCode() = Objects.hash(layers)
     override fun toString() = "${this::class.simpleName}$layers"
+
+    companion object {
+        fun <L : Layer<L>, M : MutableLayer<M>> new(layers: List<M>) =
+            Layers<L, M>(layers.toMutableList())
+
+        fun <L : Layer<L>, M : MutableLayer<M>> new(
+            ctor: () -> M,
+            block: MutableMap<String, Any>.() -> Unit,
+        ) = new<L, M>(mutableListOf(ctor().edit(block)))
+
+        fun <L : Layer<L>, M : MutableLayer<M>> new(
+            ctor: () -> M,
+            vararg firstLayer: Pair<String, Any>,
+        ) = new<L, M>(ctor) {
+            firstLayer.forEach {
+                this[it.first] = it.second
+            }
+        }
+    }
 }
