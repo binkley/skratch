@@ -9,6 +9,7 @@ fun main() {
     println(ll)
     l.nextLayer { Q() }
     println(l)
+    println(l.current)
 }
 
 private class P : Layer<P>()

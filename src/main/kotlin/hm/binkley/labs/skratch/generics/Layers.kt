@@ -8,6 +8,7 @@ internal open class Layers<L : Layer<L>, M : MutableLayer<M>>(
     @Suppress("UNCHECKED_CAST")
     val layers: List<L>
         get() = _layers as List<L>
+    val current: M get() = _layers[0]
 
     fun edit(block: MutableMap<String, Any>.() -> Unit) =
         _layers.last().edit(block)
