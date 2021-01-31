@@ -4,7 +4,7 @@ fun main() {
     val l = Layers.new<P, Q>(::Q)
     println(l)
     val ll = l.edit {
-        this["a"] = 3
+        this["a"] = 3.toValue()
     }
     println(ll)
     l.nextLayer { Q() }

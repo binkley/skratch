@@ -10,7 +10,7 @@ internal open class Layers<L : Layer<L>, M : MutableLayer<M>>(
         get() = _layers as List<L>
     val current: M get() = _layers[0]
 
-    fun edit(block: MutableMap<String, Any>.() -> Unit) =
+    fun edit(block: MutableMap<String, Entry<*>>.() -> Unit) =
         _layers.last().edit(block)
 
     fun nextLayer(new: () -> M): M {
@@ -32,12 +32,12 @@ internal open class Layers<L : Layer<L>, M : MutableLayer<M>>(
 
         fun <L : Layer<L>, M : MutableLayer<M>> new(
             init: () -> M,
-            block: MutableMap<String, Any>.() -> Unit,
+            block: MutableMap<String, Entry<*>>.() -> Unit,
         ) = new<L, M>(mutableListOf(init().edit(block)))
 
         fun <L : Layer<L>, M : MutableLayer<M>> new(
             init: () -> M,
-            vararg firstLayer: Pair<String, Any>,
+            vararg firstLayer: Pair<String, Rule<*>>,
         ) = new<L, M>(init) {
             firstLayer.forEach {
                 this[it.first] = it.second

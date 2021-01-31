@@ -3,8 +3,8 @@ package hm.binkley.labs.skratch.generics
 import java.util.Objects.hash
 
 internal open class Layer<L : Layer<L>>(
-    protected val map: MutableMap<String, Any> = mutableMapOf(),
-) : Map<String, Any> by map {
+    protected val map: MutableMap<String, Entry<*>> = mutableMapOf(),
+) : Map<String, Entry<*>> by map {
     @Suppress("UNCHECKED_CAST")
     val self: L
         get() = this as L
