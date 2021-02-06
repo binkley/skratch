@@ -30,16 +30,15 @@
         <generateBackupPoms>false</generateBackupPoms>
         <jacoco.coverage>0.00</jacoco.coverage>
         <jacoco-maven-plugin.version>0.8.6</jacoco-maven-plugin.version>
-        <jansi.version>2.1.1</jansi.version>
+        <jansi.version>2.2.0</jansi.version>
         <java.charset>UTF-8</java.charset>
         <jdk.version>15</jdk.version>
         <jline.version>3.18.0</jline.version>
         <jmh.version>1.27</jmh.version>
-        <junit.version>5.7.0</junit.version>
+        <junit.version>5.7.1</junit.version>
         <kotlin.version>1.4.30</kotlin.version>
         <kotlinx-cli.version>0.3</kotlinx-cli.version>
         <kotlinx-coroutines.version>1.4.2</kotlinx-coroutines.version>
-        <lz4-java.version>1.7.1</lz4-java.version>
         <main.class>hm.binkley.labs.skratch.SkratchKt</main.class>
         <maven-assembly-plugin.version>3.3.0</maven-assembly-plugin.version>
         <maven-clean-plugin.version>3.1.0</maven-clean-plugin.version>
@@ -49,7 +48,7 @@
         <maven-jar-plugin.version>3.2.0</maven-jar-plugin.version>
         <maven-surefire-plugin.version>3.0.0-M5</maven-surefire-plugin.version>
         <mockito-kotlin.version>1.6.0</mockito-kotlin.version>
-        <mockk.version>1.10.3</mockk.version>
+        <mockk.version>1.10.5</mockk.version>
         <picocli.version>4.6.1</picocli.version>
         <project.build.sourceEncoding>${java.charset}</project.build.sourceEncoding>
         <project.reporting.outputEncoding>${java.charset}</project.reporting.outputEncoding>
@@ -141,12 +140,6 @@
             <groupId>net.objecthunter</groupId>
             <artifactId>exp4j</artifactId>
             <version>${exp4j.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.lz4</groupId>
-            <artifactId>lz4-java</artifactId>
-            <version>${lz4-java.version}</version>
         </dependency>
 
         <dependency>
