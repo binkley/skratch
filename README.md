@@ -2,6 +2,10 @@
 
 Kotlin Scratch Code
 
+## Caveat emptor
+
+This is an scratch, experimental repository.  It might use force push.
+
 ## Modules
 
 Drop use of JVM modules. Repeating the same thing 3 times is annoying:
