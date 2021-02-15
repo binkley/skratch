@@ -5,11 +5,15 @@ fun main() {
     println("${Q.ZERO} -> ${Q.valueOf(0)}")
     val x = P.valueOf(1)
     println("$x -> ${-x}")
+    println("isZero? 0 -> ${P.ZERO.isZero()}")
+    println("isZero? 1 -> ${P.valueOf(1).isZero()}")
 }
 
 private interface Zeroable<T> {
     val ZERO: T
 }
+
+private fun <T : XBase<T>> T.isZero() = this.companion.ZERO == this
 
 private abstract class XCompanionBase<T : XBase<T>>(
     @JvmField
@@ -24,7 +28,7 @@ private abstract class XCompanionBase<T : XBase<T>>(
 private abstract class XBase<T : XBase<T>> protected constructor(
     val x: Int,
 ) {
-    protected abstract val companion: XCompanionBase<T>
+    abstract val companion: XCompanionBase<T>
 
     operator fun unaryMinus() = companion.valueOf(-x)
 
