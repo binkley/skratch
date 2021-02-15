@@ -3,6 +3,9 @@ package hm.binkley.labs.skratch.circular
 fun main() {
     println("${P.ZERO} -> ${P.valueOf(0)}")
     println("${Q.ZERO} -> ${Q.valueOf(0)}")
+    var x = P.valueOf(1)
+    ++x
+    println(x)
 }
 
 private interface Zeroable<T> {
@@ -21,12 +24,17 @@ private abstract class XCompanionBase<T : XBase<T>>(
 
 private abstract class XBase<T : XBase<T>> protected constructor(
     val x: Int,
-    val companion: XCompanionBase<T>,
 ) {
+    protected abstract val companion: XCompanionBase<T>
+
+    operator fun inc() = companion.valueOf(x + 1)
+
     override fun toString() = "${super.toString()}: $x"
 }
 
-private class P private constructor(x: Int) : XBase<P>(x, Companion) {
+private class P private constructor(x: Int) : XBase<P>(x) {
+    override val companion get() = P
+
     companion object : XCompanionBase<P>(
         ZERO = P(0),
     ) {
@@ -34,7 +42,9 @@ private class P private constructor(x: Int) : XBase<P>(x, Companion) {
     }
 }
 
-private class Q private constructor(x: Int) : XBase<Q>(x, Companion) {
+private class Q private constructor(x: Int) : XBase<Q>(x) {
+    override val companion get() = Companion
+
     companion object : XCompanionBase<Q>(
         ZERO = Q(0),
     ) {
