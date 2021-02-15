@@ -9,7 +9,7 @@ fun main() {
     println("isZero? 1 -> ${P.valueOf(1).isZero()}")
 }
 
-private interface Zeroable<T> {
+private interface HasZero<T> {
     val ZERO: T
 }
 
@@ -18,7 +18,7 @@ private fun <T : XBase<T>> T.isZero() = this.companion.ZERO == this
 private abstract class XCompanionBase<T : XBase<T>>(
     @JvmField
     override val ZERO: T,
-) : Zeroable<T> {
+) : HasZero<T> {
     abstract fun valueOf(x: Int): T
 
     protected fun construct(x: Int, ctor: (Int) -> T) =
