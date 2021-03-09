@@ -250,6 +250,8 @@
                         <arg>-Xuse-ir</arg> <!-- New Kotlin JVM backend -->
                     </args>
                     <jvmTarget>${jdk.version}</jvmTarget>
+                    <apiVersion>1.5</apiVersion>
+                    <languageVersion>1.5</languageVersion>
                 </configuration>
                 <executions>
                     <!--                    <execution>-->
