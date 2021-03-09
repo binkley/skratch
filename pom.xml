@@ -36,7 +36,7 @@
         <jline.version>3.18.0</jline.version>
         <jmh.version>1.27</jmh.version>
         <junit.version>5.7.1</junit.version>
-        <kotlin.version>1.4.30</kotlin.version>
+        <kotlin.version>1.5.0-M1</kotlin.version>
         <kotlinx-cli.version>0.3</kotlinx-cli.version>
         <kotlinx-coroutines.version>1.4.2</kotlinx-coroutines.version>
         <main.class>hm.binkley.labs.skratch.SkratchKt</main.class>
@@ -336,6 +336,9 @@
                 <artifactId>maven-failsafe-plugin</artifactId>
                 <version>${maven-surefire-plugin.version}</version>
             </plugin>
+            <!-- TODO: Reenable with JaCoCo &gt;=0.8.7 -->
+            <!-- See https://youtrack.jetbrains.com/issue/KT-44757 -->
+            <!--
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
@@ -372,6 +375,7 @@
                     </execution>
                 </executions>
             </plugin>
+        -->
         </plugins>
     </build>
 
