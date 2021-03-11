@@ -19,8 +19,8 @@ interface CurrencyExchange {
         private val money: M,
         private val to: KClass<O>,
     ) {
-        infix fun at(exchange: CurrencyExchange) = exchange.exchange(money,
-            to)
+        infix fun at(exchange: CurrencyExchange) =
+            exchange.exchange(money, to)
     }
 }
 
