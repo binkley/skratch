@@ -58,6 +58,11 @@ fun main() {
     println("== FAKE CTOR")
     val tripled = A(3) { 3 * it }
     println("TRIPLED -> $tripled")
+
+    println()
+    val j = J()
+    val k = K()
+    k.kkk(j) { this.hashCode() }
 }
 
 data class A<T>(val list: List<T>) {
@@ -70,3 +75,7 @@ fun <T> A(size: Int, init: (Int) -> T): A<T> {
     repeat(size) { list.add(init(it)) }
     return A(list)
 }
+
+class J
+class K
+fun K.kkk(j: J, f: J.() -> Int): Unit = println("$this -> $j -> ${f(j)}")
