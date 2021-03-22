@@ -28,8 +28,7 @@
         <failIfNoTests>true</failIfNoTests>
         <failsafe.printSummary>false</failsafe.printSummary>
         <generateBackupPoms>false</generateBackupPoms>
-        <jacoco.coverage>0.00</jacoco.coverage>
-        <jacoco-maven-plugin.version>0.8.6</jacoco-maven-plugin.version>
+        <jacoco-maven-plugin.version>0.8.7-SNAPSHOT</jacoco-maven-plugin.version>
         <jansi.version>2.3.1</jansi.version>
         <java.charset>UTF-8</java.charset>
         <jdk.version>15</jdk.version>
@@ -198,6 +197,7 @@
 
         <plugins>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-help-plugin</artifactId>
                 <version>${maven-help-plugin.version}</version>
             </plugin>
@@ -212,10 +212,12 @@
                 <version>${versions-maven-plugin.version}</version>
             </plugin>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-clean-plugin</artifactId>
                 <version>${maven-clean-plugin.version}</version>
             </plugin>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
                 <version>${maven-dependency-plugin.version}</version>
                 <executions>
@@ -245,13 +247,13 @@
                 <artifactId>kotlin-maven-plugin</artifactId>
                 <version>${kotlin.version}</version>
                 <configuration>
+                    <apiVersion>1.5</apiVersion>
                     <args>
-                        <arg>-Werror</arg>
+                        <!-- <arg>-Werror</arg> -->
                         <arg>-Xjvm-enable-preview</arg>
                         <arg>-Xuse-ir</arg> <!-- New Kotlin JVM backend -->
                     </args>
                     <jvmTarget>${jdk.version}</jvmTarget>
-                    <apiVersion>1.5</apiVersion>
                     <languageVersion>1.5</languageVersion>
                 </configuration>
                 <executions>
@@ -272,6 +274,13 @@
                     <!--                    </execution>-->
                     <execution>
                         <id>compile-kotlin</id>
+                        <configuration>
+                            <sourceDirs>
+                                <sourceDir>src/main/java</sourceDir>
+                                <sourceDir>src/main/kotlin</sourceDir>
+                                <sourceDir>src/main/resources</sourceDir>
+                            </sourceDirs>
+                        </configuration>
                         <goals>
                             <goal>compile</goal>
                         </goals>
@@ -280,6 +289,11 @@
                         <id>test-compile-kotlin</id>
                         <configuration>
                             <skip>${maven.test.skip}</skip>
+                            <sourceDirs>
+                                <sourceDir>src/test/java</sourceDir>
+                                <sourceDir>src/test/kotlin</sourceDir>
+                                <sourceDir>src/test/resources</sourceDir>
+                            </sourceDirs>
                         </configuration>
                         <goals>
                             <goal>test-compile</goal>
@@ -288,8 +302,12 @@
                 </executions>
             </plugin>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>${maven-compiler-plugin.version}</version>
+                <configuration>
+                    <release>${jdk.version}</release>
+                </configuration>
                 <executions>
                     <!-- Replacing default-compile as it is treated specially by maven -->
                     <execution>
@@ -304,6 +322,7 @@
                 </executions>
             </plugin>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>${maven-surefire-plugin.version}</version>
                 <configuration>
@@ -311,6 +330,7 @@
                 </configuration>
             </plugin>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>${maven-jar-plugin.version}</version>
             </plugin>
@@ -339,40 +359,39 @@
                 </executions>
             </plugin>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
                 <version>${maven-surefire-plugin.version}</version>
             </plugin>
-            <!-- TODO: Reenable with JaCoCo &gt;=0.8.7 -->
-            <!-- See https://youtrack.jetbrains.com/issue/KT-44757 -->
-            <!--
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>${jacoco-maven-plugin.version}</version>
                 <executions>
                     <execution>
-                        <id>jacoco-initialize</id>
+                        <id>prepare-coverage</id>
                         <goals>
                             <goal>prepare-agent</goal>
                         </goals>
                     </execution>
                     <execution>
-                        <id>jacoco-report</id>
-                        <phase>verify</phase>
+                        <id>coverage-report</id>
+                        <phase>post-integration-test</phase>
                         <goals>
                             <goal>report</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>check-coverage</id>
+                        <goals>
                             <goal>check</goal>
                         </goals>
                         <configuration>
                             <rules>
                                 <rule>
-                                    <element>BUNDLE</element>
                                     <limits>
                                         <limit>
-                                            <counter>INSTRUCTION</counter>
-                                            <value>COVEREDRATIO</value>
-                                            <minimum>${jacoco.coverage}
-                                            </minimum>
+                                            <minimum>100%</minimum>
                                         </limit>
                                     </limits>
                                 </rule>
@@ -381,14 +400,30 @@
                     </execution>
                 </executions>
             </plugin>
-        -->
         </plugins>
     </build>
 
     <repositories>
         <repository>
+            <id>Maven Central</id>
+            <url>http://repo1.maven.org/maven2</url>
+        </repository>
+        <repository>
             <id>kotlinx</id>
             <url>https://kotlin.bintray.com/kotlinx</url>
         </repository>
     </repositories>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>Sonatype SNAPSHOT</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
 </project>
