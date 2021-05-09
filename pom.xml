@@ -21,23 +21,23 @@
 
     <properties>
         <!-- @formatter:off -->
-        <arrow.version>0.11.0</arrow.version>
-        <awaitility.version>4.0.3</awaitility.version>
+        <arrow.version>0.13.2</arrow.version>
+        <awaitility.version>4.1.0</awaitility.version>
         <buildplan-maven-plugin.version>1.4</buildplan-maven-plugin.version>
         <exp4j.version>0.4.8</exp4j.version>
         <failIfNoTests>true</failIfNoTests>
         <failsafe.printSummary>false</failsafe.printSummary>
         <generateBackupPoms>false</generateBackupPoms>
-        <jacoco-maven-plugin.version>0.8.7-SNAPSHOT</jacoco-maven-plugin.version>
-        <jansi.version>2.3.1</jansi.version>
+        <jacoco-maven-plugin.version>0.8.7</jacoco-maven-plugin.version>
+        <jansi.version>2.3.2</jansi.version>
         <java.charset>UTF-8</java.charset>
-        <jdk.version>15</jdk.version>
+        <jdk.version>16</jdk.version>
         <jline.version>3.18.0</jline.version>
-        <jmh.version>1.28</jmh.version>
+        <jmh.version>1.30</jmh.version>
         <junit.version>5.8.0-M1</junit.version>
-        <kotlin.version>1.5.0-M1</kotlin.version>
+        <kotlin.version>1.5.0</kotlin.version>
         <kotlinx-cli.version>0.3</kotlinx-cli.version>
-        <kotlinx-coroutines.version>1.4.3</kotlinx-coroutines.version>
+        <kotlinx-coroutines.version>1.5.0-RC-native-mt</kotlinx-coroutines.version>
         <main.class>hm.binkley.labs.skratch.SkratchKt</main.class>
         <maven-assembly-plugin.version>3.3.0</maven-assembly-plugin.version>
         <maven-clean-plugin.version>3.1.0</maven-clean-plugin.version>
@@ -47,7 +47,7 @@
         <maven-jar-plugin.version>3.2.0</maven-jar-plugin.version>
         <maven-surefire-plugin.version>3.0.0-M5</maven-surefire-plugin.version>
         <mockito-kotlin.version>1.6.0</mockito-kotlin.version>
-        <mockk.version>1.10.6</mockk.version>
+        <mockk.version>1.11.0</mockk.version>
         <picocli.version>4.6.1</picocli.version>
         <project.build.sourceEncoding>${java.charset}</project.build.sourceEncoding>
         <project.reporting.outputEncoding>${java.charset}</project.reporting.outputEncoding>
@@ -55,18 +55,6 @@
         <versions-maven-plugin.version>2.8.1</versions-maven-plugin.version>
         <!-- @formatter:on -->
     </properties>
-
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>io.arrow-kt</groupId>
-                <artifactId>arrow-stack</artifactId>
-                <version>${arrow.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
 
     <dependencies>
         <dependency>
@@ -86,6 +74,12 @@
             <version>${kotlin.version}</version>
         </dependency>
         <dependency>
+            <!-- TODO: Needed to avoid pulling in old Kotlin -->
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-script-runtime</artifactId>
+            <version>${kotlin.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.jetbrains.kotlinx</groupId>
             <artifactId>kotlinx-coroutines-core</artifactId>
             <version>${kotlinx-coroutines.version}</version>
@@ -95,22 +89,17 @@
             <groupId>io.arrow-kt</groupId>
             <artifactId>arrow-meta</artifactId>
             <scope>provided</scope>
+            <version>${arrow.version}</version>
         </dependency>
         <dependency>
             <groupId>io.arrow-kt</groupId>
             <artifactId>arrow-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.arrow-kt</groupId>
-            <artifactId>arrow-syntax</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.arrow-kt</groupId>
-            <artifactId>arrow-fx</artifactId>
+            <version>${arrow.version}</version>
         </dependency>
         <dependency>
             <groupId>io.arrow-kt</groupId>
             <artifactId>arrow-optics</artifactId>
+            <version>${arrow.version}</version>
         </dependency>
 
         <dependency>
@@ -249,29 +238,28 @@
                 <configuration>
                     <apiVersion>1.5</apiVersion>
                     <args>
-                        <!-- <arg>-Werror</arg> -->
+                        <arg>-Werror</arg>
                         <arg>-Xjvm-enable-preview</arg>
-                        <arg>-Xuse-ir</arg> <!-- New Kotlin JVM backend -->
                     </args>
                     <jvmTarget>${jdk.version}</jvmTarget>
                     <languageVersion>1.5</languageVersion>
                 </configuration>
                 <executions>
-                    <!--                    <execution>-->
-                    <!--                        <id>kapt</id>-->
-                    <!--                        <configuration>-->
-                    <!--                            <annotationProcessorPaths>-->
-                    <!--                                <annotationProcessorPath>-->
-                    <!--                                    <groupId>io.arrow-kt</groupId>-->
-                    <!--                                    <artifactId>arrow-meta</artifactId>-->
-                    <!--                                    <version>${arrow.version}</version>-->
-                    <!--                                </annotationProcessorPath>-->
-                    <!--                            </annotationProcessorPaths>-->
-                    <!--                        </configuration>-->
-                    <!--                        <goals>-->
-                    <!--                            <goal>kapt</goal>-->
-                    <!--                        </goals>-->
-                    <!--                    </execution>-->
+                    <execution>
+                        <id>kapt</id>
+                        <configuration>
+                            <annotationProcessorPaths>
+                                <annotationProcessorPath>
+                                    <groupId>io.arrow-kt</groupId>
+                                    <artifactId>arrow-meta</artifactId>
+                                    <version>${arrow.version}</version>
+                                </annotationProcessorPath>
+                            </annotationProcessorPaths>
+                        </configuration>
+                        <goals>
+                            <goal>kapt</goal>
+                        </goals>
+                    </execution>
                     <execution>
                         <id>compile-kotlin</id>
                         <configuration>
@@ -402,28 +390,4 @@
             </plugin>
         </plugins>
     </build>
-
-    <repositories>
-        <repository>
-            <id>Maven Central</id>
-            <url>http://repo1.maven.org/maven2</url>
-        </repository>
-        <repository>
-            <id>kotlinx</id>
-            <url>https://kotlin.bintray.com/kotlinx</url>
-        </repository>
-    </repositories>
-
-    <pluginRepositories>
-        <pluginRepository>
-            <id>Sonatype SNAPSHOT</id>
-            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </pluginRepository>
-    </pluginRepositories>
 </project>
