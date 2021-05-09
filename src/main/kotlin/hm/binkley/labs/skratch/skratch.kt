@@ -1,3 +1,5 @@
+@file:Suppress("FunctionName")
+
 package hm.binkley.labs.skratch
 
 import hm.binkley.labs.skratch.Q.Companion.la
@@ -82,4 +84,5 @@ fun <T> A(size: Int, init: (Int) -> T): A<T> {
 
 class J
 class K
+
 fun K.kkk(j: J, f: J.() -> Int): Unit = println("$this -> $j -> ${f(j)}")
