@@ -63,6 +63,10 @@ fun main() {
     val j = J()
     val k = K()
     k.kkk(j) { this.hashCode() }
+
+    println()
+    println("== JAVA INTEROP")
+    println(Point(1, 2))
 }
 
 data class A<T>(val list: List<T>) {

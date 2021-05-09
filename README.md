@@ -54,6 +54,8 @@ reliable Maven.
 
 ### Gotchas
 
+* Remember to add the `--enable-preview` flag to the JVM, including when
+  running from inside an IDE
 * Java heap space failures when tests fail
 * `Rational` should extends `Complex` (with 0 imaginary portion), but
-  `Complex` uses rational values for its portions. How to untangle? 
+  `Complex` uses rational values for its portions. How to untangle?
