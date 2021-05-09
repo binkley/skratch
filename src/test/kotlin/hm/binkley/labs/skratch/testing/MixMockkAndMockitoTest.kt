@@ -23,8 +23,8 @@ internal class MixMockkAndMockitoTest {
 
         assertEquals(bob.nothing(), 2)
     }
+}
 
-    interface Bob {
-        fun nothing(): Int
-    }
+interface Bob {
+    fun nothing(): Int
 }
