@@ -33,8 +33,8 @@ private fun prettyPrint(out: PrintStream, data: ByteArray) {
     })
 
     for (i in data.indices) when (data[i]) {
-        'O'.toByte() -> data[i] = 'N'.toByte()
-        'K'.toByte() -> data[i] = 'O'.toByte()
+        'O'.code.toByte() -> data[i] = 'N'.code.toByte()
+        'K'.code.toByte() -> data[i] = 'O'.code.toByte()
     }
 }
 

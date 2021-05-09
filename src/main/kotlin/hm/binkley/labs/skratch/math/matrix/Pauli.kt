@@ -66,19 +66,19 @@ sealed class Pauli(
         val iσ3: Pauli = iσ3()
         val niσ3: Pauli = niσ3()
 
-        private val group = listOf(
+        val values = listOf(
             I, nI, iI, niI,
             σ1, nσ1, iσ1, niσ1,
             σ2, nσ2, iσ2, niσ2,
             σ3, nσ3, iσ3, niσ3)
 
-        fun pauli(p: Matrix2x2<Complex, Rational, *>) = group.find {
+        fun pauli(p: Matrix2x2<Complex, Rational, *>) = values.find {
             it.equivalent(p)
         } ?: TODO(
             "BUG: How to downgrade type when multiplying Pauli by non-{one,zero,i}? $p")
 
-        override val size: Int = group.size
-        override fun get(index: Int): Pauli = group[index]
+        override val size: Int = values.size
+        override fun get(index: Int): Pauli = values[index]
     }
 }
 

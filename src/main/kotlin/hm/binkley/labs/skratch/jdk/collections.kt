@@ -3,7 +3,8 @@ package hm.binkley.labs.skratch.jdk
 import java.util.concurrent.ConcurrentNavigableMap
 import java.util.concurrent.ConcurrentSkipListMap
 
-private fun Int.toAlphaLowerCase() = ('a'.toShort() + (this - 1)).toChar()
+private fun Int.toAlphaLowerCase() =
+    ('a'.code.toShort() + (this - 1)).toChar()
 
 fun main() {
     val x: ConcurrentNavigableMap<String, Int> =
