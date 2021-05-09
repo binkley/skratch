@@ -19,8 +19,8 @@ readonly progname="${0##*/}"
 
 function print-help() {
     cat <<EOH
-Usage: $progname [-Xdh] [CLASS] [ARGUMENTS]
-Runs a single-jar Kotlin project.
+Usage: $progname [-dh]
+Runs examples for this library.
 
 With no CLASS, assume the jar is executable.
 
@@ -52,7 +52,7 @@ function mangle-kotlin-classname() {
     local last="${parts[-1]}"
 
     case "$last" in
-    *Kt) ;;
+    *-* | *Kt) ;;
     *) last="${last}Kt" ;;
     esac
     last="${last//-/_}"
@@ -70,8 +70,7 @@ function rebuild-if-needed() {
 }
 
 debug=false
-executable=false
-while getopts :Xdh-: opt; do
+while getopts :L:d:h-: opt; do
     [[ $opt == - ]] && opt=${OPTARG%%=*} OPTARG=${OPTARG#*=}
     case $opt in
     X | executable)
@@ -92,18 +91,8 @@ done
 shift $((OPTIND - 1))
 
 $debug && set -x
-((0 == $#)) && executable=true
-
-if $executable; then
-    set - -jar "$jar" "$@"
-else
-    readonly class="$(mangle-kotlin-classname "$package.$1")"
-    shift
-    set - -cp "$jar" "$class" "$@"
-fi
-
-$debug && set -x # "set - ..." clears the -x flag
+set - --enable-preview -jar "$jar" "$@"
 
 rebuild-if-needed
 
-exec java --enable-preview "$@"
+exec java "$@"
