@@ -1,4 +1,13 @@
+<a href="LICENSE.md">
+<img src="https://unlicense.org/pd-icon.png" alt="Public Domain" align="right"/>
+</a>
+
 # Skratch
+
+[![build](https://github.com/binkley/skratch/workflows/build/badge.svg)](https://github.com/binkley/skratch/actions)
+[![issues](https://img.shields.io/github/issues/binkley/skratch.svg)](https://github.com/binkley/skratch/issues/)
+[![vulnerabilities](https://snyk.io/test/github/binkley/skratch/badge.svg)](https://snyk.io/test/github/binkley/skratch)
+[![license](https://img.shields.io/badge/license-Public%20Domain-blue.svg)](http://unlicense.org/)
 
 Kotlin Scratch Code
 
