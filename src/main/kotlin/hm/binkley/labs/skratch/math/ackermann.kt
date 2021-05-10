@@ -6,22 +6,19 @@ fun main() {
             println("$m,$n -> ${ackermann(m, n)}")
 }
 
-private fun ackermann0(m: ULong, n: ULong): ULong {
-    return when {
-        0uL == m -> n + 1uL
-        0uL == n -> ackermann(m - 1uL, 1uL)
-        else -> {
-            ackermann(m - 1uL, ackermann(m, n - 1uL))
-        }
-    }
-}
-
 private tailrec fun ackermann(m: ULong, n: ULong): ULong {
     return when {
         0uL == m -> n + 1uL
         0uL == n -> ackermann(m - 1uL, 1uL)
-        else -> {
-            ackermann(m - 1uL, ackermann0(m, n - 1uL))
-        }
+        else -> ackermann(m - 1uL, ackermann0(m, n - 1uL))
+    }
+}
+
+// Non-tailrec version
+private fun ackermann0(m: ULong, n: ULong): ULong {
+    return when {
+        0uL == m -> n + 1uL
+        0uL == n -> ackermann(m - 1uL, 1uL)
+        else -> ackermann(m - 1uL, ackermann(m, n - 1uL))
     }
 }
