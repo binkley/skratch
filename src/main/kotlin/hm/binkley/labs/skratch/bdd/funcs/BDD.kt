@@ -49,7 +49,7 @@ data class QED(
         } catch (e: AssertionError) {
             // Throw an assertion restating the BDD failure spot, but do not
             // lose any of the original assertion failure info
-            val x = AssertionError("Failed $label in:\n$this\n$e")
+            val x = AssertionError("Failed $label clause in:\n$this\n$e")
             x.stackTrace = e.stackTrace.filter {
                 !it.className.startsWith(QED::class.qualifiedName!!)
             }.toTypedArray()

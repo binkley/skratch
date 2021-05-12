@@ -48,7 +48,7 @@ internal class NewtonTest {
                 THEN Newton sleeps
         """.trimIndent()
 
-        assert(e.message == "Failed THEN in:\n$scenarioText\njava.lang.AssertionError: Newton is still thinking") {
+        assert(e.message == "Failed THEN clause in:\n$scenarioText\njava.lang.AssertionError: Newton is still thinking") {
             "Wrong message in failed scenario: Expected:\n$scenarioText\nGot:\n${e.message}"
         }
     }
