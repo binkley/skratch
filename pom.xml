@@ -257,6 +257,11 @@
                                     <artifactId>arrow-meta</artifactId>
                                     <version>${arrow.version}</version>
                                 </annotationProcessorPath>
+                                <annotationProcessorPath>
+                                    <groupId>info.picocli</groupId>
+                                    <artifactId>picocli-codegen</artifactId>
+                                    <version>${picocli.version}</version>
+                                </annotationProcessorPath>
                             </annotationProcessorPaths>
                         </configuration>
                         <goals>

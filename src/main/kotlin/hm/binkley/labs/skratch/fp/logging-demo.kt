@@ -1,7 +1,39 @@
 package hm.binkley.labs.skratch.fp
 
 import org.fusesource.jansi.AnsiConsole
+import picocli.CommandLine
+import picocli.CommandLine.Command
 import picocli.CommandLine.Help.Ansi.AUTO
+import java.util.concurrent.Callable
+import kotlin.system.exitProcess
+
+@Command(
+    name = "logging-demo",
+    mixinStandardHelpOptions = true,
+    version = ["logging-demo 0-SNAPSHOT"],
+    description = ["Prints logging examples to STDOUT."],
+)
+class LoggingDemo : Callable<Int> {
+    override fun call(): Int {
+        val thing = "Veggie burger"
+        val log = ConsoleLogger
+
+        println(log.handle<BusinessException, String>("Thing", "HOKEY!") {
+            succeed(thing)
+        })
+        println(log.handle<BusinessException, String>("Thing", "HOKEY!") {
+            fail(thing)
+        })
+        println(log.handle<BusinessException, String>("Thing", "HOKEY!") {
+            error(thing)
+        })
+
+        return 0
+    }
+}
+
+fun main(args: Array<String>): Unit =
+    exitProcess(CommandLine(LoggingDemo()).execute(*args))
 
 interface BusinessLogger {
     fun debug(message: String, vararg args: Any?)
@@ -50,21 +82,6 @@ fun fail(thing: String): String =
 
 fun error(thing: String): String =
     throw IndexOutOfBoundsException("Write the code for $thing")
-
-fun main() {
-    val thing = "Veggie burger"
-    val log = ConsoleLogger
-
-    println(log.handle<BusinessException, String>("Thing", "HOKEY!") {
-        succeed(thing)
-    })
-    println(log.handle<BusinessException, String>("Thing", "HOKEY!") {
-        fail(thing)
-    })
-    println(log.handle<BusinessException, String>("Thing", "HOKEY!") {
-        error(thing)
-    })
-}
 
 inline fun <reified E : Exception, R : Any> BusinessLogger.handle(
     label: String,
