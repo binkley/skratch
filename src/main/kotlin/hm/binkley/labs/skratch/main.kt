@@ -5,26 +5,6 @@ package hm.binkley.labs.skratch
 import hm.binkley.labs.skratch.Q.Companion.la
 import hm.binkley.labs.skratch.puzzlers.main
 
-typealias F = (Int, Int) -> String
-
-class X(private val a: String) : CharSequence by a {
-    override fun toString() = a
-}
-
-class Q : MutableMap<String, Any> by mutableMapOf() {
-    operator fun <T> set(key: String, x: (a: Int, b: Int) -> T) {
-        this[key] = x as Any
-    }
-
-    companion object {
-        fun la(s: String) = { _: Int, _: Int -> s }
-    }
-}
-
-class S(private val s: String) {
-    override fun toString() = s
-}
-
 fun main() {
     open class Named<in T>(val name: String, check: (T) -> Boolean) :
             (T) -> Boolean by check {
@@ -71,18 +51,39 @@ fun main() {
     println(Point(1, 2))
 }
 
-data class A<T>(val list: List<T>) {
+private typealias F = (Int, Int) -> String
+
+private class X(private val a: String) : CharSequence by a {
+    override fun toString() = a
+}
+
+private class Q : MutableMap<String, Any> by mutableMapOf() {
+    operator fun <T> set(key: String, x: (a: Int, b: Int) -> T) {
+        this[key] = x as Any
+    }
+
+    companion object {
+        fun la(s: String) = { _: Int, _: Int -> s }
+    }
+}
+
+private class S(private val s: String) {
+    override fun toString() = s
+}
+
+private data class A<T>(val list: List<T>) {
     // Equivalent secondary ctor to the fake ctor:
     // constructor(size: Int, init: (Int) -> T) : this(List(size, init))
 }
 
-fun <T> A(size: Int, init: (Int) -> T): A<T> {
+private fun <T> A(size: Int, init: (Int) -> T): A<T> {
     val list = ArrayList<T>(size)
     repeat(size) { list.add(init(it)) }
     return A(list)
 }
 
-class J
-class K
+private class J
+private class K
 
-fun K.kkk(j: J, f: J.() -> Int): Unit = println("$this -> $j -> ${f(j)}")
+private fun K.kkk(j: J, f: J.() -> Int): Unit =
+    println("$this -> $j -> ${f(j)}")
