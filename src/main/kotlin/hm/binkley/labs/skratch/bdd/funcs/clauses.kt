@@ -1,4 +1,4 @@
-@file:Suppress("UNUSED_PARAMETER")
+@file:Suppress("FunctionName", "UNUSED_PARAMETER")
 
 package hm.binkley.labs.skratch.bdd.funcs
 
