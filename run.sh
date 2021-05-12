@@ -19,8 +19,8 @@ readonly progname="${0##*/}"
 
 function print-help() {
     cat <<EOH
-Usage: $progname [-dh]
-Runs examples for this library.
+Usage: $progname [-Xdh] [CLASS] [ARGUMENTS]
+Runs a single-jar Kotlin project.
 
 With no CLASS, assume the jar is executable.
 
@@ -71,7 +71,7 @@ function rebuild-if-needed() {
 
 debug=false
 executable=false
-while getopts :L:d:h-: opt; do
+while getopts :Xdh-: opt; do
     [[ $opt == - ]] && opt=${OPTARG%%=*} OPTARG=${OPTARG#*=}
     case $opt in
     X | executable)
@@ -103,6 +103,7 @@ else
 fi
 
 $debug && set -x # "set - ..." clears the -x flag
+
 rebuild-if-needed
 
 exec java --enable-preview "$@"
