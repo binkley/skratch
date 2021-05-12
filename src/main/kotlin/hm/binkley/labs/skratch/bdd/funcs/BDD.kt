@@ -26,6 +26,8 @@ fun main() {
 
 private const val CLAUSE_NAME_BUG = "<BUG: Clause name misassigned>"
 
+fun String.asAnsi(vararg args: Any?) = AUTO.string(format(args))
+
 data class QED(
     private val SCENARIO: Scenario,
     private val GIVEN: Given,
@@ -56,12 +58,12 @@ data class QED(
         }
     }
 
-    override fun toString(): String = AUTO.string("""
+    override fun toString(): String = """
         @|underline $SCENARIO|@
             @|italic $GIVEN|@
             $WHEN
             @|bold $THEN|@
-        """.trimIndent())
+        """.trimIndent().asAnsi()
 
     companion object {
         init {

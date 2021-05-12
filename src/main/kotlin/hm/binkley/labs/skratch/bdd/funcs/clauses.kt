@@ -8,7 +8,6 @@ import hm.binkley.labs.skratch.bdd.funcs.QED.Given
 import hm.binkley.labs.skratch.bdd.funcs.QED.Scenario
 import hm.binkley.labs.skratch.bdd.funcs.QED.Then
 import hm.binkley.labs.skratch.bdd.funcs.QED.When
-import picocli.CommandLine.Help.Ansi.AUTO
 
 internal lateinit var apple: Apple
 
@@ -30,12 +29,12 @@ internal infix fun When.`it falls`(THEN: Then) = act {
 
 internal infix fun Then.`Newton thinks`(QED: QED) = act {
     assert(apple.physicist.thinking) {
-        AUTO.string("@|bold,red Newton is still sleeping|@")
+        "@|bold,red Newton is still sleeping|@".asAnsi()
     }
 }
 
 internal infix fun Then.`Newton sleeps`(QED: QED) = act {
     assert(!apple.physicist.thinking) {
-        AUTO.string("@|bold,red Newton is still thinking|@")
+        "@|bold,red Newton is still thinking|@".asAnsi()
     }
 }
