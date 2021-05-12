@@ -1,9 +1,30 @@
 package hm.binkley.labs.skratch.bdd.funcs
 
+import hm.binkley.labs.skratch.bdd.funcs.QED.Companion.GIVEN
+import hm.binkley.labs.skratch.bdd.funcs.QED.Companion.QED
+import hm.binkley.labs.skratch.bdd.funcs.QED.Companion.SCENARIO
+import hm.binkley.labs.skratch.bdd.funcs.QED.Companion.THEN
+import hm.binkley.labs.skratch.bdd.funcs.QED.Companion.WHEN
 import org.fusesource.jansi.AnsiConsole
 import picocli.CommandLine.Help.Ansi.AUTO
 
-private const val BUG = "<BUG: Clause name misassigned>"
+fun main() {
+    val scenario = SCENARIO `A revolution begins`
+            GIVEN `an apple`
+            WHEN `it falls`
+            THEN `Newton thinks`
+            QED
+    println(scenario)
+
+    // Expected to raise an exception
+    SCENARIO `A revolution is missed`
+            GIVEN `an apple`
+            WHEN `it falls`
+            THEN `Newton sleeps`
+            QED
+}
+
+private const val CLAUSE_NAME_BUG = "<BUG: Clause name misassigned>"
 
 data class QED(
     private val SCENARIO: Scenario,
@@ -26,7 +47,7 @@ data class QED(
         } catch (e: AssertionError) {
             // Throw an assertion restating the BDD failure spot, but do not
             // lose any of the original assertion failure info
-            val x = AssertionError("Failed $label in $this: $e")
+            val x = AssertionError("Failed $label in:\n$this\n$e")
             x.stackTrace = e.stackTrace.filter {
                 !it.className.startsWith(QED::class.qualifiedName!!)
             }.toTypedArray()
@@ -35,7 +56,7 @@ data class QED(
         }
     }
 
-    override fun toString() = AUTO.string("""
+    override fun toString(): String = AUTO.string("""
         @|underline $SCENARIO|@
             @|italic $GIVEN|@
             $WHEN
@@ -62,7 +83,7 @@ data class QED(
 
     data class Scenario(
         private var action: () -> Unit = {},
-        internal var text: String = BUG,
+        internal var text: String = CLAUSE_NAME_BUG,
     ) : () -> Unit {
         fun act(action: () -> Unit) = run {
             this.action = action
@@ -76,7 +97,7 @@ data class QED(
     data class Given(
         val SCENARIO: Scenario,
         private var action: () -> Unit = {},
-        internal var text: String = BUG,
+        internal var text: String = CLAUSE_NAME_BUG,
         private val previousText: String = caller(),
     ) : () -> Unit {
         init {
@@ -96,7 +117,7 @@ data class QED(
         val SCENARIO: Scenario,
         val GIVEN: Given,
         private var action: () -> Unit = {},
-        internal var text: String = BUG,
+        internal var text: String = CLAUSE_NAME_BUG,
         private val previousText: String = caller(),
     ) : () -> Unit {
         init {
@@ -117,7 +138,7 @@ data class QED(
         val GIVEN: Given,
         val WHEN: When,
         private var action: () -> Unit = {},
-        internal var text: String = BUG,
+        internal var text: String = CLAUSE_NAME_BUG,
         private val previousText: String = caller(),
     ) : () -> Unit {
         init {
