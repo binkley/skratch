@@ -39,7 +39,7 @@
         <kotlin.version>1.5.0</kotlin.version>
         <kotlinx-cli.version>0.3</kotlinx-cli.version>
         <kotlinx-coroutines.version>1.5.0-RC-native-mt</kotlinx-coroutines.version>
-        <main.class>hm.binkley.labs.skratch.SkratchKt</main.class>
+        <main.class>hm.binkley.labs.skratch.MainKt</main.class>
         <maven-assembly-plugin.version>3.3.0</maven-assembly-plugin.version>
         <maven-clean-plugin.version>3.1.0</maven-clean-plugin.version>
         <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
@@ -187,11 +187,6 @@
     <build>
         <defaultGoal>clean verify</defaultGoal>
 
-        <!-- @formatter:off -->
-        <sourceDirectory>${project.basedir}/src/main/kotlin</sourceDirectory>
-        <testSourceDirectory>${project.basedir}/src/test/kotlin</testSourceDirectory>
-        <!-- @formatter:on -->
-
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -274,7 +269,6 @@
                             <sourceDirs>
                                 <sourceDir>src/main/java</sourceDir>
                                 <sourceDir>src/main/kotlin</sourceDir>
-                                <sourceDir>src/main/resources</sourceDir>
                             </sourceDirs>
                         </configuration>
                         <goals>
@@ -288,7 +282,6 @@
                             <sourceDirs>
                                 <sourceDir>src/test/java</sourceDir>
                                 <sourceDir>src/test/kotlin</sourceDir>
-                                <sourceDir>src/test/resources</sourceDir>
                             </sourceDirs>
                         </configuration>
                         <goals>
@@ -314,6 +307,20 @@
                     <execution>
                         <id>default-testCompile</id>
                         <phase>none</phase>
+                    </execution>
+                    <execution>
+                        <id>java-compile</id>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>java-test-compile</id>
+                        <phase>test-compile</phase>
+                        <goals>
+                            <goal>testCompile</goal>
+                        </goals>
                     </execution>
                 </executions>
             </plugin>
