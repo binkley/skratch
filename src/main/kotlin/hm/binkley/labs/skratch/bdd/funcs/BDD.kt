@@ -9,6 +9,7 @@ import org.fusesource.jansi.AnsiConsole
 import picocli.CommandLine.Help.Ansi.AUTO
 
 fun main() {
+    println("== HAPPY PATH PASSING")
     val scenario = SCENARIO `A revolution begins`
             GIVEN `an apple`
             WHEN `it falls`
@@ -16,6 +17,9 @@ fun main() {
             QED
     println(scenario)
 
+    println()
+    
+    println("== HAPPY PATH FAILING")
     // Expected to raise an exception
     SCENARIO `A revolution is missed`
             GIVEN `an apple`
