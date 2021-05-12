@@ -1,5 +1,8 @@
 package hm.binkley.labs.skratch.bdd.funcs
 
+import org.fusesource.jansi.AnsiConsole
+import picocli.CommandLine.Help.Ansi.AUTO
+
 private const val BUG = "<BUG: Clause name misassigned>"
 
 data class QED(
@@ -32,9 +35,18 @@ data class QED(
         }
     }
 
-    override fun toString() = "$SCENARIO: $GIVEN $WHEN $THEN"
+    override fun toString() = AUTO.string("""
+        @|underline $SCENARIO|@
+            @|italic $GIVEN|@
+            $WHEN
+            @|bold $THEN|@
+        """.trimIndent())
 
     companion object {
+        init {
+            AnsiConsole.systemInstall()
+        }
+
         // Dummy values to provide nice syntax in test writing
         val SCENARIO = Scenario()
         val GIVEN = Given(SCENARIO)

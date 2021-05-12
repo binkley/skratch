@@ -34,7 +34,14 @@ internal class NewtonTest {
                 THEN `Newton thinks`
                 QED
 
-        assert("$it" == "SCENARIO A revolution begins: GIVEN an apple WHEN it falls THEN Newton thinks") {
+        val expected = """
+            SCENARIO A revolution begins
+                GIVEN an apple
+                WHEN it falls
+                THEN Newton thinks
+        """.trimIndent()
+
+        assert("$it" == expected) {
             "Expected: `SCENARIO A revolution begins: GIVEN an apple WHEN it falls THEN Newton thinks`, got: `$it`"
         }
     }
@@ -52,7 +59,14 @@ internal class NewtonTest {
                     QED
         }
 
-        assert(e.message == "Failed THEN in SCENARIO A revolution is missed: GIVEN an apple WHEN it falls THEN Newton sleeps: java.lang.AssertionError: Newton is still thinking") {
+        val expected = """
+            SCENARIO A revolution is missed
+                GIVEN an apple
+                WHEN it falls
+                THEN Newton sleeps
+        """.trimIndent()
+
+        assert(e.message == "Failed THEN in $expected: java.lang.AssertionError: Newton is still thinking") {
             "Expected: `Newton is still thinking`; got: `${e.message}`"
         }
     }
