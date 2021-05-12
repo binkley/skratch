@@ -26,7 +26,7 @@ fun main() {
 
 private const val CLAUSE_NAME_BUG = "<BUG: Clause name misassigned>"
 
-fun String.asAnsi(vararg args: Any?) = AUTO.string(format(args))
+fun String.asAnsi(vararg args: Any?): String = AUTO.string(format(args))
 
 data class QED(
     private val SCENARIO: Scenario,
@@ -84,8 +84,8 @@ data class QED(
     }
 
     data class Scenario(
-        private var action: () -> Unit = {},
         internal var text: String = CLAUSE_NAME_BUG,
+        private var action: () -> Unit = {},
     ) : () -> Unit {
         fun act(action: () -> Unit) = run {
             this.action = action
@@ -98,9 +98,9 @@ data class QED(
 
     data class Given(
         val SCENARIO: Scenario,
-        private var action: () -> Unit = {},
         internal var text: String = CLAUSE_NAME_BUG,
         private val previousText: String = caller(),
+        private var action: () -> Unit = {},
     ) : () -> Unit {
         init {
             SCENARIO.text = previousText
@@ -118,9 +118,9 @@ data class QED(
     data class When(
         val SCENARIO: Scenario,
         val GIVEN: Given,
-        private var action: () -> Unit = {},
         internal var text: String = CLAUSE_NAME_BUG,
         private val previousText: String = caller(),
+        private var action: () -> Unit = {},
     ) : () -> Unit {
         init {
             GIVEN.text = previousText
@@ -139,9 +139,9 @@ data class QED(
         val SCENARIO: Scenario,
         val GIVEN: Given,
         val WHEN: When,
-        private var action: () -> Unit = {},
         internal var text: String = CLAUSE_NAME_BUG,
         private val previousText: String = caller(),
+        private var action: () -> Unit = {},
     ) : () -> Unit {
         init {
             WHEN.text = previousText
