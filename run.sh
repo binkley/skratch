@@ -52,7 +52,7 @@ function mangle-kotlin-classname() {
     local last="${parts[-1]}"
 
     case "$last" in
-    *-* | *Kt) ;;
+    *Kt) ;;
     *) last="${last}Kt" ;;
     esac
     last="${last//-/_}"
@@ -70,6 +70,7 @@ function rebuild-if-needed() {
 }
 
 debug=false
+executable=false
 while getopts :L:d:h-: opt; do
     [[ $opt == - ]] && opt=${OPTARG%%=*} OPTARG=${OPTARG#*=}
     case $opt in
@@ -91,8 +92,17 @@ done
 shift $((OPTIND - 1))
 
 $debug && set -x
-set - --enable-preview -jar "$jar" "$@"
+((0 == $#)) && executable=true
 
+if $executable; then
+    set - -jar "$jar" "$@"
+else
+    readonly class="$(mangle-kotlin-classname "$package.$1")"
+    shift
+    set - -cp "$jar" "$class" "$@"
+fi
+
+$debug && set -x # "set - ..." clears the -x flag
 rebuild-if-needed
 
-exec java "$@"
+exec java --enable-preview "$@"
