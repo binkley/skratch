@@ -13,7 +13,7 @@ internal class NewtonTest {
 
     @Test
     fun `should think`() {
-        val Thinking = "Thinking"
+        val `A revolution begins` = "Thinking"
         upon(`an apple`) {
             apple = Apple(Newton(thinking = false))
         }
@@ -27,7 +27,7 @@ internal class NewtonTest {
         }
 
         // TODO: Breaking these across lines confuses Kotlin compiler
-        SO SCENARIO Thinking GIVEN `an apple` WHEN `it falls` THEN `Newton thinks`
+        SO SCENARIO `A revolution begins` GIVEN `an apple` WHEN `it falls` THEN `Newton thinks`
     }
 
     companion object {

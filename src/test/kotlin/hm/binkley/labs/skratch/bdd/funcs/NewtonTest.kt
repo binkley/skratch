@@ -24,34 +24,35 @@ internal class NewtonTest {
     // 2. Infix
     // This lets the framework handle G-W-T correctly, and spells nicely
 
-    private infix fun Scenario.Thinking(GIVEN: Given) = act { }
+    private infix fun Scenario.`A revolution begins`(GIVEN: Given) = act { }
 
     @Test
     fun `should think`() {
-        val it = SCENARIO Thinking
+        val it = SCENARIO `A revolution begins`
                 GIVEN `an apple`
                 WHEN `it falls`
                 THEN `Newton thinks`
                 QED
 
-        assert("$it" == "SCENARIO Thinking: GIVEN an apple WHEN it falls THEN Newton thinks") {
-            "Expected: `SCENARIO Thinking: GIVEN an apple WHEN it falls THEN Newton thinks`, got: `$it`"
+        assert("$it" == "SCENARIO A revolution begins: GIVEN an apple WHEN it falls THEN Newton thinks") {
+            "Expected: `SCENARIO A revolution begins: GIVEN an apple WHEN it falls THEN Newton thinks`, got: `$it`"
         }
     }
 
-    private infix fun Scenario.Sleeping(GIVEN: Given) = act { }
+    private infix fun Scenario.`A revolution is missed`(GIVEN: Given) =
+        act { }
 
     @Test
     fun `should not sleep`() {
         val e = assertThrows<AssertionError> {
-            SCENARIO Sleeping
+            SCENARIO `A revolution is missed`
                     GIVEN `an apple`
                     WHEN `it falls`
                     THEN `Newton sleeps`
                     QED
         }
 
-        assert(e.message == "Failed THEN in SCENARIO Sleeping: GIVEN an apple WHEN it falls THEN Newton sleeps: java.lang.AssertionError: Newton is still thinking") {
+        assert(e.message == "Failed THEN in SCENARIO A revolution is missed: GIVEN an apple WHEN it falls THEN Newton sleeps: java.lang.AssertionError: Newton is still thinking") {
             "Expected: `Newton is still thinking`; got: `${e.message}`"
         }
     }
