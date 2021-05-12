@@ -15,7 +15,7 @@ internal class NewtonTest {
     fun `should think`() {
         val `A revolution begins` = "Thinking"
         upon(`an apple`) {
-            apple = Apple(Newton(thinking = false))
+            apple = Apple(Newton(thinking = false, eatingApple = false))
         }
         upon(`it falls`) {
             apple.falls()

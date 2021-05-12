@@ -32,6 +32,28 @@ internal class NewtonTest {
     }
 
     @Test
+    fun `should have broken production code for eating fallen apple`() {
+        val e = assertThrows<AssertionError> {
+            SCENARIO `A snack helps with thinking`
+                    GIVEN `an apple`
+                    WHEN `it falls`
+                    THEN `Newton eats the apple`
+                    QED
+        }
+
+        val scenarioText = """
+            SCENARIO A snack helps with thinking
+                GIVEN an apple
+                WHEN it falls
+                THEN Newton eats the apple
+        """.trimIndent()
+
+        assert(e.message == "Failed THEN clause in:\n$scenarioText\njava.lang.AssertionError: Newton should be eating the apple while thinking") {
+            "Wrong message in failed scenario: Expected:\n$scenarioText\nGot:\n${e.message}"
+        }
+    }
+
+    @Test
     fun `should not sleep`() {
         val e = assertThrows<AssertionError> {
             SCENARIO `A revolution is missed`
@@ -48,7 +70,7 @@ internal class NewtonTest {
                 THEN Newton sleeps
         """.trimIndent()
 
-        assert(e.message == "Failed THEN clause in:\n$scenarioText\njava.lang.AssertionError: Newton is still thinking") {
+        assert(e.message == "Failed THEN clause in:\n$scenarioText\njava.lang.AssertionError: Newton should be thinking, not sleeping") {
             "Wrong message in failed scenario: Expected:\n$scenarioText\nGot:\n${e.message}"
         }
     }

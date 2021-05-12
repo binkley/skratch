@@ -7,6 +7,7 @@ import hm.binkley.labs.skratch.bdd.funcs.QED.Companion.THEN
 import hm.binkley.labs.skratch.bdd.funcs.QED.Companion.WHEN
 import org.fusesource.jansi.AnsiConsole
 import picocli.CommandLine.Help.Ansi.AUTO
+import java.lang.System.out
 
 fun main() {
     println("== HAPPY PATH PASSING")
@@ -18,14 +19,29 @@ fun main() {
     println(scenario)
 
     println()
-    
-    println("== HAPPY PATH FAILING")
+    println("== HAPPY PATH FAILS (BROKEN CODE)")
+    try {
+        SCENARIO `A snack helps with thinking`
+                GIVEN `an apple`
+                WHEN `it falls`
+                THEN `Newton eats the apple`
+                QED
+    } catch (e: AssertionError) {
+        e.printStackTrace(out)
+    }
+
+    println()
+    println("== HAPPY PATH SET UP WRONGLY (BAD TEST)")
     // Expected to raise an exception
-    SCENARIO `A revolution is missed`
-            GIVEN `an apple`
-            WHEN `it falls`
-            THEN `Newton sleeps`
-            QED
+    try {
+        SCENARIO `A revolution is missed`
+                GIVEN `an apple`
+                WHEN `it falls`
+                THEN `Newton sleeps`
+                QED
+    } catch (e: AssertionError) {
+        e.printStackTrace(out)
+    }
 }
 
 private const val CLAUSE_NAME_BUG = "<BUG: Clause name misassigned>"
