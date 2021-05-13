@@ -36,14 +36,14 @@ internal infix fun Then.`Newton thinks`(QED: QED) = act {
     }
 }
 
-internal infix fun Then.`Newton sleeps`(QED: QED) = act {
-    assert(!apple.physicist.thinking) {
-        "@|bold,red Newton should be thinking, not sleeping|@".asAnsi()
-    }
-}
-
 internal infix fun Then.`Newton eats the apple`(QED: QED) = act {
     assert(apple.physicist.eatingApple) {
         "@|bold,red Newton should be eating the apple while thinking|@".asAnsi()
+    }
+}
+
+internal infix fun Then.`Newton sleeps`(QED: QED) = act {
+    assert(!apple.physicist.thinking) {
+        "@|bold,red Newton should be thinking, not sleeping|@".asAnsi()
     }
 }
