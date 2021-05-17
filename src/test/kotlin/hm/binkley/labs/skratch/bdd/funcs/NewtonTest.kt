@@ -12,7 +12,7 @@ import org.junit.jupiter.api.assertThrows
 
 internal class NewtonTest {
     @Test
-    fun `should think`() {
+    fun `should think (happy path)`() {
         val it = SCENARIO `A revolution begins`
                 GIVEN `an apple`
                 WHEN `it falls`
@@ -32,7 +32,7 @@ internal class NewtonTest {
     }
 
     @Test
-    fun `should have broken production code for eating fallen apple`() {
+    fun `should have broken production code for eating fallen apple (failed test)`() {
         val e = assertThrows<AssertionError> {
             SCENARIO `A snack helps with thinking`
                     GIVEN `an apple`
@@ -54,7 +54,7 @@ internal class NewtonTest {
     }
 
     @Test
-    fun `should not sleep`() {
+    fun `should not sleep (broken test)`() {
         val e = assertThrows<AssertionError> {
             SCENARIO `A revolution is missed`
                     GIVEN `an apple`
