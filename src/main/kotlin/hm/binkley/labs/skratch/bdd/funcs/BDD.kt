@@ -8,7 +8,6 @@ import hm.binkley.labs.skratch.bdd.funcs.QED.Companion.WHEN
 import org.fusesource.jansi.AnsiConsole
 import picocli.CommandLine.Help.Ansi.AUTO
 import java.lang.System.out
-import kotlin.reflect.KParameter
 
 fun main() {
     println("== HAPPY PATH PASSING")
@@ -81,10 +80,8 @@ data class QED(
             // Throw an assertion restating the BDD failure spot, but do not
             // lose any of the original assertion failure info
             val x = AssertionError("Failed $label clause in:\n$this\n$e")
-            x.stackTrace = e.stackTrace.filter {
-                !it.className.startsWith(QED::class.qualifiedName!!)
-            }.toTypedArray()
-            e.suppressed.forEach { x.addSuppressed(it) }
+
+            e.copyStackTraceWithoutFrameworkInto(x)
             throw x
         } catch (e: Exception) {
             result = ERROR(e)
@@ -97,22 +94,21 @@ data class QED(
                 it.call("Errored $label clause in:\n$this\n$e")
             }.firstOrNull()
                 ?: throw IllegalStateException("BUG: Exception does not accept a reason")
-            x.stackTrace = e.stackTrace.filter {
-                !it.className.startsWith(QED::class.qualifiedName!!)
-            }.toTypedArray()
-            e.suppressed.forEach { x.addSuppressed(it) }
+
+            e.copyStackTraceWithoutFrameworkInto(x)
             throw x
         }
     }
 
     override fun toString(): String {
-        val mark = when (result) {
-            PASS -> "@|green ✓|@"
-            is FAIL -> "@|red ✗|@"
-            is ERROR -> "@|cyan ‽|@"
+        val scenario = when (result) {
+            PASS -> "@|bold,green ✓|@ @|underline,green $SCENARIO|@"
+            is FAIL -> "@|bold,red ✗|@ @|underline,red $SCENARIO|@"
+            is ERROR -> "@|bold,magenta ‽|@ @|underline,magenta $SCENARIO|@"
         }
+
         return """
-            $mark @|underline $SCENARIO|@
+            $scenario
                 @|italic $GIVEN|@
                 $WHEN
                 @|bold $THEN|@
@@ -209,4 +205,13 @@ data class QED(
         override fun invoke() = action()
         override fun toString() = "THEN $text"
     }
+}
+
+private fun Throwable.copyStackTraceWithoutFrameworkInto(
+    target: Throwable,
+) {
+    target.stackTrace = stackTrace.filter {
+        !it.className.startsWith(QED::class.qualifiedName!!)
+    }.toTypedArray()
+    suppressed.forEach { target.addSuppressed(it) }
 }
