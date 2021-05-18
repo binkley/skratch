@@ -7,10 +7,8 @@ import hm.binkley.labs.skratch.bdd.funcs.QED.Companion.QED
 import hm.binkley.labs.skratch.bdd.funcs.QED.Companion.SCENARIO
 import hm.binkley.labs.skratch.bdd.funcs.QED.Companion.THEN
 import hm.binkley.labs.skratch.bdd.funcs.QED.Companion.WHEN
-import org.jetbrains.kotlin.fir.builder.escapedStringToCharacter
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
-import kotlin.test.assertEquals
 
 /** @todo Note that _colors and formatting_ do not show up in these tests */
 internal class NewtonTest {
