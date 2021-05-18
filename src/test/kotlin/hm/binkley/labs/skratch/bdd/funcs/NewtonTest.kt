@@ -10,7 +10,11 @@ import hm.binkley.labs.skratch.bdd.funcs.QED.Companion.WHEN
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 
-/** @todo Note that _colors and formatting_ do not show up in these tests */
+/**
+ * @todo Note that _colors and formatting_ do not show up in these tests
+ *       System Lambda uses reflection to edit the envvars, and recent JDK
+ *       versions prevent this
+ */
 internal class NewtonTest {
     @Test
     fun `should think (happy path)`() {
