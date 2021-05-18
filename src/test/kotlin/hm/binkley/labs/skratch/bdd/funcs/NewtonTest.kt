@@ -7,9 +7,12 @@ import hm.binkley.labs.skratch.bdd.funcs.QED.Companion.QED
 import hm.binkley.labs.skratch.bdd.funcs.QED.Companion.SCENARIO
 import hm.binkley.labs.skratch.bdd.funcs.QED.Companion.THEN
 import hm.binkley.labs.skratch.bdd.funcs.QED.Companion.WHEN
+import org.jetbrains.kotlin.fir.builder.escapedStringToCharacter
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
+import kotlin.test.assertEquals
 
+/** @todo Note that _colors and formatting_ do not show up in these tests */
 internal class NewtonTest {
     @Test
     fun `should think (happy path)`() {
@@ -20,7 +23,7 @@ internal class NewtonTest {
                 QED
 
         val scenarioText = """
-            SCENARIO A revolution begins
+            ✓ SCENARIO A revolution begins
                 GIVEN an apple
                 WHEN it falls
                 THEN Newton thinks
@@ -42,7 +45,7 @@ internal class NewtonTest {
         }
 
         val scenarioText = """
-            SCENARIO A snack helps with thinking
+            ✗ SCENARIO A snack helps with thinking
                 GIVEN an apple
                 WHEN it falls
                 THEN Newton eats the apple
@@ -55,7 +58,7 @@ internal class NewtonTest {
 
     @Test
     fun `should not sleep (broken test)`() {
-        val e = assertThrows<AssertionError> {
+        val e = assertThrows<IllegalStateException> {
             SCENARIO `A revolution is missed`
                     GIVEN `an apple`
                     WHEN `it falls`
@@ -64,13 +67,13 @@ internal class NewtonTest {
         }
 
         val scenarioText = """
-            SCENARIO A revolution is missed
+            ‽ SCENARIO A revolution is missed
                 GIVEN an apple
                 WHEN it falls
                 THEN Newton sleeps
         """.trimIndent()
 
-        assert(e.message == "Failed THEN clause in:\n$scenarioText\njava.lang.AssertionError: Newton should be thinking, not sleeping") {
+        assert(e.message == "Errored THEN clause in:\n$scenarioText\njava.lang.IllegalStateException: Newton should be thinking, not sleeping") {
             "Wrong message in failed scenario: Expected:\n$scenarioText\nGot:\n${e.message}"
         }
     }

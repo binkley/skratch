@@ -43,7 +43,5 @@ internal infix fun Then.`Newton eats the apple`(QED: QED) = act {
 }
 
 internal infix fun Then.`Newton sleeps`(QED: QED) = act {
-    assert(!apple.physicist.thinking) {
-        "@|bold,red Newton should be thinking, not sleeping|@".asAnsi()
-    }
+    throw IllegalStateException("@|bold,red Newton should be thinking, not sleeping|@".asAnsi())
 }
