@@ -100,8 +100,7 @@ data class QED(
 
             // Throw an assertion restating the BDD failure spot, but do not
             // lose any of the original assertion failure info
-            val x =
-                AssertionError("Failed $type clause in:\n${this@QED}\n$e")
+            val x = AssertionError("Failed $type clause in:\n${this@QED}\n$e")
 
             e.copyStackTraceWithoutFrameworkInto(x)
             throw x
@@ -168,8 +167,7 @@ data class QED(
 
         /** Inline to preserve the stack trace. */
         @Suppress("NOTHING_TO_INLINE")
-        private inline fun caller() =
-            Throwable().stackTrace[2].methodName
+        private inline fun caller() = Throwable().stackTrace[2].methodName
     }
 
     data class Scenario(
