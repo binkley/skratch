@@ -59,6 +59,7 @@ data class QED(
     private val WHEN: When,
     private val THEN: Then,
     private val previousText: String = caller(),
+    private var label: String = "<INIT>",
     private var result: TestResult =
         ERROR(IllegalStateException("BUG: Not executed")),
 ) {
@@ -68,9 +69,12 @@ data class QED(
         execute("GIVEN", GIVEN)
         execute("WHEN", WHEN)
         execute("THEN", THEN)
+        label = "QED"
     }
 
     private inline fun execute(label: String, action: () -> Unit) {
+        this.label = label
+
         try {
             action()
             result = PASS
@@ -89,7 +93,7 @@ data class QED(
             // Throw an assertion restating the BDD failure spot, but do not
             // lose any of the original assertion failure info
             val x = e::class.constructors.filter {
-                it.parameters.map { it.type.classifier } == listOf(String::class)
+                it.parameters.map { p -> p.type.classifier } == listOf(String::class)
             }.map {
                 it.call("Errored $label clause in:\n$this\n$e")
             }.firstOrNull()
@@ -107,11 +111,25 @@ data class QED(
             is ERROR -> "@|bold,magenta ‽|@ @|underline,magenta $SCENARIO|@"
         }
 
+        data class GWT(val given: String, val aWhen: String, val then: String)
+        val (given, aWhen, then) = when (label) {
+            "GIVEN" -> GWT("@|italic,reverse $GIVEN|@",
+                "$WHEN",
+                "@|bold $THEN|@")
+            "WHEN" -> GWT("@|italic $GIVEN|@",
+                "@|reverse $WHEN|@",
+                "@|bold $THEN|@")
+            "THEN" -> GWT("@|italic $GIVEN|@",
+                "$WHEN",
+                "@|bold,reverse $THEN|@")
+            else -> GWT("@|italic $GIVEN|@", "$WHEN", "@|bold $THEN|@")
+        }
+
         return """
             $scenario
-                @|italic $GIVEN|@
-                $WHEN
-                @|bold $THEN|@
+                $given
+                $aWhen
+                $then
             """.trimIndent().asAnsi()
     }
 
