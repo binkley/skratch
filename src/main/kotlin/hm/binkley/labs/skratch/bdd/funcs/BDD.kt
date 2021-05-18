@@ -1,5 +1,11 @@
 package hm.binkley.labs.skratch.bdd.funcs
 
+import hm.binkley.labs.skratch.bdd.funcs.QED.Clause.Type
+import hm.binkley.labs.skratch.bdd.funcs.QED.Clause.Type.GIVEN_CLAUSE
+import hm.binkley.labs.skratch.bdd.funcs.QED.Clause.Type.NO_CLAUSE
+import hm.binkley.labs.skratch.bdd.funcs.QED.Clause.Type.QED_CLAUSE
+import hm.binkley.labs.skratch.bdd.funcs.QED.Clause.Type.THEN_CLAUSE
+import hm.binkley.labs.skratch.bdd.funcs.QED.Clause.Type.WHEN_CLAUSE
 import hm.binkley.labs.skratch.bdd.funcs.QED.Companion.GIVEN
 import hm.binkley.labs.skratch.bdd.funcs.QED.Companion.QED
 import hm.binkley.labs.skratch.bdd.funcs.QED.Companion.SCENARIO
@@ -59,31 +65,43 @@ data class QED(
     private val WHEN: When,
     private val THEN: Then,
     private val previousText: String = caller(),
-    private var label: String = "<INIT>",
+    private var clauseType: Type = NO_CLAUSE,
     private var result: TestResult =
         ERROR(IllegalStateException("BUG: Not executed")),
 ) {
     init {
         THEN.text = previousText
 
-        execute("GIVEN", GIVEN)
-        execute("WHEN", WHEN)
-        execute("THEN", THEN)
-        label = "QED"
+        GIVEN.execute()
+        WHEN.execute()
+        THEN.execute()
+        clauseType = QED_CLAUSE
     }
 
-    private inline fun execute(label: String, action: () -> Unit) {
-        this.label = label
+    abstract class Clause(
+        val type: Type,
+    ) : () -> Unit {
+        enum class Type {
+            NO_CLAUSE, GIVEN_CLAUSE, WHEN_CLAUSE, THEN_CLAUSE, QED_CLAUSE;
+
+            override fun toString() = name.replace("_CLAUSE", "")
+        }
+    }
+
+    @Suppress("NOTHING_TO_INLINE")
+    private inline fun Clause.execute() {
+        clauseType = type
 
         try {
-            action()
+            this()
             result = PASS
         } catch (e: AssertionError) {
             result = FAIL(e.message ?: "No reason to fail")
 
             // Throw an assertion restating the BDD failure spot, but do not
             // lose any of the original assertion failure info
-            val x = AssertionError("Failed $label clause in:\n$this\n$e")
+            val x =
+                AssertionError("Failed $type clause in:\n${this@QED}\n$e")
 
             e.copyStackTraceWithoutFrameworkInto(x)
             throw x
@@ -95,7 +113,7 @@ data class QED(
             val x = e::class.constructors.filter {
                 it.parameters.map { p -> p.type.classifier } == listOf(String::class)
             }.map {
-                it.call("Errored $label clause in:\n$this\n$e")
+                it.call("Errored $type clause in:\n${this@QED}\n$e")
             }.firstOrNull()
                 ?: throw IllegalStateException("BUG: Exception does not accept a reason")
 
@@ -112,17 +130,20 @@ data class QED(
         }
 
         data class GWT(val given: String, val aWhen: String, val then: String)
-        val (given, aWhen, then) = when (label) {
-            "GIVEN" -> GWT("@|italic,reverse $GIVEN|@",
+        val (given, aWhen, then) = when (clauseType) {
+            NO_CLAUSE -> throw IllegalStateException("BUG: Not executed")
+            GIVEN_CLAUSE -> GWT("@|italic,reverse $GIVEN|@",
                 "$WHEN",
                 "@|bold $THEN|@")
-            "WHEN" -> GWT("@|italic $GIVEN|@",
+            WHEN_CLAUSE -> GWT("@|italic $GIVEN|@",
                 "@|reverse $WHEN|@",
                 "@|bold $THEN|@")
-            "THEN" -> GWT("@|italic $GIVEN|@",
+            THEN_CLAUSE -> GWT("@|italic $GIVEN|@",
                 "$WHEN",
                 "@|bold,reverse $THEN|@")
-            else -> GWT("@|italic $GIVEN|@", "$WHEN", "@|bold $THEN|@")
+            QED_CLAUSE -> GWT("@|italic $GIVEN|@",
+                "$WHEN",
+                "@|bold $THEN|@")
         }
 
         return """
@@ -169,7 +190,7 @@ data class QED(
         internal var text: String = CLAUSE_NAME_BUG,
         private val previousText: String = caller(),
         private var action: () -> Unit = {},
-    ) : () -> Unit {
+    ) : Clause(GIVEN_CLAUSE) {
         init {
             SCENARIO.text = previousText
         }
@@ -189,7 +210,7 @@ data class QED(
         internal var text: String = CLAUSE_NAME_BUG,
         private val previousText: String = caller(),
         private var action: () -> Unit = {},
-    ) : () -> Unit {
+    ) : Clause(WHEN_CLAUSE) {
         init {
             GIVEN.text = previousText
         }
@@ -210,7 +231,7 @@ data class QED(
         internal var text: String = CLAUSE_NAME_BUG,
         private val previousText: String = caller(),
         private var action: () -> Unit = {},
-    ) : () -> Unit {
+    ) : Clause(THEN_CLAUSE) {
         init {
             WHEN.text = previousText
         }
