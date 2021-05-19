@@ -1,13 +1,14 @@
 package hm.binkley.labs.skratch.awaitility
 
 import kotlinx.coroutines.async
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import org.awaitility.Awaitility.await
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import java.lang.Thread.sleep
 import java.util.concurrent.TimeUnit.SECONDS
 
+@Suppress("DeferredResultUnused")
 internal class AwaitilityTest {
     var x = 0
 
@@ -26,7 +27,7 @@ internal class AwaitilityTest {
 
     private fun slow() = runBlocking {
         async {
-            sleep(100L)
+            delay(100L)
             x = 1
         }
     }
