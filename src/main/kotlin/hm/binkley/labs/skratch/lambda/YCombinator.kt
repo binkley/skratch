@@ -34,14 +34,14 @@ private fun <T> recursiveFor(original: (t: T, f: F<T>) -> T): F<T> =
 
 // See https://gist.github.com/aruld/3965968/
 fun main() {
-    val fact = recursiveFor<Int> { it, fact ->
+    val factorial = recursiveFor<Int> { it, factorial ->
         when (it) {
             0 -> 1
-            else -> it * fact(it - 1)
+            else -> it * factorial(it - 1)
         }
     }
 
     (0..9).forEach {
-        println("$it -> ${fact(it)}")
+        println("$it -> ${factorial(it)}")
     }
 }
