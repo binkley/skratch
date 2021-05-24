@@ -36,7 +36,7 @@
         <jline.version>3.18.0</jline.version>
         <jmh.version>1.31</jmh.version>
         <junit.version>5.8.0-M1</junit.version>
-        <kotlin.version>1.5.0</kotlin.version>
+        <kotlin.version>1.5.10</kotlin.version>
         <kotlinx-cli.version>0.3</kotlinx-cli.version>
         <kotlinx-coroutines.version>1.5.0</kotlinx-coroutines.version>
         <main.class>hm.binkley.labs.skratch.MainKt</main.class>
