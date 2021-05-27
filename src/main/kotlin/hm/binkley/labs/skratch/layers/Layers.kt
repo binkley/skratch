@@ -18,7 +18,8 @@ interface MutableLayers<K : Any, V : Any, M : MutableLayer<K, V, M>>
     : Layers<K, V> {
     fun edit(block: EditMap<K, V>.() -> Unit)
 
-    fun commitAndNext(): MutableLayer<K, V, M> // TODO: How to return M?
+    /** @todo Returning M loses type information for K and V ?! */
+    fun commitAndNext(): MutableLayer<K, V, M>
     fun <N : M> commitAndNext(nextMutableLayer: () -> N): N
 }
 
