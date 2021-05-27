@@ -6,7 +6,7 @@ import java.util.AbstractMap.SimpleEntry
 import kotlin.collections.Map.Entry
 
 fun main() {
-    val c = defaultMutableLayers<String, Number>()
+    val c = defaultMutableLayers<String, Number>("C")
     c.edit {
         this["ALICE"] = latestOfRule(0)
 
@@ -22,11 +22,12 @@ fun main() {
     a.edit {
         this["BOB"] = Value(4.0)
     }
-    println(c.history)
+
     println(c)
 
     val d =
-        DefaultMutableLayers<String, Number, DefaultMutableLayer<String, Number, *>> {
+        DefaultMutableLayers<String, Number, DefaultMutableLayer<String, Number, *>>(
+            name = "D") {
             DefaultMutableLayer()
         }
     d.edit {
@@ -55,10 +56,9 @@ fun main() {
         }
     }
 
-    println(d.history)
     println(d)
 
-    println(d.whatIf(mapOf("CAROL" to (-1).toValue())))
+    println(d.whatIf(scenario = mapOf("CAROL" to (-1).toValue())))
 }
 
 sealed interface ValueOrRule<V : Any>
@@ -127,9 +127,13 @@ open class DefaultMutableLayer<K : Any, V : Any, M : DefaultMutableLayer<K, V, M
 }
 
 interface Layers<K : Any, V : Any> : Map<K, V> {
+    val name: String
     val history: List<Map<K, ValueOrRule<V>>>
 
-    fun whatIf(scenario: Map<K, ValueOrRule<V>>): Map<K, V>
+    fun whatIf(
+        name: String = "<WHAT-IF: ${this.name}>",
+        scenario: Map<K, ValueOrRule<V>>,
+    ): Map<K, V>
 }
 
 interface MutableLayers<K : Any, V : Any, M : MutableLayer<K, V, M>>
@@ -142,6 +146,7 @@ interface MutableLayers<K : Any, V : Any, M : MutableLayer<K, V, M>>
 
 open class DefaultMutableLayers<K : Any, V : Any, M : MutableLayer<K, V, M>>(
     private val layers: MutableList<M> = mutableListOf(),
+    override val name: String,
     private val defaultMutableLayer: () -> M,
 ) : MutableLayers<K, V, M>, AbstractMap<K, V>() {
     init {
@@ -149,15 +154,21 @@ open class DefaultMutableLayers<K : Any, V : Any, M : MutableLayer<K, V, M>>(
     }
 
     companion object {
-        fun <K : Any, V : Any> defaultMutableLayers(): MutableLayers<K, V, *> =
-            DefaultMutableLayers<K, V, MutableLayer<K, V, *>> {
+        fun <K : Any, V : Any> defaultMutableLayers(
+            name: String,
+        ): MutableLayers<K, V, *> =
+            DefaultMutableLayers<K, V, MutableLayer<K, V, *>>(name = name) {
                 defaultMutableLayer<K, V>()
             }
     }
 
+    override val entries: Set<Entry<K, V>> get() = ViewSet()
     override val history: List<Map<K, ValueOrRule<V>>> = layers
 
-    override fun whatIf(scenario: Map<K, ValueOrRule<V>>): Map<K, V> {
+    override fun whatIf(
+        name: String,
+        scenario: Map<K, ValueOrRule<V>>,
+    ): Map<K, V> {
         val whatIfLayer = defaultMutableLayer()
         whatIfLayer.edit { putAll(scenario) }
         val whatIfLayers = layers.toMutableList()
@@ -165,7 +176,8 @@ open class DefaultMutableLayers<K : Any, V : Any, M : MutableLayer<K, V, M>>(
 
         return DefaultMutableLayers(
             whatIfLayers,
-            defaultMutableLayer
+            name,
+            defaultMutableLayer,
         )
     }
 
@@ -180,7 +192,9 @@ open class DefaultMutableLayers<K : Any, V : Any, M : MutableLayer<K, V, M>>(
         return layer
     }
 
-    override val entries: Set<Entry<K, V>> get() = ViewSet()
+    override fun toString() = history.mapIndexed { index, layer ->
+        "$index: $layer"
+    }.joinToString("\n", "$name: ${super.toString()}\n")
 
     private inner class ViewIterator : Iterator<Entry<K, V>> {
         private val kit = allKeys().iterator()
