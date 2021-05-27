@@ -44,7 +44,7 @@ fun main() {
     println(d)
 
     println()
-    println("== USING COMPLEX RULES")
+    println("== USING LATEST RULE FOR A KEY")
 
     b.edit {
         this["CAROL"] = 17.toValue()
@@ -63,9 +63,13 @@ fun main() {
     println(d)
 
     println()
-    println("== WHAT-IF SCENARIOS")
+    println("== WHAT-IF SCENARIO")
 
-    println(d.whatIf(scenario = mapOf("CAROL" to (-1).toValue())))
+    val e = d.whatIf {
+        this["CAROL"] = (-1).toValue()
+    }
+
+    println(e)
 
     println()
     println("== ORIGINAL WITHOUT WHAT-IF")

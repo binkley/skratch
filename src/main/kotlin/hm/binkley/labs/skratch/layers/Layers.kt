@@ -10,7 +10,7 @@ interface Layers<K : Any, V : Any> : Map<K, V> {
 
     fun whatIf(
         name: String = "<WHAT-IF: ${this.name}>",
-        scenario: Map<K, ValueOrRule<V>>,
+        block: EditMap<K, V>.() -> Unit,
     ): Map<K, V>
 }
 
@@ -46,12 +46,12 @@ open class DefaultMutableLayers<K : Any, V : Any, M : MutableLayer<K, V, M>>(
 
     override fun whatIf(
         name: String,
-        scenario: Map<K, ValueOrRule<V>>,
+        block: EditMap<K, V>.() -> Unit,
     ): Map<K, V> {
-        val whatIfLayer = defaultMutableLayer()
-        whatIfLayer.edit { putAll(scenario) }
         val whatIfLayers = layers.toMutableList()
+        val whatIfLayer = defaultMutableLayer()
         whatIfLayers.add(whatIfLayer)
+        whatIfLayer.edit(block)
 
         return DefaultMutableLayers(
             name,
