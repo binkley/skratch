@@ -2,6 +2,7 @@ package hm.binkley.labs.skratch.layers
 
 import hm.binkley.labs.skratch.layers.DefaultMutableLayer.Companion.defaultMutableLayer
 import hm.binkley.labs.skratch.layers.DefaultMutableLayers.Companion.defaultMutableLayers
+import hm.binkley.labs.skratch.layers.Rule.Companion.rule
 import java.util.AbstractMap.SimpleEntry
 import kotlin.collections.Map.Entry
 
@@ -9,11 +10,11 @@ fun main() {
     val c = defaultMutableLayers<String, Number>()
     c.edit {
         this["ALICE"] =
-            Rule.rule<String, Number, Int>("Latest of") { _, values, _ ->
+            rule<String, Number, Int>("Latest of") { _, values, _ ->
                 if (values.isEmpty()) 0 else values.last()
             }
         this["BOB"] =
-            Rule.rule<String, Number, Double>("Sum[Int]") { _, values, _ ->
+            rule<String, Number, Double>("Sum[Int]") { _, values, _ ->
                 values.sum()
             }
     }
@@ -92,10 +93,9 @@ open class DefaultMutableLayer<K : Any, V : Any, M : DefaultMutableLayer<K, V, M
     override fun toString(): String = map.toString()
 
     companion object {
-        fun <K : Any, V : Any> defaultMutableLayer(): MutableLayer<K, V, *> {
-            @Suppress("UNCHECKED_CAST")
-            return DefaultMutableLayer<K, V, DefaultMutableLayer<K, V, *>>()
-        }
+        @Suppress("UNCHECKED_CAST")
+        fun <K : Any, V : Any> defaultMutableLayer(): DefaultMutableLayer<K, V, *> =
+            DefaultMutableLayer<K, V, DefaultMutableLayer<K, V, *>>()
     }
 }
 
