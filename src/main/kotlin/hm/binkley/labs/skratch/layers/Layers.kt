@@ -121,7 +121,7 @@ interface MutableLayers<K : Any, V : Any, M : MutableLayer<K, V, M>>
     : Layers<K, V, M> {
     fun edit(block: MutableMap<K, ValueOrRule<V>>.() -> Unit)
 
-    fun commitAndNext(): MutableLayer<K, V, M>
+    fun commitAndNext(): MutableLayer<K, V, M> // TODO: How to return M?
     fun <N : M> commitAndNext(next: () -> N): N
 }
 
