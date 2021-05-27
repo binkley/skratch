@@ -52,6 +52,8 @@ fun main() {
 
     println(d.history)
     println(d)
+
+    println(d.whatIf(mapOf("CAROL" to (-1).toValue())))
 }
 
 sealed interface ValueOrRule<V : Any>
@@ -90,26 +92,31 @@ interface Layer<K : Any, V : Any, L : Layer<K, V, L>> :
 interface MutableLayer<K : Any, V : Any, M : MutableLayer<K, V, M>> :
     Layer<K, V, M>,
     MutableMap<K, ValueOrRule<V>> {
-    fun edit(block: MutableMap<K, ValueOrRule<V>>.() -> Unit)
+    fun edit(block: EditMap<K, V>.() -> Unit)
 }
 
 open class DefaultMutableLayer<K : Any, V : Any, M : DefaultMutableLayer<K, V, M>>(
-    val map: MutableMap<K, ValueOrRule<V>> = mutableMapOf(),
+    private val map: MutableMap<K, ValueOrRule<V>> = mutableMapOf(),
 ) : MutableLayer<K, V, M>, MutableMap<K, ValueOrRule<V>> by map {
-    override fun edit(block: MutableMap<K, ValueOrRule<V>>.() -> Unit) =
-        map.block()
-
-    override fun toString(): String = map.toString()
-
     companion object {
         @Suppress("UNCHECKED_CAST")
         fun <K : Any, V : Any> defaultMutableLayer(): DefaultMutableLayer<K, V, *> =
             DefaultMutableLayer<K, V, DefaultMutableLayer<K, V, *>>()
     }
+
+    override fun edit(block: EditMap<K, V>.() -> Unit) =
+        LayerEditMap().block()
+
+    override fun toString(): String = map.toString()
+
+    private inner class LayerEditMap
+        : EditMap<K, V>, MutableMap<K, ValueOrRule<V>> by map
 }
 
 interface Layers<K : Any, V : Any, L : Layer<K, V, L>> : Map<K, V> {
     val history: List<Map<K, ValueOrRule<V>>>
+
+    fun whatIf(scenario: Map<K, ValueOrRule<V>>): Map<K, V>
 }
 
 interface MutableLayers<K : Any, V : Any, M : MutableLayer<K, V, M>>
@@ -136,6 +143,18 @@ open class DefaultMutableLayers<K : Any, V : Any, M : MutableLayer<K, V, M>>(
     }
 
     override val history: List<Map<K, ValueOrRule<V>>> = layers
+
+    override fun whatIf(scenario: Map<K, ValueOrRule<V>>): Map<K, V> {
+        val whatIfLayer = defaultMutableLayer()
+        whatIfLayer.edit { putAll(scenario) }
+        val whatIfLayers = layers.toMutableList()
+        whatIfLayers.add(whatIfLayer)
+
+        return DefaultMutableLayers(
+            whatIfLayers,
+            defaultMutableLayer
+        )
+    }
 
     override fun edit(block: EditMap<K, V>.() -> Unit) =
         LayersEditMap().block()
