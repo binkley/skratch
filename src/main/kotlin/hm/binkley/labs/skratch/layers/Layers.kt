@@ -26,9 +26,8 @@ fun main() {
 
     val d =
         DefaultMutableLayers<String, Number, DefaultMutableLayer<String, Number, *>>(
-            name = "D") {
-            DefaultMutableLayer()
-        }
+            "D"
+        ) { DefaultMutableLayer() }
     d.edit {
         this["CAROL"] = constantRule(2)
     }
@@ -79,8 +78,8 @@ interface MutableLayers<K : Any, V : Any, M : MutableLayer<K, V, M>>
 }
 
 open class DefaultMutableLayers<K : Any, V : Any, M : MutableLayer<K, V, M>>(
-    private val layers: MutableList<M> = mutableListOf(),
     override val name: String,
+    private val layers: MutableList<M> = mutableListOf(),
     private val defaultMutableLayer: () -> M,
 ) : MutableLayers<K, V, M>, AbstractMap<K, V>() {
     init {
@@ -91,7 +90,7 @@ open class DefaultMutableLayers<K : Any, V : Any, M : MutableLayer<K, V, M>>(
         fun <K : Any, V : Any> defaultMutableLayers(
             name: String,
         ): MutableLayers<K, V, *> =
-            DefaultMutableLayers<K, V, MutableLayer<K, V, *>>(name = name) {
+            DefaultMutableLayers<K, V, MutableLayer<K, V, *>>(name) {
                 defaultMutableLayer<K, V>()
             }
     }
@@ -109,8 +108,8 @@ open class DefaultMutableLayers<K : Any, V : Any, M : MutableLayer<K, V, M>>(
         whatIfLayers.add(whatIfLayer)
 
         return DefaultMutableLayers(
-            whatIfLayers,
             name,
+            whatIfLayers,
             defaultMutableLayer,
         )
     }
