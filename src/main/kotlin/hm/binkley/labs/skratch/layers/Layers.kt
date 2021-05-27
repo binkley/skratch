@@ -9,7 +9,6 @@ fun main() {
     val c = defaultMutableLayers<String, Number>("C")
     c.edit {
         this["ALICE"] = latestOfRule(0)
-
         this["BOB"] = rule<Double>("Sum[Int]") { _, values, _ ->
             values.sum()
         }
@@ -59,71 +58,6 @@ fun main() {
     println(d)
 
     println(d.whatIf(scenario = mapOf("CAROL" to (-1).toValue())))
-}
-
-sealed interface ValueOrRule<V : Any>
-data class Value<V : Any>(val value: V) : ValueOrRule<V> {
-    override fun toString() = "<Value>: $value"
-}
-
-fun <T : Any> T.toValue() = Value(this)
-
-interface EditMap<K : Any, V : Any> : MutableMap<K, ValueOrRule<V>> {
-    fun <T : V> rule(
-        name: String,
-        block: (K, List<T>, EditMap<K, V>) -> T,
-    ): Rule<K, V, T> = object : Rule<K, V, T>(name) {
-        override fun invoke(
-            key: K,
-            values: List<T>,
-            editMap: EditMap<K, V>,
-        ): T = block(key, values, editMap)
-    }
-
-    fun <T : V> constantRule(value: T): Rule<K, V, T> =
-        rule("Constant(value=$value") { _, _, _ -> value }
-
-    fun <T : V> latestOfRule(default: T): Rule<K, V, T> =
-        rule("Latest(default=$default)") { _, values, _ ->
-            values.lastOrNull() ?: default
-        }
-}
-
-abstract class Rule<K : Any, V : Any, T : V>(
-    val name: String,
-) : ValueOrRule<V>, (K, List<T>, EditMap<K, V>) -> T {
-    override fun toString() = "<Rule>: $name"
-}
-
-interface Layer<K : Any, V : Any, L : Layer<K, V, L>>
-    : Map<K, ValueOrRule<V>> {
-    @Suppress("UNCHECKED_CAST")
-    val self: L
-        get() = this as L
-}
-
-interface MutableLayer<K : Any, V : Any, M : MutableLayer<K, V, M>>
-    : Layer<K, V, M>,
-    MutableMap<K, ValueOrRule<V>> {
-    fun edit(block: EditMap<K, V>.() -> Unit)
-}
-
-open class DefaultMutableLayer<K : Any, V : Any, M : DefaultMutableLayer<K, V, M>>(
-    private val map: MutableMap<K, ValueOrRule<V>> = mutableMapOf(),
-) : MutableLayer<K, V, M>, MutableMap<K, ValueOrRule<V>> by map {
-    companion object {
-        @Suppress("UNCHECKED_CAST")
-        fun <K : Any, V : Any> defaultMutableLayer(): DefaultMutableLayer<K, V, *> =
-            DefaultMutableLayer<K, V, DefaultMutableLayer<K, V, *>>()
-    }
-
-    override fun edit(block: EditMap<K, V>.() -> Unit) =
-        LayerEditMap().block()
-
-    override fun toString(): String = map.toString()
-
-    private inner class LayerEditMap
-        : EditMap<K, V>, MutableMap<K, ValueOrRule<V>> by map
 }
 
 interface Layers<K : Any, V : Any> : Map<K, V> {
