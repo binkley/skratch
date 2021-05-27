@@ -28,5 +28,9 @@ open class DefaultMutableLayer<K : Any, V : Any, M : DefaultMutableLayer<K, V, M
     override fun toString(): String = map.toString()
 
     private inner class LayerEditMap
-        : EditMap<K, V>, MutableMap<K, ValueOrRule<V>> by map
+        : EditMap<K, V>, MutableMap<K, ValueOrRule<V>> by map {
+        @Suppress("UNCHECKED_CAST")
+        override fun <T : V> getOtherValueAs(key: K): T =
+            (this[key] as Value<T>).value
+    }
 }

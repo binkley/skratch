@@ -44,14 +44,20 @@ fun main() {
     }
     d.commitAndNext()
     d.edit {
-        d.edit {
-            this["CAROL"] = rule<Int>("Product[Int]") { _, values, _ ->
-                values.fold(1) { a, b -> a * b }
-            }
+        this["CAROL"] = rule<Int>("Product[Int]") { _, values, _ ->
+            values.fold(1) { a, b -> a * b }
         }
     }
 
     println(d)
 
     println(d.whatIf(scenario = mapOf("CAROL" to (-1).toValue())))
+
+    d.edit {
+        this["DAVE"] = rule<Int>("Halve[Int](other=CAROL)") { _, _, _ ->
+            getOtherValueAs<Int>("CAROL") / 2
+        }
+    }
+
+    println(d)
 }

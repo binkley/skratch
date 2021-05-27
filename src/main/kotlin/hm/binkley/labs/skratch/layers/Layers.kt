@@ -1,7 +1,6 @@
 package hm.binkley.labs.skratch.layers
 
 import hm.binkley.labs.skratch.layers.DefaultMutableLayer.Companion.defaultMutableLayer
-import hm.binkley.labs.skratch.layers.DefaultMutableLayers.Companion.defaultMutableLayers
 import java.util.AbstractMap.SimpleEntry
 import kotlin.collections.Map.Entry
 
@@ -108,5 +107,10 @@ open class DefaultMutableLayers<K : Any, V : Any, M : MutableLayer<K, V, M>>(
         layers.mapNotNull { it[key] }
 
     private inner class LayersEditMap
-        : EditMap<K, V>, MutableMap<K, ValueOrRule<V>> by layers.last()
+        : EditMap<K, V>, MutableMap<K, ValueOrRule<V>> by layers.last() {
+        @Suppress("UNCHECKED_CAST")
+        override fun <T : V> getOtherValueAs(key: K): T {
+            return this@DefaultMutableLayers[key] as T
+        }
+    }
 }

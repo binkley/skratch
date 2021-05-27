@@ -15,6 +15,8 @@ abstract class Rule<K : Any, V : Any, T : V>(
 }
 
 interface EditMap<K : Any, V : Any> : MutableMap<K, ValueOrRule<V>> {
+    fun <T : V> getOtherValueAs(key: K): T
+
     fun <T : V> rule(
         name: String,
         block: (K, List<T>, EditMap<K, V>) -> T,
