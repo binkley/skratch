@@ -10,7 +10,7 @@ fun <T : Any> T.toValue() = Value(this)
 
 abstract class Rule<K : Any, V : Any, T : V>(
     val name: String,
-) : ValueOrRule<V>, (K, List<T>, EditMap<K, V>) -> T {
+) : ValueOrRule<V>, (K, List<T>, Map<K, V>) -> T {
     override fun toString() = "<Rule>: $name"
 }
 
@@ -19,13 +19,13 @@ interface EditMap<K : Any, V : Any> : MutableMap<K, ValueOrRule<V>> {
 
     fun <T : V> rule(
         name: String,
-        block: (K, List<T>, EditMap<K, V>) -> T,
+        block: (K, List<T>, Map<K, V>) -> T,
     ): Rule<K, V, T> = object : Rule<K, V, T>(name) {
         override fun invoke(
             key: K,
             values: List<T>,
-            editMap: EditMap<K, V>,
-        ): T = block(key, values, editMap)
+            view: Map<K, V>,
+        ): T = block(key, values, view)
     }
 
     fun <T : V> constantRule(value: T): Rule<K, V, T> =

@@ -74,29 +74,6 @@ open class DefaultMutableLayers<K : Any, V : Any, M : MutableLayer<K, V, M>>(
         "$index: $layer"
     }.joinToString("\n", "$name: ${super.toString()}\n")
 
-    private inner class ViewIterator : Iterator<Entry<K, V>> {
-        private val kit = allKeys().iterator()
-
-        override fun hasNext(): Boolean = kit.hasNext()
-        override fun next(): Entry<K, V> {
-            val key = kit.next()
-            return SimpleEntry(key, computeValue(key))
-        }
-    }
-
-    private inner class ViewSet : AbstractSet<Entry<K, V>>() {
-        override val size: Int get() = allKeys().size
-        override fun iterator(): Iterator<Entry<K, V>> = ViewIterator()
-    }
-
-    private fun allKeys(): Set<K> = history.flatMap { it.keys }.toSet()
-    private fun computeValue(key: K): V {
-        val rule = currentRuleFor<V>(key)
-        val values = currentValuesFor<V>(key)
-
-        return rule(key, values, LayersEditMap())
-    }
-
     private fun <T : V> currentRuleFor(key: K): Rule<K, V, T> =
         valuesOrRules(key).filterIsInstance<Rule<K, V, T>>().last()
 
@@ -105,6 +82,35 @@ open class DefaultMutableLayers<K : Any, V : Any, M : MutableLayer<K, V, M>>(
 
     private fun valuesOrRules(key: K): List<ValueOrRule<V>> =
         layers.mapNotNull { it[key] }
+
+    private inner class ViewIterator(keys: Set<K>) : Iterator<Entry<K, V>> {
+        private val kit = keys.iterator()
+
+        override fun hasNext(): Boolean = kit.hasNext()
+        override fun next(): Entry<K, V> {
+            val key = kit.next()
+            return SimpleEntry(key, computeValue(key))
+        }
+    }
+
+    private inner class ViewSet(val keys: Set<K> = allKeys()) :
+        AbstractSet<Entry<K, V>>() {
+        override val size: Int get() = keys.size
+        override fun iterator(): Iterator<Entry<K, V>> = ViewIterator(keys)
+    }
+
+    private inner class ViewMap(private val except: K) : AbstractMap<K, V>() {
+        override val entries: Set<Entry<K, V>>
+            get() = ViewSet(allKeys().filterNot { it == except }.toSet())
+    }
+
+    private fun allKeys(): Set<K> = history.flatMap { it.keys }.toSet()
+    private fun computeValue(key: K): V {
+        val rule = currentRuleFor<V>(key)
+        val values = currentValuesFor<V>(key)
+
+        return rule(key, values, ViewMap(key))
+    }
 
     private inner class LayersEditMap
         : EditMap<K, V>, MutableMap<K, ValueOrRule<V>> by layers.last() {
