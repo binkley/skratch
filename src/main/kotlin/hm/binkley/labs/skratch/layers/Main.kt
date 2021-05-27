@@ -1,7 +1,9 @@
 package hm.binkley.labs.skratch.layers
 
+import hm.binkley.labs.skratch.layers.DefaultMutableLayers.Companion.defaultMutableLayers
+
 fun main() {
-    val c = DefaultMutableLayers.defaultMutableLayers<String, Number>("C")
+    val c = defaultMutableLayers<String, Number>("C")
     c.edit {
         this["ALICE"] = latestOfRule(0)
         this["BOB"] = rule<Double>("Sum[Int]") { _, values, _ ->
