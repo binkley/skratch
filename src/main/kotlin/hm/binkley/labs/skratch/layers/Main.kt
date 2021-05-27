@@ -60,4 +60,13 @@ fun main() {
     }
 
     println(d)
+
+    d.edit {
+        this["DAVE"] = rule<Int>("Count of non-DAVE keys") { _, _, view ->
+            view.keys.size
+        }
+        this["EVE"] = constantRule(31)
+    }
+
+    println(d)
 }
