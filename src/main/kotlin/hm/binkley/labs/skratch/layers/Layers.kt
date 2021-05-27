@@ -82,15 +82,15 @@ abstract class Rule<K : Any, V : Any, T : V>(
     override fun toString() = "<Rule>: $name"
 }
 
-interface Layer<K : Any, V : Any, L : Layer<K, V, L>> :
-    Map<K, ValueOrRule<V>> {
+interface Layer<K : Any, V : Any, L : Layer<K, V, L>>
+    : Map<K, ValueOrRule<V>> {
     @Suppress("UNCHECKED_CAST")
     val self: L
         get() = this as L
 }
 
-interface MutableLayer<K : Any, V : Any, M : MutableLayer<K, V, M>> :
-    Layer<K, V, M>,
+interface MutableLayer<K : Any, V : Any, M : MutableLayer<K, V, M>>
+    : Layer<K, V, M>,
     MutableMap<K, ValueOrRule<V>> {
     fun edit(block: EditMap<K, V>.() -> Unit)
 }
@@ -167,21 +167,22 @@ open class DefaultMutableLayers<K : Any, V : Any, M : MutableLayer<K, V, M>>(
         return layer
     }
 
-    override val entries: Set<Entry<K, V>>
-        get() = object : AbstractSet<Entry<K, V>>() {
-            override val size: Int get() = allKeys().size
+    override val entries: Set<Entry<K, V>> get() = ViewSet()
 
-            override fun iterator(): Iterator<Entry<K, V>> =
-                object : Iterator<Entry<K, V>> {
-                    val kit = allKeys().iterator()
-                    override fun hasNext(): Boolean = kit.hasNext()
+    private inner class ViewIterator : Iterator<Entry<K, V>> {
+        private val kit = allKeys().iterator()
 
-                    override fun next(): Entry<K, V> {
-                        val key = kit.next()
-                        return SimpleEntry(key, computeValue(key))
-                    }
-                }
+        override fun hasNext(): Boolean = kit.hasNext()
+        override fun next(): Entry<K, V> {
+            val key = kit.next()
+            return SimpleEntry(key, computeValue(key))
         }
+    }
+
+    private inner class ViewSet : AbstractSet<Entry<K, V>>() {
+        override val size: Int get() = allKeys().size
+        override fun iterator(): Iterator<Entry<K, V>> = ViewIterator()
+    }
 
     private fun allKeys(): Set<K> = history.flatMap { it.keys }.toSet()
     private fun computeValue(key: K): V {
