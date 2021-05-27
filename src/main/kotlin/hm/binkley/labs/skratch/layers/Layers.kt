@@ -113,14 +113,14 @@ open class DefaultMutableLayer<K : Any, V : Any, M : DefaultMutableLayer<K, V, M
         : EditMap<K, V>, MutableMap<K, ValueOrRule<V>> by map
 }
 
-interface Layers<K : Any, V : Any, L : Layer<K, V, L>> : Map<K, V> {
+interface Layers<K : Any, V : Any> : Map<K, V> {
     val history: List<Map<K, ValueOrRule<V>>>
 
     fun whatIf(scenario: Map<K, ValueOrRule<V>>): Map<K, V>
 }
 
 interface MutableLayers<K : Any, V : Any, M : MutableLayer<K, V, M>>
-    : Layers<K, V, M> {
+    : Layers<K, V> {
     fun edit(block: EditMap<K, V>.() -> Unit)
 
     fun commitAndNext(): MutableLayer<K, V, M> // TODO: How to return M?
