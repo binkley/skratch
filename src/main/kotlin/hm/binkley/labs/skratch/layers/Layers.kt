@@ -27,6 +27,22 @@ fun main() {
     }
     println(c.history)
     println(c)
+
+    val d =
+        DefaultMutableLayers<String, Number, DefaultMutableLayer<String, Number, *>> {
+            DefaultMutableLayer()
+        }
+
+    class Bob : DefaultMutableLayer<String, Number, Bob>() {
+        fun foo() = println("I AM FOCUTUS OF BOB")
+    }
+
+    val b = d.commitAndNext { Bob() }
+    b.foo()
+    d.commitAndNext()
+
+    println(d.history)
+    println(d)
 }
 
 sealed interface ValueOrRule<V : Any>
