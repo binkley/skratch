@@ -8,9 +8,8 @@ import kotlin.collections.Map.Entry
 fun main() {
     val c = defaultMutableLayers<String, Number>()
     c.edit {
-        this["ALICE"] = rule<Int>("Latest of") { _, values, _ ->
-            if (values.isEmpty()) 0 else values.last()
-        }
+        this["ALICE"] = latestOfRule(0)
+
         this["BOB"] = rule<Double>("Sum[Int]") { _, values, _ ->
             values.sum()
         }
@@ -31,9 +30,7 @@ fun main() {
             DefaultMutableLayer()
         }
     d.edit {
-        this["CAROL"] = rule<Int>("Product[Int]") { _, values, _ ->
-            values.fold(1) { a, b -> a * b }
-        }
+        this["CAROL"] = constantRule(2)
     }
 
     class Bob : DefaultMutableLayer<String, Number, Bob>() {
@@ -48,6 +45,14 @@ fun main() {
     d.commitAndNext()
     d.edit {
         this["CAROL"] = 19.toValue()
+    }
+    d.commitAndNext()
+    d.edit {
+        d.edit {
+            this["CAROL"] = rule<Int>("Product[Int]") { _, values, _ ->
+                values.fold(1) { a, b -> a * b }
+            }
+        }
     }
 
     println(d.history)
@@ -74,6 +79,14 @@ interface EditMap<K : Any, V : Any> : MutableMap<K, ValueOrRule<V>> {
             editMap: EditMap<K, V>,
         ): T = block(key, values, editMap)
     }
+
+    fun <T : V> constantRule(value: T): Rule<K, V, T> =
+        rule("Constant(value=$value") { _, _, _ -> value }
+
+    fun <T : V> latestOfRule(default: T): Rule<K, V, T> =
+        rule("Latest(default=$default)") { _, values, _ ->
+            values.lastOrNull() ?: default
+        }
 }
 
 abstract class Rule<K : Any, V : Any, T : V>(
