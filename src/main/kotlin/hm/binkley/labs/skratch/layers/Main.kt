@@ -3,6 +3,8 @@ package hm.binkley.labs.skratch.layers
 import hm.binkley.labs.skratch.layers.DefaultMutableLayers.Companion.defaultMutableLayers
 
 fun main() {
+    println("== USING DEFAULT TYPES")
+
     val c = defaultMutableLayers<String, Number>("C")
     c.edit {
         this["ALICE"] = latestOfRule(0)
@@ -21,6 +23,9 @@ fun main() {
 
     println(c)
 
+    println()
+    println("== USING CUSTOM TYPES")
+
     val d =
         DefaultMutableLayers<String, Number, DefaultMutableLayer<String, Number, *>>(
             "D"
@@ -35,6 +40,12 @@ fun main() {
 
     val b = d.commitAndNext { Bob() }
     b.foo()
+
+    println(d)
+
+    println()
+    println("== USING COMPLEX RULES")
+
     b.edit {
         this["CAROL"] = 17.toValue()
     }
@@ -51,7 +62,13 @@ fun main() {
 
     println(d)
 
+    println()
+    println("== WHAT-IF SCENARIOS")
+
     println(d.whatIf(scenario = mapOf("CAROL" to (-1).toValue())))
+
+    println()
+    println("== ORIGINAL WITHOUT WHAT-IF")
 
     d.edit {
         this["DAVE"] = rule<Int>("Halve[Int](other=CAROL)") { _, _, _ ->
@@ -60,6 +77,9 @@ fun main() {
     }
 
     println(d)
+
+    println()
+    println("== MORE COMPLEX RULES")
 
     d.edit {
         this["DAVE"] = rule<Int>("Count of non-DAVE keys") { _, _, view ->
