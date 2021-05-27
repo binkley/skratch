@@ -1,12 +1,12 @@
 package hm.binkley.labs.skratch.layers
 
-import hm.binkley.labs.skratch.layers.B.Companion.newDefaultA
-import hm.binkley.labs.skratch.layers.D.Companion.newDefaultC
+import hm.binkley.labs.skratch.layers.DefaultMutableLayer.Companion.defaultMutableLayer
+import hm.binkley.labs.skratch.layers.DefaultMutableLayers.Companion.defaultMutableLayers
 import java.util.AbstractMap.SimpleEntry
 import kotlin.collections.Map.Entry
 
 fun main() {
-    val c = newDefaultC<String, Number>()
+    val c = defaultMutableLayers<String, Number>()
     c.edit {
         this["ALICE"] = P(3)
     }
@@ -20,56 +20,59 @@ fun main() {
 
 data class P<V : Any>(val value: V)
 
-interface A<K : Any, V : Any, L : A<K, V, L>> : Map<K, P<V>> {
+interface Layer<K : Any, V : Any, L : Layer<K, V, L>> : Map<K, P<V>> {
     @Suppress("UNCHECKED_CAST")
     val self: L
         get() = this as L
 }
 
-interface MutableA<K : Any, V : Any, M : A<K, V, M>> :
-    A<K, V, M>,
+interface MutableLayer<K : Any, V : Any, M : Layer<K, V, M>> :
+    Layer<K, V, M>,
     MutableMap<K, P<V>> {
 
     fun edit(block: MutableMap<K, P<V>>.() -> Unit)
 }
 
-open class B<K : Any, V : Any, M : B<K, V, M>>(
+open class DefaultMutableLayer<K : Any, V : Any, M : DefaultMutableLayer<K, V, M>>(
     val map: MutableMap<K, P<V>> = mutableMapOf(),
-) : MutableA<K, V, M>, MutableMap<K, P<V>> by map {
+) : MutableLayer<K, V, M>, MutableMap<K, P<V>> by map {
     override fun edit(block: MutableMap<K, P<V>>.() -> Unit) = map.block()
 
     override fun toString(): String = map.toString()
 
     companion object {
-        fun <K : Any, V : Any> newDefaultA(): MutableA<K, V, *> {
+        fun <K : Any, V : Any> defaultMutableLayer(): MutableLayer<K, V, *> {
             @Suppress("UNCHECKED_CAST")
-            return B<K, V, B<K, V, *>>()
+            return DefaultMutableLayer<K, V, DefaultMutableLayer<K, V, *>>()
         }
     }
 }
 
-interface C<K : Any, V : Any, L : A<K, V, L>> : Map<K, V> {
+interface Layers<K : Any, V : Any, L : Layer<K, V, L>> : Map<K, V> {
     val history: List<Map<K, P<V>>>
 }
 
-interface MutableC<K : Any, V : Any, M : MutableA<K, V, M>> : C<K, V, M> {
+interface MutableLayers<K : Any, V : Any, M : MutableLayer<K, V, M>>
+    : Layers<K, V, M> {
     fun edit(block: MutableMap<K, P<V>>.() -> Unit)
 
     /** @todo How to return M instead? */
-    fun commitAndNext(): MutableA<K, V, M>
+    fun commitAndNext(): MutableLayer<K, V, M>
 }
 
-open class D<K : Any, V : Any, M : MutableA<K, V, M>>(
+open class DefaultMutableLayers<K : Any, V : Any, M : MutableLayer<K, V, M>>(
     private val list: MutableList<M> = mutableListOf(),
     private val newA: () -> M,
-) : MutableC<K, V, M>, AbstractMap<K, V>() {
+) : MutableLayers<K, V, M>, AbstractMap<K, V>() {
     init {
         if (list.isEmpty()) list.add(newA())
     }
 
     companion object {
-        fun <K : Any, V : Any> newDefaultC(): MutableC<K, V, *> =
-            D<K, V, MutableA<K, V, *>> { newDefaultA<K, V>() }
+        fun <K : Any, V : Any> defaultMutableLayers(): MutableLayers<K, V, *> =
+            DefaultMutableLayers<K, V, MutableLayer<K, V, *>> {
+                defaultMutableLayer<K, V>()
+            }
     }
 
     override val history: List<Map<K, P<V>>> = list
