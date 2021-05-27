@@ -2,21 +2,18 @@ package hm.binkley.labs.skratch.layers
 
 import hm.binkley.labs.skratch.layers.DefaultMutableLayer.Companion.defaultMutableLayer
 import hm.binkley.labs.skratch.layers.DefaultMutableLayers.Companion.defaultMutableLayers
-import hm.binkley.labs.skratch.layers.Rule.Companion.rule
 import java.util.AbstractMap.SimpleEntry
 import kotlin.collections.Map.Entry
 
 fun main() {
     val c = defaultMutableLayers<String, Number>()
     c.edit {
-        this["ALICE"] =
-            rule<String, Number, Int>("Latest of") { _, values, _ ->
-                if (values.isEmpty()) 0 else values.last()
-            }
-        this["BOB"] =
-            rule<String, Number, Double>("Sum[Int]") { _, values, _ ->
-                values.sum()
-            }
+        this["ALICE"] = rule<Int>("Latest of") { _, values, _ ->
+            if (values.isEmpty()) 0 else values.last()
+        }
+        this["BOB"] = rule<Double>("Sum[Int]") { _, values, _ ->
+            values.sum()
+        }
     }
     c.commitAndNext()
     c.edit {
@@ -34,10 +31,9 @@ fun main() {
             DefaultMutableLayer()
         }
     d.edit {
-        this["CAROL"] =
-            rule<String, Number, Int>("Product[Int]") { _, values, _ ->
-                values.fold(1) { a, b -> a * b }
-            }
+        this["CAROL"] = rule<Int>("Product[Int]") { _, values, _ ->
+            values.fold(1) { a, b -> a * b }
+        }
     }
 
     class Bob : DefaultMutableLayer<String, Number, Bob>() {
@@ -65,24 +61,23 @@ data class Value<V : Any>(val value: V) : ValueOrRule<V> {
 
 fun <T : Any> T.toValue() = Value(this)
 
+interface EditMap<K : Any, V : Any> : MutableMap<K, ValueOrRule<V>> {
+    fun <T : V> rule(
+        name: String,
+        block: (K, List<T>, EditMap<K, V>) -> T,
+    ): Rule<K, V, T> = object : Rule<K, V, T>(name) {
+        override fun invoke(
+            key: K,
+            values: List<T>,
+            editMap: EditMap<K, V>,
+        ): T = block(key, values, editMap)
+    }
+}
+
 abstract class Rule<K : Any, V : Any, T : V>(
     val name: String,
-) : ValueOrRule<V>,
-        (K, List<T>, Layers<K, V, *>) -> T {
+) : ValueOrRule<V>, (K, List<T>, EditMap<K, V>) -> T {
     override fun toString() = "<Rule>: $name"
-
-    companion object {
-        fun <K : Any, V : Any, T : V> rule(
-            name: String,
-            block: (K, List<T>, Layers<K, V, *>) -> T,
-        ): Rule<K, V, T> = object : Rule<K, V, T>(name) {
-            override fun invoke(
-                key: K,
-                values: List<T>,
-                layers: Layers<K, V, *>,
-            ): T = block(key, values, layers)
-        }
-    }
 }
 
 interface Layer<K : Any, V : Any, L : Layer<K, V, L>> :
@@ -119,7 +114,7 @@ interface Layers<K : Any, V : Any, L : Layer<K, V, L>> : Map<K, V> {
 
 interface MutableLayers<K : Any, V : Any, M : MutableLayer<K, V, M>>
     : Layers<K, V, M> {
-    fun edit(block: MutableMap<K, ValueOrRule<V>>.() -> Unit)
+    fun edit(block: EditMap<K, V>.() -> Unit)
 
     fun commitAndNext(): MutableLayer<K, V, M> // TODO: How to return M?
     fun <N : M> commitAndNext(nextMutableLayer: () -> N): N
@@ -142,8 +137,8 @@ open class DefaultMutableLayers<K : Any, V : Any, M : MutableLayer<K, V, M>>(
 
     override val history: List<Map<K, ValueOrRule<V>>> = layers
 
-    override fun edit(block: MutableMap<K, ValueOrRule<V>>.() -> Unit) =
-        layers.last().block()
+    override fun edit(block: EditMap<K, V>.() -> Unit) =
+        LayersEditMap().block()
 
     override fun commitAndNext(): M = commitAndNext(defaultMutableLayer)
 
@@ -174,7 +169,7 @@ open class DefaultMutableLayers<K : Any, V : Any, M : MutableLayer<K, V, M>>(
         val rule = currentRuleFor<V>(key)
         val values = currentValuesFor<V>(key)
 
-        return rule(key, values, this)
+        return rule(key, values, LayersEditMap())
     }
 
     private fun <T : V> currentRuleFor(key: K): Rule<K, V, T> =
@@ -185,4 +180,7 @@ open class DefaultMutableLayers<K : Any, V : Any, M : MutableLayer<K, V, M>>(
 
     private fun valuesOrRules(key: K): List<ValueOrRule<V>> =
         layers.mapNotNull { it[key] }
+
+    private inner class LayersEditMap
+        : EditMap<K, V>, MutableMap<K, ValueOrRule<V>> by layers.last()
 }
