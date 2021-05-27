@@ -122,7 +122,7 @@ interface MutableLayers<K : Any, V : Any, M : MutableLayer<K, V, M>>
     fun edit(block: MutableMap<K, ValueOrRule<V>>.() -> Unit)
 
     fun commitAndNext(): MutableLayer<K, V, M> // TODO: How to return M?
-    fun <N : M> commitAndNext(next: () -> N): N
+    fun <N : M> commitAndNext(nextMutableLayer: () -> N): N
 }
 
 open class DefaultMutableLayers<K : Any, V : Any, M : MutableLayer<K, V, M>>(
@@ -147,8 +147,8 @@ open class DefaultMutableLayers<K : Any, V : Any, M : MutableLayer<K, V, M>>(
 
     override fun commitAndNext(): M = commitAndNext(defaultMutableLayer)
 
-    override fun <N : M> commitAndNext(next: () -> N): N {
-        val layer = next()
+    override fun <N : M> commitAndNext(nextMutableLayer: () -> N): N {
+        val layer = nextMutableLayer()
         layers.add(layer)
         return layer
     }
