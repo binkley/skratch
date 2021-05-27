@@ -33,6 +33,12 @@ fun main() {
         DefaultMutableLayers<String, Number, DefaultMutableLayer<String, Number, *>> {
             DefaultMutableLayer()
         }
+    d.edit {
+        this["CAROL"] =
+            rule<String, Number, Int>("Product[Int]") { _, values, _ ->
+                values.fold(1) { a, b -> a * b }
+            }
+    }
 
     class Bob : DefaultMutableLayer<String, Number, Bob>() {
         fun foo() = println("I AM FOCUTUS OF BOB")
@@ -40,7 +46,13 @@ fun main() {
 
     val b = d.commitAndNext { Bob() }
     b.foo()
+    b.edit {
+        this["CAROL"] = 17.toValue()
+    }
     d.commitAndNext()
+    d.edit {
+        this["CAROL"] = 19.toValue()
+    }
 
     println(d.history)
     println(d)
@@ -48,14 +60,16 @@ fun main() {
 
 sealed interface ValueOrRule<V : Any>
 data class Value<V : Any>(val value: V) : ValueOrRule<V> {
-    override fun toString() = "<Value>:$value"
+    override fun toString() = "<Value>: $value"
 }
+
+fun <T : Any> T.toValue() = Value(this)
 
 abstract class Rule<K : Any, V : Any, T : V>(
     val name: String,
 ) : ValueOrRule<V>,
         (K, List<T>, Layers<K, V, *>) -> T {
-    override fun toString() = "<Rule>:$name"
+    override fun toString() = "<Rule>: $name"
 
     companion object {
         fun <K : Any, V : Any, T : V> rule(
