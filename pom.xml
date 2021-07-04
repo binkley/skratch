@@ -24,31 +24,32 @@
         <arrow.version>0.13.2</arrow.version>
         <awaitility.version>4.1.0</awaitility.version>
         <buildplan-maven-plugin.version>1.4</buildplan-maven-plugin.version>
-        <byte-buddy.version>1.11.0</byte-buddy.version>
+        <byte-buddy.version>1.11.6</byte-buddy.version>
         <exp4j.version>0.4.8</exp4j.version>
         <failIfNoTests>true</failIfNoTests>
         <failsafe.printSummary>false</failsafe.printSummary>
         <generateBackupPoms>false</generateBackupPoms>
         <jacoco-maven-plugin.version>0.8.7</jacoco-maven-plugin.version>
-        <jansi.version>2.3.2</jansi.version>
+        <jansi.version>2.3.3</jansi.version>
         <java.charset>UTF-8</java.charset>
         <jdk.version>16</jdk.version>
         <jline.version>3.18.0</jline.version>
         <jmh.version>1.32</jmh.version>
         <junit.version>5.8.0-M1</junit.version>
-        <kotlin.version>1.5.10</kotlin.version>
+        <kotest.version>4.6.0</kotest.version>
+        <kotlin.version>1.5.20</kotlin.version>
         <kotlinx-cli.version>0.3</kotlinx-cli.version>
         <kotlinx-coroutines.version>1.5.0</kotlinx-coroutines.version>
         <main.class>hm.binkley.labs.skratch.MainKt</main.class>
         <maven-assembly-plugin.version>3.3.0</maven-assembly-plugin.version>
         <maven-clean-plugin.version>3.1.0</maven-clean-plugin.version>
         <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
-        <maven-dependency-plugin.version>3.1.2</maven-dependency-plugin.version>
+        <maven-dependency-plugin.version>3.2.0</maven-dependency-plugin.version>
         <maven-help-plugin.version>3.2.0</maven-help-plugin.version>
         <maven-jar-plugin.version>3.2.0</maven-jar-plugin.version>
         <maven-surefire-plugin.version>3.0.0-M5</maven-surefire-plugin.version>
         <mockito-kotlin.version>1.6.0</mockito-kotlin.version>
-        <mockk.version>1.11.0</mockk.version>
+        <mockk.version>1.12.0</mockk.version>
         <picocli.version>4.6.1</picocli.version>
         <project.build.sourceEncoding>${java.charset}</project.build.sourceEncoding>
         <project.reporting.outputEncoding>${java.charset}</project.reporting.outputEncoding>
@@ -155,6 +156,19 @@
                     <artifactId>junit</artifactId>
                 </exclusion>
             </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>io.kotest</groupId>
+            <artifactId>kotest-runner-junit5</artifactId>
+            <version>${kotest.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.kotest</groupId>
+            <artifactId>kotest-assertions-core-jvm</artifactId>
+            <version>${kotest.version}</version>
+            <scope>test</scope>
         </dependency>
 
         <dependency>

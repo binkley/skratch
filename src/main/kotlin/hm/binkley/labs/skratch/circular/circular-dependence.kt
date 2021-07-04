@@ -16,7 +16,6 @@ private interface HasZero<T> {
 private fun <T : XBase<T>> T.isZero() = this.companion.ZERO == this
 
 private abstract class XCompanionBase<T : XBase<T>>(
-    @JvmField
     override val ZERO: T,
 ) : HasZero<T> {
     abstract fun valueOf(x: Int): T
@@ -41,7 +40,6 @@ private class P private constructor(x: Int) : XBase<P>(x) {
     companion object : XCompanionBase<P>(
         ZERO = P(0),
     ) {
-        @JvmStatic
         override fun valueOf(x: Int): P = construct(x) { P(it) }
     }
 }
@@ -52,7 +50,6 @@ private class Q private constructor(x: Int) : XBase<Q>(x) {
     companion object : XCompanionBase<Q>(
         ZERO = Q(0),
     ) {
-        @JvmStatic
         override fun valueOf(x: Int): Q = construct(x) { Q(it) }
     }
 }
