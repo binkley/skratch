@@ -24,7 +24,7 @@
         <arrow.version>0.13.2</arrow.version>
         <awaitility.version>4.1.0</awaitility.version>
         <buildplan-maven-plugin.version>1.4</buildplan-maven-plugin.version>
-        <byte-buddy.version>1.11.0</byte-buddy.version>
+        <byte-buddy.version>1.11.6</byte-buddy.version>
         <exp4j.version>0.4.8</exp4j.version>
         <failIfNoTests>true</failIfNoTests>
         <failsafe.printSummary>false</failsafe.printSummary>
@@ -36,6 +36,7 @@
         <jline.version>3.18.0</jline.version>
         <jmh.version>1.32</jmh.version>
         <junit.version>5.8.0-M1</junit.version>
+        <kotest.version>4.6.0</kotest.version>
         <kotlin.version>1.5.10</kotlin.version>
         <kotlinx-cli.version>0.3</kotlinx-cli.version>
         <kotlinx-coroutines.version>1.5.0</kotlinx-coroutines.version>
@@ -155,6 +156,19 @@
                     <artifactId>junit</artifactId>
                 </exclusion>
             </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>io.kotest</groupId>
+            <artifactId>kotest-runner-junit5</artifactId>
+            <version>${kotest.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.kotest</groupId>
+            <artifactId>kotest-assertions-core-jvm</artifactId>
+            <version>${kotest.version}</version>
+            <scope>test</scope>
         </dependency>
 
         <dependency>
