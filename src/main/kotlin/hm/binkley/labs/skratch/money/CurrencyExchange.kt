@@ -5,17 +5,17 @@ import hm.binkley.labs.skratch.money.CurrencyExchange.MoneyChanger
 import kotlin.reflect.KClass
 
 interface CurrencyExchange {
-    fun <M : Money<M>, O : Money<O>> exchange(money: M, to: KClass<O>): O
+    fun <M : AbstractMoney<M>, O : AbstractMoney<O>> exchange(money: M, to: KClass<O>): O
 
-    class MoneyChanger<M : Money<M>>(
+    class MoneyChanger<M : AbstractMoney<M>>(
         private val money: M,
         private val exchange: CurrencyExchange,
     ) {
-        infix fun <O : Money<O>> convertTo(to: KClass<O>) = exchange.exchange(
+        infix fun <O : AbstractMoney<O>> convertTo(to: KClass<O>) = exchange.exchange(
             money, to)
     }
 
-    class ChangedMoney<M : Money<M>, O : Money<O>>(
+    class ChangedMoney<M : AbstractMoney<M>, O : AbstractMoney<O>>(
         private val money: M,
         private val to: KClass<O>,
     ) {
@@ -24,9 +24,9 @@ interface CurrencyExchange {
     }
 }
 
-infix fun <M : Money<M>> M.at(exchange: CurrencyExchange) = MoneyChanger(this,
+infix fun <M : AbstractMoney<M>> M.at(exchange: CurrencyExchange) = MoneyChanger(this,
     exchange)
 
-infix fun <M : Money<M>, O : Money<O>> M.convertTo(
+infix fun <M : AbstractMoney<M>, O : AbstractMoney<O>> M.convertTo(
     to: KClass<O>,
 ) = ChangedMoney(this, to)
