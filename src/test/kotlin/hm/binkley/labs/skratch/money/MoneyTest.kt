@@ -24,7 +24,7 @@ internal class MoneyTest {
     fun `convert nicely`() {
         val exchange = object : CurrencyExchange {
             @Suppress("UNCHECKED_CAST")
-            override fun <M : AbstractMoney<M>, O : AbstractMoney<O>> exchange(
+            override fun <M : Money<M>, O : Money<O>> exchange(
                 money: M, to: KClass<O>,
             ) = when (to) {
                 SGD::class -> SGD(BigDecimal("1.35")) as O
@@ -39,7 +39,7 @@ internal class MoneyTest {
     fun `nicely convert`() {
         val exchange = object : CurrencyExchange {
             @Suppress("UNCHECKED_CAST")
-            override fun <M : AbstractMoney<M>, O : AbstractMoney<O>> exchange(
+            override fun <M : Money<M>, O : Money<O>> exchange(
                 money: M, to: KClass<O>,
             ) = when (to) {
                 SGD::class -> SGD(BigDecimal("1.35")) as O

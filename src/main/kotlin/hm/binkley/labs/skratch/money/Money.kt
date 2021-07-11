@@ -4,8 +4,21 @@ import java.math.BigDecimal
 import java.math.RoundingMode.UNNECESSARY
 import java.util.Objects.hash
 
+interface Currency {
+    fun format(amount: BigDecimal): String
+}
+
+enum class KnownCurrencies : Currency {
+    SGD {
+        override fun format(amount: BigDecimal) = "SG\$$amount"
+    },
+    USD {
+        override fun format(amount: BigDecimal) = "\$$amount"
+    }
+}
+
 interface Money<M : Money<M>> {
-    val currency: String
+    val currency: Currency
     val amount: BigDecimal
 
     /**
@@ -15,7 +28,7 @@ interface Money<M : Money<M>> {
 }
 
 abstract class AbstractMoney<M : AbstractMoney<M>>(
-    override val currency: String,
+    override val currency: Currency,
     override val amount: BigDecimal,
 ) : Money<M> {
     final override fun equals(other: Any?): Boolean = this === other ||
@@ -24,8 +37,7 @@ abstract class AbstractMoney<M : AbstractMoney<M>>(
             amount == other.amount
 
     final override fun hashCode() = hash(currency, amount)
-
-    abstract override fun toString(): String
+    final override fun toString() = currency.format(amount)
 }
 
 operator fun <M : Money<M>> M.unaryPlus(): M = this
