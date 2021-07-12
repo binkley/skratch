@@ -4,19 +4,6 @@ import java.math.BigDecimal
 import java.math.RoundingMode.UNNECESSARY
 import java.util.Objects.hash
 
-interface Currency {
-    fun format(amount: BigDecimal): String
-}
-
-enum class KnownCurrencies : Currency {
-    SGD {
-        override fun format(amount: BigDecimal) = "SG\$$amount"
-    },
-    USD {
-        override fun format(amount: BigDecimal) = "\$$amount"
-    }
-}
-
 interface Money<M : Money<M>> {
     val currency: Currency
     val amount: BigDecimal

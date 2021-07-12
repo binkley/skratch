@@ -56,4 +56,13 @@ internal class MoneyTest {
             USD(1) / 3
         }
     }
+
+    @Test
+    fun `custom currency`() {
+        // Compiling *is* the test
+        object : Currency {
+            override fun format(amount: BigDecimal) = "MMG\$$amount"
+            override fun toString() = "PP"
+        }
+    }
 }
