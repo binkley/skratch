@@ -14,6 +14,7 @@ interface Money<M : Money<M>> {
     fun with(amount: BigDecimal): M
 }
 
+/** @todo How to ensure each [KnownCurrencies] has a matching money? */
 abstract class AbstractMoney<M : AbstractMoney<M>>(
     override val currency: Currency,
     override val amount: BigDecimal,
