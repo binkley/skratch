@@ -12,6 +12,17 @@ interface Money<M : Money<M>> {
      * Creates a new `Money` of the same [currency] with the given [amount].
      */
     fun with(amount: BigDecimal): M
+
+    /** Force implementations to define equality. */
+    override fun equals(other: Any?): Boolean
+    override fun hashCode(): Int
+
+    /**
+     * Canonical implementation is `currency.format(amount)`, but one
+     * cannot override `Any.toString()` in an interface.  Force
+     * implementations to define stringiness.
+     */
+    override fun toString(): String
 }
 
 /** @todo How to ensure each [KnownCurrencies] has a matching money? */
@@ -29,7 +40,6 @@ abstract class AbstractMoney<M : AbstractMoney<M>>(
 }
 
 operator fun <M : Money<M>> M.unaryPlus(): M = this
-
 operator fun <M : Money<M>> M.unaryMinus() = with(-amount)
 
 operator fun <M : Money<M>> M.plus(other: M) = with(amount + other.amount)
