@@ -11,13 +11,13 @@ internal class MoneyTest {
     @Test
     fun `dollars and cents`() {
         assertThrows(ArithmeticException::class.java) {
-            USD(BigDecimal("1.234"))
+            USD.valueOf("1.234")
         }
     }
 
     @Test
     fun `double your money`() {
-        assertEquals(USD(2), 2 * USD(1))
+        assertEquals(USD.valueOf(2), 2 * USD.valueOf(1))
     }
 
     @Test
@@ -27,12 +27,13 @@ internal class MoneyTest {
             override fun <M : Money<M>, O : Money<O>> exchange(
                 money: M, to: KClass<O>,
             ) = when (to) {
-                SGD::class -> SGD(BigDecimal("1.35")) as O
+                SGD::class -> SGD.valueOf("1.35") as O
                 else -> fail("Unsupported exchange: $money -> $to")
             }
         }
 
-        assertEquals(SGD("1.35"), USD(1) at exchange convertTo SGD::class)
+        assertEquals(SGD.valueOf("1.35"),
+            USD.valueOf(1) at exchange convertTo SGD::class)
     }
 
     @Test
@@ -42,18 +43,19 @@ internal class MoneyTest {
             override fun <M : Money<M>, O : Money<O>> exchange(
                 money: M, to: KClass<O>,
             ) = when (to) {
-                SGD::class -> SGD(BigDecimal("1.35")) as O
+                SGD::class -> SGD.valueOf("1.35") as O
                 else -> fail("Unsupported exchange: $money -> $to")
             }
         }
 
-        assertEquals(SGD("1.35"), USD(1) convertTo SGD::class at exchange)
+        assertEquals(SGD.valueOf("1.35"),
+            USD.valueOf(1) convertTo SGD::class at exchange)
     }
 
     @Test
     fun `no non-decimal dollars`() {
         assertThrows(ArithmeticException::class.java) {
-            USD(1) / 3
+            USD.valueOf(1) / 3
         }
     }
 
