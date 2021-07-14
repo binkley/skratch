@@ -12,10 +12,10 @@ class Beta : Psyche {
 
 inline infix fun <T : Psyche, reified R> T.doit(block: T.() -> R): R {
     print("Psyche! ")
-    return block(this)
+    return block()
 }
 
-inline infix fun <T, R> T.doit(block: T.() -> R) = block(this)
+inline infix fun <T, R> T.doit(block: T.() -> R) = block()
 
 inline fun <reified T> lamb(): T =
     T::class.java.getDeclaredConstructor().newInstance()

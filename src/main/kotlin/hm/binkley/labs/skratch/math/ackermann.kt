@@ -10,6 +10,7 @@ private tailrec fun ackermann(m: ULong, n: ULong): ULong {
     return when {
         0uL == m -> n + 1uL
         0uL == n -> ackermann(m - 1uL, 1uL)
+        // Jump out of tailrec because of the nested (parameter) call
         else -> ackermann(m - 1uL, ackermann0(m, n - 1uL))
     }
 }
