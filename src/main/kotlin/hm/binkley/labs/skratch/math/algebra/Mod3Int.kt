@@ -1,4 +1,4 @@
-package hm.binkley.math.algebra
+package hm.binkley.labs.skratch.math.algebra
 
 import java.util.Objects.hash
 
@@ -14,16 +14,16 @@ class Mod3Int private constructor(
     override fun times(factor: Mod3Int): Mod3Int =
         valueOf(value * factor.value)
 
-    public operator fun inc(): Mod3Int = valueOf(value + 1)
-    public operator fun dec(): Mod3Int = valueOf(value - 1)
+    operator fun inc(): Mod3Int = valueOf(value + 1)
+    operator fun dec(): Mod3Int = valueOf(value - 1)
 
     override fun equals(other: Any?): Boolean = this === other
     override fun hashCode(): Int = hash(this::class, value)
     override fun toString(): String = value.toString()
 
-    public companion object : RingCompanion<Mod3Int> {
+    companion object : RingCompanion<Mod3Int> {
         @JvmStatic
-        public fun valueOf(value: Int): Mod3Int = when (value.mod(3)) {
+        fun valueOf(value: Int): Mod3Int = when (value.mod(3)) {
             0 -> ZERO
             1 -> ONE
             else -> TWO
@@ -33,6 +33,6 @@ class Mod3Int private constructor(
         override val ONE: Mod3Int = Mod3Int(1)
 
         @JvmField
-        public val TWO: Mod3Int = Mod3Int(2)
+        val TWO: Mod3Int = Mod3Int(2)
     }
 }

@@ -1,8 +1,5 @@
 package hm.binkley.labs.skratch.math.algebra
 
-import hm.binkley.math.algebra.Ring
-import hm.binkley.math.algebra.RingCompanion
-
 interface FieldCompanion<T : Field<T>> : RingCompanion<T>
 
 /** @todo Separate group-like from ring-like; division is a ring */
