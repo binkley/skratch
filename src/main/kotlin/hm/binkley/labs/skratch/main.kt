@@ -6,6 +6,9 @@ import hm.binkley.labs.skratch.Q.Companion.la
 import hm.binkley.labs.skratch.puzzlers.main
 
 fun main() {
+    val a_s: List<String> = List(3) { index -> ('a' + index).toString() }
+    println("CHEESY: Using a fun name as a class name -> $a_s")
+
     open class Named<in T>(val name: String, check: (T) -> Boolean) :
             (T) -> Boolean by check {
         override fun toString() = name
