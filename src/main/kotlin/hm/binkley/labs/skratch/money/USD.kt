@@ -3,7 +3,7 @@ package hm.binkley.labs.skratch.money
 import java.math.BigDecimal
 
 class USD private constructor(amount: BigDecimal) :
-    AbstractMoney<USD>(KnownCurrencies.USD, amount.setScale(2)) {
+    AbstractMoney<USD>(KnownCurrency.USD, amount.setScale(2)) {
 
     override fun with(amount: BigDecimal) = USD(amount)
 

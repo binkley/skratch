@@ -9,7 +9,7 @@ interface Currency {
     override fun toString(): String
 }
 
-enum class KnownCurrencies : Currency {
+enum class KnownCurrency : Currency {
     SGD {
         override fun format(amount: BigDecimal) = "SG\$$amount"
     },

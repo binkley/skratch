@@ -32,7 +32,7 @@ interface MoneyFactory<M : Money<M>> {
     fun of(amount: BigDecimal): M
 }
 
-/** @todo How to ensure each [KnownCurrencies] has a matching money? */
+/** @todo How to ensure each [KnownCurrency] has a matching money? */
 abstract class AbstractMoney<M : AbstractMoney<M>>(
     override val currency: Currency,
     override val amount: BigDecimal,
