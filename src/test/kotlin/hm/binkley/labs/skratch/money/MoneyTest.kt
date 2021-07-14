@@ -1,7 +1,7 @@
 package hm.binkley.labs.skratch.money
 
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertThrows
+import io.kotest.assertions.throwables.shouldThrow
+import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Assertions.fail
 import org.junit.jupiter.api.Test
 import java.math.BigDecimal
@@ -10,14 +10,14 @@ import kotlin.reflect.KClass
 internal class MoneyTest {
     @Test
     fun `dollars and cents`() {
-        assertThrows(ArithmeticException::class.java) {
+        shouldThrow<ArithmeticException> {
             USD.of("1.234")
         }
     }
 
     @Test
     fun `double your money`() =
-        assertEquals(USD.of(2), 2 * USD.of(1))
+        2 * USD.of(1) shouldBe USD.of(2)
 
     @Test
     fun `convert nicely`() {
@@ -31,8 +31,7 @@ internal class MoneyTest {
             }
         }
 
-        assertEquals(SGD.of("1.35"),
-            USD.of(1) at exchange convertTo SGD::class)
+        USD.of(1) at exchange convertTo SGD::class shouldBe SGD.of("1.35")
     }
 
     @Test
@@ -47,13 +46,12 @@ internal class MoneyTest {
             }
         }
 
-        assertEquals(SGD.of("1.35"),
-            USD.of(1) convertTo SGD::class at exchange)
+        USD.of(1) convertTo SGD::class at exchange shouldBe SGD.of("1.35")
     }
 
     @Test
     fun `no non-decimal dollars`() {
-        assertThrows(ArithmeticException::class.java) {
+        shouldThrow<ArithmeticException> {
             USD.of(1) / 3
         }
     }
