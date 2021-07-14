@@ -56,7 +56,7 @@ operator fun <M : Money<M>> M.plus(other: M) = with(amount + other.amount)
 operator fun <M : Money<M>> M.minus(other: M) = with(amount - other.amount)
 
 operator fun <M : Money<M>> M.times(other: Int) = this * other.toLong()
-operator fun <M : Money<M>> M.times(other: Long) = this * BigDecimal(other)
+operator fun <M : Money<M>> M.times(other: Long) = this * other.toBigDecimal()
 operator fun <M : Money<M>> M.times(other: BigDecimal) = with(amount * other)
 operator fun <M : Money<M>> Int.times(other: M) = other * this
 operator fun <M : Money<M>> Long.times(other: M) = other * this
@@ -64,6 +64,8 @@ operator fun <M : Money<M>> BigDecimal.times(other: M) = other * this
 
 // TODO: This should use BigRationals; ie, non-decimal currencies
 operator fun <M : Money<M>> M.div(other: Int): M = this / other.toLong()
-operator fun <M : Money<M>> M.div(other: Long): M = this / BigDecimal(other)
+operator fun <M : Money<M>> M.div(other: Long): M =
+    this / other.toBigDecimal()
+
 operator fun <M : Money<M>> M.div(other: BigDecimal): M = with(
     amount.divide(other, amount.scale(), UNNECESSARY))
