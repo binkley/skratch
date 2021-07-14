@@ -8,6 +8,6 @@ class SGD private constructor(amount: BigDecimal) :
     override fun with(amount: BigDecimal) = SGD(amount)
 
     companion object : MoneyFactory<SGD> {
-        override fun valueOf(amount: BigDecimal): SGD = SGD(amount)
+        override fun of(amount: BigDecimal): SGD = SGD(amount)
     }
 }

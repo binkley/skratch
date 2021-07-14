@@ -25,14 +25,11 @@ interface Money<M : Money<M>> {
     override fun toString(): String
 }
 
-/**
- * @todo What is current Kotlin naming convention&mdash;`of` _vs `valueOf`?
- */
 interface MoneyFactory<M : Money<M>> {
-    fun valueOf(amount: Int): M = valueOf(amount.toLong())
-    fun valueOf(amount: Long): M = valueOf(amount.toBigDecimal())
-    fun valueOf(amount: String): M = valueOf(amount.toBigDecimal())
-    fun valueOf(amount: BigDecimal): M
+    fun of(amount: Int): M = of(amount.toLong())
+    fun of(amount: Long): M = of(amount.toBigDecimal())
+    fun of(amount: String): M = of(amount.toBigDecimal())
+    fun of(amount: BigDecimal): M
 }
 
 /** @todo How to ensure each [KnownCurrencies] has a matching money? */
