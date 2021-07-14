@@ -3,6 +3,7 @@ package hm.binkley.labs.skratch.money
 import java.math.BigDecimal
 
 interface Currency {
+    /** @todo Does not support non-decimal currencies */
     fun format(amount: BigDecimal): String
 
     /** Force implementations rather than the default JDK ones. */

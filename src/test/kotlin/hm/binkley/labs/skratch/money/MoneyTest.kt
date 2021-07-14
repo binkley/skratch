@@ -21,31 +21,11 @@ internal class MoneyTest {
 
     @Test
     fun `convert nicely`() {
-        val exchange = object : CurrencyExchange {
-            @Suppress("UNCHECKED_CAST")
-            override fun <M : Money<M>, O : Money<O>> exchange(
-                money: M, to: KClass<O>,
-            ) = when (to) {
-                SGD::class -> SGD.of("1.35") as O
-                else -> fail("Unsupported exchange: $money -> $to")
-            }
-        }
-
         USD.of(1) at exchange convertTo SGD::class shouldBe SGD.of("1.35")
     }
 
     @Test
     fun `nicely convert`() {
-        val exchange = object : CurrencyExchange {
-            @Suppress("UNCHECKED_CAST")
-            override fun <M : Money<M>, O : Money<O>> exchange(
-                money: M, to: KClass<O>,
-            ) = when (to) {
-                SGD::class -> SGD.of("1.35") as O
-                else -> fail("Unsupported exchange: $money -> $to")
-            }
-        }
-
         USD.of(1) convertTo SGD::class at exchange shouldBe SGD.of("1.35")
     }
 
@@ -58,10 +38,33 @@ internal class MoneyTest {
 
     @Test
     fun `custom currency`() {
-        // Compiling *is* the test
-        object : Currency {
-            override fun format(amount: BigDecimal) = "MMG\$$amount"
-            override fun toString() = "PP"
-        }
+        USD.of(1) convertTo FunnyMoney::class at exchange shouldBe
+                FunnyMoney.of("1101")
     }
+}
+
+private object Funny : Currency {
+    override fun format(amount: BigDecimal) = "MMG\$$amount"
+    override fun toString() = "PP"
+}
+
+private class FunnyMoney private constructor(amount: BigDecimal) :
+    AbstractMoney<FunnyMoney>(Funny, amount.setScale(0)) {
+
+    override fun with(amount: BigDecimal) = FunnyMoney(amount)
+
+    companion object : MoneyFactory<FunnyMoney> {
+        override fun of(amount: BigDecimal): FunnyMoney = FunnyMoney(amount)
+    }
+}
+
+@Suppress("UNCHECKED_CAST")
+private val exchange = object : CurrencyExchange {
+    override fun <M : Money<M>, O : Money<O>> exchange(
+        money: M, to: KClass<O>,
+    ) = when (to) {
+        SGD::class -> SGD.of("1.35")
+        FunnyMoney::class -> FunnyMoney.of(money.amount * 1101.toBigDecimal())
+        else -> fail("Unsupported exchange: $money -> $to")
+    } as O
 }
