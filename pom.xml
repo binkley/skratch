@@ -30,7 +30,7 @@
         <failsafe.printSummary>false</failsafe.printSummary>
         <generateBackupPoms>false</generateBackupPoms>
         <jacoco-maven-plugin.version>0.8.7</jacoco-maven-plugin.version>
-        <jansi.version>2.3.3</jansi.version>
+        <jansi.version>2.3.4</jansi.version>
         <java.charset>UTF-8</java.charset>
         <jdk.version>16</jdk.version>
         <jline.version>3.18.0</jline.version>
