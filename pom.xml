@@ -40,6 +40,7 @@
         <kotlin.code.style>official</kotlin.code.style>
         <kotlin.version>1.5.30-RC</kotlin.version>
         <kotlinx-cli.version>0.3</kotlinx-cli.version>
+        <kotlinx-datetime.version>0.2.1</kotlinx-datetime.version>
         <kotlinx-coroutines.version>1.5.1-native-mt</kotlinx-coroutines.version>
         <log4j.version>2.14.1</log4j.version>
         <main.class>hm.binkley.labs.skratch.MainKt</main.class>
@@ -110,6 +111,13 @@
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-core</artifactId>
+        </dependency>
+
+        <!-- Play with date/times -->
+        <dependency>
+            <groupId>org.jetbrains.kotlinx</groupId>
+            <artifactId>kotlinx-datetime-jvm</artifactId>
+            <version>${kotlinx-datetime.version}</version>
         </dependency>
 
         <dependency>
@@ -294,6 +302,7 @@
                     <args>
                         <arg>-Werror</arg>
                         <arg>-Xjvm-enable-preview</arg>
+                        <arg>-Xopt-in=kotlin.RequiresOptIn</arg>
                     </args>
                     <jvmTarget>${jdk.version}</jvmTarget>
                     <languageVersion>1.5</languageVersion>
@@ -351,6 +360,9 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>${maven-compiler-plugin.version}</version>
                 <configuration>
+                    <compilerArgs>
+                        <arg>--enable-preview</arg>
+                    </compilerArgs>
                     <release>${jdk.version}</release>
                 </configuration>
                 <executions>
