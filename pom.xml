@@ -24,23 +24,23 @@
         <arrow.version>0.13.2</arrow.version>
         <awaitility.version>4.1.0</awaitility.version>
         <buildplan-maven-plugin.version>1.4</buildplan-maven-plugin.version>
-        <byte-buddy.version>1.11.6</byte-buddy.version>
+        <byte-buddy.version>1.11.12</byte-buddy.version>
         <exp4j.version>0.4.8</exp4j.version>
         <failIfNoTests>true</failIfNoTests>
         <failsafe.printSummary>false</failsafe.printSummary>
         <generateBackupPoms>false</generateBackupPoms>
         <jacoco-maven-plugin.version>0.8.7</jacoco-maven-plugin.version>
-        <jansi.version>2.3.3</jansi.version>
+        <jansi.version>2.3.4</jansi.version>
         <java.charset>UTF-8</java.charset>
         <jdk.version>16</jdk.version>
         <jline.version>3.18.0</jline.version>
-        <jmh.version>1.32</jmh.version>
+        <jmh.version>1.33</jmh.version>
         <junit.version>5.8.0-M1</junit.version>
-        <kotest.version>4.6.0</kotest.version>
+        <kotest.version>4.6.1</kotest.version>
         <kotlin.code.style>official</kotlin.code.style>
-        <kotlin.version>1.5.30-M1</kotlin.version>
+        <kotlin.version>1.5.30-RC</kotlin.version>
         <kotlinx-cli.version>0.3</kotlinx-cli.version>
-        <kotlinx-coroutines.version>1.5.0</kotlinx-coroutines.version>
+        <kotlinx-coroutines.version>1.5.1-native-mt</kotlinx-coroutines.version>
         <log4j.version>2.14.1</log4j.version>
         <main.class>hm.binkley.labs.skratch.MainKt</main.class>
         <maven-assembly-plugin.version>3.3.0</maven-assembly-plugin.version>
