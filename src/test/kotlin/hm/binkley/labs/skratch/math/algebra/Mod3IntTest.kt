@@ -1,9 +1,9 @@
 package hm.binkley.labs.skratch.math.algebra
 
-import hm.binkley.labs.skratch.math.algebra.Mod3Int.Companion.ONE
-import hm.binkley.labs.skratch.math.algebra.Mod3Int.Companion.TWO
-import hm.binkley.labs.skratch.math.algebra.Mod3Int.Companion.ZERO
-import hm.binkley.labs.skratch.math.algebra.Mod3Int.Companion.valueOf
+import hm.binkley.labs.skratch.math.algebra.Mod3Int.Constants.ONE
+import hm.binkley.labs.skratch.math.algebra.Mod3Int.Constants.TWO
+import hm.binkley.labs.skratch.math.algebra.Mod3Int.Constants.ZERO
+import hm.binkley.labs.skratch.math.algebra.Mod3Int.Constants.valueOf
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
 import io.kotest.matchers.types.shouldBeSameInstanceAs

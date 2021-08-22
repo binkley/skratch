@@ -5,7 +5,7 @@ import java.util.Objects.hash
 class Mod3Int private constructor(
     val value: Int,
 ) : Ring<Mod3Int> {
-    override val companion: Companion get() = Mod3Int
+    override val constants: Constants get() = Mod3Int
 
     override fun unaryMinus(): Mod3Int = valueOf(-value)
     override fun plus(addend: Mod3Int): Mod3Int =
@@ -21,7 +21,7 @@ class Mod3Int private constructor(
     override fun hashCode(): Int = hash(this::class, value)
     override fun toString(): String = value.toString()
 
-    companion object : RingCompanion<Mod3Int> {
+    companion object Constants : RingConstants<Mod3Int> {
         @JvmStatic
         fun valueOf(value: Int): Mod3Int = when (value.mod(3)) {
             0 -> ZERO
