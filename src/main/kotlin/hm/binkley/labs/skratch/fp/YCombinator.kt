@@ -1,4 +1,4 @@
-package hm.binkley.labs.skratch.lambda
+package hm.binkley.labs.skratch.fp
 
 // TODO: Why does this break when it is private?
 internal fun interface Onto<T, R> : (T) -> R
@@ -34,10 +34,10 @@ private fun <T> recursiveFor(original: (t: T, f: F<T>) -> T): F<T> =
 
 // See https://gist.github.com/aruld/3965968/
 fun main() {
-    val factorial = recursiveFor<Int> { it, factorial ->
+    val factorial = recursiveFor<Int> { it, nextCall ->
         when (it) {
             0 -> 1
-            else -> it * factorial(it - 1)
+            else -> it * nextCall(it - 1)
         }
     }
 
