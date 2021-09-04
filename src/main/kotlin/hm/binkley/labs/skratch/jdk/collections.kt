@@ -3,14 +3,11 @@ package hm.binkley.labs.skratch.jdk
 import java.util.concurrent.ConcurrentNavigableMap
 import java.util.concurrent.ConcurrentSkipListMap
 
-private fun Int.toAlphaLowerCase() =
-    ('a'.code.toShort() + (this - 1)).toChar()
-
 fun main() {
     val x: ConcurrentNavigableMap<String, Int> =
         object : ConcurrentSkipListMap<String, Int>(
-            (1..10).map {
-                it.toAlphaLowerCase().toString() to it
+            (0..9).map {
+                ('a' + it).toString() to it
             }.shuffled().toMap()
         ) {
             override fun put(key: String, value: Int): Int? {
