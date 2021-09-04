@@ -24,7 +24,7 @@
         <arrow.version>0.13.2</arrow.version>
         <awaitility.version>4.1.0</awaitility.version>
         <buildplan-maven-plugin.version>1.4</buildplan-maven-plugin.version>
-        <byte-buddy.version>1.11.12</byte-buddy.version>
+        <byte-buddy.version>1.11.15</byte-buddy.version>
         <exp4j.version>0.4.8</exp4j.version>
         <failIfNoTests>true</failIfNoTests>
         <failsafe.printSummary>false</failsafe.printSummary>
@@ -35,14 +35,14 @@
         <jdk.version>16</jdk.version>
         <jline.version>3.18.0</jline.version>
         <jmh.version>1.33</jmh.version>
-        <junit.version>5.8.0-M1</junit.version>
-        <kmath.version>0.3.0-dev-8</kmath.version>
-        <kotest.version>4.6.1</kotest.version>
+        <junit.version>5.8.0-RC1</junit.version>
+        <kmath.version>0.3.0-dev-14</kmath.version>
+        <kotest.version>4.6.2</kotest.version>
         <kotlin.code.style>official</kotlin.code.style>
-        <kotlin.version>1.5.30-RC</kotlin.version>
+        <kotlin.version>1.5.30</kotlin.version>
         <kotlinx-cli.version>0.3</kotlinx-cli.version>
         <kotlinx-datetime.version>0.2.1</kotlinx-datetime.version>
-        <kotlinx-coroutines.version>1.5.1-native-mt</kotlinx-coroutines.version>
+        <kotlinx-coroutines.version>1.5.2-native-mt</kotlinx-coroutines.version>
         <log4j.version>2.14.1</log4j.version>
         <main.class>hm.binkley.labs.skratch.MainKt</main.class>
         <maven-assembly-plugin.version>3.3.0</maven-assembly-plugin.version>
@@ -66,7 +66,7 @@
     <repositories>
         <repository>
             <id>central</id>
-            <url>http://repo.maven.apache.org/maven2/</url>
+            <url>https://repo.maven.apache.org/maven2/</url>
         </repository>
         <repository>
             <id>kmath</id>
