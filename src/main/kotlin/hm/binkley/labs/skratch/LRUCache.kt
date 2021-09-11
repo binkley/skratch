@@ -20,7 +20,9 @@ package hm.binkley.labs.skratch
  */
 class LRUCache(
     /** How many LRU entries to keep?  Capacity cannot be non-positive */
-    private val capacity: Int
+    private val capacity: Int,
+    /** What value to provide on a cache miss? */
+    private val cacheMiss: Int = -1,
 ) : LinkedHashMap<Int, Int>(
     capacity,
     0.75f, // Not available as a public constant
@@ -39,7 +41,7 @@ class LRUCache(
      */
     fun isFull() = capacity == size
 
-    override fun get(key: Int): Int = super.get(key) ?: -1
+    override fun get(key: Int): Int = super.get(key) ?: cacheMiss
 
     override fun put(key: Int, value: Int): Int? {
         maybeRemoveOldestEntry()
