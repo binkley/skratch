@@ -19,16 +19,16 @@ import kotlin.test.assertEquals
  * * `cache[1] = 1`
  * * `cache[2] = 2` // cache now full; `2` is most recently used
  * * `cache[1]` returns `1` // `1` is now most recently used
- * * `cache[3] = 3` // ejects `2` as `1` was more recently used; `3` is
+ * * `cache[3] = 3` // evicts `2` as `1` was more recently used; `3` is
  *   most recently used
- * * `cache[2]` returns `-1` // ejected
- * * `cache[4] = 4` // ejects `1`; `4` is most recently used
- * * `cache[1]` returns `-1` // ejected
+ * * `cache[2]` returns `-1` // evicted
+ * * `cache[4] = 4` // evicts `1`; `4` is most recently used
+ * * `cache[1]` returns `-1` // evicted
  * * `cache[3]` returns `3`
  * * `cache[4]` returns `4`
  *
  * @todo Test that when cache is full, updating an existing entry does not
- *       eject the last used entry
+ *       evict the last used entry
  */
 internal class LRUCacheTest {
     @Test
@@ -36,7 +36,7 @@ internal class LRUCacheTest {
         val cache = LRUCache(2)
 
         fun assertCached(key: Int) = assertEquals(key, cache[key])
-        fun assertEjected(key: Int) = assertEquals(-1, cache[key])
+        fun assertEvicted(key: Int) = assertEquals(-1, cache[key])
 
         cache[1] = 1
         cache[2] = 2
@@ -45,11 +45,11 @@ internal class LRUCacheTest {
 
         cache[3] = 3
 
-        assertEjected(2)
+        assertEvicted(2)
 
         cache[4] = 4
 
-        assertEjected(1)
+        assertEvicted(1)
         assertCached(3)
         assertCached(4)
     }

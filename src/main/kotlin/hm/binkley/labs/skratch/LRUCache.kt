@@ -2,7 +2,7 @@ package hm.binkley.labs.skratch
 
 /**
  * Implements an LRU cache.  This cache has no configurable strategies for
- * eviction. The cache has a [capacity], and when full, ejects last accessed
+ * eviction. The cache has a [capacity], and when full, evicts last accessed
  * entries upon addition of new entries.
  *
  * Note that it is an extension of [LinkedHashMap] with the default load
