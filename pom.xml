@@ -35,7 +35,7 @@
         <jline.version>3.18.0</jline.version>
         <jmh.version>1.33</jmh.version>
         <junit.version>5.8.0-RC1</junit.version>
-        <kotest.version>4.6.2</kotest.version>
+        <kotest.version>4.6.3</kotest.version>
         <kotlin.code.style>official</kotlin.code.style>
         <kotlin.version>1.5.30</kotlin.version>
         <kotlinx-cli.version>0.3</kotlinx-cli.version>
