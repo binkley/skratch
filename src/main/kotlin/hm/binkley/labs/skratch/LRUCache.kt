@@ -19,18 +19,21 @@ package hm.binkley.labs.skratch
  * @todo Does not consider concurrent access
  */
 class LRUCache(
-    /** How many LRU entries to keep?  Capacity must be positive. */
+    /**
+     * How many LRU entries to keep?  Capacity must be non-negative. Size of
+     * 0 (zero) means no caching.
+     */
     private val capacity: Int,
     /** What value to provide on a cache miss? */
     private val cacheMiss: Int = -1,
 ) : LinkedHashMap<Int, Int>(
     capacity,
-    0.75f, // Not available as a public constant
+    0.75f, // The default: not available as a public constant
     true, // Use access order (old to new), not insertion order
 ) {
     init {
-        if (1 > capacity) throw IllegalArgumentException(
-            "Capacity for LRUCache must be positive: $capacity"
+        if (0 > capacity) throw IllegalArgumentException(
+            "Capacity for LRUCache must be non-negative: $capacity"
         )
     }
 
