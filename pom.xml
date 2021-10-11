@@ -21,7 +21,7 @@
 
     <properties>
         <!-- @formatter:off -->
-        <arrow.version>0.13.2</arrow.version>
+        <arrow.version>1.0.0</arrow.version>
         <awaitility.version>4.1.0</awaitility.version>
         <buildplan-maven-plugin.version>1.5</buildplan-maven-plugin.version>
         <exp4j.version>0.4.8</exp4j.version>
@@ -34,12 +34,12 @@
         <jdk.version>16</jdk.version>
         <jline.version>3.18.0</jline.version>
         <jmh.version>1.33</jmh.version>
-        <junit.version>5.8.0-RC1</junit.version>
-        <kotest.version>4.6.2</kotest.version>
+        <junit.version>5.8.1</junit.version>
+        <kotest.version>5.0.0.M2</kotest.version>
         <kotlin.code.style>official</kotlin.code.style>
-        <kotlin.version>1.5.30</kotlin.version>
+        <kotlin.version>1.5.31</kotlin.version>
         <kotlinx-cli.version>0.3</kotlinx-cli.version>
-        <kotlinx-datetime.version>0.2.1</kotlinx-datetime.version>
+        <kotlinx-datetime.version>0.3.0</kotlinx-datetime.version>
         <kotlinx-coroutines.version>1.5.2-native-mt</kotlinx-coroutines.version>
         <log4j.version>2.14.1</log4j.version>
         <main.class>hm.binkley.labs.skratch.MainKt</main.class>
