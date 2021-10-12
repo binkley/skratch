@@ -31,13 +31,13 @@
         <jacoco-maven-plugin.version>0.8.7</jacoco-maven-plugin.version>
         <jansi.version>2.3.4</jansi.version>
         <java.charset>UTF-8</java.charset>
-        <jdk.version>16</jdk.version>
+        <jdk.version>17</jdk.version>
         <jline.version>3.18.0</jline.version>
         <jmh.version>1.33</jmh.version>
         <junit.version>5.8.1</junit.version>
         <kotest.version>5.0.0.M2</kotest.version>
         <kotlin.code.style>official</kotlin.code.style>
-        <kotlin.version>1.5.31</kotlin.version>
+        <kotlin.version>1.6.0-M1</kotlin.version>
         <kotlinx-cli.version>0.3</kotlinx-cli.version>
         <kotlinx-datetime.version>0.3.0</kotlinx-datetime.version>
         <kotlinx-coroutines.version>1.5.2</kotlinx-coroutines.version>
