@@ -22,7 +22,7 @@
     <properties>
         <!-- @formatter:off -->
         <arrow.version>1.0.0</arrow.version>
-        <awaitility.version>4.1.0</awaitility.version>
+        <awaitility.version>4.1.1</awaitility.version>
         <buildplan-maven-plugin.version>1.5</buildplan-maven-plugin.version>
         <exp4j.version>0.4.8</exp4j.version>
         <failIfNoTests>true</failIfNoTests>
