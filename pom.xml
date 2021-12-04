@@ -21,26 +21,26 @@
 
     <properties>
         <!-- @formatter:off -->
-        <arrow.version>1.0.0</arrow.version>
-        <awaitility.version>4.1.0</awaitility.version>
+        <arrow.version>1.0.1</arrow.version>
+        <awaitility.version>4.1.1</awaitility.version>
         <buildplan-maven-plugin.version>1.5</buildplan-maven-plugin.version>
         <exp4j.version>0.4.8</exp4j.version>
         <failIfNoTests>true</failIfNoTests>
         <failsafe.printSummary>false</failsafe.printSummary>
         <generateBackupPoms>false</generateBackupPoms>
         <jacoco-maven-plugin.version>0.8.7</jacoco-maven-plugin.version>
-        <jansi.version>2.3.4</jansi.version>
+        <jansi.version>2.4.0</jansi.version>
         <java.charset>UTF-8</java.charset>
         <jdk.version>17</jdk.version>
         <jline.version>3.18.0</jline.version>
         <jmh.version>1.33</jmh.version>
-        <junit.version>5.8.1</junit.version>
-        <kotest.version>5.0.0.M2</kotest.version>
+        <junit.version>5.8.2</junit.version>
+        <kotest.version>5.0.1</kotest.version>
         <kotlin.code.style>official</kotlin.code.style>
         <kotlin.version>1.6.0</kotlin.version>
         <kotlinx-cli.version>0.3</kotlinx-cli.version>
-        <kotlinx-datetime.version>0.3.0</kotlinx-datetime.version>
-        <kotlinx-coroutines.version>1.5.2</kotlinx-coroutines.version>
+        <kotlinx-datetime.version>0.3.1</kotlinx-datetime.version>
+        <kotlinx-coroutines.version>1.6.0-RC</kotlinx-coroutines.version>
         <log4j.version>2.14.1</log4j.version>
         <main.class>hm.binkley.labs.skratch.MainKt</main.class>
         <maven-assembly-plugin.version>3.3.0</maven-assembly-plugin.version>
@@ -50,7 +50,7 @@
         <maven-help-plugin.version>3.2.0</maven-help-plugin.version>
         <maven-jar-plugin.version>3.2.0</maven-jar-plugin.version>
         <maven-surefire-plugin.version>3.0.0-M5</maven-surefire-plugin.version>
-        <picocli.version>4.6.1</picocli.version>
+        <picocli.version>4.6.2</picocli.version>
         <project.build.sourceEncoding>${java.charset}</project.build.sourceEncoding>
         <project.reporting.outputEncoding>${java.charset}</project.reporting.outputEncoding>
         <surefire.printSummary>false</surefire.printSummary>
@@ -352,6 +352,8 @@
                         <arg>--enable-preview</arg>
                     </compilerArgs>
                     <release>${jdk.version}</release>
+                    <source>17</source>
+                    <target>17</target>
                 </configuration>
                 <executions>
                     <!-- Replacing default-compile as it is treated specially by maven -->
