@@ -4,7 +4,7 @@ package hm.binkley.labs.skratch.datetime
 
 import kotlinx.datetime.Clock.System
 import kotlinx.datetime.Instant
-import kotlin.time.Duration
+import kotlin.time.Duration.Companion.seconds
 import kotlin.time.ExperimentalTime
 
 fun main() {
@@ -16,4 +16,4 @@ fun main() {
 }
 
 private fun Instant.minusSeconds(seconds: Long) =
-    minus(Duration.seconds(seconds))
+    minus(seconds.seconds)

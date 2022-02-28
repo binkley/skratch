@@ -286,14 +286,14 @@
                 <artifactId>kotlin-maven-plugin</artifactId>
                 <version>${kotlin.version}</version>
                 <configuration>
-                    <apiVersion>1.5</apiVersion>
+                    <apiVersion>1.6</apiVersion>
                     <args>
                         <arg>-Werror</arg>
                         <arg>-Xjvm-enable-preview</arg>
-                        <arg>-Xopt-in=kotlin.RequiresOptIn</arg>
+                        <arg>-opt-in=kotlin.RequiresOptIn</arg>
                     </args>
                     <jvmTarget>${jdk.version}</jvmTarget>
-                    <languageVersion>1.5</languageVersion>
+                    <languageVersion>1.6</languageVersion>
                 </configuration>
                 <executions>
                     <execution>
