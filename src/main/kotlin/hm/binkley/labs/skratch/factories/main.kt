@@ -2,7 +2,6 @@ package hm.binkley.labs.skratch.factories
 
 import hm.binkley.labs.skratch.factories.Bar.Bars
 import hm.binkley.labs.skratch.factories.Baz.Bazs
-import hm.binkley.labs.skratch.factories.BigRational.Companion.ZERO
 import hm.binkley.labs.skratch.factories.Foo.Foos
 import java.util.Objects.hash
 
