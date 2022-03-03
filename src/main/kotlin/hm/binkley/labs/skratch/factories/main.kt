@@ -38,30 +38,41 @@ fun main() {
     println("SUM #4 -> $sum4 $remainders")
 }
 
-infix fun <V : Units<V, N>, N : Measure<V, N>>
-Measure<*, *>.into(other: V): N =
-    other.new(convertByBases(other) { it })
+infix fun <
+        S : System<S>,
+        V : Units<S, V, N>,
+        N : Measure<S, V, N>>
+Measure<*, *, *>.into(other: V): N = other.new(convertByBases(other) { it })
 
-abstract class Units<U : Units<U, M>, M : Measure<U, M>>(
+abstract class System<S : System<S>>
+
+abstract class Units<
+        S : System<S>,
+        U : Units<S, U, M>,
+        M : Measure<S, U, M>>(
     val name: String,
     val basis: BigRational,
-) : Comparable<Units<*, *>> {
+) : Comparable<Units<*, *, *>> {
     abstract fun new(value: BigRational): M
-    override fun compareTo(other: Units<*, *>) = basis.compareTo(other.basis)
+    override fun compareTo(other: Units<*, *, *>) =
+        basis.compareTo(other.basis)
     override fun toString() = "$name@$basis"
 }
 
-abstract class Measure<U : Units<U, M>, M : Measure<U, M>>(
+abstract class Measure<
+        S : System<S>,
+        U : Units<S, U, M>,
+        M : Measure<S, U, M>>(
     val unit: U,
     val value: BigRational,
 ) {
     // Member function so that explicit [M] type is not needed externally for
     // an extension function
-    operator fun plus(other: Measure<*, *>): M =
+    operator fun plus(other: Measure<*, *, *>): M =
         unit.new(value + (other into unit).value)
 
     override fun equals(other: Any?) = this === other ||
-        other is Measure<*, *> &&
+        other is Measure<*, *, *> &&
         unit == other.unit &&
         value == other.value
 
@@ -69,10 +80,12 @@ abstract class Measure<U : Units<U, M>, M : Measure<U, M>>(
     override fun toString() = "$value $unit"
 }
 
+object Meta : System<Meta>()
+
 class Foo private constructor(
     value: BigRational,
-) : Measure<Foos, Foo>(Foos, value) {
-    companion object Foos : Units<Foos, Foo>("foo", 1.rat) {
+) : Measure<Meta, Foos, Foo>(Foos, value) {
+    companion object Foos : Units<Meta, Foos, Foo>("foo", 1.rat) {
         override fun new(value: BigRational) = Foo(value)
     }
 }
@@ -82,8 +95,8 @@ val Int.foo: Foo get() = rat.foo
 
 class Bar private constructor(
     value: BigRational,
-) : Measure<Bars, Bar>(Bars, value) {
-    companion object Bars : Units<Bars, Bar>("bar", 3.rat) {
+) : Measure<Meta, Bars, Bar>(Bars, value) {
+    companion object Bars : Units<Meta, Bars, Bar>("bar", 3.rat) {
         override fun new(value: BigRational) = Bar(value)
     }
 }
@@ -93,8 +106,8 @@ val Int.bar: Bar get() = rat.bar
 
 class Baz private constructor(
     value: BigRational,
-) : Measure<Bazs, Baz>(Bazs, value) {
-    companion object Bazs : Units<Bazs, Baz>("baz", 9.rat) {
+) : Measure<Meta, Bazs, Baz>(Bazs, value) {
+    companion object Bazs : Units<Meta, Bazs, Baz>("baz", 9.rat) {
         override fun new(value: BigRational) = Baz(value)
     }
 }
@@ -102,9 +115,9 @@ class Baz private constructor(
 val BigRational.baz: Baz get() = Bazs.new(this)
 val Int.baz: Baz get() = rat.baz
 
-fun Measure<*, *>.into(vararg units: Units<*, *>): List<Measure<*, *>> {
+fun Measure<*, *, *>.into(vararg units: Units<*, *, *>): List<Measure<*, *, *>> {
     // Pre-populate with nulls so that we may write in any order
-    val into = MutableList<Measure<*, *>?>(units.size) { null }
+    val into = MutableList<Measure<*, *, *>?>(units.size) { null }
 
     val descendingIndexed = units.sortedDescendingIndexed()
     var current = this
@@ -122,8 +135,8 @@ fun Measure<*, *>.into(vararg units: Units<*, *>): List<Measure<*, *>> {
     return into.toNonNullableList()
 }
 
-private fun Measure<*, *>.convertByBases(
-    other: Units<*, *>,
+private fun Measure<*, *, *>.convertByBases(
+    other: Units<*, *, *>,
     conversion: (BigRational) -> BigRational,
 ) = conversion(value * unit.basis) / other.basis
 
