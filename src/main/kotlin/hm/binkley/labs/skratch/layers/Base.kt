@@ -1,9 +1,8 @@
-package hm.binkley.labs.skratch.generics
+package hm.binkley.labs.skratch.layers
 
 interface Base<K : Any, out V : Any, out B : Base<K, V, B>> : Map<K, V> {
     @Suppress("UNCHECKED_CAST")
-    val self: B
-        get() = this as B
+    val self: B get() = this as B
 }
 
 interface EditMap<K : Any, V : Any> : MutableMap<K, V>
