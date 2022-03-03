@@ -28,9 +28,11 @@ private fun write(o: Any): ByteArray {
 
 @Suppress("SameParameterValue")
 private fun prettyPrint(out: PrintStream, data: ByteArray) {
-    out.println(data.joinToString(" ", "[", "]") {
-        "\\x%02X".format(it)
-    })
+    out.println(
+        data.joinToString(" ", "[", "]") {
+            "\\x%02X".format(it)
+        }
+    )
 
     for (i in data.indices) when (data[i]) {
         'O'.code.toByte() -> data[i] = 'N'.code.toByte()

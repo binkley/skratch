@@ -41,9 +41,9 @@ abstract class Thing<F : Factory<F, T>, T : Thing<F, T>>(
     val number: Int,
 ) {
     override fun equals(other: Any?) = this === other ||
-            other is Thing<*, *> &&
-            factory == other.factory &&
-            number == other.number
+        other is Thing<*, *> &&
+        factory == other.factory &&
+        number == other.number
 
     override fun hashCode() = hash(factory, number)
     override fun toString() = "$factory=$number"

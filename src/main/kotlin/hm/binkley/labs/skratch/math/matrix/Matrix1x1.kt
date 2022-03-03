@@ -59,8 +59,8 @@ abstract class Matrix1x1<N, Norm : GeneralNumber<Norm, Norm>, M>(
 
     @Suppress("UNCHECKED_CAST")
     override fun equals(other: Any?) = this === other ||
-            javaClass == other?.javaClass &&
-            equivalent(other as M)
+        javaClass == other?.javaClass &&
+        equivalent(other as M)
 
     override fun hashCode() = hash(a)
 

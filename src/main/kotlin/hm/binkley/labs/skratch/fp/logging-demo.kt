@@ -18,15 +18,21 @@ class LoggingDemo : Callable<Int> {
         val thing = "Veggie burger"
         val log = ConsoleLogger
 
-        println(log.handle<BusinessException, String>("Thing", "HOKEY!") {
-            succeed(thing)
-        })
-        println(log.handle<BusinessException, String>("Thing", "HOKEY!") {
-            fail(thing)
-        })
-        println(log.handle<BusinessException, String>("Thing", "HOKEY!") {
-            error(thing)
-        })
+        println(
+            log.handle<BusinessException, String>("Thing", "HOKEY!") {
+                succeed(thing)
+            }
+        )
+        println(
+            log.handle<BusinessException, String>("Thing", "HOKEY!") {
+                fail(thing)
+            }
+        )
+        println(
+            log.handle<BusinessException, String>("Thing", "HOKEY!") {
+                error(thing)
+            }
+        )
 
         return 0
     }
@@ -49,29 +55,49 @@ object ConsoleLogger : BusinessLogger {
     }
 
     override fun debug(message: String, vararg args: Any?) =
-        println(AUTO.string("""
+        println(
+            AUTO.string(
+                """
             @|faint DEBUG: ${message.format(args)}|@
-        """.trimIndent()))
+                """.trimIndent()
+            )
+        )
 
     override fun info(message: String, vararg args: Any?) =
-        println(AUTO.string("""
+        println(
+            AUTO.string(
+                """
             INFO: ${message.format(args)}
-        """.trimIndent()))
+                """.trimIndent()
+            )
+        )
 
     override fun error(message: String, vararg args: Any?) =
-        println(AUTO.string("""
+        println(
+            AUTO.string(
+                """
             @|bold,magenta ERROR: ${message.format(args)}|@
-        """.trimIndent()))
+                """.trimIndent()
+            )
+        )
 
     override fun businessInfo(message: String, vararg args: Any?) =
-        println(AUTO.string("""
+        println(
+            AUTO.string(
+                """
             [AUDIT] INFO: ${message.format(args)}
-        """.trimIndent()))
+                """.trimIndent()
+            )
+        )
 
     override fun businessFailure(message: String, vararg args: Any?) =
-        println(AUTO.string("""
+        println(
+            AUTO.string(
+                """
             @|bold,red [AUDIT] ERROR: ${message.format(args)}|@
-        """.trimIndent()))
+                """.trimIndent()
+            )
+        )
 }
 
 class BusinessException(reason: String) : Exception(reason)

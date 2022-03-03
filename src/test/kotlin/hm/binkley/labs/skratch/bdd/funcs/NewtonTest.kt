@@ -19,10 +19,10 @@ internal class NewtonTest {
     @Test
     fun `should think (happy path)`() {
         val it = SCENARIO `A revolution begins`
-                GIVEN `an apple`
-                WHEN `it falls`
-                THEN `Newton thinks`
-                QED
+            GIVEN `an apple`
+            WHEN `it falls`
+            THEN `Newton thinks`
+            QED
 
         val scenarioText = """
             ✓ SCENARIO A revolution begins
@@ -40,10 +40,10 @@ internal class NewtonTest {
     fun `should have broken production code for eating fallen apple (failed test)`() {
         val e = assertThrows<AssertionError> {
             SCENARIO `A snack helps with thinking`
-                    GIVEN `an apple`
-                    WHEN `it falls`
-                    THEN `Newton eats the apple`
-                    QED
+                GIVEN `an apple`
+                WHEN `it falls`
+                THEN `Newton eats the apple`
+                QED
         }
 
         val scenarioText = """
@@ -62,10 +62,10 @@ internal class NewtonTest {
     fun `should not sleep (broken test)`() {
         val e = assertThrows<IllegalStateException> {
             SCENARIO `A revolution is missed`
-                    GIVEN `an apple`
-                    WHEN `it falls`
-                    THEN `Newton sleeps`
-                    QED
+                GIVEN `an apple`
+                WHEN `it falls`
+                THEN `Newton sleeps`
+                QED
         }
 
         val scenarioText = """

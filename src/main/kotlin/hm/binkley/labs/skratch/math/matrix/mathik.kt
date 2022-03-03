@@ -12,13 +12,17 @@ fun main() {
     for (n in -6..6) {
         val fib = FibMatrix(n)
         println()
-        println(AUTO.string("""
+        println(
+            AUTO.string(
+                """
 @|bold Characteristic ${fib.characteristic}|@
 @|green F($n) = $fib|@
 @|blue 1/F($n) = ${fib.multInv}|@
 @|magenta det(F($n)) = ${fib.det}|@
 @|yellow tr(F($n)) = ${fib.tr}|@
-""".trim()))
+""".trim()
+            )
+        )
     }
 
     println()

@@ -18,20 +18,20 @@ import java.lang.System.out
 fun main() {
     println("== HAPPY PATH PASSING")
     val scenario = SCENARIO `A revolution begins`
-            GIVEN `an apple`
-            WHEN `it falls`
-            THEN `Newton thinks`
-            QED
+        GIVEN `an apple`
+        WHEN `it falls`
+        THEN `Newton thinks`
+        QED
     println(scenario)
 
     println()
     println("== HAPPY PATH FAILS (BROKEN CODE)")
     try {
         SCENARIO `A snack helps with thinking`
-                GIVEN `an apple`
-                WHEN `it falls`
-                THEN `Newton eats the apple`
-                QED
+            GIVEN `an apple`
+            WHEN `it falls`
+            THEN `Newton eats the apple`
+            QED
     } catch (e: AssertionError) {
         e.printStackTrace(out)
     }
@@ -41,10 +41,10 @@ fun main() {
     // Expected to raise an exception
     try {
         SCENARIO `A revolution is missed`
-                GIVEN `an apple`
-                WHEN `it falls`
-                THEN `Newton sleeps`
-                QED
+            GIVEN `an apple`
+            WHEN `it falls`
+            THEN `Newton sleeps`
+            QED
     } catch (e: AssertionError) {
         e.printStackTrace(out)
     }
@@ -131,18 +131,26 @@ data class QED(
         data class GWT(val given: String, val aWhen: String, val then: String)
         val (given, aWhen, then) = when (clauseType) {
             NO_CLAUSE -> throw IllegalStateException("BUG: Not executed")
-            GIVEN_CLAUSE -> GWT("@|italic,reverse $GIVEN|@",
+            GIVEN_CLAUSE -> GWT(
+                "@|italic,reverse $GIVEN|@",
                 "$WHEN",
-                "@|bold $THEN|@")
-            WHEN_CLAUSE -> GWT("@|italic $GIVEN|@",
+                "@|bold $THEN|@"
+            )
+            WHEN_CLAUSE -> GWT(
+                "@|italic $GIVEN|@",
                 "@|reverse $WHEN|@",
-                "@|bold $THEN|@")
-            THEN_CLAUSE -> GWT("@|italic $GIVEN|@",
+                "@|bold $THEN|@"
+            )
+            THEN_CLAUSE -> GWT(
+                "@|italic $GIVEN|@",
                 "$WHEN",
-                "@|bold,reverse $THEN|@")
-            QED_CLAUSE -> GWT("@|italic $GIVEN|@",
+                "@|bold,reverse $THEN|@"
+            )
+            QED_CLAUSE -> GWT(
+                "@|italic $GIVEN|@",
                 "$WHEN",
-                "@|bold $THEN|@")
+                "@|bold $THEN|@"
+            )
         }
 
         return """
@@ -150,7 +158,7 @@ data class QED(
                 $given
                 $aWhen
                 $then
-            """.trimIndent().asAnsi()
+        """.trimIndent().asAnsi()
     }
 
     companion object {

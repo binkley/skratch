@@ -17,7 +17,8 @@ data class Complex(
 
     override fun times(other: Complex) = Complex(
         re * other.re - im * other.im,
-        re * other.im + im * other.re)
+        re * other.im + im * other.re
+    )
 
     operator fun times(other: Rational) = Complex(re * other, im * other)
     override operator fun times(other: Long) = this * Rational(other)

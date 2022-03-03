@@ -38,9 +38,9 @@ abstract class AbstractMoney<M : AbstractMoney<M>>(
     override val amount: BigDecimal,
 ) : Money<M> {
     final override fun equals(other: Any?): Boolean = this === other ||
-            other is Money<*> &&
-            currency == other.currency &&
-            amount == other.amount
+        other is Money<*> &&
+        currency == other.currency &&
+        amount == other.amount
 
     final override fun hashCode() = hash(currency, amount)
     final override fun toString() = currency.format(amount)
@@ -65,4 +65,5 @@ operator fun <M : Money<M>> M.div(other: Long): M =
     this / other.toBigDecimal()
 
 operator fun <M : Money<M>> M.div(other: BigDecimal): M = with(
-    amount.divide(other, amount.scale(), UNNECESSARY))
+    amount.divide(other, amount.scale(), UNNECESSARY)
+)

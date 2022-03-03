@@ -9,12 +9,21 @@ data class BDD constructor(
     val THEN: String,
 ) {
     init {
-        (actions[GIVEN] ?: throw IllegalArgumentException(
-            "No GIVEN defined: $GIVEN")).invoke()
-        (actions[WHEN] ?: throw IllegalArgumentException(
-            "No WHEN defined: $WHEN")).invoke()
-        (actions[THEN] ?: throw IllegalArgumentException(
-            "No THEN defined: $THEN")).invoke()
+        (
+            actions[GIVEN] ?: throw IllegalArgumentException(
+                "No GIVEN defined: $GIVEN"
+            )
+            ).invoke()
+        (
+            actions[WHEN] ?: throw IllegalArgumentException(
+                "No WHEN defined: $WHEN"
+            )
+            ).invoke()
+        (
+            actions[THEN] ?: throw IllegalArgumentException(
+                "No THEN defined: $THEN"
+            )
+            ).invoke()
     }
 
     companion object {

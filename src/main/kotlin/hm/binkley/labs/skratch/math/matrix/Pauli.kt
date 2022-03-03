@@ -16,7 +16,10 @@ sealed class Pauli(
     override fun elementCtor(n: Long) = Complex(n)
 
     override fun matrixCtor(
-        a: Complex, b: Complex, c: Complex, d: Complex,
+        a: Complex,
+        b: Complex,
+        c: Complex,
+        d: Complex,
     ) = pauli(GenericMatrix2x2(a, b, c, d) { Complex(it) })
 
     override fun toString(): String = "($symbol)${super.toString()}"
@@ -70,12 +73,14 @@ sealed class Pauli(
             I, nI, iI, niI,
             σ1, nσ1, iσ1, niσ1,
             σ2, nσ2, iσ2, niσ2,
-            σ3, nσ3, iσ3, niσ3)
+            σ3, nσ3, iσ3, niσ3
+        )
 
         fun pauli(p: Matrix2x2<Complex, Rational, *>) = values.find {
             it.equivalent(p)
         } ?: TODO(
-            "BUG: How to downgrade type when multiplying Pauli by non-{one,zero,i}? $p")
+            "BUG: How to downgrade type when multiplying Pauli by non-{one,zero,i}? $p"
+        )
 
         override val size: Int = values.size
         override fun get(index: Int): Pauli = values[index]
@@ -87,7 +92,8 @@ operator fun Complex.times(other: Pauli): Pauli {
         this * other.a,
         this * other.b,
         this * other.c,
-        this * other.d) {
+        this * other.d
+    ) {
         Complex(it)
     }
 

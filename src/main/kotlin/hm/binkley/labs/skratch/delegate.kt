@@ -1,11 +1,13 @@
 package hm.binkley.labs.skratch
 
 fun main() {
-    val foo = Foo(mutableMapOf(
-        "name" to "BOB",
-        "number" to 42,
-        "pi" to 3.14159,
-    ))
+    val foo = Foo(
+        mutableMapOf(
+            "name" to "BOB",
+            "number" to 42,
+            "pi" to 3.14159,
+        )
+    )
 
     println("AGE -> ${foo.name}")
     println("NUMBER -> ${foo.number}")

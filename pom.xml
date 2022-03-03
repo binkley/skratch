@@ -34,6 +34,7 @@
         <jdk.version>17</jdk.version>
         <jline.version>3.18.0</jline.version>
         <jmh.version>1.34</jmh.version>
+        <ktlint-maven-plugin.version>1.11.2</ktlint-maven-plugin.version>
         <junit.version>5.8.2</junit.version>
         <kotest.version>5.1.0</kotest.version>
         <kotlin.code.style>official</kotlin.code.style>
@@ -232,8 +233,6 @@
     </dependencies>
 
     <build>
-        <defaultGoal>clean verify</defaultGoal>
-
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -458,6 +457,26 @@
                                 </rule>
                             </rules>
                         </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>com.github.gantsign.maven</groupId>
+                <artifactId>ktlint-maven-plugin</artifactId>
+                <version>${ktlint-maven-plugin.version}</version>
+                <configuration>
+                    <verbose>true</verbose>
+                    <sourceRoots>
+                        <sourceRoot>${project.basedir}/src/main/kotlin</sourceRoot>
+                        <sourceRoot>${project.basedir}/src/test/kotlin</sourceRoot>
+                    </sourceRoots>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>format</goal>
+                            <goal>check</goal>
+                        </goals>
                     </execution>
                 </executions>
             </plugin>

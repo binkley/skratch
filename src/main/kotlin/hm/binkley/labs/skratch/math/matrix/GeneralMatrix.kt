@@ -45,11 +45,14 @@ abstract class GeneralMatrix<N, Norm : GeneralNumber<Norm, Norm>, M>(
     override operator fun times(other: M) = matrixCtor(
         (1..rows).map { Row(it) }
             .flatMap { row -> (1..cols).map { row to Col(it) } }
-            .map { (row, col) -> row * col })
+            .map { (row, col) -> row * col }
+    )
 
-    open operator fun times(other: N) = matrixCtor(values.map {
-        it * other
-    })
+    open operator fun times(other: N) = matrixCtor(
+        values.map {
+            it * other
+        }
+    )
 
     operator fun div(other: N): M = this * other.multInv
 
@@ -60,6 +63,6 @@ abstract class GeneralMatrix<N, Norm : GeneralNumber<Norm, Norm>, M>(
 
     fun equivalent(other: GeneralMatrix<*, *, *>) =
         values.size == other.values.size &&
-                values.zip(other.values) { a, b -> a.equivalent(b) }
-                    .reduce { acc, it -> acc && it }
+            values.zip(other.values) { a, b -> a.equivalent(b) }
+                .reduce { acc, it -> acc && it }
 }

@@ -14,7 +14,9 @@ class FibMatrix(
     override fun elementCtor(n: Long) = Rational(n)
 
     override fun matrixCtor(
-        a: Rational, b: Rational, c: Rational,
+        a: Rational,
+        b: Rational,
+        c: Rational,
         d: Rational,
     ) = throw AssertionError("BUG: Did not override other method")
 
@@ -57,12 +59,12 @@ class FibMatrix(
             else -> prevFib(char, fib0)
         }
 
-        private tailrec fun nextFib(n: Long, m: Holder<Rational, Rational>)
-                : Holder<Rational, Rational> = if (0L == n) m
-        else nextFib(n - 1, Holder(m.b, m.d, m.d, m.b + m.d))
+        private tailrec fun nextFib(n: Long, m: Holder<Rational, Rational>): Holder<Rational, Rational> =
+            if (0L == n) m
+            else nextFib(n - 1, Holder(m.b, m.d, m.d, m.b + m.d))
 
-        private tailrec fun prevFib(n: Long, m: Holder<Rational, Rational>)
-                : Holder<Rational, Rational> = if (0L == n) m
-        else prevFib(n + 1, Holder(m.b - m.a, m.a, m.a, m.b))
+        private tailrec fun prevFib(n: Long, m: Holder<Rational, Rational>): Holder<Rational, Rational> =
+            if (0L == n) m
+            else prevFib(n + 1, Holder(m.b - m.a, m.a, m.a, m.b))
     }
 }

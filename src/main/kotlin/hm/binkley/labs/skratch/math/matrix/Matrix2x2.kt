@@ -24,7 +24,10 @@ interface HasD<N, Norm : GeneralNumber<Norm, Norm>, M> :
 }
 
 abstract class Matrix2x2<N, Norm : GeneralNumber<Norm, Norm>, M>(
-    a: N, b: N, c: N, d: N,
+    a: N,
+    b: N,
+    c: N,
+    d: N,
 ) :
     SquareMatrix<N, Norm, M>(2, listOf(a, b, c, d)),
     HasD<N, Norm, M>
@@ -51,7 +54,8 @@ abstract class Matrix2x2<N, Norm : GeneralNumber<Norm, Norm>, M>(
             a.conj,
             b.conj,
             c.conj,
-            d.conj)
+            d.conj
+        )
     override val T get() = matrixCtor(a, c, b, d)
     override val adj: M get() = matrixCtor(d, -b, -c, a)
 
@@ -66,7 +70,8 @@ abstract class Matrix2x2<N, Norm : GeneralNumber<Norm, Norm>, M>(
         a + other.a,
         b * other.b,
         c + other.c,
-        d + other.d)
+        d + other.d
+    )
 
     override operator fun times(other: Long) = this * elementCtor(other)
 
@@ -90,8 +95,8 @@ abstract class Matrix2x2<N, Norm : GeneralNumber<Norm, Norm>, M>(
 
     @Suppress("UNCHECKED_CAST")
     override fun equals(other: Any?) = this === other ||
-            javaClass == other?.javaClass &&
-            equivalent(other as M)
+        javaClass == other?.javaClass &&
+        equivalent(other as M)
 
     override fun hashCode() = hash(a, b, c, d)
 

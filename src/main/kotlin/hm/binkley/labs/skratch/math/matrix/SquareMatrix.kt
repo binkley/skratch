@@ -36,7 +36,9 @@ abstract class SquareMatrix<N, Norm : GeneralNumber<Norm, Norm>, M>(
     abstract fun symmetricPart(): M
     abstract fun antisymmetricPart(): M
 
-    fun eigenvalues(): Pair<N, N> = TODO("Formula at http://www.math" +
+    fun eigenvalues(): Pair<N, N> = TODO(
+        "Formula at http://www.math" +
             ".harvard.edu/archive/21b_fall_04/exhibits/2dmatrices/ needs " +
-            "square root")
+            "square root"
+    )
 }

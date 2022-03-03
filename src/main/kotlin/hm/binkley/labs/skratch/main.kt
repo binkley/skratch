@@ -10,7 +10,7 @@ fun main() {
     println("CHEESY: Using a fun name as a class name -> $a_s")
 
     open class Named<in T>(val name: String, check: (T) -> Boolean) :
-            (T) -> Boolean by check {
+        (T) -> Boolean by check {
         override fun toString() = name
     }
 
@@ -35,9 +35,11 @@ fun main() {
 
     @Suppress("UNCHECKED_CAST")
     for ((k, v) in q)
-        println("$k -> ${
+        println(
+            "$k -> ${
             if (v is Function<*>) (v as F)(1, 2) else v
-        }")
+            }"
+        )
 
     println()
     println("== FAKE CTOR")

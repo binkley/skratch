@@ -1,14 +1,14 @@
 package hm.binkley.labs.skratch.layers
 
-interface Bases<K : Any, out V : Any, out B : Base<K, V, B>>
-    : Map<K, V> {
+interface Bases<K : Any, out V : Any, out B : Base<K, V, B>> :
+    Map<K, V> {
     val history: List<B>
 
     fun last(): B = history.last()
 }
 
-interface MutableBases<K : Any, V : Any, M : MutableBase<K, V, M>>
-    : Bases<K, V, M> {
+interface MutableBases<K : Any, V : Any, M : MutableBase<K, V, M>> :
+    Bases<K, V, M> {
     fun edit(block: EditMap<K, V>.() -> Unit) = last().edit(block)
 
     fun <N : M> add(new: N): N

@@ -24,8 +24,10 @@ class Rational(n: Long, d: Long) :
 
     override fun unaryMinus() = Rational(-numerator, denominator)
     override fun plus(other: Rational) =
-        Rational(numerator * other.denominator + other.numerator * denominator,
-            denominator * other.denominator)
+        Rational(
+            numerator * other.denominator + other.numerator * denominator,
+            denominator * other.denominator
+        )
 
     override fun unaryDiv() = Rational(denominator, numerator)
     override fun times(other: Rational) =
@@ -52,7 +54,8 @@ class Rational(n: Long, d: Long) :
 
     override fun compareTo(other: Rational) =
         (numerator * other.denominator).compareTo(
-            other.numerator * denominator)
+            other.numerator * denominator
+        )
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -84,8 +87,10 @@ class Rational(n: Long, d: Long) :
         ): Long = if (b == 0L) a else gcd(b, a % b)
 
         private fun root(c: Rational): GeneralNumber<*, Rational> {
-            if (c.isNegative) return Complex(0L,
-                c.absoluteValue.root as Rational)
+            if (c.isNegative) return Complex(
+                0L,
+                c.absoluteValue.root as Rational
+            )
             val (rn, nexact) = maybeExactRoot(c.numerator)
             val (rd, dexact) = maybeExactRoot(c.denominator)
             return when {
@@ -95,7 +100,9 @@ class Rational(n: Long, d: Long) :
         }
 
         private tailrec fun guessRoot(
-            x: Long, start: Long, end: Long,
+            x: Long,
+            start: Long,
+            end: Long,
             guess: Long,
         ): Long {
             if (start > end) return guess

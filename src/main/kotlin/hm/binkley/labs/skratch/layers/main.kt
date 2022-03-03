@@ -30,15 +30,17 @@ fun main() {
     println("--- ADD CUSTOM")
     println(bases.add(bases.doHickey()).self)
     println("--- ADD VIA BLOCK")
-    println(bases.add {
-        this["BOB"] = 77
-    })
+    println(
+        bases.add {
+            this["BOB"] = 77
+        }
+    )
     println("BASES -> $bases")
     println("HISTORY -> ${bases.history}")
     println("STRING -> ${bases["STRING"]}")
 
-    open class OhMyMutableBase<M : OhMyMutableBase<M>>
-        : MyMutableBase(mutableMapOf("message" to 17)) {
+    open class OhMyMutableBase<M : OhMyMutableBase<M>> :
+        MyMutableBase(mutableMapOf("message" to 17)) {
         open fun ohMy() = println("OH, MY, ${this["message"]}!")
     }
 

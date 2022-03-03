@@ -7,8 +7,8 @@ interface Base<K : Any, out V : Any, out B : Base<K, V, B>> : Map<K, V> {
 
 interface EditMap<K : Any, V : Any> : MutableMap<K, V>
 
-interface MutableBase<K : Any, V : Any, M : MutableBase<K, V, M>>
-    : Base<K, V, M> {
+interface MutableBase<K : Any, V : Any, M : MutableBase<K, V, M>> :
+    Base<K, V, M> {
     fun edit(block: EditMap<K, V>.() -> Unit): M
 }
 
@@ -26,6 +26,6 @@ abstract class AbstractMutableBase<K : Any, V : Any, M : AbstractMutableBase<K, 
         return self
     }
 
-    private inner class DefaultEditMap
-        : EditMap<K, V>, MutableMap<K, V> by map
+    private inner class DefaultEditMap :
+        EditMap<K, V>, MutableMap<K, V> by map
 }
