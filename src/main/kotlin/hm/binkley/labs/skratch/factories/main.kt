@@ -1,70 +1,137 @@
 package hm.binkley.labs.skratch.factories
 
-import hm.binkley.labs.skratch.factories.Animal.Pasture
-import hm.binkley.labs.skratch.factories.Plant.Soil
+import hm.binkley.labs.skratch.factories.Bar.Bars
+import hm.binkley.labs.skratch.factories.Baz.Bazs
+import hm.binkley.labs.skratch.factories.BigRational.Companion.ZERO
+import hm.binkley.labs.skratch.factories.Foo.Foos
 import java.util.Objects.hash
 
 fun main() {
-    val p1 = 1.plant
-    val p2 = 2.plant
-    val a3 = 3.animal
+    val foo1 = 1.foo
+    val foo2 = 2.foo
+    val bar3 = 3.bar
 
     println("== FACTORIES")
-    println("P1 -> $p1")
-    println("P2 -> $p2")
-    println("A3 -> $a3")
+    println(foo1)
+    println(foo2)
+    println(bar3)
 
-    val thingSum1 = listOf(p2, a3).fold(p1) { acc, it -> acc + it }
-    println("THING SUM #1 -> $thingSum1 ${listOf(p1, p2, a3)}")
+    val list1 = listOf(foo1, foo2, bar3)
+    val sum1 = list1.fold(0.foo) { acc, it -> acc + it }
+    println("SUM #1 -> $sum1 $list1")
 
-    val a2 = p1 into Pasture
-    println("A2 -> $a2")
-    val thingSum2 = listOf(p2, a2).fold(p1) { acc, it -> acc + it }
-    println("THING SUM #2 -> $thingSum2 ${listOf(p1, p2, a2)}")
+    val bar2 = foo1 into Bars
+    println(bar2)
+    val list2 = listOf(foo1, foo2, bar2)
+    val sum2 = list2.fold(0.foo) { acc, it -> acc + it }
+    println("SUM #2 -> $sum2 $list2")
+
+    val foo14 = 14.foo
+    println(foo14)
+    val wholes = foo14.into(Foos, Bazs, Bars)
+    val sum3 = wholes.fold(0.foo) { acc, it -> acc + it }
+    println("SUM #3 -> $sum3 $wholes")
+
+    val foo14_2 = (29 over 2).foo
+    println(foo14_2)
+    val remainders = foo14_2.into(Foos, Bazs, Bars)
+    val sum4 = remainders.fold(0.foo) { acc, it -> acc + it }
+    println("SUM #4 -> $sum4 $remainders")
 }
 
-operator fun <F : Factory<F, T>, T : Thing<F, T>>
-T.plus(other: Thing<*, *>): T = factory.new(number + other.number)
+infix fun <V : Units<V, N>, N : Measure<V, N>>
+Measure<*, *>.into(other: V): N =
+    other.new(convertByBases(other) { it })
 
-infix fun <G : Factory<G, U>, U : Thing<G, U>>
-Thing<*, *>.into(other: G): U = other.new(number + 1)
-
-abstract class Factory<F : Factory<F, T>, T : Thing<F, T>>(
+abstract class Units<U : Units<U, M>, M : Measure<U, M>>(
     val name: String,
-) {
-    abstract fun new(number: Int): T
-    override fun toString() = name
+    val basis: BigRational,
+) : Comparable<Units<*, *>> {
+    abstract fun new(value: BigRational): M
+    override fun compareTo(other: Units<*, *>) = basis.compareTo(other.basis)
+    override fun toString() = "$name@$basis"
 }
 
-abstract class Thing<F : Factory<F, T>, T : Thing<F, T>>(
-    val factory: F,
-    val number: Int,
+abstract class Measure<U : Units<U, M>, M : Measure<U, M>>(
+    val unit: U,
+    val value: BigRational,
 ) {
+    // Member function so that explicit [M] type is not needed externally for
+    // an extension function
+    operator fun plus(other: Measure<*, *>): M =
+        unit.new(value + (other into unit).value)
+
     override fun equals(other: Any?) = this === other ||
-        other is Thing<*, *> &&
-        factory == other.factory &&
-        number == other.number
+        other is Measure<*, *> &&
+        unit == other.unit &&
+        value == other.value
 
-    override fun hashCode() = hash(factory, number)
-    override fun toString() = "$factory=$number"
+    override fun hashCode() = hash(unit, value)
+    override fun toString() = "$value $unit"
 }
 
-class Plant private constructor(
-    number: Int,
-) : Thing<Soil, Plant>(Soil, number) {
-    companion object Soil : Factory<Soil, Plant>("plant") {
-        override fun new(number: Int) = Plant(number)
+class Foo private constructor(
+    value: BigRational,
+) : Measure<Foos, Foo>(Foos, value) {
+    companion object Foos : Units<Foos, Foo>("foo", 1.rat) {
+        override fun new(value: BigRational) = Foo(value)
     }
 }
 
-val Int.plant: Plant get() = Soil.new(this)
+val BigRational.foo: Foo get() = Foos.new(this)
+val Int.foo: Foo get() = rat.foo
 
-class Animal private constructor(
-    number: Int,
-) : Thing<Pasture, Animal>(Pasture, number) {
-    companion object Pasture : Factory<Pasture, Animal>("animal") {
-        override fun new(number: Int) = Animal(number)
+class Bar private constructor(
+    value: BigRational,
+) : Measure<Bars, Bar>(Bars, value) {
+    companion object Bars : Units<Bars, Bar>("bar", 3.rat) {
+        override fun new(value: BigRational) = Bar(value)
     }
 }
 
-val Int.animal: Animal get() = Pasture.new(this)
+val BigRational.bar: Bar get() = Bars.new(this)
+val Int.bar: Bar get() = rat.bar
+
+class Baz private constructor(
+    value: BigRational,
+) : Measure<Bazs, Baz>(Bazs, value) {
+    companion object Bazs : Units<Bazs, Baz>("baz", 9.rat) {
+        override fun new(value: BigRational) = Baz(value)
+    }
+}
+
+val BigRational.baz: Baz get() = Bazs.new(this)
+val Int.baz: Baz get() = rat.baz
+
+fun Measure<*, *>.into(vararg units: Units<*, *>): List<Measure<*, *>> {
+    // Pre-populate with nulls so that we may write in any order
+    val into = MutableList<Measure<*, *>?>(units.size) { null }
+
+    val descendingIndexed = units.sortedDescendingIndexed()
+    var current = this
+    descendingIndexed.forEach { (inputIndex, unit) ->
+        val valueToReduce = current.convertByBases(unit) { it }
+        val (whole, remainder) = valueToReduce.wholeNumberAndRemainder()
+        into[inputIndex] = unit.new(whole)
+        current = unit.new(remainder)
+    }
+
+    // Tack any left over into the least significant unit
+    val leastIndex = descendingIndexed.last().first
+    into[leastIndex] = into[leastIndex]!! + current
+
+    return into.toNonNullableList()
+}
+
+private fun Measure<*, *>.convertByBases(
+    other: Units<*, *>,
+    conversion: (BigRational) -> BigRational,
+) = conversion(value * unit.basis) / other.basis
+
+private fun <T : Comparable<T>> Array<T>.sortedDescendingIndexed() =
+    mapIndexed { index, it -> index to it }.sortedByDescending { it.second }
+
+private fun <T : Comparable<T>> List<T>.sortedDescendingIndexed() =
+    mapIndexed { index, it -> index to it }.sortedByDescending { it.second }
+
+private fun <T> Collection<T?>.toNonNullableList() = map { it!! }
