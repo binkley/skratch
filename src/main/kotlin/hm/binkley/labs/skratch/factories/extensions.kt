@@ -19,7 +19,6 @@ Measure<S, K, *, *>.into(
     conversion: (BigRational) -> BigRational,
 ): N = other.new(convertByBases(other, conversion))
 
-@Suppress("UNCHECKED_CAST")
 fun <S : System<S>, K : Kind>
 Measure<S, K, *, *>.into(
     vararg units: Units<S, K, *, *>
@@ -28,12 +27,12 @@ Measure<S, K, *, *>.into(
     val into = MutableList<Measure<*, *, *, *>?>(units.size) { null }
 
     val descendingIndexed = units.sortedDescendingIndexed()
-    var current: Measure<S, K, *, *> = this
+    var current: Measure<*, *, *, *> = this
     descendingIndexed.forEach { (inputIndex, unit) ->
         val valueToReduce = current.convertByBases(unit) { it }
         val (whole, remainder) = valueToReduce.wholeNumberAndRemainder()
         into[inputIndex] = unit.new(whole)
-        current = unit.new(remainder) as Measure<S, K, *, *>
+        current = unit.new(remainder)
     }
 
     // Tack any left over into the least significant unit
@@ -42,6 +41,7 @@ Measure<S, K, *, *>.into(
     // TODO: Reuse `+` operator`
     into[leastIndex] = least.unit.new(least.quantity + current.quantity)
 
+    @Suppress("UNCHECKED_CAST")
     return into.toNonNullableList() as List<Measure<S, K, *, *>>
 }
 
