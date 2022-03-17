@@ -39,7 +39,7 @@ Measure<S, K, *, *>.into(
     // Tack any left over into the least significant unit
     val leastIndex = descendingIndexed.last().first
     val least = into[leastIndex]!!
-    // TODO: Reuse `+` operator
+    // TODO: Reuse `+` operator`
     into[leastIndex] = least.unit.new(least.quantity + current.quantity)
 
     return into.toNonNullableList() as List<Measure<S, K, *, *>>

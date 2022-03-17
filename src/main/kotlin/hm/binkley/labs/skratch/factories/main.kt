@@ -69,4 +69,6 @@ fun main() {
     val menuItems = spam4.into(Spams, Hams)
     println(menuItems)
     menuItems.forEach { println(it.whatYaGot()) }
+
+    println(foo1 + (bar2 into Foos))
 }

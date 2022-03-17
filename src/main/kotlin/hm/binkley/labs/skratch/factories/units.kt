@@ -1,5 +1,6 @@
 package hm.binkley.labs.skratch.factories
 
+import org.checkerframework.checker.units.qual.K
 import java.util.Objects
 
 abstract class System<S : System<S>>(
@@ -37,11 +38,6 @@ abstract class Measure<
     val unit: U,
     val quantity: BigRational,
 ) : Comparable<Measure<S, K, *, *>> {
-    // Member function so that explicit [M] type is not needed externally for
-    // an extension function
-    operator fun plus(other: Measure<S, K, *, *>): M =
-        unit.new(quantity + (other into unit).quantity)
-
     override fun compareTo(other: Measure<S, K, *, *>) =
         quantity.compareTo((other into unit).quantity)
 
