@@ -40,7 +40,8 @@ fun main() {
 
     val foo7 = 14.foo
     println(foo7)
-    foo7.into(Bazs, Bars, Groks)
+    // Correctly does not compile -- Groks is in the wrong System
+    // foo7.into(Bazs, Bars, Groks)
 }
 
 infix fun <
@@ -136,34 +137,27 @@ class Grok private constructor(
     }
 }
 
-fun Measure<*, *, *>.into(
-    vararg units: Units<*, *, *>
-): List<Measure<*, *, *>> {
-    // TODO: How to make this a compile-time error?
-    val system = unit.system
-    units.map { it.system }.forEach {
-        if (system != it) throw IllegalArgumentException(
-            "Units from different systems: expected $system but got $it"
-        )
-    }
-
+@Suppress("UNCHECKED_CAST")
+fun <S : System<S>> Measure<S, *, *>.into(
+    vararg units: Units<S, *, *>
+): List<Measure<S, *, *>> {
     // Pre-populate with nulls so that we may write in any order
     val into = MutableList<Measure<*, *, *>?>(units.size) { null }
 
     val descendingIndexed = units.sortedDescendingIndexed()
-    var current = this
+    var current: Measure<S, *, *> = this
     descendingIndexed.forEach { (inputIndex, unit) ->
         val valueToReduce = current.convertByBases(unit) { it }
         val (whole, remainder) = valueToReduce.wholeNumberAndRemainder()
         into[inputIndex] = unit.new(whole)
-        current = unit.new(remainder)
+        current = unit.new(remainder) as Measure<S, *, *>
     }
 
     // Tack any left over into the least significant unit
     val leastIndex = descendingIndexed.last().first
     into[leastIndex] = into[leastIndex]!! + current
 
-    return into.toNonNullableList()
+    return into.toNonNullableList() as List<Measure<S, *, *>>
 }
 
 private fun Measure<*, *, *>.convertByBases(
