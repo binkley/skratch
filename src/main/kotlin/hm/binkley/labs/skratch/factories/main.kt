@@ -3,6 +3,8 @@ package hm.binkley.labs.skratch.factories
 import hm.binkley.labs.skratch.factories.Bar.Bars
 import hm.binkley.labs.skratch.factories.Baz.Bazs
 import hm.binkley.labs.skratch.factories.Foo.Foos
+import hm.binkley.labs.skratch.factories.Ham.Hams
+import hm.binkley.labs.skratch.factories.Spam.Spams
 
 fun main() {
     val foo1 = 1.foo
@@ -51,4 +53,10 @@ fun main() {
     // foo7 into Groks
     // foo7.into(Bazs, Bars, Groks)
     // val x = foo7 + grok1
+
+    val spam4 = 5.spams
+    println(spam4.whatYaGot())
+    val menuItems = spam4.into(Spams, Hams)
+    println(menuItems)
+    menuItems.forEach { println(it.whatYaGot()) }
 }

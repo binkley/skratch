@@ -4,6 +4,7 @@ import hm.binkley.labs.skratch.factories.Bar.Bars
 import hm.binkley.labs.skratch.factories.Baz.Bazs
 import hm.binkley.labs.skratch.factories.Foo.Foos
 import hm.binkley.labs.skratch.factories.Grok.Groks
+import hm.binkley.labs.skratch.factories.Ham.Hams
 import hm.binkley.labs.skratch.factories.Spam.Spams
 
 object Meta : System<Meta>("Meta")
@@ -47,11 +48,29 @@ class Baz private constructor(
 val BigRational.baz: Baz get() = Bazs.new(this)
 val Int.baz: Baz get() = rat.baz
 
+abstract class MetaWeights<
+    U : MetaWeights<U, M>,
+    M : MetaWeight<U, M>,
+    >(
+    name: String,
+    basis: BigRational,
+) : Units<Meta, Weight, U, M>(Meta, name, basis)
+
+abstract class MetaWeight<
+    U : MetaWeights<U, M>,
+    M : MetaWeight<U, M>,
+    >(
+    unit: U,
+    quantity: BigRational,
+) : Measure<Meta, Weight, U, M>(unit, quantity)
+
+fun Measure<Meta, Weight, *, *>.whatYaGot() = "spam, ${unit.name}, and spam"
+
 class Spam private constructor(
     value: BigRational,
-) : Measure<Meta, Weight, Spams, Spam>(Spams, value) {
-    companion object Spams : Units<Meta, Weight, Spams, Spam>(
-        Meta, "spam", 1.rat
+) : MetaWeight<Spams, Spam>(Spams, value) {
+    companion object Spams : MetaWeights<Spams, Spam>(
+        "spam", 1.rat
     ) {
         override fun new(value: BigRational) = Spam(value)
     }
@@ -59,6 +78,19 @@ class Spam private constructor(
 
 val BigRational.spams: Spam get() = Spams.new(this)
 val Int.spams: Spam get() = rat.spams
+
+class Ham private constructor(
+    value: BigRational,
+) : MetaWeight<Hams, Ham>(Hams, value) {
+    companion object Hams : MetaWeights<Hams, Ham>(
+        "ham", 2.rat
+    ) {
+        override fun new(value: BigRational) = Ham(value)
+    }
+}
+
+val BigRational.hams: Ham get() = Hams.new(this)
+val Int.hams: Ham get() = rat.hams
 
 object Martian : System<Martian>("Martian")
 class Grok private constructor(
