@@ -54,6 +54,16 @@ fun main() {
     // foo7.into(Bazs, Bars, Groks)
     // val x = foo7 + grok1
 
+    println(Foos < Bars)
+    // Correctly does not compile -- Groks is in the wrong System
+    // println(Foos < Groks)
+    println(1.foo < 2.foo)
+    // Correctly does not compile -- Spams is in the wrong Kind
+    // println(1.foo < 1.spams)
+    println(1.foo < 1.bar)
+    // Correctly does not compile -- Groks is in the wrong System
+    // println(1.foo < 1.groks)
+
     val spam4 = 5.spams
     println(spam4.whatYaGot())
     val menuItems = spam4.into(Spams, Hams)

@@ -21,9 +21,9 @@ abstract class Units<
     val system: S,
     val name: String,
     val basis: BigRational,
-) : Comparable<Units<*, *, *, *>> {
+) : Comparable<Units<S, K, *, *>> {
     abstract fun new(value: BigRational): M
-    override fun compareTo(other: Units<*, *, *, *>) =
+    override fun compareTo(other: Units<S, K, *, *>) =
         basis.compareTo(other.basis)
     override fun toString() = "$system $name@$basis"
 }
@@ -36,11 +36,14 @@ abstract class Measure<
     >(
     val unit: U,
     val quantity: BigRational,
-) {
+) : Comparable<Measure<S, K, *, *>> {
     // Member function so that explicit [M] type is not needed externally for
     // an extension function
     operator fun plus(other: Measure<S, K, *, *>): M =
         unit.new(quantity + (other into unit).quantity)
+
+    override fun compareTo(other: Measure<S, K, *, *>) =
+        quantity.compareTo((other into unit).quantity)
 
     override fun equals(other: Any?) = this === other ||
         other is Measure<*, *, *, *> &&
