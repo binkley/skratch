@@ -3,7 +3,6 @@ package hm.binkley.labs.skratch.factories
 import hm.binkley.labs.skratch.factories.Bar.Bars
 import hm.binkley.labs.skratch.factories.Baz.Bazs
 import hm.binkley.labs.skratch.factories.Foo.Foos
-import java.util.Objects.hash
 
 fun main() {
     val foo1 = 1.foo
@@ -39,48 +38,17 @@ fun main() {
     println("SUM #4 -> $sum4 $remainders")
 
     val foo7 = 14.foo
+    val spam1 = 2.spams
+    val grok1 = 1.groks
     println(foo7)
+    println(spam1)
+    println(grok1)
+    // Correctly does not compile -- Spams is in the wrong Kind
+    // foo7 into Spams
+    // foo7.into(Bars, Spams)
+    // val x = foo7 + spam1
     // Correctly does not compile -- Groks is in the wrong System
+    // foo7 into Groks
     // foo7.into(Bazs, Bars, Groks)
-}
-
-abstract class System<S : System<S>>(
-    val name: String
-) {
-    override fun toString() = name
-}
-
-abstract class Units<
-    S : System<S>,
-    U : Units<S, U, M>,
-    M : Measure<S, U, M>>(
-    val system: S,
-    val name: String,
-    val basis: BigRational,
-) : Comparable<Units<*, *, *>> {
-    abstract fun new(value: BigRational): M
-    override fun compareTo(other: Units<*, *, *>) =
-        basis.compareTo(other.basis)
-    override fun toString() = "$system $name@$basis"
-}
-
-abstract class Measure<
-    S : System<S>,
-    U : Units<S, U, M>,
-    M : Measure<S, U, M>>(
-    val unit: U,
-    val quantity: BigRational,
-) {
-    // Member function so that explicit [M] type is not needed externally for
-    // an extension function
-    operator fun plus(other: Measure<S, *, *>): M =
-        unit.new(quantity + (other into unit).quantity)
-
-    override fun equals(other: Any?) = this === other ||
-        other is Measure<*, *, *> &&
-        unit == other.unit &&
-        quantity == other.quantity
-
-    override fun hashCode() = hash(unit, quantity)
-    override fun toString() = "$quantity $unit"
+    // val x = foo7 + grok1
 }
