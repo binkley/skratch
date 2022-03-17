@@ -14,6 +14,7 @@ fun main() {
     println(foo1)
     println(foo2)
     println(bar3)
+    println(bar3 into Foos)
 
     val list1 = listOf(foo1, foo2, bar3)
     val sum1 = list1.fold(0.foo) { acc, it -> acc + it }
@@ -72,7 +73,7 @@ abstract class Measure<
 ) {
     // Member function so that explicit [M] type is not needed externally for
     // an extension function
-    operator fun plus(other: Measure<*, *, *>): M =
+    operator fun plus(other: Measure<S, *, *>): M =
         unit.new(quantity + (other into unit).quantity)
 
     override fun equals(other: Any?) = this === other ||
@@ -88,7 +89,16 @@ infix fun <
     S : System<S>,
     V : Units<S, V, N>,
     N : Measure<S, V, N>>
-Measure<*, *, *>.into(other: V): N = other.new(convertByBases(other) { it })
+Measure<S, *, *>.into(other: V): N = into(other) { it }
+
+fun <
+    S : System<S>,
+    V : Units<S, V, N>,
+    N : Measure<S, V, N>>
+Measure<S, *, *>.into(
+    other: V,
+    conversion: (BigRational) -> BigRational,
+): N = other.new(convertByBases(other, conversion))
 
 @Suppress("UNCHECKED_CAST")
 fun <S : System<S>> Measure<S, *, *>.into(
@@ -108,7 +118,9 @@ fun <S : System<S>> Measure<S, *, *>.into(
 
     // Tack any left over into the least significant unit
     val leastIndex = descendingIndexed.last().first
-    into[leastIndex] = into[leastIndex]!! + current
+    val least = into[leastIndex]!!
+    // TODO: Reuse `+` operator
+    into[leastIndex] = least.unit.new(least.quantity + current.quantity)
 
     return into.toNonNullableList() as List<Measure<S, *, *>>
 }
