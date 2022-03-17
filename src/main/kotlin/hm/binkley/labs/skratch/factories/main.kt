@@ -68,26 +68,26 @@ abstract class Measure<
     U : Units<S, U, M>,
     M : Measure<S, U, M>>(
     val unit: U,
-    val value: BigRational,
+    val quantity: BigRational,
 ) {
     // Member function so that explicit [M] type is not needed externally for
     // an extension function
     operator fun plus(other: Measure<*, *, *>): M =
-        unit.new(value + (other into unit).value)
+        unit.new(quantity + (other into unit).quantity)
 
     override fun equals(other: Any?) = this === other ||
         other is Measure<*, *, *> &&
         unit == other.unit &&
-        value == other.value
+        quantity == other.quantity
 
-    override fun hashCode() = hash(unit, value)
-    override fun toString() = "$value $unit"
+    override fun hashCode() = hash(unit, quantity)
+    override fun toString() = "$quantity $unit"
 }
 
 infix fun <
-        S : System<S>,
-        V : Units<S, V, N>,
-        N : Measure<S, V, N>>
+    S : System<S>,
+    V : Units<S, V, N>,
+    N : Measure<S, V, N>>
 Measure<*, *, *>.into(other: V): N = other.new(convertByBases(other) { it })
 
 @Suppress("UNCHECKED_CAST")
@@ -116,7 +116,7 @@ fun <S : System<S>> Measure<S, *, *>.into(
 private fun Measure<*, *, *>.convertByBases(
     other: Units<*, *, *>,
     conversion: (BigRational) -> BigRational,
-) = conversion(value * unit.basis) / other.basis
+) = conversion(quantity * unit.basis) / other.basis
 
 private fun <T : Comparable<T>> Array<T>.sortedDescendingIndexed() =
     mapIndexed { index, it -> index to it }.sortedByDescending { it.second }
