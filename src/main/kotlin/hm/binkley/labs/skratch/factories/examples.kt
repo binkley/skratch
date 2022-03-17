@@ -2,25 +2,27 @@ package hm.binkley.labs.skratch.factories
 
 import hm.binkley.labs.skratch.factories.Bar.Bars
 import hm.binkley.labs.skratch.factories.Baz.Bazs
-import hm.binkley.labs.skratch.factories.Foo.Foos
+import hm.binkley.labs.skratch.factories.FooMeasure.Foo
 import hm.binkley.labs.skratch.factories.Grok.Groks
 import hm.binkley.labs.skratch.factories.Ham.Hams
 import hm.binkley.labs.skratch.factories.Spam.Spams
 
 object Meta : System<Meta>("Meta")
 
-class Foo private constructor(
+// Plural of "foo" is "foo" -- try out the DSL for these case (eg, "14
+// stone" in English weights
+class FooMeasure private constructor(
     value: BigRational,
-) : Measure<Meta, Length, Foos, Foo>(Foos, value) {
-    companion object Foos : Units<Meta, Length, Foos, Foo>(
+) : Measure<Meta, Length, Foo, FooMeasure>(Foo, value) {
+    companion object Foo : Units<Meta, Length, Foo, FooMeasure>(
         Meta, "foo", 1.rat
     ) {
-        override fun new(value: BigRational) = Foo(value)
+        override fun new(value: BigRational) = FooMeasure(value)
     }
 }
 
-val BigRational.foo: Foo get() = Foos.new(this)
-val Int.foo: Foo get() = rat.foo
+val BigRational.foo: FooMeasure get() = FooMeasure.new(this)
+val Int.foo: FooMeasure get() = rat.foo
 
 class Bar private constructor(
     value: BigRational,
@@ -32,8 +34,8 @@ class Bar private constructor(
     }
 }
 
-val BigRational.bar: Bar get() = Bars.new(this)
-val Int.bar: Bar get() = rat.bar
+val BigRational.bars: Bar get() = Bars.new(this)
+val Int.bars: Bar get() = rat.bars
 
 class Baz private constructor(
     value: BigRational,
@@ -45,8 +47,8 @@ class Baz private constructor(
     }
 }
 
-val BigRational.baz: Baz get() = Bazs.new(this)
-val Int.baz: Baz get() = rat.baz
+val BigRational.bazen: Baz get() = Bazs.new(this)
+val Int.bazen: Baz get() = rat.bazen
 
 abstract class MetaWeights<
     U : MetaWeights<U, M>,
