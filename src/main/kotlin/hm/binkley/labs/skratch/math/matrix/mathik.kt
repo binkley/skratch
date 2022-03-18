@@ -20,7 +20,7 @@ fun main() {
 @|blue 1/F($n) = ${fib.multInv}|@
 @|magenta det(F($n)) = ${fib.det}|@
 @|yellow tr(F($n)) = ${fib.tr}|@
-""".trim()
+                """.trim()
             )
         )
     }
