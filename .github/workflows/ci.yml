@@ -47,5 +47,5 @@ jobs:
       - name: Build and test with Maven under Batect
         run: ./batect build
 
-      - name: Run example under Batect
-        run: ./batect run
+      - name: Run demo under Batect
+        run: ./batect demo
