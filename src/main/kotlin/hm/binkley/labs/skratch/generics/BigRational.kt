@@ -1,7 +1,7 @@
-package hm.binkley.labs.skratch.factories
+package hm.binkley.labs.skratch.generics
 
-import hm.binkley.labs.skratch.factories.BigRational.Companion.ONE
-import hm.binkley.labs.skratch.factories.BigRational.Companion.valueOf
+import hm.binkley.labs.skratch.generics.BigRational.Companion.ONE
+import hm.binkley.labs.skratch.generics.BigRational.Companion.valueOf
 import java.math.BigInteger
 import java.util.Objects.hash
 

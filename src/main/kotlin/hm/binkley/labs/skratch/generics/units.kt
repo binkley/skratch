@@ -1,6 +1,5 @@
-package hm.binkley.labs.skratch.factories
+package hm.binkley.labs.skratch.generics
 
-import org.checkerframework.checker.units.qual.K
 import java.util.Objects
 
 abstract class System<S : System<S>>(

@@ -1,4 +1,4 @@
-package hm.binkley.labs.skratch.factories
+package hm.binkley.labs.skratch.generics
 
 infix fun <
     S : System<S>,

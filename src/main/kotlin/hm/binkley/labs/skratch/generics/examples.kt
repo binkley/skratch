@@ -1,11 +1,11 @@
-package hm.binkley.labs.skratch.factories
+package hm.binkley.labs.skratch.generics
 
-import hm.binkley.labs.skratch.factories.Bar.Bars
-import hm.binkley.labs.skratch.factories.Baz.Bazs
-import hm.binkley.labs.skratch.factories.FooMeasure.Foo
-import hm.binkley.labs.skratch.factories.Grok.Groks
-import hm.binkley.labs.skratch.factories.Ham.Hams
-import hm.binkley.labs.skratch.factories.Spam.Spams
+import hm.binkley.labs.skratch.generics.Bar.Bars
+import hm.binkley.labs.skratch.generics.Baz.Bazs
+import hm.binkley.labs.skratch.generics.FooMeasure.Foo
+import hm.binkley.labs.skratch.generics.Grok.Groks
+import hm.binkley.labs.skratch.generics.Ham.Hams
+import hm.binkley.labs.skratch.generics.Spam.Spams
 
 object Meta : System<Meta>("Meta")
 
