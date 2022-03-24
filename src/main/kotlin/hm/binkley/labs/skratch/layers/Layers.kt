@@ -30,19 +30,6 @@ interface MutableLayers<
     }
 }
 
-private class DefaultView<
-    K : Any,
-    out V : Any,
-    out L : Layer<K, V, L>,
-    >(
-    private val layers: List<L>,
-) : AbstractMap<K, V>() {
-    override val entries: Set<Entry<K, V>>
-        get() = layers.fold<L, MutableMap<K, V>>(mutableMapOf()) { merged, it ->
-            merged.putAll(it); merged
-        }.entries
-}
-
 abstract class AbstractLayers<
     K : Any,
     out V : Any,
@@ -63,4 +50,17 @@ abstract class AbstractMutableLayers<
     override val layers: MutableList<M> = mutableListOf(),
 ) : MutableLayers<K, V, M>, AbstractLayers<K, V, M>(layers) {
     override fun <N : M> add(new: N): N = new.also { layers.add(new) }
+}
+
+private class DefaultView<
+    K : Any,
+    out V : Any,
+    out L : Layer<K, V, L>,
+    >(
+    private val layers: List<L>,
+) : AbstractMap<K, V>() {
+    override val entries: Set<Entry<K, V>>
+        get() = layers.fold<L, MutableMap<K, V>>(mutableMapOf()) { merged, it ->
+            merged.putAll(it); merged
+        }.entries
 }
