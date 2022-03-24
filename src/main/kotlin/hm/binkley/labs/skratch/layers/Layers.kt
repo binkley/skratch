@@ -35,7 +35,7 @@ abstract class AbstractLayers<
     out V : Any,
     out L : Layer<K, V, L>,
     >(
-    protected open val layers: List<L>,
+    private val layers: List<L>,
 ) : Layers<K, V, L>, Map<K, V> by DefaultView(layers) {
     override val history: List<L> get() = layers
 
@@ -47,7 +47,7 @@ abstract class AbstractMutableLayers<
     V : Any,
     M : MutableLayer<K, V, M>,
     >(
-    override val layers: MutableList<M> = mutableListOf(),
+    private val layers: MutableList<M> = mutableListOf(),
 ) : MutableLayers<K, V, M>, AbstractLayers<K, V, M>(layers) {
     override fun <N : M> add(new: N): N = new.also { layers.add(new) }
 }
