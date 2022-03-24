@@ -2,14 +2,22 @@ package hm.binkley.labs.skratch.layers
 
 import kotlin.collections.Map.Entry
 
-interface Layers<K : Any, out V : Any, out B : Layer<K, V, B>> :
+interface Layers<
+    K : Any,
+    out V : Any,
+    out L : Layer<K, V, L>,
+    > :
     Map<K, V> {
-    val history: List<B>
+    val history: List<L>
 
-    fun last(): B = history.last()
+    fun last(): L = history.last()
 }
 
-interface MutableLayers<K : Any, V : Any, M : MutableLayer<K, V, M>> :
+interface MutableLayers<
+    K : Any,
+    V : Any,
+    M : MutableLayer<K, V, M>,
+    > :
     Layers<K, V, M> {
     fun edit(block: EditMap<K, V>.() -> Unit) = last().edit(block)
 
@@ -22,24 +30,36 @@ interface MutableLayers<K : Any, V : Any, M : MutableLayer<K, V, M>> :
     }
 }
 
-private class DefaultView<K : Any, V : Any, B : Layer<K, V, B>>(
-    private val layers: List<B>,
+private class DefaultView<
+    K : Any,
+    out V : Any,
+    out L : Layer<K, V, L>,
+    >(
+    private val layers: List<L>,
 ) : AbstractMap<K, V>() {
     override val entries: Set<Entry<K, V>>
-        get() = layers.fold<B, MutableMap<K, V>>(mutableMapOf()) { merged, it ->
+        get() = layers.fold<L, MutableMap<K, V>>(mutableMapOf()) { merged, it ->
             merged.putAll(it); merged
         }.entries
 }
 
-abstract class AbstractLayers<K : Any, out V : Any, out B : Layer<K, V, B>>(
-    protected open val layers: List<B>,
-) : Layers<K, V, B>, Map<K, V> by DefaultView(layers) {
-    override val history: List<B> get() = layers
+abstract class AbstractLayers<
+    K : Any,
+    out V : Any,
+    out L : Layer<K, V, L>,
+    >(
+    protected open val layers: List<L>,
+) : Layers<K, V, L>, Map<K, V> by DefaultView(layers) {
+    override val history: List<L> get() = layers
 
     override fun toString() = DefaultView(layers).toString()
 }
 
-abstract class AbstractMutableLayers<K : Any, V : Any, M : MutableLayer<K, V, M>>(
+abstract class AbstractMutableLayers<
+    K : Any,
+    V : Any,
+    M : MutableLayer<K, V, M>,
+    >(
     override val layers: MutableList<M> = mutableListOf(),
 ) : MutableLayers<K, V, M>, AbstractLayers<K, V, M>(layers) {
     override fun <N : M> add(new: N): N = new.also { layers.add(new) }
