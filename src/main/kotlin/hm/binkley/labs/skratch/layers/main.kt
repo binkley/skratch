@@ -1,50 +1,50 @@
 package hm.binkley.labs.skratch.layers
 
 fun main() {
-    open class MyMutableBase(
+    open class MyMutableLayer(
         map: MutableMap<String, Number> = mutableMapOf(),
-    ) : AbstractMutableBase<String, Number, MyMutableBase>(map)
+    ) : AbstractMutableLayer<String, Number, MyMutableLayer>(map)
 
-    val bases =
-        object : AbstractMutableBases<String, Number, MyMutableBase>() {
-            override fun new() = MyMutableBase()
+    val layers =
+        object : AbstractMutableLayers<String, Number, MyMutableLayer>() {
+            override fun new() = MyMutableLayer()
 
-            fun doHickey(): MyMutableBase =
-                MyMutableBase(mutableMapOf("HUM-HUM" to 2))
+            fun doHickey(): MyMutableLayer =
+                MyMutableLayer(mutableMapOf("HUM-HUM" to 2))
         }
 
     println("--- EMPTY")
-    println("BASES -> $bases")
-    println("HISTORY -> ${bases.history}")
-    println("STRING -> ${bases["STRING"]}")
+    println("LAYERS -> $layers")
+    println("HISTORY -> ${layers.history}")
+    println("STRING -> ${layers["STRING"]}")
     println("--- ADD EMPTY")
-    println(bases.add(MyMutableBase()).self)
-    println("BASES -> $bases")
-    println("HISTORY -> ${bases.history}")
-    println("STRING -> ${bases["STRING"]}")
+    println(layers.add(MyMutableLayer()).self)
+    println("LAYERS -> $layers")
+    println("HISTORY -> ${layers.history}")
+    println("STRING -> ${layers["STRING"]}")
     println("--- ADD NOT EMPTY")
-    println(bases.add(MyMutableBase(mutableMapOf("STRING" to 3))).self)
-    println("BASES -> $bases")
-    println("HISTORY -> ${bases.history}")
-    println("STRING -> ${bases["STRING"]}")
+    println(layers.add(MyMutableLayer(mutableMapOf("STRING" to 3))).self)
+    println("LAYERS -> $layers")
+    println("HISTORY -> ${layers.history}")
+    println("STRING -> ${layers["STRING"]}")
     println("--- ADD CUSTOM")
-    println(bases.add(bases.doHickey()).self)
+    println(layers.add(layers.doHickey()).self)
     println("--- ADD VIA BLOCK")
     println(
-        bases.add {
+        layers.add {
             this["BOB"] = 77
         }
     )
-    println("BASES -> $bases")
-    println("HISTORY -> ${bases.history}")
-    println("STRING -> ${bases["STRING"]}")
+    println("LAYERS -> $layers")
+    println("HISTORY -> ${layers.history}")
+    println("STRING -> ${layers["STRING"]}")
 
-    open class OhMyMutableBase<M : OhMyMutableBase<M>> :
-        MyMutableBase(mutableMapOf("message" to 17)) {
+    open class OhMyMutableLayer<M : OhMyMutableLayer<M>> :
+        MyMutableLayer(mutableMapOf("message" to 17)) {
         open fun ohMy() = println("OH, MY, ${this["message"]}!")
     }
 
-    class MyWordMutableBase : OhMyMutableBase<MyWordMutableBase>() {
+    class MyWordMutableLayer : OhMyMutableLayer<MyWordMutableLayer>() {
         init {
             edit {
                 this["message"] = 31
@@ -54,14 +54,14 @@ fun main() {
         fun myWord() = println("MY, WORD!")
     }
 
-    val wordy = bases.add(MyWordMutableBase()).apply {
+    val wordy = layers.add(MyWordMutableLayer()).apply {
         ohMy()
         myWord()
     }
 
     println("-- MORE EXTENDING")
     println("WORDY -> $wordy")
-    println("BASES -> $bases")
-    println("HISTORY -> ${bases.history}")
-    println("STRING -> ${bases["STRING"]}")
+    println("LAYERS -> $layers")
+    println("HISTORY -> ${layers.history}")
+    println("STRING -> ${layers["STRING"]}")
 }

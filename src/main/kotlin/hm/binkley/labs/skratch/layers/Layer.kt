@@ -1,26 +1,26 @@
 package hm.binkley.labs.skratch.layers
 
-interface Base<K : Any, out V : Any, out B : Base<K, V, B>> : Map<K, V> {
+interface Layer<K : Any, out V : Any, out B : Layer<K, V, B>> : Map<K, V> {
     @Suppress("UNCHECKED_CAST")
     val self: B get() = this as B
 }
 
 interface EditMap<K : Any, V : Any> : MutableMap<K, V>
 
-interface MutableBase<K : Any, V : Any, M : MutableBase<K, V, M>> :
-    Base<K, V, M> {
+interface MutableLayer<K : Any, V : Any, M : MutableLayer<K, V, M>> :
+    Layer<K, V, M> {
     fun edit(block: EditMap<K, V>.() -> Unit): M
 }
 
-abstract class AbstractBase<K : Any, out V : Any, out B : AbstractBase<K, V, B>>(
+abstract class AbstractLayer<K : Any, out V : Any, out B : AbstractLayer<K, V, B>>(
     private val map: Map<K, V>,
-) : Base<K, V, B>, Map<K, V> by map {
+) : Layer<K, V, B>, Map<K, V> by map {
     override fun toString() = map.toString()
 }
 
-abstract class AbstractMutableBase<K : Any, V : Any, M : AbstractMutableBase<K, V, M>>(
+abstract class AbstractMutableLayer<K : Any, V : Any, M : AbstractMutableLayer<K, V, M>>(
     private val map: MutableMap<K, V>,
-) : MutableBase<K, V, M>, AbstractBase<K, V, M>(map) {
+) : MutableLayer<K, V, M>, AbstractLayer<K, V, M>(map) {
     override fun edit(block: EditMap<K, V>.() -> Unit): M {
         DefaultEditMap().block()
         return self
