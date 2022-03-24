@@ -1,5 +1,7 @@
 package hm.binkley.labs.skratch.layers
 
+import kotlin.collections.Map.Entry
+
 interface Layers<K : Any, out V : Any, out B : Layer<K, V, B>> :
     Map<K, V> {
     val history: List<B>
@@ -20,17 +22,21 @@ interface MutableLayers<K : Any, V : Any, M : MutableLayer<K, V, M>> :
     }
 }
 
-private fun <K : Any, V : Any, B : Layer<K, V, B>>
-List<B>.defaultView(): Map<K, V> = fold(mutableMapOf()) { merged, it ->
-    merged.putAll(it); merged
+private class DefaultView<K : Any, V : Any, B : Layer<K, V, B>>(
+    private val layers: List<B>,
+) : AbstractMap<K, V>() {
+    override val entries: Set<Entry<K, V>>
+        get() = layers.fold<B, MutableMap<K, V>>(mutableMapOf()) { merged, it ->
+            merged.putAll(it); merged
+        }.entries
 }
 
 abstract class AbstractLayers<K : Any, out V : Any, out B : Layer<K, V, B>>(
     protected open val layers: List<B>,
-) : Layers<K, V, B>, Map<K, V> by layers.defaultView() {
+) : Layers<K, V, B>, Map<K, V> by DefaultView(layers) {
     override val history: List<B> get() = layers
 
-    override fun toString() = layers.defaultView().toString()
+    override fun toString() = DefaultView(layers).toString()
 }
 
 abstract class AbstractMutableLayers<K : Any, V : Any, M : MutableLayer<K, V, M>>(

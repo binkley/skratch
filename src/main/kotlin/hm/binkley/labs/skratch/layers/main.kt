@@ -1,5 +1,9 @@
 package hm.binkley.labs.skratch.layers
 
+import hm.binkley.labs.skratch.layers.enumy.EnumyMutableLayer
+import hm.binkley.labs.skratch.layers.enumy.EnumyMutableLayers
+import hm.binkley.labs.skratch.layers.enumy.Left
+
 fun main() {
     open class MyMutableLayer(
         map: MutableMap<String, Number> = mutableMapOf(),
@@ -64,4 +68,19 @@ fun main() {
     println("LAYERS -> $layers")
     println("HISTORY -> ${layers.history}")
     println("STRING -> ${layers["STRING"]}")
+
+    val firstEnumyLayer = EnumyMutableLayer()
+    val enumyLayers = EnumyMutableLayers(firstEnumyLayer)
+    enumyLayers.edit {
+        this[Left] = 7
+    }
+    enumyLayers.add(EnumyMutableLayer())
+    enumyLayers.edit {
+        this[Left] = 8
+    }
+
+    println("-- ENUM-Y KEYS")
+    println("LAYERS -> $enumyLayers")
+    println("HISTORY -> ${enumyLayers.history}")
+    println("LEFT -> ${enumyLayers[Left]}")
 }
