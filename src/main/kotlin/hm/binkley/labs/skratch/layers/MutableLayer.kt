@@ -23,6 +23,13 @@ abstract class MutableLayer<
 }
 
 interface EditMap<K : Any, V : Any> : MutableMap<K, ValueOrRule<V>> {
+    /** Convenience to put values directly. */
+    fun put(key: K, value: V) {
+        this[key] = value.toValue()
+    }
+
+    operator fun <T : V> set(key: K, value: T) = put(key, value)
+
     fun <T : V> lastRule() = LastRule<K, V, T>()
     fun <T : V> lastOrDefaultRule(default: T) =
         LastOrDefaultRule<K, V, T>(default)
@@ -39,5 +46,4 @@ interface EditMap<K : Any, V : Any> : MutableMap<K, ValueOrRule<V>> {
             layers: Layers<K, V, *>,
         ): T? = block(key, values, layers)
     }
-
 }

@@ -1,5 +1,6 @@
 package hm.binkley.labs.skratch.layers
 
+// TODO: Pull up [Layers] implementation?
 @Suppress("LeakingThis")
 abstract class MutableLayers<
     K : Any,
@@ -23,6 +24,19 @@ abstract class MutableLayers<
     fun <N : M> add(new: N): N = new.also { layers.add(new) }
 
     fun add(block: EditMap<K, V>.() -> Unit): M = add(new()).edit(block)
+
+    fun whatIf(block: EditMap<K, V>.() -> Unit): MutableLayers<K, V, M> {
+        val outer = this
+        val whatIf = object : MutableLayers<K, V, M>() {
+            override fun new(): M = outer.new()
+        }
+        history.forEach {
+            whatIf.edit { putAll(it) }
+            whatIf.add { }
+        }
+        whatIf.edit(block)
+        return whatIf
+    }
 }
 
 private fun <

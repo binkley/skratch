@@ -1,6 +1,5 @@
 package hm.binkley.labs.skratch.layers
 
-import hm.binkley.labs.skratch.layers.enumy.EnumyKey
 import hm.binkley.labs.skratch.layers.enumy.EnumyKey.AbstractEnumyKey
 import hm.binkley.labs.skratch.layers.enumy.EnumyMutableLayers
 import hm.binkley.labs.skratch.layers.enumy.Left
@@ -98,4 +97,14 @@ fun main() {
     println("LEFT -> ${enumyLayers[Left]}")
     val asInt: Int? = enumyLayers.getAs(Left)
     println("LEFT -> $asInt")
+
+    println ("-- WHAT IF?")
+    val whatIf = enumyLayers.whatIf {
+        this[Left] = 17
+    }
+    println("INDEPENDENT? ${enumyLayers.history != whatIf.history}")
+    println("ORIGINAL -> $enumyLayers")
+    println("WHAT-IF? -> $whatIf")
+    val diff = whatIf.history - enumyLayers.history.toSet()
+    println("DIFF -> $diff")
 }
