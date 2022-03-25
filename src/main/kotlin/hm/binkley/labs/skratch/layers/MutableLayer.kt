@@ -9,6 +9,7 @@ abstract class MutableLayer<
     V : Any,
     M : MutableLayer<K, V, M>,
     >(
+    // TODO: Defensive copy of [map]
     private val map: MutableMap<K, ValueOrRule<V>>,
 ) : Layer<K, V, M>(map) {
     fun edit(block: EditMap<K, V>.() -> Unit): M {

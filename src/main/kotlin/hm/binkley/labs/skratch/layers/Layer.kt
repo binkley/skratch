@@ -7,6 +7,7 @@ abstract class Layer<
     V : Any,
     L : Layer<K, V, L>,
     >(
+    // TODO: Defensive copy of [map]
     private val map: Map<K, ValueOrRule<V>>,
 ) : AbstractMap<K, ValueOrRule<V>>() {
     @Suppress("UNCHECKED_CAST")

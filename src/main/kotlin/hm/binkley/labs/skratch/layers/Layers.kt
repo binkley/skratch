@@ -9,6 +9,7 @@ abstract class Layers<
     V : Any,
     L : Layer<K, V, L>,
     >(
+    // TODO: Defensive copy of [layers]
     private val layers: List<L>,
 ) : AbstractMap<K, V>() {
     override val entries: Set<Entry<K, V>> get() = RuledView().entries

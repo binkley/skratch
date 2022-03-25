@@ -7,6 +7,7 @@ abstract class MutableLayers<
     M : MutableLayer<K, V, M>,
     >(
     firstLayer: M? = null,
+    // TODO: Defensive copy of [layers]
     private val layers: MutableList<M> = mutableListOf(),
 ) : Layers<K, V, M>(layers) {
     init {
