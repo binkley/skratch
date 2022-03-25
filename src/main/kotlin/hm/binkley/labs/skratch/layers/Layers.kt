@@ -4,29 +4,20 @@ import org.jetbrains.kotlin.utils.addToStdlib.firstIsInstanceOrNull
 import java.util.AbstractMap.SimpleImmutableEntry
 import kotlin.collections.Map.Entry
 
-interface Layers<
-    K : Any,
-    V : Any,
-    L : Layer<K, V, L>,
-    > : Map<K, V> {
-    val history: List<L>
-
-    @Suppress("UNCHECKED_CAST")
-    fun <T : V> getAs(key: K): T? = this[key] as T
-
-    fun last(): L = history.last()
-}
-
-abstract class AbstractLayers<
+abstract class Layers<
     K : Any,
     V : Any,
     L : Layer<K, V, L>,
     >(
     private val layers: List<L>,
-) : AbstractMap<K, V>(), Layers<K, V, L> {
+) : AbstractMap<K, V>() {
     override val entries: Set<Entry<K, V>> get() = RuledView().entries
-    override val history: List<L> get() = layers
-    override fun <T : V> getAs(key: K): T? = valueFor(key)
+
+    val history: List<L> get() = layers
+
+    fun <T : V> getAs(key: K): T? = valueFor(key)
+
+    fun last(): L = history.last()
 
     private fun keys(): Set<K> =
         layers.asSequence().flatMap {

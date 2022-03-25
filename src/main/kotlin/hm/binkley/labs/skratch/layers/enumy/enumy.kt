@@ -1,11 +1,9 @@
 package hm.binkley.labs.skratch.layers.enumy
 
-import hm.binkley.labs.skratch.layers.AbstractMutableLayer
-import hm.binkley.labs.skratch.layers.AbstractMutableLayers
+import hm.binkley.labs.skratch.layers.MutableLayer
+import hm.binkley.labs.skratch.layers.MutableLayers
 import hm.binkley.labs.skratch.layers.ValueOrRule
 import hm.binkley.labs.skratch.layers.enumy.EnumyKey.AbstractEnumyKey
-import hm.binkley.labs.skratch.layers.rules.LastOrNullRule
-import hm.binkley.labs.skratch.layers.rules.LastRule
 
 interface EnumyKey {
     val name: String
@@ -30,7 +28,7 @@ object Large : TeeShirtSize()
 
 open class EnumyMutableLayer(
     map: MutableMap<EnumyKey, ValueOrRule<Number>> = mutableMapOf(),
-) : AbstractMutableLayer<EnumyKey, Number, EnumyMutableLayer>(map)
+) : MutableLayer<EnumyKey, Number, EnumyMutableLayer>(map)
 
 val firstLayer = object : EnumyMutableLayer() {
     init {
@@ -45,6 +43,6 @@ val firstLayer = object : EnumyMutableLayer() {
 }
 
 class EnumyMutableLayers :
-    AbstractMutableLayers<EnumyKey, Number, EnumyMutableLayer>(firstLayer) {
+    MutableLayers<EnumyKey, Number, EnumyMutableLayer>(firstLayer) {
     override fun new() = EnumyMutableLayer()
 }

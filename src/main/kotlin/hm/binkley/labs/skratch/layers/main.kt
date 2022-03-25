@@ -7,10 +7,10 @@ import hm.binkley.labs.skratch.layers.rules.LastOrDefaultRule
 fun main() {
     open class MyMutableLayer(
         map: MutableMap<String, ValueOrRule<Number>> = mutableMapOf(),
-    ) : AbstractMutableLayer<String, Number, MyMutableLayer>(map)
+    ) : MutableLayer<String, Number, MyMutableLayer>(map)
 
     val layers =
-        object : AbstractMutableLayers<String, Number, MyMutableLayer>() {
+        object : MutableLayers<String, Number, MyMutableLayer>() {
             init {
                 edit {
                     this["HUM-HUM"] = lastOrDefaultRule(-2)
