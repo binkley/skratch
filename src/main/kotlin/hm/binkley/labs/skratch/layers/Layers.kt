@@ -19,13 +19,13 @@ abstract class AbstractLayers<
     out L : Layer<K, V, L>,
     >(
     private val layers: List<L>,
-) : Layers<K, V, L>, Map<K, V> by DefaultView(layers) {
+) : Layers<K, V, L>, Map<K, V> by LastView(layers) {
     override val history: List<L> get() = layers
 
-    override fun toString() = DefaultView(layers).toString()
+    override fun toString() = LastView(layers).toString()
 }
 
-private class DefaultView<
+private class LastView<
     K : Any,
     out V : Any,
     out L : Layer<K, V, L>,
@@ -34,6 +34,13 @@ private class DefaultView<
 ) : AbstractMap<K, V>() {
     override val entries: Set<Entry<K, V>>
         get() = layers.fold<L, MutableMap<K, V>>(mutableMapOf()) { merged, it ->
-            merged.putAll(it); merged
+            val unwrapped = it.mapValues { (_, value) ->
+                when (value) {
+                    is Value<V> -> value.value
+                    else -> TODO("IMPLEMENT RULES")
+                }
+            }
+            merged.putAll(unwrapped)
+            merged
         }.entries
 }

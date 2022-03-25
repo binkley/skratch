@@ -4,8 +4,7 @@ interface MutableLayers<
     K : Any,
     V : Any,
     M : MutableLayer<K, V, M>,
-    > :
-    Layers<K, V, M> {
+    > : Layers<K, V, M> {
     fun edit(block: EditMap<K, V>.() -> Unit) = last().edit(block)
 
     fun <N : M> add(new: N): N

@@ -2,6 +2,7 @@ package hm.binkley.labs.skratch.layers.enumy
 
 import hm.binkley.labs.skratch.layers.AbstractMutableLayer
 import hm.binkley.labs.skratch.layers.AbstractMutableLayers
+import hm.binkley.labs.skratch.layers.ValueOrRule
 import hm.binkley.labs.skratch.layers.enumy.Key.AbstractKey
 
 interface Key {
@@ -26,7 +27,7 @@ object Medium : TeeShirtSize()
 object Large : TeeShirtSize()
 
 open class EnumyMutableLayer(
-    map: MutableMap<Key, Number> = mutableMapOf(),
+    map: MutableMap<Key, ValueOrRule<Number>> = mutableMapOf(),
 ) : AbstractMutableLayer<Key, Number, EnumyMutableLayer>(map)
 
 class EnumyMutableLayers(firstLayer: EnumyMutableLayer) :
