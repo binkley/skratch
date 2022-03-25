@@ -1,8 +1,5 @@
 package hm.binkley.labs.skratch.layers
 
-import hm.binkley.labs.skratch.layers.enumy.Left
-import hm.binkley.labs.skratch.layers.rules.LastRule
-
 interface MutableLayers<
     K : Any,
     V : Any,
