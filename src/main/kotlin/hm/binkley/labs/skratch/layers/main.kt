@@ -13,10 +13,8 @@ fun main() {
         object : AbstractMutableLayers<String, Number, MyMutableLayer>() {
             init {
                 edit {
-                    val lastOrNegativeTwo =
-                        LastOrDefaultRule<String, Number, Number>(-2)
-                    this["HUM-HUM"] = lastOrNegativeTwo
-                    this["message"] = lastOrNegativeTwo
+                    this["HUM-HUM"] = lastOrDefaultRule(-2)
+                    this["message"] = lastOrDefaultRule(-3)
                 }
                 add { }
             }
@@ -39,7 +37,7 @@ fun main() {
     println("--- ADD VIA BLOCK")
     println(
         layers.add {
-            this["BOB"] = lastOrNegativeOne
+            this["BOB"] = lastOrDefaultRule(-1)
         }
     )
     println(

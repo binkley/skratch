@@ -35,11 +35,11 @@ open class EnumyMutableLayer(
 val firstLayer = object : EnumyMutableLayer() {
     init {
         edit {
-            this[Left] = LastRule<EnumyKey, Number, Number>()
-            this[Right] = LastOrNullRule<EnumyKey, Number, Number>()
-            this[Small] = LastOrNullRule<EnumyKey, Number, Number>()
-            this[Medium] = LastOrNullRule<EnumyKey, Number, Number>()
-            this[Large] = LastOrNullRule<EnumyKey, Number, Number>()
+            this[Left] = lastRule<Number>()
+            this[Right] = lastOrNullRule<Number>()
+            this[Small] = lastOrNullRule<Number>()
+            this[Medium] = lastOrNullRule<Number>()
+            this[Large] = lastOrNullRule<Number>()
         }
     }
 }

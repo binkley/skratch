@@ -1,5 +1,9 @@
 package hm.binkley.labs.skratch.layers
 
+import hm.binkley.labs.skratch.layers.rules.LastOrDefaultRule
+import hm.binkley.labs.skratch.layers.rules.LastOrNullRule
+import hm.binkley.labs.skratch.layers.rules.LastRule
+
 interface MutableLayer<
     K : Any,
     V : Any,
@@ -8,7 +12,13 @@ interface MutableLayer<
     fun edit(block: EditMap<K, V>.() -> Unit): M
 }
 
-interface EditMap<K : Any, V : Any> : MutableMap<K, ValueOrRule<V>>
+interface EditMap<K : Any, V : Any> : MutableMap<K, ValueOrRule<V>> {
+    fun <T : V> lastRule() = LastRule<K, V, T>()
+    fun <T : V> lastOrDefaultRule(default: T) =
+        LastOrDefaultRule<K, V, T>(default)
+
+    fun <T : V> lastOrNullRule() = LastOrNullRule<K, V, T>()
+}
 
 abstract class AbstractMutableLayer<
     K : Any,
