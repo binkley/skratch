@@ -1,6 +1,7 @@
 package hm.binkley.labs.skratch.layers.rules
 
 import hm.binkley.labs.skratch.layers.Layers
+import hm.binkley.labs.skratch.layers.ReversedSequence
 import hm.binkley.labs.skratch.layers.Rule
 
 class LastOrNullRule<
@@ -10,7 +11,7 @@ class LastOrNullRule<
     > : Rule<K, V, T>("last-or[null]") {
     override fun invoke(
         key: K,
-        values: Sequence<T>,
+        values: ReversedSequence<T>,
         layers: Layers<K, T, *>,
     ): T? = values.firstOrNull()
 }

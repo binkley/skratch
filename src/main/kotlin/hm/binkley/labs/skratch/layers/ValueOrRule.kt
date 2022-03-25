@@ -10,12 +10,14 @@ data class Value<V : Any>(
 
 fun <T : Any> T.toValue() = Value(this)
 
+typealias ReversedSequence<T> = Sequence<T>
+
 abstract class Rule<
     K : Any,
     V : Any,
     T : V,
     >(
     val name: String,
-) : ValueOrRule<V>(), (K, Sequence<T>, Layers<K, T, *>) -> T? {
+) : ValueOrRule<V>(), (K, ReversedSequence<T>, Layers<K, T, *>) -> T? {
     override fun toString() = "<Rule>$name"
 }
