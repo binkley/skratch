@@ -4,8 +4,8 @@ import kotlin.collections.Map.Entry
 
 interface Layer<
     K : Any,
-    out V : Any,
-    out L : Layer<K, V, L>,
+    V : Any,
+    L : Layer<K, V, L>,
     > : Map<K, ValueOrRule<V>> {
     @Suppress("UNCHECKED_CAST")
     val self: L get() = this as L
@@ -13,8 +13,8 @@ interface Layer<
 
 abstract class AbstractLayer<
     K : Any,
-    out V : Any,
-    out L : Layer<K, V, L>,
+    V : Any,
+    L : Layer<K, V, L>,
     >(
     private val map: Map<K, ValueOrRule<V>>,
 ) : AbstractMap<K, ValueOrRule<V>>(), Layer<K, V, L> {

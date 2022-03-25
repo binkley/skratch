@@ -1,7 +1,5 @@
 package hm.binkley.labs.skratch.layers
 
-import kotlin.collections.MutableMap.MutableEntry
-
 interface MutableLayer<
     K : Any,
     V : Any,

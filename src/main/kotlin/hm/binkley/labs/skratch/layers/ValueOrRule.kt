@@ -1,8 +1,8 @@
 package hm.binkley.labs.skratch.layers
 
-sealed class ValueOrRule<out V : Any>
+sealed class ValueOrRule<V : Any>
 
-data class Value<out V : Any>(
+data class Value<V : Any>(
     val value: V,
 ) : ValueOrRule<V>() {
     override fun toString() = "<Value>$value"
@@ -10,12 +10,12 @@ data class Value<out V : Any>(
 
 fun <T : Any> T.toValue() = Value(this)
 
-abstract class AbstractRule<
+abstract class Rule<
     K : Any,
-    out V : Any,
+    V : Any,
     T : V,
     >(
     val name: String,
-) : ValueOrRule<V>(), (K, List<T>, Layers<K, T, *>) -> T {
+) : ValueOrRule<V>(), (K, Sequence<T>, Layers<K, T, *>) -> T {
     override fun toString() = "<Rule>$name"
 }
