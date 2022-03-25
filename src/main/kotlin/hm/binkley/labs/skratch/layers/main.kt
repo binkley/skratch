@@ -1,8 +1,8 @@
 package hm.binkley.labs.skratch.layers
 
-import hm.binkley.labs.skratch.layers.enumy.EnumyMutableLayer
 import hm.binkley.labs.skratch.layers.enumy.EnumyMutableLayers
 import hm.binkley.labs.skratch.layers.enumy.Left
+import hm.binkley.labs.skratch.layers.rules.LastOrDefaultRule
 
 fun main() {
     open class MyMutableLayer(
@@ -11,36 +11,44 @@ fun main() {
 
     val layers =
         object : AbstractMutableLayers<String, Number, MyMutableLayer>() {
+            init {
+                edit {
+                    val lastOrNegativeTwo =
+                        LastOrDefaultRule<String, Number, Number>(-2)
+                    this["HUM-HUM"] = lastOrNegativeTwo
+                    this["message"] = lastOrNegativeTwo
+                }
+                add { }
+            }
+
             override fun new() = MyMutableLayer()
 
             fun doHickey(): MyMutableLayer =
                 MyMutableLayer(mutableMapOf("HUM-HUM" to 2.toValue()))
         }
 
-    println("--- EMPTY")
-    println("LAYERS -> $layers")
-    println("HISTORY -> ${layers.history}")
-    println("STRING -> ${layers["STRING"]}")
-    println("--- ADD EMPTY")
-    println(layers.add(MyMutableLayer()))
-    println("LAYERS -> $layers")
-    println("HISTORY -> ${layers.history}")
-    println("STRING -> ${layers["STRING"]}")
     println("--- ADD NOT EMPTY")
+    val lastOrNegativeOne = LastOrDefaultRule<String, Number, Number>(-1)
+    println(layers.add(MyMutableLayer(mutableMapOf("STRING" to lastOrNegativeOne))))
     println(layers.add(MyMutableLayer(mutableMapOf("STRING" to 3.toValue()))))
-    println("LAYERS -> $layers")
     println("HISTORY -> ${layers.history}")
+    println("LAYERS -> $layers")
     println("STRING -> ${layers["STRING"]}")
     println("--- ADD CUSTOM")
     println(layers.add(layers.doHickey()))
     println("--- ADD VIA BLOCK")
     println(
         layers.add {
+            this["BOB"] = lastOrNegativeOne
+        }
+    )
+    println(
+        layers.add {
             this["BOB"] = 77.toValue()
         }
     )
-    println("LAYERS -> $layers")
     println("HISTORY -> ${layers.history}")
+    println("LAYERS -> $layers")
     println("STRING -> ${layers["STRING"]}")
 
     open class OhMyMutableLayer<M : OhMyMutableLayer<M>> :
@@ -59,29 +67,29 @@ fun main() {
     }
 
     val wordy = layers.add(MyWordMutableLayer()).apply {
-        println("*** IN APPLY")
         ohMy()
         myWord()
     }
 
     println("-- MORE EXTENDING")
     println("WORDY -> $wordy")
-    println("LAYERS -> $layers")
     println("HISTORY -> ${layers.history}")
+    println("LAYERS -> $layers")
     println("STRING -> ${layers["STRING"]}")
 
-    val firstEnumyLayer = EnumyMutableLayer()
-    val enumyLayers = EnumyMutableLayers(firstEnumyLayer)
+    val enumyLayers = EnumyMutableLayers()
+    println("-- ENUM-Y INIT")
+    println("HISTORY -> ${enumyLayers.history}")
+
     enumyLayers.edit {
         this[Left] = 7.toValue()
     }
-    enumyLayers.add(EnumyMutableLayer())
-    enumyLayers.edit {
+    enumyLayers.add {
         this[Left] = 8.toValue()
     }
 
-    println("-- ENUM-Y KEYS")
-    println("LAYERS -> $enumyLayers")
+    println("-- ENUM-Y ADD LEFTS")
     println("HISTORY -> ${enumyLayers.history}")
+    println("LAYERS -> $enumyLayers")
     println("LEFT -> ${enumyLayers[Left]}")
 }
