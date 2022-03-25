@@ -90,4 +90,6 @@ fun main() {
     println("HISTORY -> ${enumyLayers.history}")
     println("LAYERS -> $enumyLayers")
     println("LEFT -> ${enumyLayers[Left]}")
+    val asInt: Int? = enumyLayers.getAs(Left)
+    println("LEFT -> $asInt")
 }
