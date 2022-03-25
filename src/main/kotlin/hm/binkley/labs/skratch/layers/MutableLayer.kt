@@ -4,14 +4,6 @@ import hm.binkley.labs.skratch.layers.rules.LastOrDefaultRule
 import hm.binkley.labs.skratch.layers.rules.LastOrNullRule
 import hm.binkley.labs.skratch.layers.rules.LastRule
 
-interface EditMap<K : Any, V : Any> : MutableMap<K, ValueOrRule<V>> {
-    fun <T : V> lastRule() = LastRule<K, V, T>()
-    fun <T : V> lastOrDefaultRule(default: T) =
-        LastOrDefaultRule<K, V, T>(default)
-
-    fun <T : V> lastOrNullRule() = LastOrNullRule<K, V, T>()
-}
-
 abstract class MutableLayer<
     K : Any,
     V : Any,
@@ -24,6 +16,27 @@ abstract class MutableLayer<
         return self
     }
 
+    // TODO: How does subtypes of MutableLayer customize the edit map?
     private inner class DefaultEditMap :
         EditMap<K, V>, MutableMap<K, ValueOrRule<V>> by map
+}
+
+interface EditMap<K : Any, V : Any> : MutableMap<K, ValueOrRule<V>> {
+    fun <T : V> lastRule() = LastRule<K, V, T>()
+    fun <T : V> lastOrDefaultRule(default: T) =
+        LastOrDefaultRule<K, V, T>(default)
+
+    fun <T : V> lastOrNullRule() = LastOrNullRule<K, V, T>()
+
+    fun <T : V> rule(
+        name: String,
+        block: (K, Sequence<T>, Layers<K, V, *>) -> T?,
+    ): Rule<K, V, T> = object : Rule<K, V, T>(name) {
+        override fun invoke(
+            key: K,
+            values: ReversedSequence<T>,
+            layers: Layers<K, V, *>,
+        ): T? = block(key, values, layers)
+    }
+
 }

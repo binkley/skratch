@@ -12,6 +12,6 @@ class LastOrNullRule<
     override fun invoke(
         key: K,
         values: ReversedSequence<T>,
-        layers: Layers<K, T, *>,
+        layers: Layers<K, V, *>,
     ): T? = values.firstOrNull()
 }

@@ -28,9 +28,8 @@ abstract class Layers<
     private fun <T : V> valueFor(key: K): T? {
         val rule = ruleFor<T>(key)
         val values = valuesFor<T>(key)
-        val layers = this as Layers<K, T, *>
 
-        return rule(key, values, layers)
+        return rule(key, values, this)
     }
 
     private fun <T : V> ruleFor(key: K): Rule<K, V, T> =
