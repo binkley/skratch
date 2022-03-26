@@ -1,5 +1,6 @@
 package hm.binkley.labs.skratch.layers
 
+import hm.binkley.labs.skratch.layers.util.Stack
 import org.jetbrains.kotlin.utils.addToStdlib.firstIsInstanceOrNull
 import java.util.AbstractMap.SimpleImmutableEntry
 import kotlin.collections.Map.Entry
@@ -10,14 +11,14 @@ abstract class Layers<
     L : Layer<K, V, L>,
     >(
     // TODO: Defensive copy of [layers]
-    private val layers: List<L>,
+    private val layers: Stack<L>,
 ) : AbstractMap<K, V>() {
     override val entries: Set<Entry<K, V>> get() = RuledView().entries
 
     val history: List<L> get() = layers
 
     fun <T : V> getAs(key: K): T? = valueFor(key)
-    fun last(): L = history.last()
+    fun peek(): L = layers.peek()
 
     private fun keys(): Set<K> =
         layers.asSequence().flatMap {

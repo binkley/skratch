@@ -18,7 +18,7 @@ fun main() {
                     this["HUM-HUM"] = lastOrDefaultRule(-2)
                     this["message"] = lastOrDefaultRule(-3)
                 }
-                add { }
+                push { }
             }
 
             override fun new() = MyMutableLayer()
@@ -29,21 +29,21 @@ fun main() {
 
     println("--- ADD NOT EMPTY")
     val lastOrNegativeOne = LastOrDefaultRule<String, Number, Number>(-1)
-    println(layers.add(MyMutableLayer(mutableMapOf("STRING" to lastOrNegativeOne))))
-    println(layers.add(MyMutableLayer(mutableMapOf("STRING" to 3.toValue()))))
+    println(layers.push(MyMutableLayer(mutableMapOf("STRING" to lastOrNegativeOne))))
+    println(layers.push(MyMutableLayer(mutableMapOf("STRING" to 3.toValue()))))
     println("HISTORY -> ${layers.history}")
     println("LAYERS -> $layers")
     println("STRING -> ${layers["STRING"]}")
     println("--- ADD CUSTOM")
-    println(layers.add(layers.doHickey()))
+    println(layers.push(layers.doHickey()))
     println("--- ADD VIA BLOCK")
     println(
-        layers.add {
+        layers.push {
             this["BOB"] = lastOrDefaultRule(-1)
         }
     )
     println(
-        layers.add {
+        layers.push {
             this["BOB"] = 77.toValue()
         }
     )
@@ -66,7 +66,7 @@ fun main() {
         fun myWord() = println("MY, WORD!")
     }
 
-    val wordy = layers.add(MyWordMutableLayer()).apply {
+    val wordy = layers.push(MyWordMutableLayer()).apply {
         ohMy()
         myWord()
     }
@@ -84,11 +84,11 @@ fun main() {
     enumyLayers.edit {
         this[Left] = 7.toValue()
     }
-    enumyLayers.add {
+    enumyLayers.push {
         this[Left] = 8.toValue()
     }
     val fooKey = object : AbstractEnumyKey("FOO") {}
-    enumyLayers.add {
+    enumyLayers.push {
         this[fooKey] = rule<Float>("foo") { _, _, _ -> 1.1f }
     }
 
@@ -115,4 +115,9 @@ fun main() {
     }
     println("NULL RULE? -> $withNullRule")
     println("ORIGINAL -> $enumyLayers")
+
+    println("-- POP LAST EDIT")
+    println("LAYERS -> $enumyLayers")
+    println("POPPED -> ${enumyLayers.pop()}")
+    println("LAYERS -> $enumyLayers")
 }

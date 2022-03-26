@@ -47,7 +47,7 @@ val firstLayer = object : EnumyMutableLayer() {
 class EnumyMutableLayers :
     MutableLayers<EnumyKey, Number, EnumyMutableLayer>(firstLayer) {
     init {
-        add { }
+        push { }
     }
 
     override fun new() = EnumyMutableLayer()
