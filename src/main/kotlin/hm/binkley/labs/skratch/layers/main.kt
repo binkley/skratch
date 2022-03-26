@@ -108,4 +108,11 @@ fun main() {
     println("WHAT-IF? -> $whatIf")
     val diff = whatIf.history - enumyLayers.history.toSet()
     println("DIFF -> $diff")
+
+    println("-- RULE WHAT HIDES A KEY")
+    val withNullRule = enumyLayers.whatIf {
+        this[Left] = rule<Int>("hidden") { _, _, _ -> null }
+    }
+    println("NULL RULE? -> $withNullRule")
+    println("ORIGINAL -> $enumyLayers")
 }
