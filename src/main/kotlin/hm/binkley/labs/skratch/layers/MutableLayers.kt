@@ -12,8 +12,11 @@ abstract class MutableLayers<
     private val layers: MutableList<M> = mutableListOf(),
 ) : Layers<K, V, M>(layers) {
     init {
-        if (null != firstLayer) add(firstLayer.validAsFirst())
-        add { }
+        if (null == firstLayer) {
+            if (layers.isEmpty()) add { }
+        } else {
+            layers.add(firstLayer)
+        }
     }
 
     abstract fun new(): M
