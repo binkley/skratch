@@ -25,9 +25,7 @@ abstract class MutableLayers<
 
     // TODO: Raise exception if value added with no previous rule
     fun edit(block: EditMap<K, V>.() -> Unit): M = last().edit(block)
-
     fun <N : M> add(new: N): N = new.also { layers.add(new) }
-
     fun add(block: EditMap<K, V>.() -> Unit): M = add(new()).edit(block)
 
     fun whatIf(block: EditMap<K, V>.() -> Unit): MutableLayers<K, V, M> {

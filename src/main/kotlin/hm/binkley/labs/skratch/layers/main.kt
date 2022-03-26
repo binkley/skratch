@@ -98,7 +98,7 @@ fun main() {
     val asInt: Int? = enumyLayers.getAs(Left)
     println("LEFT -> $asInt")
 
-    println ("-- WHAT IF?")
+    println("-- WHAT IF?")
     val whatIf = enumyLayers.whatIf {
         this[Left] = 17
     }

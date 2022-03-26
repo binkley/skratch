@@ -17,7 +17,6 @@ abstract class Layers<
     val history: List<L> get() = layers
 
     fun <T : V> getAs(key: K): T? = valueFor(key)
-
     fun last(): L = history.last()
 
     private fun keys(): Set<K> =
