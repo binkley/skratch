@@ -7,17 +7,19 @@ abstract class MutableLayers<
     V : Any,
     M : MutableLayer<K, V, M>,
     >(
-    firstLayer: M? = null,
-    // TODO: Defensive copy of [layers]
-    private val layers: MutableList<M> = mutableListOf(),
+    @Suppress("UNUSED_PARAMETER") token: Nothing?,
+    private val layers: MutableList<M>,
 ) : Layers<K, V, M>(layers) {
-    init {
-        if (null == firstLayer) {
-            if (layers.isEmpty()) add { }
-        } else {
-            layers.add(firstLayer)
-        }
+    constructor() : this(null, mutableListOf()) {
+        add { }
     }
+
+    constructor(firstLayer: M) : this(null, mutableListOf()) {
+        layers.add(firstLayer.validAsFirst())
+    }
+
+    // Defensive copy
+    constructor(layers: List<M>) : this(null, layers.toMutableList())
 
     abstract fun new(): M
 
@@ -30,14 +32,10 @@ abstract class MutableLayers<
 
     fun whatIf(block: EditMap<K, V>.() -> Unit): MutableLayers<K, V, M> {
         val outer = this
-        val whatIf = object : MutableLayers<K, V, M>() {
+        val whatIf = object : MutableLayers<K, V, M>(history) {
             override fun new(): M = outer.new()
         }
-        history.forEach {
-            whatIf.edit { putAll(it) }
-            whatIf.add { }
-        }
-        whatIf.edit(block)
+        whatIf.add(block)
         return whatIf
     }
 }
