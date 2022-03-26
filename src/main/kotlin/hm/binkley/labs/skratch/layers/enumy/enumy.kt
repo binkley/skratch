@@ -4,6 +4,8 @@ import hm.binkley.labs.skratch.layers.MutableLayer
 import hm.binkley.labs.skratch.layers.MutableLayers
 import hm.binkley.labs.skratch.layers.ValueOrRule
 import hm.binkley.labs.skratch.layers.enumy.EnumyKey.AbstractEnumyKey
+import hm.binkley.labs.skratch.layers.rules.lastOrNullRule
+import hm.binkley.labs.skratch.layers.rules.lastRule
 
 interface EnumyKey {
     val name: String
@@ -33,11 +35,11 @@ open class EnumyMutableLayer(
 val firstLayer = object : EnumyMutableLayer() {
     init {
         edit {
-            this[Left] = lastRule<Number>()
-            this[Right] = lastOrNullRule<Number>()
-            this[Small] = lastOrNullRule<Number>()
-            this[Medium] = lastOrNullRule<Number>()
-            this[Large] = lastOrNullRule<Number>()
+            this[Left] = lastRule()
+            this[Right] = lastOrNullRule()
+            this[Small] = lastOrNullRule()
+            this[Medium] = lastOrNullRule()
+            this[Large] = lastOrNullRule()
         }
     }
 }

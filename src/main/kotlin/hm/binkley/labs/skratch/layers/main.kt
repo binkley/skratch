@@ -4,6 +4,7 @@ import hm.binkley.labs.skratch.layers.enumy.EnumyKey.AbstractEnumyKey
 import hm.binkley.labs.skratch.layers.enumy.EnumyMutableLayers
 import hm.binkley.labs.skratch.layers.enumy.Left
 import hm.binkley.labs.skratch.layers.rules.LastOrDefaultRule
+import hm.binkley.labs.skratch.layers.rules.lastOrDefaultRule
 
 fun main() {
     open class MyMutableLayer(
