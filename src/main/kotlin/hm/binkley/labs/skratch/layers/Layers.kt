@@ -1,6 +1,6 @@
 package hm.binkley.labs.skratch.layers
 
-import hm.binkley.labs.skratch.layers.util.Stack
+import hm.binkley.util.Stack
 import org.jetbrains.kotlin.utils.addToStdlib.firstIsInstanceOrNull
 import java.util.AbstractMap.SimpleImmutableEntry
 import kotlin.collections.Map.Entry

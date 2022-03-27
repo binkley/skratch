@@ -1,4 +1,4 @@
-package hm.binkley.labs.skratch.layers.util
+package hm.binkley.util
 
 interface Stack<out T> : List<T> {
     fun peek() = last()

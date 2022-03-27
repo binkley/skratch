@@ -1,8 +1,8 @@
 package hm.binkley.labs.skratch.layers
 
-import hm.binkley.labs.skratch.layers.util.MutableStack
-import hm.binkley.labs.skratch.layers.util.emptyMutableStack
-import hm.binkley.labs.skratch.layers.util.toMutableStack
+import hm.binkley.util.MutableStack
+import hm.binkley.util.emptyMutableStack
+import hm.binkley.util.toMutableStack
 
 // TODO: Pull up [Layers] implementation?
 @Suppress("LeakingThis")
