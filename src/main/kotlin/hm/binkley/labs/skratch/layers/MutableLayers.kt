@@ -27,8 +27,8 @@ abstract class MutableLayers<
     constructor(layers: List<M>) : this(null, layers.toMutableStack())
 
     init {
-        // TODO: Require a first layer
-        layers.firstOrNull()?.validAsFirst()
+        // TODO: Require a first layer?
+        layers.forEach { it.validAsLayer() }
     }
 
     abstract fun new(): M
@@ -45,7 +45,10 @@ abstract class MutableLayers<
     }
 
     fun <N : M> push(new: N): N = new.also { layers.push(new) }
-    fun push(block: EditMap<K, V>.() -> Unit): M = push(new()).edit(block)
+
+    fun push(block: EditMap<K, V>.() -> Unit): M =
+        push(new()).edit(block).validAsLayer()
+
     fun pop(): M = layers.pop()
 
     fun whatIf(block: EditMap<K, V>.() -> Unit): MutableLayers<K, V, M> {
@@ -53,7 +56,7 @@ abstract class MutableLayers<
         val whatIf = object : MutableLayers<K, V, M>(history) {
             override fun new(): M = outer.new()
         }
-        whatIf.push(block)
+        whatIf.push(block).validAsLayer()
         return whatIf
     }
 
@@ -63,18 +66,4 @@ abstract class MutableLayers<
             .forEach { (key, _) -> ruleForOrThrow<V>(key) }
         return self()
     }
-}
-
-private fun <
-    K : Any,
-    V : Any,
-    M : MutableLayer<K, V, M>,
-    N : M,
-    >
-N.validAsFirst(): N {
-    values.asSequence()
-        .filterIsInstance<Value<*>>()
-        .firstOrNull() ?: return this
-
-    throw InvalidFirstLayerException(this)
 }

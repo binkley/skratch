@@ -6,6 +6,14 @@ class TestLayer(
     override fun <N : TestLayer> duplicate(): N = TestLayer(toMap()).self()
 }
 
+/**
+ * Canonical constructors:
+ * - `TestLayers()` - defaults to an empty first layer
+ * - `TestLayers(firstLayer)` - provides a valid first layer
+ * - `TestLayers(block)` - provides valid edits to an empty first layer
+ * - `TestLayers(history)` - provides a valid history that includes a first
+ *   layer
+ */
 class TestLayers(
     history: List<TestLayer> = emptyList(),
 ) : MutableLayers<String, Int, TestLayer>(history) {
