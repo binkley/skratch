@@ -126,9 +126,8 @@ class MyMutableLayers : MutableLayers<String, Number, MyMutableLayer>() {
 open class MyMutableLayer(
     map: Map<String, ValueOrRule<Number>> = emptyMap(),
 ) : MutableLayer<String, Number, MyMutableLayer>(map) {
-    @Suppress("UNCHECKED_CAST")
-    override fun <N : MyMutableLayer> duplicate() =
-        MyMutableLayer(toMutableMap()) as N
+    override fun <N : MyMutableLayer> duplicate(): N =
+        MyMutableLayer(toMutableMap()).self()
 }
 
 open class OhMyMutableLayer<M : OhMyMutableLayer<M>> :

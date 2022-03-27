@@ -31,9 +31,8 @@ object Large : TeeShirtSize()
 open class EnumyMutableLayer(
     map: Map<EnumyKey, ValueOrRule<Number>> = emptyMap(),
 ) : MutableLayer<EnumyKey, Number, EnumyMutableLayer>(map) {
-    @Suppress("UNCHECKED_CAST")
-    override fun <N : EnumyMutableLayer> duplicate() =
-        EnumyMutableLayer(toMutableMap()) as N
+    override fun <N : EnumyMutableLayer> duplicate(): N =
+        EnumyMutableLayer(toMutableMap()).self()
 }
 
 val firstLayer = object : EnumyMutableLayer() {

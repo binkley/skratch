@@ -23,7 +23,7 @@ abstract class MutableLayer<
 
     fun edit(block: EditMap<K, V>.() -> Unit): M {
         DefaultEditMap().block()
-        return self
+        return self()
     }
 
     // TODO: How does subtypes of MutableLayer customize the edit map?

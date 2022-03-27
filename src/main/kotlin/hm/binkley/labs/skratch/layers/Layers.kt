@@ -26,7 +26,6 @@ abstract class Layers<
             it.keys
         }.toSet()
 
-    @Suppress("UNCHECKED_CAST")
     private fun <T : V> valueFor(key: K): T? {
         val rule = ruleForOrThrow<T>(key)
         val values = valuesFor<T>(key)
