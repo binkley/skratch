@@ -6,6 +6,7 @@ import hm.binkley.labs.skratch.layers.ValueOrRule
 import hm.binkley.labs.skratch.layers.enumy.EnumyKey.AbstractEnumyKey
 import hm.binkley.labs.skratch.layers.rules.lastOrNullRule
 import hm.binkley.labs.skratch.layers.rules.lastRule
+import hm.binkley.labs.skratch.layers.self
 
 interface EnumyKey {
     val name: String
@@ -31,8 +32,7 @@ object Large : TeeShirtSize()
 open class EnumyLayer(
     map: Map<EnumyKey, ValueOrRule<Number>> = emptyMap(),
 ) : MutableLayer<EnumyKey, Number, EnumyLayer>(map) {
-    override fun <N : EnumyLayer> duplicate(): N =
-        EnumyLayer(toMap()).self()
+    override fun <N : EnumyLayer> duplicate(): N = EnumyLayer(toMap()).self()
 }
 
 val firstLayer = object : EnumyLayer() {
