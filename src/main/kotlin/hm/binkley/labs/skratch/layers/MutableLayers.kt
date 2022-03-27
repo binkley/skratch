@@ -2,7 +2,6 @@ package hm.binkley.labs.skratch.layers
 
 import hm.binkley.labs.skratch.layers.util.MutableStack
 import hm.binkley.labs.skratch.layers.util.emptyMutableStack
-import hm.binkley.labs.skratch.layers.util.mutableStackOf
 import hm.binkley.labs.skratch.layers.util.toMutableStack
 
 // TODO: Pull up [Layers] implementation?
