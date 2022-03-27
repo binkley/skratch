@@ -12,7 +12,7 @@ fun main() {
     ) : MutableLayer<String, Number, MyMutableLayer>(map) {
         @Suppress("UNCHECKED_CAST")
         override fun <N : MyMutableLayer> duplicate() =
-            MyMutableLayer(copyMap()) as N
+            MyMutableLayer(toMutableMap()) as N
     }
 
     val layers =

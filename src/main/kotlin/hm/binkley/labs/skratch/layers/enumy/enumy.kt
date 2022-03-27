@@ -33,7 +33,7 @@ open class EnumyMutableLayer(
 ) : MutableLayer<EnumyKey, Number, EnumyMutableLayer>(map) {
     @Suppress("UNCHECKED_CAST")
     override fun <N : EnumyMutableLayer> duplicate() =
-        EnumyMutableLayer(copyMap()) as N
+        EnumyMutableLayer(toMutableMap()) as N
 }
 
 val firstLayer = object : EnumyMutableLayer() {
