@@ -12,6 +12,8 @@ abstract class MutableLayers<
     M : MutableLayer<K, V, M>,
     >(
     @Suppress("UNUSED_PARAMETER") token: Nothing?,
+    // TODO: Defensive copy of [layers]
+    // TODO: Avoid pointer sharing with [Layers]
     private val layers: MutableStack<M>,
 ) : Layers<K, V, M>(layers) {
     constructor() : this(null, emptyMutableStack()) {

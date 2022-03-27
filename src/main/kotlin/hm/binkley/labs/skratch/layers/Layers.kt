@@ -11,6 +11,7 @@ abstract class Layers<
     L : Layer<K, V, L>,
     >(
     // TODO: Defensive copy of [layers]
+    // TODO: Avoid pointer sharing with [MutableLayers]
     private val layers: Stack<L>,
 ) : AbstractMap<K, V>() {
     override val entries: Set<Entry<K, V>> get() = RuledView().entries
@@ -33,6 +34,7 @@ abstract class Layers<
         return rule(key, values, this)
     }
 
+    // TODO: Merge [Layers] and [MutableLayers]: avoid `protected`
     protected fun <T : V> ruleForOrThrow(key: K): Rule<K, V, T> =
         valuesOrRulesFor<T>(key).firstIsInstanceOrNull()
             ?: throw MissingRuleException(key)
