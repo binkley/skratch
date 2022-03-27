@@ -53,7 +53,7 @@ internal class MutableLayersTest {
     }
 
     @Test
-    fun `should hide keys with rules`() {
+    fun `should hide keys`() {
         val layers = TestLayers { this["BOB"] = lastOrNullRule() }
 
         layers.shouldBeEmpty()
