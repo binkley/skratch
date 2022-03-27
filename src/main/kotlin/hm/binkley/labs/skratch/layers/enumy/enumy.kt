@@ -28,14 +28,14 @@ object Small : TeeShirtSize()
 object Medium : TeeShirtSize()
 object Large : TeeShirtSize()
 
-open class EnumyMutableLayer(
+open class EnumyLayer(
     map: Map<EnumyKey, ValueOrRule<Number>> = emptyMap(),
-) : MutableLayer<EnumyKey, Number, EnumyMutableLayer>(map) {
-    override fun <N : EnumyMutableLayer> duplicate(): N =
-        EnumyMutableLayer(toMap()).self()
+) : MutableLayer<EnumyKey, Number, EnumyLayer>(map) {
+    override fun <N : EnumyLayer> duplicate(): N =
+        EnumyLayer(toMap()).self()
 }
 
-val firstLayer = object : EnumyMutableLayer() {
+val firstLayer = object : EnumyLayer() {
     init {
         edit {
             this[Left] = lastRule()
@@ -47,11 +47,8 @@ val firstLayer = object : EnumyMutableLayer() {
     }
 }
 
-class EnumyMutableLayers :
-    MutableLayers<EnumyKey, Number, EnumyMutableLayer>(firstLayer) {
-    init {
-        push { }
-    }
+class EnumyLayers : MutableLayers<EnumyKey, Number, EnumyLayer>(firstLayer) {
+    init { push { } } // Start with blank layer for edits
 
-    override fun new() = EnumyMutableLayer()
+    override fun new() = EnumyLayer()
 }

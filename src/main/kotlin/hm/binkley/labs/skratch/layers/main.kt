@@ -1,18 +1,18 @@
 package hm.binkley.labs.skratch.layers
 
 import hm.binkley.labs.skratch.layers.enumy.EnumyKey.AbstractEnumyKey
-import hm.binkley.labs.skratch.layers.enumy.EnumyMutableLayers
+import hm.binkley.labs.skratch.layers.enumy.EnumyLayers
 import hm.binkley.labs.skratch.layers.enumy.Left
 import hm.binkley.labs.skratch.layers.rules.LastOrDefaultRule
 import hm.binkley.labs.skratch.layers.rules.lastOrDefaultRule
 
 fun main() {
-    val layers = MyMutableLayers()
+    val layers = MyLayers()
 
     println("--- ADD NOT EMPTY")
     val lastOrNegativeOne = LastOrDefaultRule<String, Number, Number>(-1)
-    println(layers.push(MyMutableLayer(mapOf("STRING" to lastOrNegativeOne))))
-    println(layers.push(MyMutableLayer(mapOf("STRING" to 3.toValue()))))
+    println(layers.push(MyLayer(mapOf("STRING" to lastOrNegativeOne))))
+    println(layers.push(MyLayer(mapOf("STRING" to 3.toValue()))))
     println("HISTORY -> ${layers.history}")
     println("LAYERS -> $layers")
     println("STRING -> ${layers["STRING"]}")
@@ -33,7 +33,7 @@ fun main() {
     println("LAYERS -> $layers")
     println("STRING -> ${layers["STRING"]}")
 
-    val wordy = layers.push(MyWordMutableLayer()).apply {
+    val wordy = layers.push(MyWordLayer()).apply {
         ohMy()
         myWord()
     }
@@ -44,7 +44,7 @@ fun main() {
     println("LAYERS -> $layers")
     println("STRING -> ${layers["STRING"]}")
 
-    val enumyLayers = EnumyMutableLayers()
+    val enumyLayers = EnumyLayers()
     println("-- ENUM-Y INIT")
     println("HISTORY -> ${enumyLayers.history}")
 
@@ -102,13 +102,13 @@ fun main() {
 
     println("-- DEFENSIVE COPY")
     val map: Map<String, ValueOrRule<Number>> = mapOf("a" to 3.toValue())
-    val layer = MyMutableLayer(map)
+    val layer = MyLayer(map)
     layer.edit { clear() }
     println("MAP -> $map")
     println("LAYER -> $layer")
 }
 
-class MyMutableLayers : MutableLayers<String, Number, MyMutableLayer>() {
+class MyLayers : MutableLayers<String, Number, MyLayer>() {
     init {
         edit {
             this["HUM-HUM"] = lastOrDefaultRule(-2)
@@ -117,25 +117,25 @@ class MyMutableLayers : MutableLayers<String, Number, MyMutableLayer>() {
         push { }
     }
 
-    override fun new() = MyMutableLayer()
+    override fun new() = MyLayer()
 
-    fun doHickey(): MyMutableLayer =
-        MyMutableLayer(mapOf("HUM-HUM" to 2.toValue()))
+    fun doHickey(): MyLayer =
+        MyLayer(mapOf("HUM-HUM" to 2.toValue()))
 }
 
-open class MyMutableLayer(
+open class MyLayer(
     map: Map<String, ValueOrRule<Number>> = emptyMap(),
-) : MutableLayer<String, Number, MyMutableLayer>(map) {
-    override fun <N : MyMutableLayer> duplicate(): N =
-        MyMutableLayer(toMap()).self()
+) : MutableLayer<String, Number, MyLayer>(map) {
+    override fun <N : MyLayer> duplicate(): N =
+        MyLayer(toMap()).self()
 }
 
-open class OhMyMutableLayer<M : OhMyMutableLayer<M>> :
-    MyMutableLayer(mapOf("message" to 17.toValue())) {
+open class OhMyLayer<M : OhMyLayer<M>> :
+    MyLayer(mapOf("message" to 17.toValue())) {
     open fun ohMy() = println("OH, MY, ${this["message"]}!")
 }
 
-class MyWordMutableLayer : OhMyMutableLayer<MyWordMutableLayer>() {
+class MyWordLayer : OhMyLayer<MyWordLayer>() {
     init {
         edit {
             this["message"] = 31.toValue()
