@@ -87,25 +87,6 @@ fun main() {
     println("LAYERS -> $enumyLayers")
     println("POPPED -> ${enumyLayers.pop()}")
     println("LAYERS -> $enumyLayers")
-
-    println("-- BAD EDIT")
-    val barKey = object : AbstractEnumyKey("BAR") {}
-    try {
-        enumyLayers.edit {
-            this[barKey] = -10101 // No rule defined for "BAR"
-        }
-        throw IllegalStateException("SHOULD NOT REACH HERE")
-    } catch (e: MissingRuleException) {
-        println(e)
-    }
-    println("AFTER ROLLBACK -> $enumyLayers")
-
-    println("-- DEFENSIVE COPY")
-    val map: Map<String, ValueOrRule<Number>> = mapOf("a" to 3.toValue())
-    val layer = MyLayer(map)
-    layer.edit { clear() }
-    println("MAP -> $map")
-    println("LAYER -> $layer")
 }
 
 class MyLayers : MutableLayers<String, Number, MyLayer>() {

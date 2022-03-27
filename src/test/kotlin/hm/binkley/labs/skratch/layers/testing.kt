@@ -1,5 +1,6 @@
 package hm.binkley.labs.skratch.layers
 
+import hm.binkley.util.Stack
 import hm.binkley.util.emptyStack
 
 class TestLayer(
@@ -9,4 +10,12 @@ class TestLayer(
         TestLayer(toMap()).self()
 }
 
-class TestLayers : Layers<String, Int, TestLayer>(emptyStack())
+class TestLayers(
+    layers: Stack<TestLayer> = emptyStack(),
+) : MutableLayers<String, Int, TestLayer>(layers) {
+    constructor(block: EditMap<String, Int>.() -> Unit) : this() {
+        push(block)
+    }
+
+    override fun new() = TestLayer()
+}

@@ -12,6 +12,7 @@ abstract class Layers<
     >(
     // TODO: Defensive copy of [layers]
     // TODO: Avoid pointer sharing with [MutableLayers]
+    // TODO: Relax type to `List<L>`
     private val layers: Stack<L>,
 ) : AbstractMap<K, V>() {
     override val entries: Set<Entry<K, V>> get() = RuledView().entries
@@ -52,14 +53,13 @@ abstract class Layers<
         override val entries: Set<Entry<K, V>> get() = Entries()
 
         private inner class Entries : AbstractSet<Entry<K, V>>() {
-            override val size: Int
-                get() = keys().size
+            override val size: Int get() = keys().size
 
             override fun iterator(): Iterator<Entry<K, V>> =
                 keys().asSequence().map {
                     SimpleImmutableEntry<K, V>(it, valueFor(it))
                 }.filter {
-                    null != it.value
+                    null != it.value // Let rules hide entries
                 }.iterator()
         }
     }

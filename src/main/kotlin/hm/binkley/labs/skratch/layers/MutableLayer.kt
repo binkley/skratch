@@ -13,8 +13,8 @@ abstract class MutableLayer<
 
     // TODO: Override rather than delegate
     //       Delegates for derived types to manipulate in init block
-    override val entries: Set<Entry<K, ValueOrRule<V>>>
-        get() = map.entries
+    // Specify type to restrict mutation to [edit]
+    override val entries: Set<Entry<K, ValueOrRule<V>>> get() = map.entries
 
     override fun toString() = map.toString()
 

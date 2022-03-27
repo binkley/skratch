@@ -1,6 +1,5 @@
 package hm.binkley.labs.skratch.layers
 
-import hm.binkley.util.emptyStack
 import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Test
