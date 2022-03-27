@@ -55,7 +55,7 @@ abstract class MutableLayers<
 
     private fun M.validValues(): M {
         entries.asSequence()
-            .filter {(_, value) -> value is Value<V> }
+            .filter { (_, value) -> value is Value<V> }
             .forEach { (key, _) -> ruleForOrThrow<V>(key) }
         return this
     }

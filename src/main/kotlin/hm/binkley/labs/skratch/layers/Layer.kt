@@ -6,5 +6,5 @@ interface Layer<
     L : Layer<K, V, L>,
     > : Map<K, ValueOrRule<V>> {
     @Suppress("UNCHECKED_CAST")
-    fun <N: L> self(): N = this as N
+    fun <N : L> self(): N = this as N
 }

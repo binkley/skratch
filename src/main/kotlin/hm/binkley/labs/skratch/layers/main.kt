@@ -11,8 +11,8 @@ fun main() {
 
     println("--- ADD NOT EMPTY")
     val lastOrNegativeOne = LastOrDefaultRule<String, Number, Number>(-1)
-    println(layers.push(MyMutableLayer(mutableMapOf("STRING" to lastOrNegativeOne))))
-    println(layers.push(MyMutableLayer(mutableMapOf("STRING" to 3.toValue()))))
+    println(layers.push(MyMutableLayer(mapOf("STRING" to lastOrNegativeOne))))
+    println(layers.push(MyMutableLayer(mapOf("STRING" to 3.toValue()))))
     println("HISTORY -> ${layers.history}")
     println("LAYERS -> $layers")
     println("STRING -> ${layers["STRING"]}")
@@ -120,14 +120,14 @@ class MyMutableLayers : MutableLayers<String, Number, MyMutableLayer>() {
     override fun new() = MyMutableLayer()
 
     fun doHickey(): MyMutableLayer =
-        MyMutableLayer(mutableMapOf("HUM-HUM" to 2.toValue()))
+        MyMutableLayer(mapOf("HUM-HUM" to 2.toValue()))
 }
 
 open class MyMutableLayer(
     map: Map<String, ValueOrRule<Number>> = emptyMap(),
 ) : MutableLayer<String, Number, MyMutableLayer>(map) {
     override fun <N : MyMutableLayer> duplicate(): N =
-        MyMutableLayer(toMutableMap()).self()
+        MyMutableLayer(toMap()).self()
 }
 
 open class OhMyMutableLayer<M : OhMyMutableLayer<M>> :

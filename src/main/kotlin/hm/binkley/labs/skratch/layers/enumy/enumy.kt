@@ -32,7 +32,7 @@ open class EnumyMutableLayer(
     map: Map<EnumyKey, ValueOrRule<Number>> = emptyMap(),
 ) : MutableLayer<EnumyKey, Number, EnumyMutableLayer>(map) {
     override fun <N : EnumyMutableLayer> duplicate(): N =
-        EnumyMutableLayer(toMutableMap()).self()
+        EnumyMutableLayer(toMap()).self()
 }
 
 val firstLayer = object : EnumyMutableLayer() {
