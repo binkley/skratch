@@ -42,14 +42,16 @@ abstract class MutableLayers<
 
     fun pop(): M = layers.pop()
 
-    fun whatIf(block: EditMap<K, V>.() -> Unit): MutableLayers<K, V, M> {
+    fun whatIf(layer: M): MutableLayers<K, V, M> {
         val outer = this
         val whatIf = object : MutableLayers<K, V, M>(history) {
             override fun new(): M = outer.new()
         }
-        whatIf.push(block).validAsLayer()
+        whatIf.push(layer).validAsLayer()
         return whatIf
     }
+
+    fun whatIf(block: EditMap<K, V>.() -> Unit) = whatIf(new().edit(block))
 
     private fun <N : M> N.validAsLayer(): N {
         entries.asSequence()
