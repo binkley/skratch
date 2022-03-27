@@ -19,15 +19,16 @@ abstract class MutableLayers<
 
     init {
         if (layers.isEmpty()) throw MissingFirstLayerException
-        layers.forEach { it.validAsLayer() }
+        layers.forEach { it.valid() }
     }
 
     abstract fun new(): M
 
     fun edit(block: EditMap<K, V>.() -> Unit): M {
+        // TODO: What-if, then replace layers when valid
         val rollback = peek().duplicate()
         try {
-            return peek().edit(block).validAsLayer()
+            return peek().edit(block).valid()
         } catch (e: MissingRuleException) {
             pop() // Drop the invalid edits
             push(rollback)
@@ -38,7 +39,7 @@ abstract class MutableLayers<
     fun <N : M> push(layer: N): N = layer.also { layers.push(layer) }
 
     fun push(block: EditMap<K, V>.() -> Unit): M =
-        push(new()).edit(block).validAsLayer()
+        push(new()).edit(block).valid()
 
     fun pop(): M = layers.pop()
 
@@ -47,13 +48,13 @@ abstract class MutableLayers<
         val whatIf = object : MutableLayers<K, V, M>(history) {
             override fun new(): M = outer.new()
         }
-        whatIf.push(layer).validAsLayer()
+        whatIf.push(layer).valid()
         return whatIf
     }
 
     fun whatIf(block: EditMap<K, V>.() -> Unit) = whatIf(new().edit(block))
 
-    private fun <N : M> N.validAsLayer(): N {
+    private fun <N : M> N.valid(): N {
         entries.asSequence()
             .filter { (_, value) -> value is Value<V> }
             .forEach { (key, _) -> ruleForOrThrow<V>(key) }
