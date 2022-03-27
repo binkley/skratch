@@ -15,7 +15,7 @@ abstract class Layers<
     // TODO: Relax type to `List<L>`
     private val layers: Stack<L>,
 ) : AbstractMap<K, V>() {
-    override val entries: Set<Entry<K, V>> get() = RuledView().entries
+    override val entries: Set<Entry<K, V>> get() = RuledEntries()
 
     val history: List<L> get() = layers
 
@@ -49,18 +49,14 @@ abstract class Layers<
             it[key]
         }.filterIsInstance<ValueOrRule<T>>()
 
-    private inner class RuledView : AbstractMap<K, V>() {
-        override val entries: Set<Entry<K, V>> get() = Entries()
+    private inner class RuledEntries : AbstractSet<Entry<K, V>>() {
+        override val size: Int get() = keys().mapNotNull { valueFor(it) }.size
 
-        private inner class Entries : AbstractSet<Entry<K, V>>() {
-            override val size: Int get() = keys().size
-
-            override fun iterator(): Iterator<Entry<K, V>> =
-                keys().asSequence().map {
-                    SimpleImmutableEntry<K, V>(it, valueFor(it))
-                }.filter {
-                    null != it.value // Let rules hide entries
-                }.iterator()
-        }
+        override fun iterator(): Iterator<Entry<K, V>> =
+            keys().asSequence().map {
+                SimpleImmutableEntry<K, V>(it, valueFor(it))
+            }.filter {
+                null != it.value // Let rules hide entries
+            }.iterator()
     }
 }

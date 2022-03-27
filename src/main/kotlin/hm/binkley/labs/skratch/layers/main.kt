@@ -65,28 +65,6 @@ fun main() {
     println("LEFT -> ${enumyLayers[Left]}")
     val asInt: Int? = enumyLayers.getAs(Left)
     println("LEFT -> $asInt")
-
-    println("-- WHAT IF?")
-    val whatIf = enumyLayers.whatIf {
-        this[Left] = 17
-    }
-    println("INDEPENDENT? ${enumyLayers.history != whatIf.history}")
-    println("ORIGINAL -> $enumyLayers")
-    println("WHAT-IF? -> $whatIf")
-    val diff = whatIf.history - enumyLayers.history.toSet()
-    println("DIFF -> $diff")
-
-    println("-- RULE WHAT HIDES A KEY")
-    val withNullRule = enumyLayers.whatIf {
-        this[Left] = rule<Int>("hidden") { _, _, _ -> null }
-    }
-    println("NULL RULE? -> $withNullRule")
-    println("ORIGINAL -> $enumyLayers")
-
-    println("-- POP LAST EDIT")
-    println("LAYERS -> $enumyLayers")
-    println("POPPED -> ${enumyLayers.pop()}")
-    println("LAYERS -> $enumyLayers")
 }
 
 class MyLayers : MutableLayers<String, Number, MyLayer>(MyLayer()) {
