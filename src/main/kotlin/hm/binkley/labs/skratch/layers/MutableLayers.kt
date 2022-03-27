@@ -35,7 +35,7 @@ abstract class MutableLayers<
         }
     }
 
-    fun <N : M> push(new: N): N = new.also { layers.push(new) }
+    fun <N : M> push(layer: N): N = layer.also { layers.push(layer) }
 
     fun push(block: EditMap<K, V>.() -> Unit): M =
         push(new()).edit(block).validAsLayer()
