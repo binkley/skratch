@@ -7,9 +7,10 @@ abstract class MutableLayer<
     V : Any,
     M : MutableLayer<K, V, M>,
     >(
-    // TODO: Defensive copy of [map]
-    private val map: MutableMap<K, ValueOrRule<V>>,
+    map: MutableMap<K, ValueOrRule<V>>,
 ) : Layer<K, V, M>, AbstractMap<K, ValueOrRule<V>>() {
+    private val map = map.toMutableMap()
+
     // TODO: Override rather than delegate to avoid a recursion loop
     override val entries: Set<Entry<K, ValueOrRule<V>>>
         get() = map.entries
