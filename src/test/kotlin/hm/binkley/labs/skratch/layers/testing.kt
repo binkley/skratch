@@ -17,7 +17,7 @@ class TestLayer(
 class TestLayers(
     history: List<TestLayer> = listOf(TestLayer()),
 ) : MutableLayers<String, Int, TestLayer>(history) {
-    constructor(firstLayer: TestLayer) : this(listOf(firstLayer))
+    constructor(initialRules: TestLayer) : this(listOf(initialRules))
     constructor(block: EditMap<String, Int>.() -> Unit) : this() {
         edit(block)
     }
