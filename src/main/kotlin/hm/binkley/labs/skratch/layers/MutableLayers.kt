@@ -2,6 +2,7 @@ package hm.binkley.labs.skratch.layers
 
 import hm.binkley.util.MutableStack
 import hm.binkley.util.emptyMutableStack
+import hm.binkley.util.mutableStackOf
 import hm.binkley.util.toMutableStack
 
 // TODO: Pull up [Layers] implementation?
@@ -20,19 +21,22 @@ abstract class MutableLayers<
         push { }
     }
 
-    constructor(firstLayer: M) : this(null, emptyMutableStack()) {
-        layers.push(firstLayer.validAsFirst())
-    }
+    constructor(firstLayer: M) : this(null, mutableStackOf(firstLayer))
 
     // Defensive copy
     constructor(layers: List<M>) : this(null, layers.toMutableStack())
+
+    init {
+        // TODO: Require a first layer
+        layers.firstOrNull()?.validAsFirst()
+    }
 
     abstract fun new(): M
 
     fun edit(block: EditMap<K, V>.() -> Unit): M {
         val rollback = peek().duplicate()
         try {
-            return peek().edit(block).validValues()
+            return peek().edit(block).validAsLayer()
         } catch (e: MissingRuleException) {
             pop() // Drop the invalid edits
             push(rollback)
@@ -53,11 +57,11 @@ abstract class MutableLayers<
         return whatIf
     }
 
-    private fun M.validValues(): M {
+    private fun <N : M> N.validAsLayer(): N {
         entries.asSequence()
             .filter { (_, value) -> value is Value<V> }
             .forEach { (key, _) -> ruleForOrThrow<V>(key) }
-        return this
+        return self()
     }
 }
 
