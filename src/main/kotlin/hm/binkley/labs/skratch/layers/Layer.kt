@@ -8,9 +8,10 @@ abstract class Layer<
     L : Layer<K, V, L>,
     >(
     // TODO: Defensive copy of [map]
+    //       Pointer sharing with MutableLayer init makes this hard to do
     private val map: Map<K, ValueOrRule<V>>,
 ) : AbstractMap<K, ValueOrRule<V>>() {
-    // Override rather than delegate to avoid a recursion loop
+    // TODO: Override rather than delegate to avoid a recursion loop
     override val entries: Set<Entry<K, ValueOrRule<V>>>
         get() = map.entries
 
@@ -19,5 +20,6 @@ abstract class Layer<
     @Suppress("UNCHECKED_CAST")
     val self: L get() = this as L
 
+    // TODO: Factory pattern instead?
     abstract fun <N : L> duplicate(): N
 }
