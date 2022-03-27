@@ -9,7 +9,11 @@ import hm.binkley.labs.skratch.layers.rules.lastOrDefaultRule
 fun main() {
     open class MyMutableLayer(
         map: MutableMap<String, ValueOrRule<Number>> = mutableMapOf(),
-    ) : MutableLayer<String, Number, MyMutableLayer>(map)
+    ) : MutableLayer<String, Number, MyMutableLayer>(map) {
+        @Suppress("UNCHECKED_CAST")
+        override fun <N : MyMutableLayer> duplicate() =
+            MyMutableLayer(mapCopy()) as N
+    }
 
     val layers =
         object : MutableLayers<String, Number, MyMutableLayer>() {
@@ -120,4 +124,16 @@ fun main() {
     println("LAYERS -> $enumyLayers")
     println("POPPED -> ${enumyLayers.pop()}")
     println("LAYERS -> $enumyLayers")
+
+    println("-- BAD EDIT")
+    val barKey = object : AbstractEnumyKey("BAR") {}
+    try {
+        enumyLayers.edit {
+            this[barKey] = -10101 // No rule defined for "BAR"
+        }
+        throw IllegalStateException("SHOULD NOT REACH HERE")
+    } catch (e: MissingRuleException) {
+        println(e)
+    }
+    println("AFTER ROLLBACK -> $enumyLayers")
 }

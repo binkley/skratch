@@ -27,13 +27,13 @@ abstract class Layers<
 
     @Suppress("UNCHECKED_CAST")
     private fun <T : V> valueFor(key: K): T? {
-        val rule = ruleFor<T>(key)
+        val rule = ruleForOrThrow<T>(key)
         val values = valuesFor<T>(key)
 
         return rule(key, values, this)
     }
 
-    private fun <T : V> ruleFor(key: K): Rule<K, V, T> =
+    protected fun <T : V> ruleForOrThrow(key: K): Rule<K, V, T> =
         valuesOrRulesFor<T>(key).firstIsInstanceOrNull()
             ?: throw MissingRuleException(key)
 

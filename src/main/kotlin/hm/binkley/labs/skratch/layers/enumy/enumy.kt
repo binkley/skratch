@@ -6,6 +6,7 @@ import hm.binkley.labs.skratch.layers.ValueOrRule
 import hm.binkley.labs.skratch.layers.enumy.EnumyKey.AbstractEnumyKey
 import hm.binkley.labs.skratch.layers.rules.lastOrNullRule
 import hm.binkley.labs.skratch.layers.rules.lastRule
+import org.jetbrains.kotlin.builtins.StandardNames.FqNames.map
 
 interface EnumyKey {
     val name: String
@@ -30,7 +31,11 @@ object Large : TeeShirtSize()
 
 open class EnumyMutableLayer(
     map: MutableMap<EnumyKey, ValueOrRule<Number>> = mutableMapOf(),
-) : MutableLayer<EnumyKey, Number, EnumyMutableLayer>(map)
+) : MutableLayer<EnumyKey, Number, EnumyMutableLayer>(map) {
+    @Suppress("UNCHECKED_CAST")
+    override fun <N : EnumyMutableLayer> duplicate() =
+        EnumyMutableLayer(mapCopy()) as N
+}
 
 val firstLayer = object : EnumyMutableLayer() {
     init {

@@ -27,8 +27,17 @@ abstract class MutableLayers<
 
     abstract fun new(): M
 
-    // TODO: Raise exception if value added with no previous rule
-    fun edit(block: EditMap<K, V>.() -> Unit): M = peek().edit(block)
+    fun edit(block: EditMap<K, V>.() -> Unit): M {
+        val rollback = peek().duplicate()
+        try {
+            return peek().edit(block).validValues()
+        } catch (e: MissingRuleException) {
+            pop() // Drop the invalid edits
+            push(rollback)
+            throw e
+        }
+    }
+
     fun <N : M> push(new: N): N = new.also { layers.push(new) }
     fun push(block: EditMap<K, V>.() -> Unit): M = push(new()).edit(block)
     fun pop(): M = layers.pop()
@@ -40,6 +49,13 @@ abstract class MutableLayers<
         }
         whatIf.push(block)
         return whatIf
+    }
+
+    private fun M.validValues(): M {
+        entries.asSequence()
+            .filter {(_, value) -> value is Value<V> }
+            .forEach { (key, _) -> ruleForOrThrow<V>(key) }
+        return this
     }
 }
 

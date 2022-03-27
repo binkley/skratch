@@ -13,6 +13,8 @@ abstract class MutableLayer<
         return self
     }
 
+    protected fun mapCopy() = map.toMutableMap()
+
     // TODO: How does subtypes of MutableLayer customize the edit map?
     private inner class DefaultEditMap :
         EditMap<K, V>, MutableMap<K, ValueOrRule<V>> by map
