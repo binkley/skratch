@@ -66,7 +66,7 @@ internal class MutableLayersTest {
 
         val whatIf = layers.whatIf { this["BOB"] = lastOrDefaultRule(3) }
 
-        layers shouldBe mapOf("BOB" to 17)
         whatIf shouldBe mapOf("BOB" to 3)
+        layers shouldBe mapOf("BOB" to 17)
     }
 }
