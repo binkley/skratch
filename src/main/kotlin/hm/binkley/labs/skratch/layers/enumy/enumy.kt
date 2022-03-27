@@ -29,7 +29,7 @@ object Medium : TeeShirtSize()
 object Large : TeeShirtSize()
 
 open class EnumyMutableLayer(
-    map: MutableMap<EnumyKey, ValueOrRule<Number>> = mutableMapOf(),
+    map: Map<EnumyKey, ValueOrRule<Number>> = emptyMap(),
 ) : MutableLayer<EnumyKey, Number, EnumyMutableLayer>(map) {
     @Suppress("UNCHECKED_CAST")
     override fun <N : EnumyMutableLayer> duplicate() =

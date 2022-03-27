@@ -99,6 +99,13 @@ fun main() {
         println(e)
     }
     println("AFTER ROLLBACK -> $enumyLayers")
+
+    println("-- DEFENSIVE COPY")
+    val map: Map<String, ValueOrRule<Number>> = mapOf("a" to 3.toValue())
+    val layer = MyMutableLayer(map)
+    layer.edit { clear() }
+    println("MAP -> $map")
+    println("LAYER -> $layer")
 }
 
 class MyMutableLayers : MutableLayers<String, Number, MyMutableLayer>() {
@@ -117,7 +124,7 @@ class MyMutableLayers : MutableLayers<String, Number, MyMutableLayer>() {
 }
 
 open class MyMutableLayer(
-    map: MutableMap<String, ValueOrRule<Number>> = mutableMapOf(),
+    map: Map<String, ValueOrRule<Number>> = emptyMap(),
 ) : MutableLayer<String, Number, MyMutableLayer>(map) {
     @Suppress("UNCHECKED_CAST")
     override fun <N : MyMutableLayer> duplicate() =
@@ -125,7 +132,7 @@ open class MyMutableLayer(
 }
 
 open class OhMyMutableLayer<M : OhMyMutableLayer<M>> :
-    MyMutableLayer(mutableMapOf("message" to 17.toValue())) {
+    MyMutableLayer(mapOf("message" to 17.toValue())) {
     open fun ohMy() = println("OH, MY, ${this["message"]}!")
 }
 
