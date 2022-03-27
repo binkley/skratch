@@ -10,6 +10,9 @@ internal class MutableLayersTest {
     fun `should complain for bad first layer`() {
         val badMap = mapOf("BOB" to 17.toValue())
 
+        shouldThrow<MissingFirstLayerException> {
+            TestLayers(emptyList())
+        }
         shouldThrow<MissingRuleException> {
             TestLayers(TestLayer(badMap))
         }

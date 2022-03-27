@@ -1,7 +1,6 @@
 package hm.binkley.labs.skratch.layers
 
 import hm.binkley.util.MutableStack
-import hm.binkley.util.emptyMutableStack
 import hm.binkley.util.mutableStackOf
 import hm.binkley.util.toMutableStack
 
@@ -12,22 +11,14 @@ abstract class MutableLayers<
     V : Any,
     M : MutableLayer<K, V, M>,
     >(
-    @Suppress("UNUSED_PARAMETER") token: Nothing?,
-    // TODO: Defensive copy of [layers]
     // TODO: Avoid pointer sharing with [Layers]
     private val layers: MutableStack<M>,
 ) : Layers<K, V, M>(layers) {
-    constructor() : this(null, emptyMutableStack()) {
-        push { }
-    }
-
-    constructor(firstLayer: M) : this(null, mutableStackOf(firstLayer))
-
-    // Defensive copy
-    constructor(layers: List<M>) : this(null, layers.toMutableStack())
+    constructor(initialRules: M) : this(mutableStackOf(initialRules))
+    constructor(layers: List<M>) : this(layers.toMutableStack())
 
     init {
-        // TODO: Require a first layer?
+        if (layers.isEmpty()) throw MissingFirstLayerException
         layers.forEach { it.validAsLayer() }
     }
 

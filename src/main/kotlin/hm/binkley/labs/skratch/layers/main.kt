@@ -89,12 +89,14 @@ fun main() {
     println("LAYERS -> $enumyLayers")
 }
 
-class MyLayers : MutableLayers<String, Number, MyLayer>() {
+class MyLayers : MutableLayers<String, Number, MyLayer>(MyLayer()) {
     init {
+        // First layer via editing initial empty layer
         edit {
             this["HUM-HUM"] = lastOrDefaultRule(-2)
             this["message"] = lastOrDefaultRule(-3)
         }
+        // Ensure edits afterwards do not overwrite pre-defined rules
         push { }
     }
 

@@ -35,7 +35,7 @@ open class EnumyLayer(
     override fun <N : EnumyLayer> duplicate(): N = EnumyLayer(toMap()).self()
 }
 
-val firstLayer = object : EnumyLayer() {
+val initialRules = object : EnumyLayer() {
     init {
         edit {
             this[Left] = lastRule()
@@ -47,7 +47,7 @@ val firstLayer = object : EnumyLayer() {
     }
 }
 
-class EnumyLayers : MutableLayers<EnumyKey, Number, EnumyLayer>(firstLayer) {
+class EnumyLayers : MutableLayers<EnumyKey, Number, EnumyLayer>(initialRules) {
     init { push { } } // Start with blank layer for edits
 
     override fun new() = EnumyLayer()

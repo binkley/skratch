@@ -15,11 +15,11 @@ class TestLayer(
  *   layer
  */
 class TestLayers(
-    history: List<TestLayer> = emptyList(),
+    history: List<TestLayer> = listOf(TestLayer()),
 ) : MutableLayers<String, Int, TestLayer>(history) {
     constructor(firstLayer: TestLayer) : this(listOf(firstLayer))
     constructor(block: EditMap<String, Int>.() -> Unit) : this() {
-        push(block)
+        edit(block)
     }
 
     override fun new() = TestLayer()
