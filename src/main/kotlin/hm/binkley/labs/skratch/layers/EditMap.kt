@@ -2,10 +2,7 @@ package hm.binkley.labs.skratch.layers
 
 interface EditMap<K : Any, V : Any> : MutableMap<K, ValueOrRule<V>> {
     /** Convenience to put values directly. */
-    fun put(key: K, value: V) {
-        this[key] = value.toValue()
-    }
-
+    fun put(key: K, value: V) = put(key, value.toValue())
     operator fun <T : V> set(key: K, value: T) = put(key, value)
 
     fun <T : V> rule(
