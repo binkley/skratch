@@ -62,9 +62,8 @@ abstract class MutableLayers<
     }
 
     // NOT a clone
-    private fun duplicate(): MutableLayers<K, V, M> {
-        return object : MutableLayers<K, V, M>(history) {
+    private fun duplicate(): MutableLayers<K, V, M> =
+        object : MutableLayers<K, V, M>(history) {
             override fun new(): M = this@MutableLayers.new()
         }
-    }
 }
