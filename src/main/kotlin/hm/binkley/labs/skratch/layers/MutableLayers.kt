@@ -7,10 +7,10 @@ import hm.binkley.util.toMutableStack
 // TODO: Pull up [Layers] implementation?
 @Suppress("LeakingThis")
 abstract class MutableLayers<
-    K : Any,
-    V : Any,
-    M : MutableLayer<K, V, M>,
-    >(
+        K : Any,
+        V : Any,
+        M : MutableLayer<K, V, M>,
+        >(
     // TODO: Avoid pointer sharing with [Layers]
     private val layers: MutableStack<M>,
 ) : Layers<K, V, M>(layers) {
@@ -18,55 +18,47 @@ abstract class MutableLayers<
     constructor(layers: List<M>) : this(layers.toMutableStack())
 
     init {
-        validOrThrow()
+        if (layers.isEmpty()) throw MissingFirstLayerException
+        keys.forEach { ruleForOrThrow<V>(it) }
     }
 
     abstract fun new(): M
 
     fun pop(): M {
-        val dup = duplicate()
-        dup.layers.pop()
-        dup.validOrThrow()
-        return layers.pop()
+        return if (1 == layers.size) throw MissingFirstLayerException
+        else layers.pop()
     }
 
     fun <N : M> push(layer: N): N {
-        val dup = duplicate()
-        dup.layers.push(layer)
-        dup.validOrThrow()
-        return layers.push(layer).self()
+        val valid = validate { it.push(layer) }.peek()
+        return layers.push(valid).self()
     }
 
     fun push(block: EditMap<K, V>.() -> Unit): M = push(new().edit(block))
 
     fun edit(block: EditMap<K, V>.() -> Unit): M {
-        val whatIf = whatIf(block)
-        layers.replaceLast(whatIf.peek())
-        return peek()
+        val valid = validate { peek().edit(block) }.peek()
+        layers.replaceLast(valid)
+        return valid
     }
 
     /** Duplicates this [MutableLayers], and replaces the top layer in it.  */
-    fun whatIf(layer: M): MutableLayers<K, V, M> {
-        val whatIf = duplicate()
-        whatIf.layers.replaceLast(layer)
-        whatIf.validOrThrow()
-        return whatIf
-    }
+    fun whatIf(layer: M): MutableLayers<K, V, M> =
+        validate { it.replaceLast(layer) }
 
     /** Duplicates this [MutableLayers], and edits the top layer in it. */
     fun whatIf(block: EditMap<K, V>.() -> Unit) =
-        whatIf(peek().duplicate().edit(block))
+        whatIf(peek().copy().edit(block))
 
-    private fun validOrThrow() {
-        if (layers.isEmpty()) throw MissingFirstLayerException
-        keys.forEach { ruleForOrThrow<V>(it) }
-    }
-
-    // NOT a clone
-    private fun duplicate(): MutableLayers<K, V, M> =
-        object : MutableLayers<K, V, M>(history) {
+    private fun validate(
+        block: (MutableStack<M>) -> Unit,
+    ): MutableLayers<K, V, M> {
+        val copy = layers.toMutableStack() // Defensive copy
+        block(copy)
+        return object : MutableLayers<K, V, M>(copy) {
             override fun new(): M = this@MutableLayers.new()
         }
+    }
 }
 
 private fun <T> MutableList<T>.replaceLast(element: T): T {

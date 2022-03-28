@@ -32,7 +32,7 @@ object Large : TeeShirtSize()
 open class EnumyLayer(
     map: Map<EnumyKey, ValueOrRule<Number>> = emptyMap(),
 ) : MutableLayer<EnumyKey, Number, EnumyLayer>(map) {
-    override fun <N : EnumyLayer> duplicate(): N = EnumyLayer(toMap()).self()
+    override fun <N : EnumyLayer> copy(): N = EnumyLayer(toMap()).self()
 }
 
 val initialRules = object : EnumyLayer() {

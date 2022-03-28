@@ -19,7 +19,7 @@ abstract class MutableLayer<
     override fun toString() = map.toString()
 
     // TODO: Factory function instead?
-    abstract fun <N : M> duplicate(): N
+    abstract fun <N : M> copy(): N
 
     fun edit(block: EditMap<K, V>.() -> Unit): M {
         DefaultEditMap().block()

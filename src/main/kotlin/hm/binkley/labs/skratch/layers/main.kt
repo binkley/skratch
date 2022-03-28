@@ -87,7 +87,7 @@ class MyLayers : MutableLayers<String, Number, MyLayer>(MyLayer()) {
 open class MyLayer(
     map: Map<String, ValueOrRule<Number>> = emptyMap(),
 ) : MutableLayer<String, Number, MyLayer>(map) {
-    override fun <N : MyLayer> duplicate(): N =
+    override fun <N : MyLayer> copy(): N =
         MyLayer(toMap()).self()
 }
 

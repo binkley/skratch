@@ -16,7 +16,7 @@ class TestLayer(
         edit(block)
     }
 
-    override fun <N : TestLayer> duplicate(): N = TestLayer(toMap()).self()
+    override fun <N : TestLayer> copy(): N = TestLayer(toMap()).self()
 }
 
 /**
@@ -43,8 +43,10 @@ class TestLayers(
 inline fun <reified E : Throwable> TestLayers.shouldRollback(
     block: (TestLayers) -> Unit,
 ): E {
+    val initView: Map<String, Int> = toMap() // Defensive copy
     val initHistory = history.toList() // Defensive copy
     val e = shouldThrow<E> { block(this) }
+    this shouldBe initView
     history shouldBe initHistory
     return e
 }
