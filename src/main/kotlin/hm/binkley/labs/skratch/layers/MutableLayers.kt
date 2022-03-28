@@ -7,10 +7,10 @@ import hm.binkley.util.toMutableStack
 // TODO: Pull up [Layers] implementation?
 @Suppress("LeakingThis")
 abstract class MutableLayers<
-        K : Any,
-        V : Any,
-        M : MutableLayer<K, V, M>,
-        >(
+    K : Any,
+    V : Any,
+    M : MutableLayer<K, V, M>,
+    >(
     // TODO: Avoid pointer sharing with [Layers]
     private val layers: MutableStack<M>,
 ) : Layers<K, V, M>(layers) {
@@ -49,10 +49,14 @@ abstract class MutableLayers<
     fun whatIf(block: EditMap<K, V>.() -> Unit) =
         whatIf(peek().copy().edit(block))
 
+    /**
+     * Applies [block] to a shallow defensive copy returning an anonymous
+     * [MutableLayers] of that copy.
+     */
     private fun validate(
         block: (MutableStack<M>) -> Unit,
     ): MutableLayers<K, V, M> {
-        val copy = layers.toMutableStack() // Defensive copy
+        val copy = layers.toMutableStack()
         block(copy)
         return object : MutableLayers<K, V, M>(copy) {
             override fun new(): M = this@MutableLayers.new()
