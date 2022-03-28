@@ -49,7 +49,7 @@ abstract class MutableLayers<
     /** Duplicates this [MutableLayers], and replaces the top layer in it.  */
     fun whatIf(layer: M): MutableLayers<K, V, M> {
         val whatIf = duplicate()
-        whatIf.layers[whatIf.layers.lastIndex] = layer
+        whatIf.layers.replaceLast(layer)
         whatIf.validOrThrow()
         return whatIf
     }
@@ -68,4 +68,10 @@ abstract class MutableLayers<
         object : MutableLayers<K, V, M>(history) {
             override fun new(): M = this@MutableLayers.new()
         }
+}
+
+private fun <T> MutableList<T>.replaceLast(element: T): T {
+    val last = last()
+    this[lastIndex] = element
+    return last
 }
