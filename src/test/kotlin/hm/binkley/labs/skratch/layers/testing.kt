@@ -1,8 +1,18 @@
 package hm.binkley.labs.skratch.layers
 
+/**
+ * Canonical constructors:
+ * - `TestLayer()` - defaults to an empty layer
+ * - `TestLayer(map)` - provides a layer containing [map] key-value pairs
+ * - `TestLayer(block)` - provides a layer with `block` edits
+ */
 class TestLayer(
     map: Map<String, ValueOrRule<Int>> = emptyMap(),
 ) : MutableLayer<String, Int, TestLayer>(map) {
+    constructor(block: EditMap<String, Int>.() -> Unit) : this() {
+        edit(block)
+    }
+
     override fun <N : TestLayer> duplicate(): N = TestLayer(toMap()).self()
 }
 

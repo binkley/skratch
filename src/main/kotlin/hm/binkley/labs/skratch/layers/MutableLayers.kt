@@ -18,24 +18,27 @@ abstract class MutableLayers<
     constructor(layers: List<M>) : this(layers.toMutableStack())
 
     init {
-        if (layers.isEmpty()) throw MissingFirstLayerException
-        layers.forEach { it.valid() }
+        valid()
     }
 
     abstract fun new(): M
 
-    fun <N : M> push(layer: N): N = layer.also {
-        layers.push(layer).valid()
+    fun <N : M> push(layer: N): N {
+        try {
+            layers.push(layer)
+            valid()
+        } catch (e: LayersException) {
+            pop()
+            throw e
+        }
+        return layer
     }
 
-    fun push(block: EditMap<K, V>.() -> Unit): M =
-        push(new()).edit(block)
-
+    fun push(block: EditMap<K, V>.() -> Unit): M = push(new().edit(block))
     fun pop(): M = layers.pop()
 
-    /** Edits the top layer raising error if the result is invalid. */
     fun edit(block: EditMap<K, V>.() -> Unit): M {
-        val whatIf = whatIf(peek().duplicate().edit(block))
+        val whatIf = whatIf(block)
         layers.clear()
         layers.addAll(whatIf.layers)
         return peek()
@@ -43,22 +46,25 @@ abstract class MutableLayers<
 
     /** Duplicates this [MutableLayers], and replaces the top layer in it.  */
     fun whatIf(layer: M): MutableLayers<K, V, M> {
-        val outer = this
-        val whatIf = object : MutableLayers<K, V, M>(history) {
-            override fun new(): M = outer.new()
-        }
+        val whatIf = duplicate()
         whatIf.pop()
         whatIf.push(layer)
         return whatIf
     }
 
     /** Duplicates this [MutableLayers], and edits the top layer in it. */
-    fun whatIf(block: EditMap<K, V>.() -> Unit) = whatIf(new().edit(block))
+    fun whatIf(block: EditMap<K, V>.() -> Unit) =
+        whatIf(peek().duplicate().edit(block))
 
-    private fun <N : M> N.valid(): N {
-        entries.asSequence()
-            .filter { (_, value) -> value is Value<V> }
-            .forEach { (key, _) -> ruleForOrThrow<V>(key) }
-        return self()
+    protected open fun valid() {
+        if (layers.isEmpty()) throw MissingFirstLayerException
+        keys.forEach { ruleForOrThrow<V>(it) }
+    }
+
+    // NOT a clone
+    private fun duplicate(): MutableLayers<K, V, M> {
+        return object : MutableLayers<K, V, M>(history) {
+            override fun new(): M = this@MutableLayers.new()
+        }
     }
 }

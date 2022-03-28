@@ -62,12 +62,31 @@ internal class MutableLayersTest {
     @Suppress("DANGEROUS_CHARACTERS")
     @Test
     fun `should ask what if?`() {
-        val layers = TestLayers { this["BOB"] = lastOrDefaultRule(17) }
+        val layers = TestLayers {
+            this["BOB"] = lastOrDefaultRule(17)
+            this["NANCY"] = lastOrDefaultRule(3)
+        }
 
         val whatIf = layers.whatIf { this["BOB"] = lastOrDefaultRule(3) }
 
-        whatIf shouldBe mapOf("BOB" to 3)
-        layers shouldBe mapOf("BOB" to 17)
+        whatIf shouldBe mapOf("BOB" to 3, "NANCY" to 3)
+        layers shouldBe mapOf("BOB" to 17, "NANCY" to 3)
         whatIf.size shouldBe layers.size
+
+        shouldThrow<LayersException> {
+            layers.whatIf { this["BOB"] = 17 }
+        }
+    }
+
+    @Test
+    fun `should complain when pushing a bad layer`() {
+        val layers = TestLayers()
+        val initSize = layers.size
+
+        shouldThrow<MissingRuleException> {
+            layers.push { this["BOB"] = 3 }
+        }
+
+        layers.size shouldBe initSize // rollback preserves
     }
 }
