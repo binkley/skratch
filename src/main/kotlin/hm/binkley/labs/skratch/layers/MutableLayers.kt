@@ -1,10 +1,13 @@
 package hm.binkley.labs.skratch.layers
 
 import hm.binkley.util.MutableStack
+import hm.binkley.util.Stack
 import hm.binkley.util.mutableStackOf
 import hm.binkley.util.toMutableStack
+import org.jetbrains.kotlin.utils.addToStdlib.firstIsInstanceOrNull
+import java.util.AbstractMap.SimpleImmutableEntry
+import kotlin.collections.Map.Entry
 
-// TODO: Pull in [Layers] implementation?
 // TODO: Messy relationships among "push", "edit", and "whatIf"
 @Suppress("LeakingThis")
 abstract class MutableLayers<
@@ -12,9 +15,8 @@ abstract class MutableLayers<
     V : Any,
     M : MutableLayer<K, V, M>,
     >(
-    // TODO: Avoid pointer sharing with [Layers]
     private val layers: MutableStack<M>,
-) : Layers<K, V, M>(layers) {
+) : AbstractMap<K, V>(), Layers<K, V, M> {
     constructor(initialRules: M) : this(mutableStackOf(initialRules))
     constructor(layers: List<M>) : this(layers.toMutableStack())
 
@@ -23,6 +25,11 @@ abstract class MutableLayers<
         keys.forEach { ruleForOrThrow<V>(it) }
     }
 
+    override val history: Stack<Layer<K, V, M>> get() = layers
+    override val entries: Set<Entry<K, V>> get() = RuledEntries()
+    override fun <T : V> getAs(key: K): T? = valueFor(key)
+    override fun peek(): M = layers.peek()
+
     abstract fun new(): M
 
     /** Duplicates this [MutableLayers], and replaces the top layer in it.  */
@@ -30,8 +37,9 @@ abstract class MutableLayers<
         validate { it.replaceLast(layer) }
 
     /** Duplicates this [MutableLayers], and edits the top layer in it. */
-    override fun whatIf(block: EditMap<K, V>.() -> Unit):
-            MutableLayers<K, V, M> =
+    override fun whatIf(
+        block: EditMap<K, V>.() -> Unit,
+    ): MutableLayers<K, V, M> =
         whatIf(peek().copy().edit(block))
 
     fun pop(): M =
@@ -63,6 +71,43 @@ abstract class MutableLayers<
         return object : MutableLayers<K, V, M>(copy) {
             override fun new(): M = this@MutableLayers.new()
         }
+    }
+
+    private fun keys(): Set<K> =
+        layers.asSequence().flatMap {
+            it.keys
+        }.toSet()
+
+    private fun <T : V> valueFor(key: K): T? {
+        val rule = ruleForOrThrow<T>(key)
+        val values = valuesFor<T>(key)
+
+        return rule(key, values, this)
+    }
+
+    private fun <T : V> ruleForOrThrow(key: K): Rule<K, V, T> =
+        valuesOrRulesFor<T>(key).firstIsInstanceOrNull()
+            ?: throw MissingRuleException(key)
+
+    private fun <T : V> valuesFor(key: K): Sequence<T> =
+        valuesOrRulesFor<T>(key).filterIsInstance<Value<T>>().map {
+            it.value
+        }
+
+    private fun <T : V> valuesOrRulesFor(key: K): Sequence<ValueOrRule<T>> =
+        layers.asReversed().asSequence().map {
+            it[key]
+        }.filterIsInstance<ValueOrRule<T>>()
+
+    private inner class RuledEntries : AbstractSet<Entry<K, V>>() {
+        override val size: Int get() = keys().mapNotNull { valueFor(it) }.size
+
+        override fun iterator(): Iterator<Entry<K, V>> =
+            keys().asSequence().map {
+                SimpleImmutableEntry<K, V>(it, valueFor(it))
+            }.filter {
+                null != it.value // Let rules hide entries
+            }.iterator()
     }
 }
 

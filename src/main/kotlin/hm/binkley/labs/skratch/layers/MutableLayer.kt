@@ -9,7 +9,7 @@ abstract class MutableLayer<
     >(
     map: Map<K, ValueOrRule<V>>,
 ) : Layer<K, V, M>, AbstractMap<K, ValueOrRule<V>>() {
-    private val map = map.toMutableMap()
+    private val map = map.toMutableMap() // Defensive copy
 
     // TODO: Override rather than delegate
     //       Delegates for derived types to manipulate in init block
