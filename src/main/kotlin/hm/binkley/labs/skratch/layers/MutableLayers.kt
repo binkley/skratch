@@ -4,7 +4,8 @@ import hm.binkley.util.MutableStack
 import hm.binkley.util.mutableStackOf
 import hm.binkley.util.toMutableStack
 
-// TODO: Pull up [Layers] implementation?
+// TODO: Pull in [Layers] implementation?
+// TODO: Messy relationships among "push", "edit", and "whatIf"
 @Suppress("LeakingThis")
 abstract class MutableLayers<
     K : Any,
