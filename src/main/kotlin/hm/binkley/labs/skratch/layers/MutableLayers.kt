@@ -23,19 +23,21 @@ abstract class MutableLayers<
 
     abstract fun new(): M
 
+    fun pop(): M {
+        val whatIf = duplicate()
+        whatIf.layers.pop()
+        whatIf.valid()
+        return layers.pop()
+    }
+
     fun <N : M> push(layer: N): N {
-        try {
-            layers.push(layer)
-            valid()
-        } catch (e: LayersException) {
-            pop()
-            throw e
-        }
-        return layer
+        val whatIf = whatIf { }
+        whatIf.layers.push(layer)
+        whatIf.valid()
+        return layers.push(layer).self()
     }
 
     fun push(block: EditMap<K, V>.() -> Unit): M = push(new().edit(block))
-    fun pop(): M = layers.pop()
 
     fun edit(block: EditMap<K, V>.() -> Unit): M {
         val whatIf = whatIf(block)
@@ -47,8 +49,8 @@ abstract class MutableLayers<
     /** Duplicates this [MutableLayers], and replaces the top layer in it.  */
     fun whatIf(layer: M): MutableLayers<K, V, M> {
         val whatIf = duplicate()
-        whatIf.pop()
-        whatIf.push(layer)
+        whatIf.layers[whatIf.layers.lastIndex] = layer
+        whatIf.valid()
         return whatIf
     }
 
@@ -56,7 +58,7 @@ abstract class MutableLayers<
     fun whatIf(block: EditMap<K, V>.() -> Unit) =
         whatIf(peek().duplicate().edit(block))
 
-    protected open fun valid() {
+    private fun valid() {
         if (layers.isEmpty()) throw MissingFirstLayerException
         keys.forEach { ruleForOrThrow<V>(it) }
     }

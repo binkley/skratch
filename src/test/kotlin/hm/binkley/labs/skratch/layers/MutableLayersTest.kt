@@ -66,27 +66,41 @@ internal class MutableLayersTest {
             this["BOB"] = lastOrDefaultRule(17)
             this["NANCY"] = lastOrDefaultRule(3)
         }
+        val initHistory = layers.history.toList() // Defensive copy
 
-        val whatIf = layers.whatIf { this["BOB"] = lastOrDefaultRule(3) }
+        val whatIf = layers.whatIf {
+            this["BOB"] = lastOrDefaultRule(3)
+        }
 
         whatIf shouldBe mapOf("BOB" to 3, "NANCY" to 3)
-        layers shouldBe mapOf("BOB" to 17, "NANCY" to 3)
-        whatIf.size shouldBe layers.size
+        whatIf.history.size shouldBe layers.history.size
+        layers.history shouldBe initHistory
 
         shouldThrow<LayersException> {
             layers.whatIf { this["BOB"] = 17 }
         }
+        layers.history shouldBe initHistory // rollback preserves
+    }
+
+    @Test
+    fun `should complain when popping initial rules`() {
+        val layers = TestLayers { this["BOB"] = lastOrDefaultRule(17) }
+        val initHistory = layers.history.toList() // Defensive copy
+
+        shouldThrow<MissingFirstLayerException> {
+            layers.pop()
+        }
+        layers.history shouldBe initHistory // rollback preserves
     }
 
     @Test
     fun `should complain when pushing a bad layer`() {
-        val layers = TestLayers()
-        val initSize = layers.size
+        val layers = TestLayers { this["BOB"] = lastOrDefaultRule(17) }
+        val initHistory = layers.history.toList() // Defensive copy
 
         shouldThrow<MissingRuleException> {
-            layers.push { this["BOB"] = 3 }
+            layers.push { this["NANCY"] = 3 }
         }
-
-        layers.size shouldBe initSize // rollback preserves
+        layers.history shouldBe initHistory // rollback preserves
     }
 }
