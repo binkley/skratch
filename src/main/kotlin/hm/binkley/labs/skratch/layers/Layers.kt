@@ -10,12 +10,21 @@ interface Layers<
     /** A read-only view of editing history. */
     val history: Stack<Layer<K, V, L>>
 
+    /**
+     * Gets the present value of [key] as type [T], possibly `null` if a
+     * rule hides [key].
+     * This is distinct from [Map.get].
+     *
+     * @throws MissingRuleException if there is no rule for [key]
+     */
     fun <T : V> getAs(key: K): T?
+
+    /** Gets the top layer. */
     fun peek(): L
 
-    /** Duplicates these layers replacing the top layer. */
+    /** Presents a view of the layers as-if [layer] were the top layer. */
     fun whatIf(layer: L): Layers<K, V, L>
 
-    /** Duplicates these layers editing the top layer. */
+    /** Presents a view of the layers as-if [block] edited the top layer. */
     fun whatIf(block: EditMap<K, V>.() -> Unit): Layers<K, V, L>
 }

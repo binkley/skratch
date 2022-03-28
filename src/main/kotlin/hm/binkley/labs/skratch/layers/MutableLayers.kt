@@ -36,8 +36,7 @@ abstract class MutableLayers<
 
     override fun whatIf(
         block: EditMap<K, V>.() -> Unit,
-    ): MutableLayers<K, V, M> =
-        whatIf(peek().copy().edit(block))
+    ): MutableLayers<K, V, M> = whatIf(copyOfTop().edit(block))
 
     fun pop(): M =
         if (1 < layers.size) layers.pop()
@@ -56,9 +55,12 @@ abstract class MutableLayers<
         return valid
     }
 
+    private fun copyOfTop() = peek().copy()
+
     /**
-     * Applies [block] to a shallow defensive copy returning an anonymous
-     * [MutableLayers] of that copy.
+     * Applies [block] to a shallow defensive copy of the layers, and
+     * returns a new [MutableLayers] of that copy.
+     * As the init block validates the initial layers, the return is valid.
      */
     private fun validate(
         block: (MutableStack<M>) -> Unit,
@@ -97,6 +99,7 @@ abstract class MutableLayers<
             it[key]
         }.filterIsInstance<ValueOrRule<T>>()
 
+    // Filters null present values so rules can hide keys
     private inner class RuledEntries : AbstractSet<Entry<K, V>>() {
         override val size: Int get() = keys().mapNotNull { valueFor(it) }.size
 
@@ -104,7 +107,7 @@ abstract class MutableLayers<
             keys().asSequence().map {
                 SimpleImmutableEntry<K, V>(it, valueFor(it))
             }.filter {
-                null != it.value // Let rules hide entries
+                null != it.value
             }.iterator()
     }
 }
