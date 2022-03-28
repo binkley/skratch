@@ -24,16 +24,16 @@ abstract class MutableLayers<
     abstract fun new(): M
 
     fun pop(): M {
-        val whatIf = duplicate()
-        whatIf.layers.pop()
-        whatIf.validOrThrow()
+        val dup = duplicate()
+        dup.layers.pop()
+        dup.validOrThrow()
         return layers.pop()
     }
 
     fun <N : M> push(layer: N): N {
-        val whatIf = whatIf { }
-        whatIf.layers.push(layer)
-        whatIf.validOrThrow()
+        val dup = duplicate()
+        dup.layers.push(layer)
+        dup.validOrThrow()
         return layers.push(layer).self()
     }
 
@@ -41,8 +41,7 @@ abstract class MutableLayers<
 
     fun edit(block: EditMap<K, V>.() -> Unit): M {
         val whatIf = whatIf(block)
-        layers.clear()
-        layers.addAll(whatIf.layers)
+        layers.replaceLast(whatIf.peek())
         return peek()
     }
 

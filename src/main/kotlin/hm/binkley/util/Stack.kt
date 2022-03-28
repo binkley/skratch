@@ -29,7 +29,7 @@ interface MutableStack<T> : Stack<T>, MutableList<T> {
     /**
      * Pops the top element from the stack.
      *
-     * @return the previously top element
+     * @return the previous top element
      * @throws NoSuchElementException if the stack is empty
      */
     fun pop(): T = removeLast()
@@ -42,6 +42,18 @@ interface MutableStack<T> : Stack<T>, MutableList<T> {
     fun push(element: T): T {
         add(element)
         return element
+    }
+
+    /**
+     * Replaces the top with [element]
+     *
+     * @return the previous top element
+     * @throws NoSuchElementException if the stack is empty
+     */
+    fun replace(element: T): T {
+        val replace = pop()
+        push(element)
+        return replace
     }
 }
 
