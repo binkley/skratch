@@ -1,8 +1,12 @@
 package hm.binkley.labs.skratch.layers
 
-class MissingRuleException(key: Any) : Exception("No rule for key: $key")
+abstract class LayersException(message: String) : Exception(message)
 
-class MissingValuesException(key: Any) : Exception("No values for key: $key")
+class MissingRuleException(key: Any) :
+    LayersException("No rule for key: $key")
+
+class MissingValuesException(key: Any) :
+    LayersException("No values for key: $key")
 
 object MissingFirstLayerException :
-    Exception("No first layer for initial rules")
+    LayersException("No first layer for initial rules")

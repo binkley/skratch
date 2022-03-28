@@ -24,34 +24,35 @@ abstract class MutableLayers<
 
     abstract fun new(): M
 
-    fun edit(block: EditMap<K, V>.() -> Unit): M {
-        // TODO: What-if, then replace layers when valid
-        val rollback = peek().duplicate()
-        try {
-            return peek().edit(block).valid()
-        } catch (e: MissingRuleException) {
-            pop() // Drop the invalid edits
-            push(rollback)
-            throw e
-        }
+    fun <N : M> push(layer: N): N = layer.also {
+        layers.push(layer).valid()
     }
 
-    fun <N : M> push(layer: N): N = layer.also { layers.push(layer) }
-
     fun push(block: EditMap<K, V>.() -> Unit): M =
-        push(new()).edit(block).valid()
+        push(new()).edit(block)
 
     fun pop(): M = layers.pop()
 
+    /** Edits the top layer raising error if the result is invalid. */
+    fun edit(block: EditMap<K, V>.() -> Unit): M {
+        val whatIf = whatIf(peek().duplicate().edit(block))
+        layers.clear()
+        layers.addAll(whatIf.layers)
+        return peek()
+    }
+
+    /** Duplicates this [MutableLayers], and replaces the top layer in it.  */
     fun whatIf(layer: M): MutableLayers<K, V, M> {
         val outer = this
         val whatIf = object : MutableLayers<K, V, M>(history) {
             override fun new(): M = outer.new()
         }
-        whatIf.push(layer).valid()
+        whatIf.pop()
+        whatIf.push(layer)
         return whatIf
     }
 
+    /** Duplicates this [MutableLayers], and edits the top layer in it. */
     fun whatIf(block: EditMap<K, V>.() -> Unit) = whatIf(new().edit(block))
 
     private fun <N : M> N.valid(): N {

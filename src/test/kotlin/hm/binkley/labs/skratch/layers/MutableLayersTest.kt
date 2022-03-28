@@ -68,5 +68,6 @@ internal class MutableLayersTest {
 
         whatIf shouldBe mapOf("BOB" to 3)
         layers shouldBe mapOf("BOB" to 17)
+        whatIf.size shouldBe layers.size
     }
 }
