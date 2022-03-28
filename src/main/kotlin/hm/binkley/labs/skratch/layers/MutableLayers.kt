@@ -9,7 +9,6 @@ import java.util.AbstractMap.SimpleImmutableEntry
 import kotlin.collections.Map.Entry
 
 // TODO: Messy relationships among "push", "edit", and "whatIf"
-@Suppress("LeakingThis")
 abstract class MutableLayers<
     K : Any,
     V : Any,
@@ -22,7 +21,7 @@ abstract class MutableLayers<
 
     init {
         if (layers.isEmpty()) throw MissingFirstLayerException
-        keys.forEach { ruleForOrThrow<V>(it) }
+        keys().forEach { ruleForOrThrow<V>(it) }
     }
 
     override val history: Stack<Layer<K, V, M>> get() = layers
@@ -32,11 +31,9 @@ abstract class MutableLayers<
 
     abstract fun new(): M
 
-    /** Duplicates this [MutableLayers], and replaces the top layer in it.  */
     override fun whatIf(layer: M): MutableLayers<K, V, M> =
         validate { it.replaceLast(layer) }
 
-    /** Duplicates this [MutableLayers], and edits the top layer in it. */
     override fun whatIf(
         block: EditMap<K, V>.() -> Unit,
     ): MutableLayers<K, V, M> =
@@ -73,6 +70,7 @@ abstract class MutableLayers<
         }
     }
 
+    // The "keys()" fun is NOT the [keys] property
     private fun keys(): Set<K> =
         layers.asSequence().flatMap {
             it.keys

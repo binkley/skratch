@@ -9,6 +9,13 @@ import org.junit.jupiter.api.Test
 
 internal class MutableLayersTest {
     @Test
+    fun `should distinguish mutable from immutable`() {
+        val layers = TestLayers()
+        layers.peek().edit { } // should compile
+        // (layers as Layers<String, Int, *>).peek().edit() // no compile
+    }
+
+    @Test
     fun `should complain for bad first layer`() {
         val badMap = mapOf("BOB" to 17.toValue())
 
