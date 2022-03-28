@@ -24,10 +24,9 @@ abstract class MutableLayers<
 
     abstract fun new(): M
 
-    fun pop(): M {
-        return if (1 == layers.size) throw MissingFirstLayerException
-        else layers.pop()
-    }
+    fun pop(): M =
+        if (1 < layers.size) layers.pop()
+        else throw MissingFirstLayerException
 
     fun <N : M> push(layer: N): N {
         val valid = validate { it.push(layer) }.peek()
