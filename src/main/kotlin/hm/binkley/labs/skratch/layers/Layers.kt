@@ -22,6 +22,12 @@ abstract class Layers<
     fun <T : V> getAs(key: K): T? = valueFor(key)
     fun peek(): L = layers.peek()
 
+    /** Duplicates these layers replacing the top layer. */
+    abstract fun whatIf(layer: L): Layers<K, V, L>
+
+    /** Duplicates these layers editing the top layer. */
+    abstract fun whatIf(block: EditMap<K, V>.() -> Unit): Layers<K, V, L>
+
     private fun keys(): Set<K> =
         layers.asSequence().flatMap {
             it.keys

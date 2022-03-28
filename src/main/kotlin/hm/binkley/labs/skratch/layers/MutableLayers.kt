@@ -25,6 +25,15 @@ abstract class MutableLayers<
 
     abstract fun new(): M
 
+    /** Duplicates this [MutableLayers], and replaces the top layer in it.  */
+    override fun whatIf(layer: M): MutableLayers<K, V, M> =
+        validate { it.replaceLast(layer) }
+
+    /** Duplicates this [MutableLayers], and edits the top layer in it. */
+    override fun whatIf(block: EditMap<K, V>.() -> Unit):
+            MutableLayers<K, V, M> =
+        whatIf(peek().copy().edit(block))
+
     fun pop(): M =
         if (1 < layers.size) layers.pop()
         else throw MissingFirstLayerException
@@ -41,14 +50,6 @@ abstract class MutableLayers<
         layers.replaceLast(valid)
         return valid
     }
-
-    /** Duplicates this [MutableLayers], and replaces the top layer in it.  */
-    fun whatIf(layer: M): MutableLayers<K, V, M> =
-        validate { it.replaceLast(layer) }
-
-    /** Duplicates this [MutableLayers], and edits the top layer in it. */
-    fun whatIf(block: EditMap<K, V>.() -> Unit) =
-        whatIf(peek().copy().edit(block))
 
     /**
      * Applies [block] to a shallow defensive copy returning an anonymous
