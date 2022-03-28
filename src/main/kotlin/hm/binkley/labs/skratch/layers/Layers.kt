@@ -17,7 +17,7 @@ abstract class Layers<
 ) : AbstractMap<K, V>() {
     override val entries: Set<Entry<K, V>> get() = RuledEntries()
 
-    val history: List<L> get() = layers
+    val history: Stack<L> get() = layers
 
     fun <T : V> getAs(key: K): T? = valueFor(key)
     fun peek(): L = layers.peek()
