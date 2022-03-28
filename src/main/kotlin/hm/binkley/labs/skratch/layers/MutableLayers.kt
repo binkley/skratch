@@ -37,7 +37,7 @@ abstract class MutableLayers<
     fun push(block: EditMap<K, V>.() -> Unit): M = push(new().edit(block))
 
     fun edit(block: EditMap<K, V>.() -> Unit): M {
-        val valid = validate { peek().edit(block) }.peek()
+        val valid = whatIf(block).peek()
         layers.replaceLast(valid)
         return valid
     }

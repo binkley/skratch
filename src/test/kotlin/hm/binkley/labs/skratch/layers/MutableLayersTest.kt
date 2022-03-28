@@ -5,7 +5,6 @@ import hm.binkley.labs.skratch.layers.rules.lastOrNullRule
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.matchers.maps.shouldBeEmpty
 import io.kotest.matchers.shouldBe
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 internal class MutableLayersTest {
@@ -24,7 +23,6 @@ internal class MutableLayersTest {
         }
     }
 
-    @Disabled("CORRUPTS THE ROLLED BACK LAYER") // TODO
     @Test
     fun `should rollback and complain for bad edits`() {
         val layers = TestLayers {
