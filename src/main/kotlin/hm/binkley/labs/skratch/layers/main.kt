@@ -65,6 +65,8 @@ fun main() {
     println("LEFT -> ${enumyLayers[Left]}")
     val asInt: Int? = enumyLayers.getAs(Left)
     println("LEFT -> $asInt")
+
+    println(display(enumyLayers))
 }
 
 class MyLayers : MutableLayers<String, Number, MyLayer>(MyLayer()) {
@@ -104,4 +106,10 @@ class MyWordLayer : OhMyLayer<MyWordLayer>() {
     }
 
     fun myWord() = println("MY, WORD!")
+}
+
+private fun <K: Any, V: Any> display(layers: Layers<K, V, *>): String {
+    return layers.history.mapIndexed { index, layer ->
+        "${index +1} (${layer::class.simpleName}): $layer"
+    }.joinToString("\n", "\$NAME:\n")
 }
