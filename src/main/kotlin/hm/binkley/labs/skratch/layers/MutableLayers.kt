@@ -9,15 +9,22 @@ import java.util.AbstractMap.SimpleImmutableEntry
 import kotlin.collections.Map.Entry
 
 // TODO: Messy relationships among "push", "edit", and "whatIf"
-abstract class MutableLayers<
+open class MutableLayers<
     K : Any,
     V : Any,
     M : MutableLayer<K, V, M>,
     >(
+    private val newLayer: () -> MutableLayer<K, V, M>,
     private val layers: MutableStack<M>,
 ) : AbstractMap<K, V>(), Layers<K, V, M> {
-    constructor(initialRules: M) : this(mutableStackOf(initialRules))
-    constructor(layers: List<M>) : this(layers.toMutableStack())
+    constructor(
+        newLayer: () -> MutableLayer<K, V, M>,
+        initialRules: M,
+    ) : this(newLayer, mutableStackOf(initialRules))
+    constructor(
+        newLayer: () -> MutableLayer<K, V, M>,
+        layers: List<M>,
+    ) : this(newLayer, layers.toMutableStack())
 
     init {
         if (layers.isEmpty()) throw MissingFirstLayerException
@@ -28,8 +35,6 @@ abstract class MutableLayers<
     override val entries: Set<Entry<K, V>> get() = RuledEntries()
     override fun <T : V> getAs(key: K): T? = valueFor(key)
     override fun peek(): M = layers.peek()
-
-    abstract fun new(): M
 
     override fun whatIf(layer: M): MutableLayers<K, V, M> =
         validate { it.replaceLast(layer) }
@@ -47,7 +52,8 @@ abstract class MutableLayers<
         return layers.push(valid).self()
     }
 
-    fun push(block: EditMap<K, V>.() -> Unit): M = push(new().edit(block))
+    fun push(block: EditMap<K, V>.() -> Unit): M =
+        push(newLayer().edit(block))
 
     fun edit(block: EditMap<K, V>.() -> Unit): M {
         val valid = whatIf(block).peek()
@@ -67,9 +73,7 @@ abstract class MutableLayers<
     ): MutableLayers<K, V, M> {
         val copy = layers.toMutableStack()
         block(copy)
-        return object : MutableLayers<K, V, M>(copy) {
-            override fun new(): M = this@MutableLayers.new()
-        }
+        return MutableLayers(newLayer, copy)
     }
 
     // The "keys()" fun is NOT the [keys] property

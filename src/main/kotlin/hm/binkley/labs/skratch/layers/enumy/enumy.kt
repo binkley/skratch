@@ -47,8 +47,7 @@ val initialRules = object : EnumyLayer() {
     }
 }
 
-class EnumyLayers : MutableLayers<EnumyKey, Number, EnumyLayer>(initialRules) {
+class EnumyLayers :
+    MutableLayers<EnumyKey, Number, EnumyLayer>(::EnumyLayer, initialRules) {
     init { push { } } // Start with blank layer for edits
-
-    override fun new() = EnumyLayer()
 }

@@ -30,14 +30,12 @@ class TestLayer(
  */
 class TestLayers(
     history: List<TestLayer> = listOf(TestLayer()),
-) : MutableLayers<String, Int, TestLayer>(history) {
+) : MutableLayers<String, Int, TestLayer>(::TestLayer, history) {
     constructor(initialRules: TestLayer) : this(listOf(initialRules))
     constructor(block: EditMap<String, Int>.() -> Unit) : this() {
         edit(block)
     }
     constructor(vararg history: TestLayer) : this(history.toList())
-
-    override fun new() = TestLayer()
 }
 
 inline fun <reified E : Throwable> TestLayers.shouldRollback(

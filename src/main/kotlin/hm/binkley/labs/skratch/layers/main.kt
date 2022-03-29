@@ -69,7 +69,8 @@ fun main() {
     println(display(enumyLayers))
 }
 
-class MyLayers : MutableLayers<String, Number, MyLayer>(MyLayer()) {
+class MyLayers :
+    MutableLayers<String, Number, MyLayer>(::MyLayer, MyLayer()) {
     init {
         // First layer via editing initial empty layer
         edit {
@@ -79,8 +80,6 @@ class MyLayers : MutableLayers<String, Number, MyLayer>(MyLayer()) {
         // Ensure edits afterwards do not overwrite pre-defined rules
         push { }
     }
-
-    override fun new() = MyLayer()
 
     fun doHickey(): MyLayer =
         MyLayer(mapOf("HUM-HUM" to 2.toValue()))
@@ -108,8 +107,8 @@ class MyWordLayer : OhMyLayer<MyWordLayer>() {
     fun myWord() = println("MY, WORD!")
 }
 
-private fun <K: Any, V: Any> display(layers: Layers<K, V, *>): String {
+private fun <K : Any, V : Any> display(layers: Layers<K, V, *>): String {
     return layers.history.mapIndexed { index, layer ->
-        "${index +1} (${layer::class.simpleName}): $layer"
+        "${index + 1} (${layer::class.simpleName}): $layer"
     }.joinToString("\n", "\$NAME:\n")
 }
