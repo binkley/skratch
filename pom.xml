@@ -31,7 +31,7 @@
         <jacoco-maven-plugin.version>0.8.7</jacoco-maven-plugin.version>
         <jansi.version>2.4.0</jansi.version>
         <java.charset>UTF-8</java.charset>
-        <jdk.version>17</jdk.version>
+        <jdk.version>18</jdk.version>
         <jline.version>3.18.0</jline.version>
         <jmh.version>1.35</jmh.version>
         <ktlint-maven-plugin.version>1.13.0</ktlint-maven-plugin.version>
