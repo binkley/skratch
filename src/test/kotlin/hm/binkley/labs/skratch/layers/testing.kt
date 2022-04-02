@@ -3,6 +3,10 @@ package hm.binkley.labs.skratch.layers
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.matchers.shouldBe
 
+class TestEditMap(
+    val map: MutableMap<String, ValueOrRule<Int>> = mutableMapOf(),
+) : EditMap<String, Int>, MutableMap<String, ValueOrRule<Int>> by map
+
 /**
  * Canonical constructors:
  * - `TestLayer()` - defaults to an empty layer
