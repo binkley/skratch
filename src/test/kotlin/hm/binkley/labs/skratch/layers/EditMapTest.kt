@@ -61,7 +61,7 @@ internal class EditMapTest {
     }
 }
 
-private var TestEditMap.BOB: Int by EditDelegate { name }
+private var TestEditMap.BOB: Int by EditMapDelegate { name }
 
 private class TestEditMap(
     val map: MutableMap<String, ValueOrRule<Int>> = mutableMapOf(),

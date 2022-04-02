@@ -21,7 +21,7 @@ interface EditMap<K : Any, V : Any> : MutableMap<K, ValueOrRule<V>> {
     }
 }
 
-fun interface EditDelegate<
+fun interface EditMapDelegate<
     K : Any,
     V : Any,
     T : V,
