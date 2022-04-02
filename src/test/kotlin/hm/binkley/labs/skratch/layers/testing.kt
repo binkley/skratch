@@ -39,7 +39,7 @@ class TestLayers(
     constructor(block: EditMap<String, Int>.() -> Unit) : this() {
         edit(block)
     }
-    constructor(vararg history: TestLayer) : this(history.toList())
+    constructor(vararg history: TestLayer) : this(history.asList())
 }
 
 inline fun <reified E : Throwable> TestLayers.shouldRollback(

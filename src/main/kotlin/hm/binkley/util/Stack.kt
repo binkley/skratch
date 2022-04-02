@@ -81,7 +81,7 @@ open class ArrayMutableStack<T> private constructor(
 
 fun <T> emptyMutableStack(): MutableStack<T> = mutableStackOf()
 fun <T> mutableStackOf(vararg elements: T): MutableStack<T> =
-    elements.toList().toMutableStack()
+    elements.asList().toMutableStack()
 
 /** Returns a [MutableStack] filled this collection. */
 fun <T> Collection<T>.toMutableStack(): MutableStack<T> =

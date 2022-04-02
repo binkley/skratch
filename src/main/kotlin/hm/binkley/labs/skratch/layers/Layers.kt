@@ -38,7 +38,7 @@ interface Layers<
 
     /** Presents a view of the layers as-if [except] were absent. */
     fun whatIfNot(vararg except: L): Layers<K, V, L> =
-        whatIfNot(except.toList())
+        whatIfNot(except.asList())
 }
 
 /** Convenience property for [Layers.peek]. */
