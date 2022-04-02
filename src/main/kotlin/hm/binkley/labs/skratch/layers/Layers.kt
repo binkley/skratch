@@ -29,10 +29,10 @@ interface Layers<
     fun whatIf(block: EditMap<K, V>.() -> Unit): Layers<K, V, L>
 }
 
-/** Convenience property for [Stack.peek]. */
+/** Convenience property for [Layers.peek]. */
 val <
     K : Any,
     V : Any,
-    M : MutableLayer<K, V, M>,
-    > MutableLayers<K, V, M>.top
+    L : Layer<K, V, L>,
+    > Layers<K, V, L>.top
     get() = peek()
