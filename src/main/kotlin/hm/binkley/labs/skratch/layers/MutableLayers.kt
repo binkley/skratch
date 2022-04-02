@@ -33,7 +33,9 @@ open class MutableLayers<
 
     override val history: Stack<Layer<K, V, M>> get() = layers
     override val entries: Set<Entry<K, V>> get() = RuledEntries()
-    override fun <T : V> getAs(key: K): T? = valueFor(key)
+    override fun <T : V> getAs(key: K, except: Collection<M>): T? =
+        whatIfNot(except).valueFor(key)
+
     override fun peek(): M = layers.peek()
 
     override fun whatIf(layer: M): MutableLayers<K, V, M> =

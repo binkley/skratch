@@ -1,6 +1,7 @@
 package hm.binkley.labs.skratch.layers
 
 import hm.binkley.util.Stack
+import org.apache.logging.log4j.ThreadContext.peek
 
 interface Layers<
     K : Any,
@@ -15,9 +16,13 @@ interface Layers<
      * rule hides [key].
      * This is distinct from [Map.get].
      *
+     * @param key the key of the value to get
+     * @param except default no layers to exclude (empty list)
+     *
      * @throws MissingRuleException if there is no rule for [key]
      */
-    fun <T : V> getAs(key: K): T?
+    @Suppress("UNCHECKED_CAST")
+    fun <T : V> getAs(key: K, except: Collection<L> = emptyList()) : T?
 
     /** Gets the top layer. */
     fun peek(): L

@@ -32,6 +32,22 @@ internal class MutableLayersTest {
     }
 
     @Test
+    fun `should get-as type with excluded layers`() {
+        val layers = TestLayers {
+            this["BOB"] = lastOrDefaultRule(17)
+            this["NANCY"] = lastOrDefaultRule(3)
+        }
+        val layer = layers.push {
+            this["BOB"] = constantRule(3)
+            this["NANCY"] = 4
+        }
+
+        val nancy: Int? = layers.getAs("NANCY", listOf(layer))
+
+        nancy shouldBe 3
+    }
+
+    @Test
     fun `should rollback and complain for bad edits`() {
         val layers = TestLayers {
             this["BOB"] = lastOrDefaultRule(17)
