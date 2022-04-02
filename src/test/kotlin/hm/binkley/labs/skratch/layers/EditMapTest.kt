@@ -31,9 +31,15 @@ internal class EditMapTest {
     fun `should edit by delegate`() {
         val editMap = TestEditMap()
 
-        shouldThrow<MissingKeyException> {
-            editMap.BOB
-        }
+        editMap.BOB = 16
+        ++editMap.BOB
+
+        editMap.map["BOB"] shouldBe 17.toValue()
+    }
+
+    @Test
+    fun `should complain when editing by delegate for a rule`() {
+        val editMap = TestEditMap()
 
         editMap["BOB"] = editMap.rule<Int>("BOB") {
                 _: String, _: Sequence<Int>, _: Layers<String, Int, *> ->
@@ -43,11 +49,15 @@ internal class EditMapTest {
         shouldThrow<NotAValueException> {
             ++editMap.BOB
         }
+    }
 
-        editMap.BOB = 16
-        ++editMap.BOB
+    @Test
+    fun `should complain when editing by delegate for missing key`() {
+        val editMap = TestEditMap()
 
-        editMap.map["BOB"] shouldBe 17.toValue()
+        shouldThrow<MissingKeyException> {
+            editMap.BOB
+        }
     }
 }
 
