@@ -10,3 +10,9 @@ class MissingValuesException(key: Any) :
 
 object MissingFirstLayerException :
     LayersException("No first layer for initial rules")
+
+class MissingKeyException(key: Any) :
+    LayersException("No value or rule for key: $key")
+
+class NotAValueException(key: Any) :
+    LayersException("Not a value: $key")

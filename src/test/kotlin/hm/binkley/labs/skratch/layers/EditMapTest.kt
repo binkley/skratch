@@ -1,5 +1,6 @@
 package hm.binkley.labs.skratch.layers
 
+import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Test
@@ -11,7 +12,7 @@ internal class EditMapTest {
 
         editMap["BOB"] = 17
 
-        editMap.map["BOB"] shouldBe Value(17)
+        editMap.map["BOB"] shouldBe 17.toValue()
     }
 
     @Test
@@ -25,7 +26,32 @@ internal class EditMapTest {
 
         rule("BOB", emptySequence(), TestLayers()).shouldBeNull()
     }
+
+    @Test
+    fun `should edit by delegate`() {
+        val editMap = TestEditMap()
+
+        shouldThrow<MissingKeyException> {
+            editMap.BOB
+        }
+
+        editMap["BOB"] = editMap.rule<Int>("BOB") {
+                _: String, _: Sequence<Int>, _: Layers<String, Int, *> ->
+            null
+        }
+
+        shouldThrow<NotAValueException> {
+            ++editMap.BOB
+        }
+
+        editMap.BOB = 16
+        ++editMap.BOB
+
+        editMap.map["BOB"] shouldBe 17.toValue()
+    }
 }
+
+private var TestEditMap.BOB: Int by EditDelegate { name }
 
 private class TestEditMap(
     val map: MutableMap<String, ValueOrRule<Int>> = mutableMapOf(),
