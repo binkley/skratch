@@ -27,6 +27,13 @@ interface Layers<
 
     /** Presents a view of the layers as-if [block] edited the top layer. */
     fun whatIf(block: EditMap<K, V>.() -> Unit): Layers<K, V, L>
+
+    /** Presents a view of the layers as-if [except] were absent. */
+    fun whatIfNot(except: Collection<L>): Layers<K, V, L>
+
+    /** Presents a view of the layers as-if [except] were absent. */
+    fun whatIfNot(vararg except: L): Layers<K, V, L> =
+        whatIfNot(except.toList())
 }
 
 /** Convenience property for [Layers.peek]. */

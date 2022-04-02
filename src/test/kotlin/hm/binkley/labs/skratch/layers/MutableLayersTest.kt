@@ -1,5 +1,6 @@
 package hm.binkley.labs.skratch.layers
 
+import hm.binkley.labs.skratch.layers.rules.constantRule
 import hm.binkley.labs.skratch.layers.rules.lastOrDefaultRule
 import hm.binkley.labs.skratch.layers.rules.lastOrNullRule
 import io.kotest.assertions.throwables.shouldThrow
@@ -67,6 +68,29 @@ internal class MutableLayersTest {
 
         layers.shouldRollback<MissingRuleException> {
             layers.whatIf { this["BOB"] = 17 }
+        }
+    }
+
+    @Suppress("DANGEROUS_CHARACTERS")
+    @Test
+    fun `should ask what if not?`() {
+        val layers = TestLayers {
+            this["BOB"] = lastOrDefaultRule(17)
+            this["NANCY"] = lastOrDefaultRule(3)
+        }
+        val layer = layers.push {
+            this["BOB"] = constantRule(3)
+            this["NANCY"] = 4
+        }
+
+        val whatIfNot = layers.whatIfNot(layer)
+
+        whatIfNot shouldBe mapOf("BOB" to 17, "NANCY" to 3)
+        whatIfNot.history.size shouldBe (layers.history.size - 1)
+
+        layers.shouldRollback<MissingRuleException> {
+            // TODO: Avoid casting
+            layers.whatIfNot(layers.history.first() as TestLayer)
         }
     }
 

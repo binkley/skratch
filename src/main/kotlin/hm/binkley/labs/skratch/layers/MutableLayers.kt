@@ -43,6 +43,9 @@ open class MutableLayers<
         block: EditMap<K, V>.() -> Unit,
     ): MutableLayers<K, V, M> = whatIf(copyOfTop().edit(block))
 
+    override fun whatIfNot(except: Collection<M>): MutableLayers<K, V, M> =
+        validate { it.removeAll(except) }
+
     fun pop(): M =
         if (1 < layers.size) layers.pop()
         else throw MissingFirstLayerException
