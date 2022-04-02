@@ -2,6 +2,7 @@ package hm.binkley.labs.skratch.layers
 
 import hm.binkley.labs.skratch.layers.enumy.EnumyKey.AbstractEnumyKey
 import hm.binkley.labs.skratch.layers.enumy.EnumyLayers
+import hm.binkley.labs.skratch.layers.enumy.LEFT
 import hm.binkley.labs.skratch.layers.enumy.Left
 import hm.binkley.labs.skratch.layers.rules.LastOrDefaultRule
 import hm.binkley.labs.skratch.layers.rules.lastOrDefaultRule
@@ -49,10 +50,10 @@ fun main() {
     println("HISTORY -> ${enumyLayers.history}")
 
     enumyLayers.edit {
-        this[Left] = 7.toValue()
+        LEFT = 7
     }
     enumyLayers.push {
-        this[Left] = 8.toValue()
+        LEFT = 8
     }
     val fooKey = object : AbstractEnumyKey("FOO") {}
     enumyLayers.push {

@@ -6,7 +6,7 @@ import kotlin.reflect.KProperty
 interface EditMap<K : Any, V : Any> : MutableMap<K, ValueOrRule<V>> {
     operator fun <T : V> set(key: K, value: T) = put(key, value)
 
-    /** Convenience to put values directly. */
+    /** Convenience for converting the value to a [Value]. */
     fun put(key: K, value: V) = put(key, value.toValue())
 
     fun <T : V> rule(

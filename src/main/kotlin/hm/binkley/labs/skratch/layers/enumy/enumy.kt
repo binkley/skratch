@@ -1,5 +1,7 @@
 package hm.binkley.labs.skratch.layers.enumy
 
+import hm.binkley.labs.skratch.layers.EditMap
+import hm.binkley.labs.skratch.layers.EditMapDelegate
 import hm.binkley.labs.skratch.layers.MutableLayer
 import hm.binkley.labs.skratch.layers.MutableLayers
 import hm.binkley.labs.skratch.layers.ValueOrRule
@@ -34,6 +36,8 @@ open class EnumyLayer(
 ) : MutableLayer<EnumyKey, Number, EnumyLayer>(map) {
     override fun <N : EnumyLayer> copy(): N = EnumyLayer(toMap()).self()
 }
+
+var EditMap<EnumyKey, Number>.LEFT: Number by EditMapDelegate { Left }
 
 val initialRules = object : EnumyLayer() {
     init {
