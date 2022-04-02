@@ -48,7 +48,7 @@ open class MutableLayers<
         else throw MissingFirstLayerException
 
     fun <N : M> push(layer: N): N {
-        val valid = validate { it.push(layer) }.peek()
+        val valid = validate { it.push(layer) }.top
         return layers.push(valid).self()
     }
 
@@ -56,16 +56,16 @@ open class MutableLayers<
         push(newLayer().edit(block))
 
     fun edit(block: EditMap<K, V>.() -> Unit): M {
-        val valid = whatIf(block).peek()
+        val valid = whatIf(block).top
         layers.replaceLast(valid)
         return valid
     }
 
-    private fun copyOfTop() = peek().copy()
+    private fun copyOfTop() = top.copy()
 
     /**
      * Applies [block] to a shallow defensive copy of the layers, and
-     * returns a new [MutableLayers] of that copy.
+     * returns a new [MutableLayers] using the updates from [block].
      * As the init block validates the initial layers, the return is valid.
      */
     private fun validate(

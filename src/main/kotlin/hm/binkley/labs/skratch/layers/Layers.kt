@@ -28,3 +28,11 @@ interface Layers<
     /** Presents a view of the layers as-if [block] edited the top layer. */
     fun whatIf(block: EditMap<K, V>.() -> Unit): Layers<K, V, L>
 }
+
+/** Convenience property for [Stack.peek]. */
+val <
+    K : Any,
+    V : Any,
+    M : MutableLayer<K, V, M>,
+    > MutableLayers<K, V, M>.top
+    get() = peek()
