@@ -2,7 +2,6 @@ package hm.binkley.labs.skratch.layers
 
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.matchers.maps.shouldNotHaveKey
-import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Test
 
