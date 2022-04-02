@@ -26,6 +26,9 @@ fun interface EditDelegate<
     V : Any,
     T : V,
     > : ReadWriteProperty<EditMap<K, V>, T?> {
+    /** Finds or creates a suitable edit map key. */
+    fun KProperty<*>.toKey(): K
+
     @Suppress("UNCHECKED_CAST")
     override operator fun getValue(
         thisRef: EditMap<K, V>,
@@ -47,6 +50,4 @@ fun interface EditDelegate<
         if (null == value) thisRef.remove(property.toKey())
         else thisRef[property.toKey()] = value.toValue()
     }
-
-    fun KProperty<*>.toKey(): K
 }
