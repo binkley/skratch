@@ -22,7 +22,7 @@ interface Layers<
      * @throws MissingRuleException if there is no rule for [key]
      */
     @Suppress("UNCHECKED_CAST")
-    fun <T : V> getAs(key: K, except: Collection<L> = emptyList()) : T?
+    fun <T : V> getAs(key: K, except: Collection<L> = emptyList()): T?
 
     /** Gets the top layer. */
     fun peek(): L

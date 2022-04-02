@@ -21,7 +21,7 @@ Measure<S, K, *, *>.into(
 
 fun <S : System<S>, K : Kind>
 Measure<S, K, *, *>.into(
-    vararg units: Units<S, K, *, *>
+    units: List<Units<S, K, *, *>>,
 ): List<Measure<S, K, *, *>> {
     // Pre-populate with nulls so that we may write in any order
     val into = MutableList<Measure<*, *, *, *>?>(units.size) { null }
@@ -45,12 +45,17 @@ Measure<S, K, *, *>.into(
     return into.toNonNullableList() as List<Measure<S, K, *, *>>
 }
 
+fun <S : System<S>, K : Kind>
+Measure<S, K, *, *>.into(
+    vararg units: Units<S, K, *, *>,
+): List<Measure<S, K, *, *>> = into(units.asList())
+
 private fun Measure<*, *, *, *>.convertByBases(
     other: Units<*, *, *, *>,
     conversion: (BigRational) -> BigRational,
 ) = conversion(quantity * unit.basis) / other.basis
 
-private fun <T : Comparable<T>> Array<T>.sortedDescendingIndexed() =
+private fun <T : Comparable<T>> List<T>.sortedDescendingIndexed() =
     mapIndexed { index, it -> index to it }.sortedByDescending { it.second }
 
 private fun <T> Collection<T?>.toNonNullableList() = map { it!! }
