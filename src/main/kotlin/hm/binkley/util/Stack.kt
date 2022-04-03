@@ -1,8 +1,9 @@
 package hm.binkley.util
 
+/** An immutable stack view of [List]. */
 interface Stack<out T> : List<T> {
     /**
-     * Peeks at top element.
+     * Peeks at the top element.
      *
      * This is logically equivalent to:
      * ```
@@ -12,10 +13,13 @@ interface Stack<out T> : List<T> {
      * ```
      * but does not mutate the stack.
      */
-    fun peek() = last()
+    fun peek(): T = last()
 }
 
+/** Returns an empty, read-only stack. */
 fun <T> emptyStack(): Stack<T> = stackOf()
+
+/** Returns a new, read-only stack of the given [elements]. */
 fun <T> stackOf(vararg elements: T): Stack<T> = mutableStackOf(*elements)
 
 /**
@@ -25,11 +29,12 @@ fun <T> stackOf(vararg elements: T): Stack<T> = mutableStackOf(*elements)
  */
 fun <T> Collection<T>.toStack(): Stack<T> = toMutableStack()
 
+/** A mutable stack view of [MutableList]. */
 interface MutableStack<T> : Stack<T>, MutableList<T> {
     /**
      * Pops the top element from the stack.
      *
-     * @return the previous top element
+     * @return the previously top element
      * @throws NoSuchElementException if the stack is empty
      */
     fun pop(): T = removeLast()
@@ -57,17 +62,28 @@ interface MutableStack<T> : Stack<T>, MutableList<T> {
     }
 }
 
+/**
+ * A default implementation of [MutableStack] delegating to the given
+ * [elements] mutable list.
+ * The list defaults to [ArrayList].
+ *
+ * Use [asStack] and [asMutableStack] to wrap a mutable list.
+ */
 open class ArrayMutableStack<T> private constructor(
     private val elements: MutableList<T> = ArrayList(),
 ) : MutableStack<T>, MutableList<T> by elements {
     constructor(elements: Collection<T>) : this(ArrayList(elements))
     constructor(initialCapacity: Int) : this(ArrayList(initialCapacity))
 
-    // TODO: equals and hashCode
-    override fun toString() = elements.toString()
+    override fun equals(other: Any?): Boolean = this === other ||
+            other is Stack<*> &&
+            elements == other.toList()
+
+    override fun hashCode(): Int = elements.hashCode()
+    override fun toString(): String = elements.toString()
 
     companion object {
-        // TODO: Wrapper for [List]->[Stack]
+        // Access to private constructor for wrapping and not copying
 
         /** Returns a [Stack] that wraps the list. */
         fun <T> MutableList<T>.asStack(): Stack<T> =
@@ -79,7 +95,10 @@ open class ArrayMutableStack<T> private constructor(
     }
 }
 
+/** Returns an empty, mutable stack. */
 fun <T> emptyMutableStack(): MutableStack<T> = mutableStackOf()
+
+/** Returns a new, mutable stack of the given [elements]. */
 fun <T> mutableStackOf(vararg elements: T): MutableStack<T> =
     elements.asList().toMutableStack()
 
@@ -121,4 +140,4 @@ fun <T> MutableStack<T>.rotate(n: Int = 3) {
  *
  * @see [rotate]
  */
-fun <T> MutableStack<T>.swap() = rotate(2)
+fun <T> MutableStack<T>.swap(): Unit = rotate(2)

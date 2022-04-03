@@ -1,6 +1,7 @@
 package hm.binkley.labs.skratch.layers.rules
 
 import hm.binkley.labs.skratch.layers.TestLayers
+import hm.binkley.labs.skratch.layers.set
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Test
 
