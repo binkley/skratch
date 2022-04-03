@@ -7,8 +7,14 @@ package hm.binkley.labs.skratch.layers.rules
 
 import hm.binkley.labs.skratch.layers.EditMap
 
+fun <K : Any, V : Any, T : Comparable<T>>
+EditMap<K, V>.ceilRule(ceiling: T) = CeilRule<K, V, T>(ceiling)
+
 fun <K : Any, V : Any, T : V>
 EditMap<K, V>.constantRule(constant: T) = ConstantRule<K, V, T>(constant)
+
+fun <K : Any, V : Any, T : Comparable<T>>
+EditMap<K, V>.floorRule(floor: T) = FloorRule<K, V, T>(floor)
 
 fun <K : Any, V : Any, T : V>
 EditMap<K, V>.lastRule() = LastRule<K, V, T>()

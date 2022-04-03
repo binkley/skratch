@@ -33,8 +33,10 @@ open class MutableLayers<
 
     override val history: Stack<Layer<K, V, M>> get() = layers
     override val entries: Set<Entry<K, V>> get() = RuledEntries()
-    override fun <T : V> getAs(key: K, except: Collection<M>): T? =
-        whatIfNot(except).valueFor(key)
+    override fun <T : V> getAs(
+        key: K,
+        except: Collection<Layer<K, V, *>>
+    ): T? = whatIfNot(except).valueFor(key)
 
     override fun peek(): M = layers.peek()
 
@@ -45,8 +47,8 @@ open class MutableLayers<
         block: EditMap<K, V>.() -> Unit,
     ): MutableLayers<K, V, M> = whatIf(copyOfTop().edit(block))
 
-    override fun whatIfNot(except: Collection<M>): MutableLayers<K, V, M> =
-        validate { it.removeAll(except) }
+    override fun whatIfNot(except: Collection<Layer<K, V, *>>):
+        MutableLayers<K, V, M> = validate { it.removeAll(except.toSet()) }
 
     fun pop(): M =
         if (1 < layers.size) layers.pop()

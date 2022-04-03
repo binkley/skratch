@@ -7,7 +7,7 @@ interface Layers<
     V : Any,
     L : Layer<K, V, L>,
     > : Map<K, V> {
-    /** A read-only view of editing history. */
+    /** A read-only view of editing history in oldest-to-newest order. */
     val history: Stack<Layer<K, V, L>>
 
     /**
@@ -21,7 +21,14 @@ interface Layers<
      * @throws MissingRuleException if there is no rule for [key]
      */
     @Suppress("UNCHECKED_CAST")
-    fun <T : V> getAs(key: K, except: Collection<L> = emptyList()): T?
+    fun <T : V> getAs(
+        key: K,
+        except: Collection<Layer<K, V, *>> = emptyList()
+    ): T?
+
+    /** Convenience for [getAs]. */
+    fun <T : V> getAs(key: K, vararg except: Layer<K, V, *>): T? =
+        getAs(key, except.asList())
 
     /** Gets the top layer. */
     fun peek(): L
@@ -33,10 +40,10 @@ interface Layers<
     fun whatIf(block: EditMap<K, V>.() -> Unit): Layers<K, V, L>
 
     /** Presents a view of the layers as-if [except] were absent. */
-    fun whatIfNot(except: Collection<L>): Layers<K, V, L>
+    fun whatIfNot(except: Collection<Layer<K, V, *>>): Layers<K, V, L>
 
-    /** Presents a view of the layers as-if [except] were absent. */
-    fun whatIfNot(vararg except: L): Layers<K, V, L> =
+    /** Convenience for [whatIfNot]. */
+    fun whatIfNot(vararg except: Layer<K, V, *>): Layers<K, V, L> =
         whatIfNot(except.asList())
 }
 

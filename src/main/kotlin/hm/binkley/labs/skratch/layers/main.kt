@@ -2,9 +2,15 @@ package hm.binkley.labs.skratch.layers
 
 import hm.binkley.labs.skratch.layers.enumy.EnumyKey.AbstractEnumyKey
 import hm.binkley.labs.skratch.layers.enumy.EnumyLayers
+import hm.binkley.labs.skratch.layers.enumy.LARGE
 import hm.binkley.labs.skratch.layers.enumy.LEFT
+import hm.binkley.labs.skratch.layers.enumy.Large
 import hm.binkley.labs.skratch.layers.enumy.Left
+import hm.binkley.labs.skratch.layers.enumy.SMALL
+import hm.binkley.labs.skratch.layers.enumy.Small
 import hm.binkley.labs.skratch.layers.rules.LastOrDefaultRule
+import hm.binkley.labs.skratch.layers.rules.ceilRule
+import hm.binkley.labs.skratch.layers.rules.floorRule
 import hm.binkley.labs.skratch.layers.rules.lastOrDefaultRule
 
 fun main() {
@@ -68,6 +74,25 @@ fun main() {
     println("LEFT -> $asInt")
 
     println(display(enumyLayers))
+
+    println("-- ENUM-Y CEILINGS AND FLOORS")
+    enumyLayers.push {
+        this[Small] = ceilRule(7)
+        this[Large] = floorRule(7)
+    }
+
+    enumyLayers.push {
+        SMALL = 3
+        LARGE = 3
+    }
+    println("HISTORY -> ${enumyLayers.history}")
+    println("LAYERS -> $enumyLayers")
+    enumyLayers.push {
+        SMALL = 11
+        LARGE = 11
+    }
+    println("HISTORY -> ${enumyLayers.history}")
+    println("LAYERS -> $enumyLayers")
 }
 
 class MyLayers :

@@ -38,6 +38,8 @@ open class EnumyLayer(
 }
 
 var EditMap<EnumyKey, Number>.LEFT: Number by EditMapDelegate { Left }
+var EditMap<EnumyKey, Number>.SMALL: Number by EditMapDelegate { Small }
+var EditMap<EnumyKey, Number>.LARGE: Number by EditMapDelegate { Large }
 
 val initialRules = object : EnumyLayer() {
     init {
