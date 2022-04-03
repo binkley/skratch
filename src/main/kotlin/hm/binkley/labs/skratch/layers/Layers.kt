@@ -1,7 +1,6 @@
 package hm.binkley.labs.skratch.layers
 
 import hm.binkley.util.Stack
-import org.apache.logging.log4j.ThreadContext.peek
 
 interface Layers<
     K : Any,
