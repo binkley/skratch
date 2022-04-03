@@ -4,7 +4,6 @@ import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
 interface EditMap<K : Any, V : Any> : MutableMap<K, ValueOrRule<V>> {
-
     /** Convenience for converting [value] to a [Value]. */
     fun put(key: K, value: V) = put(key, value.toValue())
 
@@ -25,8 +24,8 @@ interface EditMap<K : Any, V : Any> : MutableMap<K, ValueOrRule<V>> {
 operator fun <
     K : Any,
     V : Any,
-    T : V>
-EditMap<K, V>.set(key: K, value: T) = put(key, value)
+    >
+EditMap<K, V>.set(key: K, value: V) = put(key, value)
 
 fun interface EditMapDelegate<
     K : Any,
