@@ -88,7 +88,7 @@ data class QED(
         }
     }
 
-    @Suppress("NOTHING_TO_INLINE")
+    @Suppress("NOTHING_TO_INLINE") // Inline to preserve stack trace
     private inline fun Clause.execute() {
         clauseType = type
 
@@ -173,8 +173,7 @@ data class QED(
         val THEN = Then(SCENARIO, GIVEN, WHEN)
         val QED = QED(SCENARIO, GIVEN, WHEN, THEN)
 
-        /** Inline to preserve the stack trace. */
-        @Suppress("NOTHING_TO_INLINE")
+        @Suppress("NOTHING_TO_INLINE") // Inline to preserve stack trace
         private inline fun caller() = Throwable().stackTrace[2].methodName
     }
 

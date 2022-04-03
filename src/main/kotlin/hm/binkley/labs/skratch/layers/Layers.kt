@@ -20,7 +20,6 @@ interface Layers<
      *
      * @throws MissingRuleException if there is no rule for [key]
      */
-    @Suppress("UNCHECKED_CAST")
     fun <T : V> getAs(
         key: K,
         except: Collection<Layer<K, V, *>> = emptyList()
