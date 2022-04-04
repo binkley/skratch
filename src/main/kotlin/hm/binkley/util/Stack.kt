@@ -1,5 +1,8 @@
 package hm.binkley.util
 
+import hm.binkley.util.ArrayMutableStack.Companion.asMutableStack
+import hm.binkley.util.ArrayMutableStack.Companion.asStack
+
 /** An immutable stack view of [List]. */
 interface Stack<out T> : List<T> {
     /**
@@ -28,6 +31,9 @@ fun <T> stackOf(vararg elements: T): Stack<T> = mutableStackOf(*elements)
  * This is a _shallow_ copy.
  */
 fun <T> Collection<T>.toStack(): Stack<T> = toMutableStack()
+
+/** Convenience property for [Stack.peek]. */
+val <T> Stack<T>.top get() = peek()
 
 /** A mutable stack view of [MutableList]. */
 interface MutableStack<T> : Stack<T>, MutableList<T> {

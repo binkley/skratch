@@ -4,6 +4,7 @@ import hm.binkley.util.MutableStack
 import hm.binkley.util.Stack
 import hm.binkley.util.mutableStackOf
 import hm.binkley.util.toMutableStack
+import hm.binkley.util.top
 import org.jetbrains.kotlin.utils.addToStdlib.firstIsInstanceOrNull
 import java.util.AbstractMap.SimpleImmutableEntry
 import kotlin.collections.Map.Entry
@@ -38,7 +39,7 @@ open class MutableLayers<
         except: Collection<Layer<K, V, *>>
     ): T? = whatIfNot(except).valueFor(key)
 
-    override fun peek(): M = layers.peek()
+    override fun peek(): M = layers.top
 
     override fun whatIf(layer: M): MutableLayers<K, V, M> =
         validate { it.replaceLast(layer) }
