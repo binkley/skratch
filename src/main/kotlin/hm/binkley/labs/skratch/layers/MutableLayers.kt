@@ -124,8 +124,5 @@ open class MutableLayers<
     }
 }
 
-private fun <T> MutableList<T>.replaceLast(element: T): T {
-    val last = last()
-    this[lastIndex] = element
-    return last
-}
+private fun <T> MutableList<T>.replaceLast(element: T): T =
+    set(lastIndex, element)
