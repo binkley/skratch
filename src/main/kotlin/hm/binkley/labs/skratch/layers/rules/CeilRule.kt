@@ -15,13 +15,17 @@ class CeilRule<
         key: K,
         values: ReversedSequence<V>,
         layers: Layers<K, V, *>,
-    ): V = min(ceiling, valueFor(key, layers)) as V
+    ): V = min(ceiling, getAsExceptThisLayer(key, layers)) as V
 }
 
-private fun <K : Any, V : Any, T> Rule<K, V, *>.valueFor(
+private fun <
+    K : Any,
+    V : Any,
+    T : V
+    > Rule<K, V, *>.getAsExceptThisLayer(
     key: K,
     layers: Layers<K, V, *>
-): T = layers.whatIfNot(layerFor(key, layers)).getAs(key)!!
+): T = layers.getAs(key, layerFor(key, layers))!!
 
 /** Returns the lesser of [a] and [b], [a] on a tie for stable sorting. */
 private fun <T : Comparable<T>> min(a: T, b: T): T = if (b < a) b else a
