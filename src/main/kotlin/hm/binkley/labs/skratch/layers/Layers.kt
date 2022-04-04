@@ -60,7 +60,13 @@ fun <K : Any, V : Any> Layers<K, V, *>.find(
     rule: Rule<K, V, *>
 ): Layer<K, V, *> = history.asReversed().first { rule == it[key] }
 
-/** Gets the value of [key] in the layers as-if [rule] were not present. */
+/**
+ * Gets the value of [key] in the layers as-if [rule] were not present.
+ *
+ * @todo Return `T?`.
+ *       1) It should be valid for an earlier rule to return `null`
+ *       2) It should work when there are no values for [key]
+ */
 fun <
     K : Any,
     V : Any,
@@ -68,4 +74,4 @@ fun <
     > Layers<K, V, *>.getAsWithout(
     key: K,
     rule: Rule<K, V, *>
-): T = getAs(key, find(key, rule))!!
+): T = getAs(key, find(key, rule))!! // !! as [rule] must be present
