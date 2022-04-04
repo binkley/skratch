@@ -53,3 +53,19 @@ val <
     L : Layer<K, V, L>,
     > Layers<K, V, L>.top
     get() = peek()
+
+/** Finds the layer containing [rule] assigned to [key]. */
+fun <K : Any, V : Any> Layers<K, V, *>.find(
+    key: K,
+    rule: Rule<K, V, *>
+): Layer<K, V, *> = history.asReversed().first { rule == it[key] }
+
+/** Gets the value of [key] in the layers as-if [rule] were not present. */
+fun <
+    K : Any,
+    V : Any,
+    T : V
+    > Layers<K, V, *>.getAsWithout(
+    key: K,
+    rule: Rule<K, V, *>
+): T = getAs(key, find(key, rule))!!

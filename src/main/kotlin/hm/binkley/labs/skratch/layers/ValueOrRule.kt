@@ -37,9 +37,3 @@ abstract class Rule<
 ) : ValueOrRule<V>(), (K, ReversedSequence<T>, Layers<K, V, *>) -> T? {
     override fun toString() = "<Rule>$name"
 }
-
-/** Finds the layer containing this rule with [key]. */
-fun <K : Any, V : Any> Rule<K, V, *>.layerFor(
-    key: K,
-    layers: Layers<K, V, *>
-): Layer<K, V, *> = layers.history.asReversed().first { this == it[key] }
