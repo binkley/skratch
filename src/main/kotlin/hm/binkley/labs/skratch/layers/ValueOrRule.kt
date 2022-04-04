@@ -38,6 +38,7 @@ abstract class Rule<
     override fun toString() = "<Rule>$name"
 }
 
+/** Finds the layer containing this rule with [key]. */
 fun <K : Any, V : Any> Rule<K, V, *>.layerFor(
     key: K,
     layers: Layers<K, V, *>

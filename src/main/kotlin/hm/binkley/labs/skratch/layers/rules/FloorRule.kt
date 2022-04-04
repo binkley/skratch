@@ -19,11 +19,10 @@ class FloorRule<
     ): V = max(floor, valueFor(key, layers)) as V
 }
 
-private fun <K : Any, V : Any, T> Rule<K, V, V>.valueFor(
+private fun <K : Any, V : Any, T> Rule<K, V, *>.valueFor(
     key: K,
     layers: Layers<K, V, *>
-): T = layers.whatIfNot(layerFor(key, layers)).getAs(key)
-    ?: throw MissingRuleException(key)
+): T = layers.whatIfNot(layerFor(key, layers)).getAs(key)!!
 
 /** Returns the greater of [a] and [b], [a] on a tie for stable sorting. */
 private fun <T : Comparable<T>> max(a: T, b: T): T = if (b > a) b else a

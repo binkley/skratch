@@ -76,8 +76,8 @@ open class ArrayMutableStack<T> private constructor(
     constructor(initialCapacity: Int) : this(ArrayList(initialCapacity))
 
     override fun equals(other: Any?): Boolean = this === other ||
-            other is Stack<*> &&
-            elements == other.toList()
+        other is Stack<*> &&
+        elements == other.toList()
 
     override fun hashCode(): Int = elements.hashCode()
     override fun toString(): String = elements.toString()
