@@ -28,7 +28,7 @@
         <failIfNoTests>true</failIfNoTests>
         <failsafe.printSummary>false</failsafe.printSummary>
         <generateBackupPoms>false</generateBackupPoms>
-        <jacoco-maven-plugin.version>0.8.7</jacoco-maven-plugin.version>
+        <jacoco-maven-plugin.version>0.8.8</jacoco-maven-plugin.version>
         <jansi.version>2.4.0</jansi.version>
         <java.charset>UTF-8</java.charset>
         <jdk.version>18</jdk.version>
