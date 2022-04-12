@@ -59,6 +59,7 @@
         <system-lambda.version>1.2.1</system-lambda.version>
         <versions-maven-plugin.version>2.10.0</versions-maven-plugin.version>
         <!-- @formatter:on -->
+        <jgit.version>6.1.0.202203080745-r</jgit.version>
     </properties>
 
     <repositories>
@@ -173,6 +174,12 @@
             <groupId>net.objecthunter</groupId>
             <artifactId>exp4j</artifactId>
             <version>${exp4j.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.eclipse.jgit</groupId>
+            <artifactId>org.eclipse.jgit</artifactId>
+            <version>${jgit.version}</version>
         </dependency>
 
         <!-- Play with Mockk - NOT test scope -->
