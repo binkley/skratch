@@ -22,6 +22,7 @@ open class MutableLayers<
         newLayer: () -> M,
         initialRules: M,
     ) : this(mutableStackOf(initialRules), newLayer)
+
     constructor(
         newLayer: () -> M,
         layers: List<M>,
@@ -110,18 +111,35 @@ open class MutableLayers<
             it[key]
         }.filterIsInstance<ValueOrRule<T>>()
 
-    // Filters null present values so rules can hide keys
+    /** Filters non-null values so rules can hide keys. */
     private inner class RuledEntries : AbstractSet<Entry<K, V>>() {
-        override val size: Int get() = keys().mapNotNull { valueFor(it) }.size
+        override val size: Int get() = iterator().size()
+        override fun iterator(): Iterator<Entry<K, V>> = NonNullValues()
 
-        override fun iterator(): Iterator<Entry<K, V>> =
-            keys().asSequence().map {
-                SimpleImmutableEntry<K, V>(it, valueFor(it))
-            }.filter {
-                null != it.value
-            }.iterator()
+        private inner class NonNullValues(
+            private val kit: Iterator<K> = keys().iterator(),
+        ) : AbstractIterator<Entry<K, V>>() {
+            override fun computeNext() {
+                while (kit.hasNext()) {
+                    val key = kit.next()
+                    val value = valueFor<V>(key) ?: continue
+                    setNext(SimpleImmutableEntry(key, value))
+                    return
+                }
+                done()
+            }
+        }
     }
 }
 
 private fun <T> MutableList<T>.replaceLast(element: T): T =
     set(lastIndex, element)
+
+private fun <T> Iterator<T>.size(): Int {
+    var n = 0
+    while (hasNext()) {
+        next()
+        ++n
+    }
+    return n
+}
