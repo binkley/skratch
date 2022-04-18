@@ -14,18 +14,18 @@ open class MutableLayers<
     K : Any,
     V : Any,
     M : MutableLayer<K, V, M>,
-    >(
-    private val newLayer: () -> MutableLayer<K, V, M>,
+    > private constructor(
     private val layers: MutableStack<M>,
+    private val newLayer: () -> MutableLayer<K, V, M>,
 ) : AbstractMap<K, V>(), Layers<K, V, M> {
     constructor(
         newLayer: () -> MutableLayer<K, V, M>,
         initialRules: M,
-    ) : this(newLayer, mutableStackOf(initialRules))
+    ) : this(mutableStackOf(initialRules), newLayer)
     constructor(
         newLayer: () -> MutableLayer<K, V, M>,
         layers: List<M>,
-    ) : this(newLayer, layers.toMutableStack())
+    ) : this(layers.toMutableStack(), newLayer)
 
     init {
         if (layers.isEmpty()) throw MissingFirstLayerException
@@ -78,9 +78,9 @@ open class MutableLayers<
     private fun validate(
         block: (MutableStack<M>) -> Unit,
     ): MutableLayers<K, V, M> {
-        val copy = layers.toMutableStack()
-        block(copy)
-        return MutableLayers(newLayer, copy)
+        val layersCopy = layers.toMutableStack()
+        block(layersCopy)
+        return MutableLayers(layersCopy, newLayer)
     }
 
     // The "keys()" fun is NOT the [keys] property
