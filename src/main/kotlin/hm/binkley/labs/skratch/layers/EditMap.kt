@@ -27,6 +27,15 @@ operator fun <
     >
 EditMap<K, V>.set(key: K, value: V) = put(key, value)
 
+/**
+ * Delegate for _simple_ assignment.
+ * Examples: "BOB" is deleteable with `null` assignment; "NANCY"
+ * is not:
+ * ```
+ * var EditMap<String, Int>.BOB: Int? by EditMapDelegate { "BOB" }
+ * var EditMap<String, Int>.NANCY: Int by EditMapDelegate { "NANCY" }
+ * ```
+ */
 fun interface EditMapDelegate<
     K : Any,
     V : Any,

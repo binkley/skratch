@@ -42,6 +42,9 @@ class TestLayers(
     constructor(vararg history: TestLayer) : this(history.asList())
 }
 
+var EditMap<String, Int>.BOB: Int? by EditMapDelegate { "BOB" }
+var EditMap<String, Int>.NANCY: Int by EditMapDelegate { "NANCY" }
+
 inline fun <reified E : Throwable> TestLayers.shouldRollback(
     block: (TestLayers) -> Unit,
 ): E {

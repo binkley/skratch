@@ -39,7 +39,7 @@ internal class MutableLayersTest {
         }
         val layer = layers.push {
             this["BOB"] = constantRule(3)
-            this["NANCY"] = 4
+            NANCY = 4
         }
 
         val nancy: Int? = layers.getAs("NANCY", listOf(layer))
@@ -55,7 +55,7 @@ internal class MutableLayersTest {
 
         layers.shouldRollback<MissingRuleException> {
             it.edit {
-                this["BOB"] = 3
+                BOB = 3
             }
         }
     }
@@ -63,6 +63,17 @@ internal class MutableLayersTest {
     @Test
     fun `should hide keys`() {
         val layers = TestLayers { this["BOB"] = lastOrNullRule() }
+
+        layers.shouldBeEmpty()
+    }
+
+    @Test
+    fun `should hide delegated keys`() {
+        val layers = TestLayers { this["BOB"] = lastOrDefaultRule(3) }
+
+        layers.edit {
+            BOB = null
+        }
 
         layers.shouldBeEmpty()
     }
@@ -83,7 +94,7 @@ internal class MutableLayersTest {
         whatIf.history.size shouldBe layers.history.size
 
         layers.shouldRollback<MissingRuleException> {
-            layers.whatIf { this["BOB"] = 17 }
+            layers.whatIf { BOB = 17 }
         }
     }
 
@@ -96,7 +107,7 @@ internal class MutableLayersTest {
         }
         val layer = layers.push {
             this["BOB"] = constantRule(3)
-            this["NANCY"] = 4
+            NANCY = 4
         }
 
         val whatIfNot = layers.whatIfNot(layer)
@@ -114,7 +125,7 @@ internal class MutableLayersTest {
     fun `should pop`() {
         val layers = TestLayers(
             TestLayer { this["BOB"] = lastOrDefaultRule(17) },
-            TestLayer { this["BOB"] = 3 }
+            TestLayer { BOB = 3 }
         )
 
         layers.pop()
@@ -136,7 +147,7 @@ internal class MutableLayersTest {
         val layers = TestLayers { this["BOB"] = lastOrDefaultRule(17) }
 
         layers.shouldRollback<MissingRuleException> {
-            layers.push { this["NANCY"] = 3 }
+            layers.push { NANCY = 3 }
         }
     }
 }
