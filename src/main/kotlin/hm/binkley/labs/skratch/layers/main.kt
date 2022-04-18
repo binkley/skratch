@@ -33,7 +33,7 @@ fun main() {
     )
     println(
         layers.push {
-            this["BOB"] = 77.toValue()
+            this["BOB"] = 77
         }
     )
     println("HISTORY -> ${layers.history}")
