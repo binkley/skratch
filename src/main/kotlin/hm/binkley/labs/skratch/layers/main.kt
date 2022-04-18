@@ -73,6 +73,19 @@ fun main() {
     val asInt: Int? = enumyLayers.getAs(Left)
     println("LEFT -> $asInt")
 
+    println("-- ENUM-Y UNDO")
+    enumyLayers.push {
+        LEFT = null
+    }
+    println("TOP -> ${enumyLayers.top}")
+    println("LEFT -> ${enumyLayers[Left]}")
+    enumyLayers.edit {
+        LEFT = 9
+    }
+    println("TOP -> ${enumyLayers.top}")
+    println("LEFT -> ${enumyLayers[Left]}")
+
+    println("-- ENUM-Y DISPLAY")
     println(display(enumyLayers))
 
     println("-- ENUM-Y CEILINGS AND FLOORS")

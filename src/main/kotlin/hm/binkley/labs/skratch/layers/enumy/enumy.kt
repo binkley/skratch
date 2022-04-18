@@ -37,7 +37,7 @@ open class EnumyLayer(
     override fun <N : EnumyLayer> copy(): N = EnumyLayer(toMap()).self()
 }
 
-var EditMap<EnumyKey, Number>.LEFT: Number by EditMapDelegate { Left }
+var EditMap<EnumyKey, Number>.LEFT: Number? by EditMapDelegate { Left }
 var EditMap<EnumyKey, Number>.SMALL: Number by EditMapDelegate { Small }
 var EditMap<EnumyKey, Number>.LARGE: Number by EditMapDelegate { Large }
 
