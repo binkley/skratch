@@ -12,8 +12,8 @@ internal class MutableLayersTest {
     @Test
     fun `should distinguish mutable from immutable`() {
         val layers = TestLayers()
-        layers.top.edit { } // should compile
-        // (layers as Layers<String, Int, *>).top.edit() // no compile
+        layers.edit { } // should compile
+        // (layers as Layers<String, Int, *>).edit() // no compile
     }
 
     @Test

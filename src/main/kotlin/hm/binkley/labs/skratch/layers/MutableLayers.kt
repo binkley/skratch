@@ -47,7 +47,7 @@ open class MutableLayers<
 
     override fun whatIf(
         block: EditMap<K, V>.() -> Unit,
-    ): MutableLayers<K, V, M> = whatIf(copyOfTop().edit(block))
+    ): MutableLayers<K, V, M> = whatIf(top.copy().edit(block))
 
     override fun whatIfNot(except: Collection<Layer<K, V, *>>):
         MutableLayers<K, V, M> = validate { it.removeAll(except.toSet()) }
@@ -70,12 +70,10 @@ open class MutableLayers<
         return valid
     }
 
-    private fun copyOfTop() = top.copy()
-
     /**
      * Applies [block] to a shallow defensive copy of the layers, and
      * returns a new [MutableLayers] using the updates from [block].
-     * As the init block validates the initial layers, the return is valid.
+     * Since `init` validates the initial layers, the return is valid.
      */
     private fun validate(
         block: (MutableStack<M>) -> Unit,

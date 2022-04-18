@@ -37,8 +37,16 @@ open class EnumyLayer(
     override fun <N : EnumyLayer> copy(): N = EnumyLayer(toMap()).self()
 }
 
+/**
+ * Shorthand for `this[Left]` in an edit block.  Assigning `null` deletes
+ * the key.
+ */
 var EditMap<EnumyKey, Number>.LEFT: Number? by EditMapDelegate { Left }
+
+/** Shorthand for `this[Small]` in an edit block. */
 var EditMap<EnumyKey, Number>.SMALL: Number by EditMapDelegate { Small }
+
+/** Shorthand for `this[Large]` in an edit block. */
 var EditMap<EnumyKey, Number>.LARGE: Number by EditMapDelegate { Large }
 
 val initialRules = object : EnumyLayer() {
@@ -55,5 +63,7 @@ val initialRules = object : EnumyLayer() {
 
 class EnumyLayers :
     MutableLayers<EnumyKey, Number, EnumyLayer>(::EnumyLayer, initialRules) {
-    init { push { } } // Start with blank layer for edits
+    init {
+        push { }
+    } // Start with blank layer for edits
 }

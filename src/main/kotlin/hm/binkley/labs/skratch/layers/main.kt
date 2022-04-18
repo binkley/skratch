@@ -10,8 +10,10 @@ import hm.binkley.labs.skratch.layers.enumy.SMALL
 import hm.binkley.labs.skratch.layers.enumy.Small
 import hm.binkley.labs.skratch.layers.rules.LastOrDefaultRule
 import hm.binkley.labs.skratch.layers.rules.ceilRule
+import hm.binkley.labs.skratch.layers.rules.constantRule
 import hm.binkley.labs.skratch.layers.rules.floorRule
 import hm.binkley.labs.skratch.layers.rules.lastOrDefaultRule
+import kotlin.random.Random
 
 fun main() {
     val layers = MyLayers()
@@ -63,7 +65,9 @@ fun main() {
     }
     val fooKey = object : AbstractEnumyKey("FOO") {}
     enumyLayers.push {
+        // These two are equivalent:
         this[fooKey] = rule<Float>("foo") { _, _, _ -> 1.1f }
+        this[fooKey] = constantRule(1.1f)
     }
 
     println("-- ENUM-Y ADD LEFTS")
@@ -72,6 +76,16 @@ fun main() {
     println("LEFT -> ${enumyLayers[Left]}")
     val asInt: Int? = enumyLayers.getAs(Left)
     println("LEFT -> $asInt")
+
+    enumyLayers.edit {
+        this[fooKey] = rule<Float>("random") { _, _, _ -> Random.nextFloat() }
+    }
+    println("FOO -> ${enumyLayers[fooKey]}")
+    enumyLayers.edit {
+        // Hide "FOO" key
+        this[fooKey] = rule<Float>("random") { _, _, _ -> null }
+    }
+    println("KEYS -> ${enumyLayers.keys}")
 
     println("-- ENUM-Y UNDO")
     enumyLayers.push {
@@ -102,7 +116,7 @@ fun main() {
     println("LAYERS -> $enumyLayers")
     enumyLayers.push {
         SMALL = 11
-        LARGE = 11
+        LARGE = SMALL // prop delegate reads as well
     }
     println("HISTORY -> ${enumyLayers.history}")
     println("LAYERS -> $enumyLayers")
