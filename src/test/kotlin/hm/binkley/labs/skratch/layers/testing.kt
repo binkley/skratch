@@ -33,9 +33,9 @@ class TestLayer(
  * - `TestLayers(history...)` - provides a valid history that includes a first
  *   layer
  */
-class TestLayers(
+class TestLayers constructor(
     history: List<TestLayer> = listOf(TestLayer()),
-) : MutableLayers<String, Int, TestLayer>(::TestLayer, history) {
+) : MutableLayers<String, Int, TestLayer>(history, ::TestLayer) {
     constructor(initialRules: TestLayer) : this(listOf(initialRules))
     constructor(block: EditMap<String, Int>.() -> Unit) : this() {
         edit(block)

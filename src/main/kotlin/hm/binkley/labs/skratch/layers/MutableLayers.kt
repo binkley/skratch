@@ -19,13 +19,14 @@ open class MutableLayers<
     private val newLayer: () -> M,
 ) : AbstractMap<K, V>(), Layers<K, V, M> {
     constructor(
+        initialRules: () -> M,
         newLayer: () -> M,
-        initialRules: M,
-    ) : this(mutableStackOf(initialRules), newLayer)
+    ) : this(mutableStackOf(initialRules()), newLayer)
 
+    /** @todo Only used in testing for pathological cases */
     constructor(
-        newLayer: () -> M,
         layers: List<M>,
+        newLayer: () -> M,
     ) : this(layers.toMutableStack(), newLayer)
 
     init {

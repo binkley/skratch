@@ -77,6 +77,7 @@ fun main() {
     val asInt: Int? = enumyLayers.getAs(Left)
     println("LEFT -> $asInt")
 
+    println("-- ENUM-Y FOONESS")
     enumyLayers.edit {
         this[fooKey] = rule<Float>("random") { _, _, _ -> Random.nextFloat() }
     }
@@ -123,7 +124,7 @@ fun main() {
 }
 
 class MyLayers :
-    MutableLayers<String, Number, MyLayer>(::MyLayer, MyLayer()) {
+    MutableLayers<String, Number, MyLayer>(::MyLayer, ::MyLayer) {
     init {
         // First layer via editing initial empty layer
         edit {

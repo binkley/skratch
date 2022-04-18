@@ -49,20 +49,20 @@ var EditMap<EnumyKey, Number>.SMALL: Number by EditMapDelegate { Small }
 /** Shorthand for `this[Large]` in an edit block. */
 var EditMap<EnumyKey, Number>.LARGE: Number by EditMapDelegate { Large }
 
-val initialRules = object : EnumyLayer() {
-    init {
-        edit {
-            this[Left] = lastRule()
-            this[Right] = lastOrNullRule()
-            this[Small] = lastOrNullRule()
-            this[Medium] = lastOrNullRule()
-            this[Large] = lastOrNullRule()
-        }
+fun initialRules(): EnumyLayer {
+    val x = EnumyLayer()
+    x.edit {
+        this[Left] = lastRule()
+        this[Right] = lastOrNullRule()
+        this[Small] = lastOrNullRule()
+        this[Medium] = lastOrNullRule()
+        this[Large] = lastOrNullRule()
     }
+    return x
 }
 
 class EnumyLayers :
-    MutableLayers<EnumyKey, Number, EnumyLayer>(::EnumyLayer, initialRules) {
+    MutableLayers<EnumyKey, Number, EnumyLayer>(::initialRules, ::EnumyLayer) {
     init {
         push { }
     } // Start with blank layer for edits
