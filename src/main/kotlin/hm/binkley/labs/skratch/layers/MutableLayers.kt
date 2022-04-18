@@ -34,7 +34,7 @@ open class MutableLayers<
     }
 
     override val history: Stack<Layer<K, V, M>> get() = layers
-    override val entries: Set<Entry<K, V>> get() = RuledEntries()
+    override val entries: Set<Entry<K, V>> get() = ValuedEntries()
 
     override fun <T : V> getAs(
         key: K,
@@ -112,7 +112,7 @@ open class MutableLayers<
         }.filterIsInstance<ValueOrRule<T>>()
 
     /** Filters non-null values so rules can hide keys. */
-    private inner class RuledEntries : AbstractSet<Entry<K, V>>() {
+    private inner class ValuedEntries : AbstractSet<Entry<K, V>>() {
         override val size: Int get() = iterator().size()
         override fun iterator(): Iterator<Entry<K, V>> = NonNullValues()
 
