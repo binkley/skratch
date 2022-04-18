@@ -141,8 +141,7 @@ class MyLayers :
 open class MyLayer(
     map: Map<String, ValueOrRule<Number>> = emptyMap(),
 ) : MutableLayer<String, Number, MyLayer>(map) {
-    override fun <N : MyLayer> copy(): N =
-        MyLayer(toMap()).self()
+    override fun <N : MyLayer> copy(): N = MyLayer(toMap()).self()
 }
 
 open class OhMyLayer<M : OhMyLayer<M>> :

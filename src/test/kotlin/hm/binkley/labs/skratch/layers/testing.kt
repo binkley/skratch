@@ -29,6 +29,7 @@ class TestLayer(
  * - `TestLayers(firstLayer)` - provides a valid first layer
  * - `TestLayers(block)` - provides valid edits to an empty first layer
  * - `TestLayers(history)` - provides a valid history that includes a first
+ *   layer
  * - `TestLayers(history...)` - provides a valid history that includes a first
  *   layer
  */
@@ -42,7 +43,12 @@ class TestLayers(
     constructor(vararg history: TestLayer) : this(history.asList())
 }
 
+/**
+ * Convenience for the "BOB" property when in an edit map block.
+ * "BOB" is deleteable through assignment of `null`.
+ */
 var EditMap<String, Int>.BOB: Int? by EditMapDelegate { "BOB" }
+/** Convenience for the "NANCY" property when in an edit map block. */
 var EditMap<String, Int>.NANCY: Int by EditMapDelegate { "NANCY" }
 
 inline fun <reified E : Throwable> TestLayers.shouldRollback(

@@ -29,16 +29,19 @@ interface Layers<
     fun <T : V> getAs(key: K, vararg except: Layer<K, V, *>): T? =
         getAs(key, except.asList())
 
-    /** Gets the top layer. */
+    /**
+     * Gets the top layer.
+     * Implementers provide "peek()", and callers typically use [top].
+     */
     fun peek(): L
 
-    /** Presents a view of the layers as-if [layer] were the top layer. */
+    /** Presents a view as-if [layer] were the top layer. */
     fun whatIf(layer: L): Layers<K, V, L>
 
-    /** Presents a view of the layers as-if [block] edited the top layer. */
+    /** Presents a view as-if [block] edited the top layer. */
     fun whatIf(block: EditMap<K, V>.() -> Unit): Layers<K, V, L>
 
-    /** Presents a view of the layers as-if [except] were absent. */
+    /** Presents a view as-if [except] were absent. */
     fun whatIfNot(except: Collection<Layer<K, V, *>>): Layers<K, V, L>
 
     /** Convenience for [whatIfNot]. */
@@ -46,7 +49,10 @@ interface Layers<
         whatIfNot(except.asList())
 }
 
-/** Convenience property for [Layers.peek]. */
+/**
+ * The top (current) layer for editing.
+ * Convenience property for [Layers.peek].
+ */
 val <
     K : Any,
     V : Any,
@@ -54,7 +60,7 @@ val <
     > Layers<K, V, L>.top
     get() = peek()
 
-/** Finds the layer containing [rule] assigned to [key]. */
+/** Finds the most recent layer containing [rule] assigned to [key]. */
 fun <K : Any, V : Any> Layers<K, V, *>.find(
     key: K,
     rule: Rule<K, V, *>
@@ -74,4 +80,4 @@ fun <
     > Layers<K, V, *>.getAsWithout(
     key: K,
     rule: Rule<K, V, *>
-): T = getAs(key, find(key, rule))!! // !! as [rule] must be present
+): T = getAs(key, find(key, rule))!! // `!!` as [rule] must be present

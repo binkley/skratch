@@ -7,7 +7,7 @@ interface EditMap<K : Any, V : Any> : MutableMap<K, ValueOrRule<V>> {
     /** Convenience for converting [value] to a [Value]. */
     fun put(key: K, value: V) = put(key, value.toValue())
 
-    /** Creates an untyped rule. */
+    /** Creates an ad-hoc rule. */
     fun <T : V> rule(
         name: String,
         block: (K, Sequence<T>, Layers<K, V, *>) -> T?,
@@ -20,7 +20,11 @@ interface EditMap<K : Any, V : Any> : MutableMap<K, ValueOrRule<V>> {
     }
 }
 
-/** Convenience for converting [value] to a [Value]. */
+/**
+ * Convenience for converting [value] to a [Value].
+ *
+ * @see [EditMap.put]
+ */
 operator fun <
     K : Any,
     V : Any,

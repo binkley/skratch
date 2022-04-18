@@ -30,7 +30,7 @@ open class MutableLayers<
 
     init {
         if (layers.isEmpty()) throw MissingFirstLayerException
-        keys().forEach { ruleForOrThrow<V>(it) }
+        allKeys().forEach { ruleForOrThrow<V>(it) }
     }
 
     override val history: Stack<Layer<K, V, M>> get() = layers
@@ -84,11 +84,8 @@ open class MutableLayers<
         return MutableLayers(layersCopy, newLayer)
     }
 
-    // The "keys()" fun is NOT the [keys] property
-    private fun keys(): Set<K> =
-        layers.asSequence().flatMap {
-            it.keys
-        }.toSet()
+    // The "allKeys()" fun is NOT the [keys] property
+    private fun allKeys(): Set<K> = layers.flatMap { it.keys }.toSet()
 
     private fun <T : V> valueFor(key: K): T? {
         val rule = ruleForOrThrow<T>(key)
@@ -117,7 +114,7 @@ open class MutableLayers<
         override fun iterator(): Iterator<Entry<K, V>> = NonNullValues()
 
         private inner class NonNullValues(
-            private val kit: Iterator<K> = keys().iterator(),
+            private val kit: Iterator<K> = allKeys().iterator(),
         ) : AbstractIterator<Entry<K, V>>() {
             override fun computeNext() {
                 while (kit.hasNext()) {
@@ -132,9 +129,17 @@ open class MutableLayers<
     }
 }
 
+/**
+ * Swaps out the last element in the list, returning the previous last
+ * element.
+ */
 private fun <T> MutableList<T>.replaceLast(element: T): T =
     set(lastIndex, element)
 
+/**
+ * Exhausts the iterator to find the element count.
+ * The iterator is not reusable afterwards.
+ */
 private fun <T> Iterator<T>.size(): Int {
     var n = 0
     while (hasNext()) {
