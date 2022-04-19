@@ -33,8 +33,7 @@ fun main() {
             MyLayer(index, mapOf("STRING" to 3.toValue()))
         }
     )
-    println("HISTORY -> ${layers.history}")
-    println("LAYERS -> $layers")
+    println("LAYERS -> ${layers.display()}")
     println("STRING -> ${layers["STRING"]}")
     println("--- ADD CUSTOM")
     println(layers.push(layers::doHickey))
@@ -49,8 +48,7 @@ fun main() {
             this["BOB"] = 77
         }
     )
-    println("HISTORY -> ${layers.history}")
-    println("LAYERS -> $layers")
+    println("LAYERS -> ${layers.display()}")
     println("STRING -> ${layers["STRING"]}")
 
     // TODO: Can the <T> be avoided?
@@ -61,13 +59,12 @@ fun main() {
 
     println("-- MORE EXTENDING")
     println("WORDY -> $wordy")
-    println("HISTORY -> ${layers.history}")
-    println("LAYERS -> $layers")
+    println("LAYERS -> ${layers.display()}")
     println("STRING -> ${layers["STRING"]}")
 
     val enumyLayers = EnumyLayers()
     println("-- ENUM-Y INIT")
-    println("HISTORY -> ${enumyLayers.history}")
+    println("LAYERS -> ${enumyLayers.display()}")
 
     enumyLayers.edit {
         LEFT = 7
@@ -83,8 +80,7 @@ fun main() {
     }
 
     println("-- ENUM-Y ADD LEFTS")
-    println("HISTORY -> ${enumyLayers.history}")
-    println("LAYERS -> $enumyLayers")
+    println("LAYERS -> ${enumyLayers.display()}")
     println("LEFT -> ${enumyLayers[Left]}")
     val asInt: Int? = enumyLayers.getAs(Left)
     println("LEFT -> $asInt")
@@ -113,7 +109,7 @@ fun main() {
     println("LEFT -> ${enumyLayers[Left]}")
 
     println("-- ENUM-Y DISPLAY")
-    println(display(enumyLayers))
+    println(enumyLayers.display())
 
     println("-- ENUM-Y CEILINGS AND FLOORS")
     enumyLayers.push {
@@ -125,17 +121,15 @@ fun main() {
         SMALL = 3
         LARGE = 3
     }
-    println("HISTORY -> ${enumyLayers.history}")
-    println("LAYERS -> $enumyLayers")
+    println("LAYERS -> ${enumyLayers.display()}")
     enumyLayers.push {
         SMALL = 11
         LARGE = SMALL // prop delegate reads as well
     }
-    println("HISTORY -> ${enumyLayers.history}")
-    println("LAYERS -> $enumyLayers")
+    println("LAYERS -> ${enumyLayers.display()}")
 }
 
-private fun <K : Any, V : Any> display(layers: Layers<K, V, *>) =
-    layers.history.joinToString("\n", "\$NAME:\n") { layer ->
-        "${layer.index + 1} (${layer::class.simpleName}): $layer"
+private fun Layers<*, *, *>.display() =
+    history.joinToString("\n", "\$NAME:\n") { layer ->
+        "* ${layer.index + 1} (${layer::class.simpleName}): $layer"
     }
