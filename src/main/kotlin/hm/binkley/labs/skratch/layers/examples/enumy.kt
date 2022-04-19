@@ -1,11 +1,11 @@
-package hm.binkley.labs.skratch.layers.enumy
+package hm.binkley.labs.skratch.layers.examples
 
 import hm.binkley.labs.skratch.layers.EditMap
 import hm.binkley.labs.skratch.layers.EditMapDelegate
 import hm.binkley.labs.skratch.layers.MutableLayer
 import hm.binkley.labs.skratch.layers.MutableLayers
 import hm.binkley.labs.skratch.layers.ValueOrRule
-import hm.binkley.labs.skratch.layers.enumy.EnumyKey.AbstractEnumyKey
+import hm.binkley.labs.skratch.layers.examples.EnumyKey.AbstractEnumyKey
 import hm.binkley.labs.skratch.layers.rules.lastOrNullRule
 import hm.binkley.labs.skratch.layers.rules.lastRule
 import hm.binkley.labs.skratch.layers.self

@@ -1,13 +1,16 @@
 package hm.binkley.labs.skratch.layers
 
-import hm.binkley.labs.skratch.layers.enumy.EnumyKey.AbstractEnumyKey
-import hm.binkley.labs.skratch.layers.enumy.EnumyLayers
-import hm.binkley.labs.skratch.layers.enumy.LARGE
-import hm.binkley.labs.skratch.layers.enumy.LEFT
-import hm.binkley.labs.skratch.layers.enumy.Large
-import hm.binkley.labs.skratch.layers.enumy.Left
-import hm.binkley.labs.skratch.layers.enumy.SMALL
-import hm.binkley.labs.skratch.layers.enumy.Small
+import hm.binkley.labs.skratch.layers.examples.EnumyKey.AbstractEnumyKey
+import hm.binkley.labs.skratch.layers.examples.EnumyLayers
+import hm.binkley.labs.skratch.layers.examples.LARGE
+import hm.binkley.labs.skratch.layers.examples.LEFT
+import hm.binkley.labs.skratch.layers.examples.Large
+import hm.binkley.labs.skratch.layers.examples.Left
+import hm.binkley.labs.skratch.layers.examples.MyLayer
+import hm.binkley.labs.skratch.layers.examples.MyLayers
+import hm.binkley.labs.skratch.layers.examples.MyWordLayer
+import hm.binkley.labs.skratch.layers.examples.SMALL
+import hm.binkley.labs.skratch.layers.examples.Small
 import hm.binkley.labs.skratch.layers.rules.LastOrDefaultRule
 import hm.binkley.labs.skratch.layers.rules.ceilRule
 import hm.binkley.labs.skratch.layers.rules.constantRule
@@ -121,43 +124,6 @@ fun main() {
     }
     println("HISTORY -> ${enumyLayers.history}")
     println("LAYERS -> $enumyLayers")
-}
-
-class MyLayers :
-    MutableLayers<String, Number, MyLayer>(::MyLayer, ::MyLayer) {
-    init {
-        // First layer via editing initial empty layer
-        edit {
-            this["HUM-HUM"] = lastOrDefaultRule(-2)
-            this["message"] = lastOrDefaultRule(-3)
-        }
-        // Ensure edits afterwards do not overwrite pre-defined rules
-        push { }
-    }
-
-    fun doHickey(): MyLayer =
-        MyLayer(mapOf("HUM-HUM" to 2.toValue()))
-}
-
-open class MyLayer(
-    map: Map<String, ValueOrRule<Number>> = emptyMap(),
-) : MutableLayer<String, Number, MyLayer>(map) {
-    override fun <N : MyLayer> copy(): N = MyLayer(toMap()).self()
-}
-
-open class OhMyLayer<M : OhMyLayer<M>> :
-    MyLayer(mapOf("message" to 17.toValue())) {
-    open fun ohMy() = println("OH, MY, ${this["message"]}!")
-}
-
-class MyWordLayer : OhMyLayer<MyWordLayer>() {
-    init {
-        edit {
-            this["message"] = 31.toValue()
-        }
-    }
-
-    fun myWord() = println("MY, WORD!")
 }
 
 private fun <K : Any, V : Any> display(layers: Layers<K, V, *>): String {
