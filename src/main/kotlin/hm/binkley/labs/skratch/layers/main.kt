@@ -23,13 +23,21 @@ fun main() {
 
     println("--- ADD NOT EMPTY")
     val lastOrNegativeOne = LastOrDefaultRule<String, Number, Number>(-1)
-    println(layers.push(MyLayer(mapOf("STRING" to lastOrNegativeOne))))
-    println(layers.push(MyLayer(mapOf("STRING" to 3.toValue()))))
+    println(
+        layers.push { index ->
+            MyLayer(index, mapOf("STRING" to lastOrNegativeOne))
+        }
+    )
+    println(
+        layers.push { index ->
+            MyLayer(index, mapOf("STRING" to 3.toValue()))
+        }
+    )
     println("HISTORY -> ${layers.history}")
     println("LAYERS -> $layers")
     println("STRING -> ${layers["STRING"]}")
     println("--- ADD CUSTOM")
-    println(layers.push(layers.doHickey()))
+    println(layers.push(layers::doHickey))
     println("--- ADD VIA BLOCK")
     println(
         layers.push {
@@ -45,7 +53,8 @@ fun main() {
     println("LAYERS -> $layers")
     println("STRING -> ${layers["STRING"]}")
 
-    val wordy = layers.push(MyWordLayer()).apply {
+    // TODO: Can the <T> be avoided?
+    val wordy = layers.push<MyWordLayer>(::MyWordLayer).apply {
         ohMy()
         myWord()
     }
@@ -126,8 +135,7 @@ fun main() {
     println("LAYERS -> $enumyLayers")
 }
 
-private fun <K : Any, V : Any> display(layers: Layers<K, V, *>): String {
-    return layers.history.mapIndexed { index, layer ->
-        "${index + 1} (${layer::class.simpleName}): $layer"
-    }.joinToString("\n", "\$NAME:\n")
-}
+private fun <K : Any, V : Any> display(layers: Layers<K, V, *>) =
+    layers.history.joinToString("\n", "\$NAME:\n") { layer ->
+        "${layer.index + 1} (${layer::class.simpleName}): $layer"
+    }

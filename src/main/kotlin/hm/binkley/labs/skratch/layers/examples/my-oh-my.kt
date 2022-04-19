@@ -19,22 +19,27 @@ class MyLayers :
         push { }
     }
 
-    fun doHickey(): MyLayer =
-        MyLayer(mapOf("HUM-HUM" to 2.toValue()))
+    fun doHickey(index: Int): MyLayer =
+        MyLayer(index, mapOf("HUM-HUM" to 2.toValue()))
 }
 
 open class MyLayer(
+    index: Int,
     map: Map<String, ValueOrRule<Number>> = emptyMap(),
-) : MutableLayer<String, Number, MyLayer>(map) {
-    override fun <N : MyLayer> copy(): N = MyLayer(toMap()).self()
+) : MutableLayer<String, Number, MyLayer>(index, map) {
+    override fun <N : MyLayer> copy(): N = MyLayer(index, toMap()).self()
 }
 
-open class OhMyLayer<M : OhMyLayer<M>> :
-    MyLayer(mapOf("message" to 17.toValue())) {
+open class OhMyLayer<M : OhMyLayer<M>>(
+    index: Int,
+) :
+    MyLayer(index, mapOf("message" to 17.toValue())) {
     open fun ohMy() = println("OH, MY, ${this["message"]}!")
 }
 
-class MyWordLayer : OhMyLayer<MyWordLayer>() {
+class MyWordLayer(
+    index: Int,
+) : OhMyLayer<MyWordLayer>(index) {
     init {
         edit {
             this["message"] = 31.toValue()

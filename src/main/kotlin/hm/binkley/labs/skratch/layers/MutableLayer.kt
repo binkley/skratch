@@ -7,6 +7,7 @@ abstract class MutableLayer<
     V : Any,
     M : MutableLayer<K, V, M>,
     >(
+    override val index: Int,
     map: Map<K, ValueOrRule<V>>,
 ) : Layer<K, V, M>, AbstractMap<K, ValueOrRule<V>>() {
     private val map = map.toMutableMap() // Defensive copy

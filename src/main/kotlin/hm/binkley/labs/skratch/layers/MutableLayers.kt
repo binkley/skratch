@@ -9,6 +9,14 @@ import org.jetbrains.kotlin.utils.addToStdlib.firstIsInstanceOrNull
 import java.util.AbstractMap.SimpleImmutableEntry
 import kotlin.collections.Map.Entry
 
+fun interface NewLayer<
+    K : Any,
+    V : Any,
+    M : MutableLayer<K, V, M>,
+    > {
+    operator fun invoke(index: Int): M
+}
+
 // TODO: Messy relationships among "push", "edit", and "whatIf"
 open class MutableLayers<
     K : Any,
@@ -16,17 +24,17 @@ open class MutableLayers<
     M : MutableLayer<K, V, M>,
     > private constructor(
     private val layers: MutableStack<M>,
-    private val newLayer: () -> M,
+    private val newLayer: NewLayer<K, V, M>,
 ) : AbstractMap<K, V>(), Layers<K, V, M> {
     constructor(
-        initialRules: () -> M,
-        newLayer: () -> M,
-    ) : this(mutableStackOf(initialRules()), newLayer)
+        initialRules: NewLayer<K, V, M>,
+        newLayer: NewLayer<K, V, M>,
+    ) : this(mutableStackOf(initialRules(0)), newLayer)
 
     /** @todo Only used in testing for pathological cases */
     constructor(
         layers: List<M>,
-        newLayer: () -> M,
+        newLayer: NewLayer<K, V, M>,
     ) : this(layers.toMutableStack(), newLayer)
 
     init {
@@ -58,13 +66,13 @@ open class MutableLayers<
         if (1 < layers.size) layers.pop()
         else throw MissingFirstLayerException
 
-    fun <N : M> push(layer: N): N {
-        val valid = validate { it.push(layer) }.top
+    fun <N : M> push(layer: NewLayer<K, V, M>): N {
+        val valid = validate { it.push(layer(layers.size).self()) }.top
         return layers.push(valid).self()
     }
 
     fun push(block: EditMap<K, V>.() -> Unit): M =
-        push(newLayer().edit(block))
+        push { index -> newLayer(index).edit(block) }
 
     fun edit(block: EditMap<K, V>.() -> Unit): M {
         val valid = whatIf(block).top

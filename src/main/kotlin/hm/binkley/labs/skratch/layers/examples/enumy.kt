@@ -32,9 +32,11 @@ object Medium : TeeShirtSize()
 object Large : TeeShirtSize()
 
 open class EnumyLayer(
+    index: Int,
     map: Map<EnumyKey, ValueOrRule<Number>> = emptyMap(),
-) : MutableLayer<EnumyKey, Number, EnumyLayer>(map) {
-    override fun <N : EnumyLayer> copy(): N = EnumyLayer(toMap()).self()
+) : MutableLayer<EnumyKey, Number, EnumyLayer>(index, map) {
+    override fun <N : EnumyLayer> copy(): N =
+        EnumyLayer(index, toMap()).self()
 }
 
 /**
@@ -49,8 +51,8 @@ var EditMap<EnumyKey, Number>.SMALL: Number by EditMapDelegate { Small }
 /** Shorthand for `this[Large]` in an edit block. */
 var EditMap<EnumyKey, Number>.LARGE: Number by EditMapDelegate { Large }
 
-fun initialRules(): EnumyLayer {
-    val x = EnumyLayer()
+fun initialRules(index: Int): EnumyLayer {
+    val x = EnumyLayer(index)
     x.edit {
         this[Left] = lastRule()
         this[Right] = lastOrNullRule()
