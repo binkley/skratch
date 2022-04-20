@@ -24,7 +24,7 @@ internal class MutableLayersTest {
             TestLayers(emptyList())
         }
         shouldThrow<MissingRuleException> {
-            TestLayers(TestLayer(badMap))
+            TestLayers(TestLayer(0, badMap))
         }
         shouldThrow<MissingRuleException> {
             TestLayers { putAll(badMap) }
@@ -124,8 +124,8 @@ internal class MutableLayersTest {
     @Test
     fun `should pop`() {
         val layers = TestLayers(
-            TestLayer { this["BOB"] = lastOrDefaultRule(17) },
-            TestLayer { BOB = 3 }
+            TestLayer(0) { this["BOB"] = lastOrDefaultRule(17) },
+            TestLayer(1) { BOB = 3 }
         )
 
         layers.pop()

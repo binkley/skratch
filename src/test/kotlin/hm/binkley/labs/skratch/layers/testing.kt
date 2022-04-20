@@ -14,13 +14,15 @@ class TestEditMap(
  * - `TestLayer(block)` - provides a layer with `block` edits
  */
 class TestLayer(
+    index: Int,
     map: Map<String, ValueOrRule<Int>> = emptyMap(),
-) : MutableLayer<String, Int, TestLayer>(map) {
-    constructor(block: EditMap<String, Int>.() -> Unit) : this() {
+) : MutableLayer<String, Int, TestLayer>(index, map) {
+    constructor(index: Int, block: EditMap<String, Int>.() -> Unit) :
+        this(index) {
         edit(block)
     }
 
-    override fun <N : TestLayer> copy(): N = TestLayer(toMap()).self()
+    override fun <N : TestLayer> copy(): N = TestLayer(index, toMap()).self()
 }
 
 /**
@@ -34,12 +36,13 @@ class TestLayer(
  *   layer
  */
 class TestLayers constructor(
-    history: List<TestLayer> = listOf(TestLayer()),
+    history: List<TestLayer> = listOf(TestLayer(0)),
 ) : MutableLayers<String, Int, TestLayer>(history, ::TestLayer) {
     constructor(initialRules: TestLayer) : this(listOf(initialRules))
     constructor(block: EditMap<String, Int>.() -> Unit) : this() {
         edit(block)
     }
+
     constructor(vararg history: TestLayer) : this(history.asList())
 }
 
@@ -48,6 +51,7 @@ class TestLayers constructor(
  * "BOB" is deleteable through assignment of `null`.
  */
 var EditMap<String, Int>.BOB: Int? by EditMapDelegate { "BOB" }
+
 /** Convenience for the "NANCY" property when in an edit map block. */
 var EditMap<String, Int>.NANCY: Int by EditMapDelegate { "NANCY" }
 

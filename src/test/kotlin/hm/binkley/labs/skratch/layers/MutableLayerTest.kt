@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test
 internal class MutableLayerTest {
     @Test
     fun `should edit self`() {
-        val layer = TestLayer()
+        val layer = TestLayer(0)
 
         layer.edit { this["BOB"] = 17 }
 
@@ -17,7 +17,7 @@ internal class MutableLayerTest {
     @Test
     fun `should defensive copy`() {
         val map = mutableMapOf("BOB" to 17.toValue())
-        val layer = TestLayer(map)
+        val layer = TestLayer(0, map)
 
         layer shouldBe map
 
