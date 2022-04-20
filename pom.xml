@@ -113,6 +113,15 @@
             <artifactId>kotlinx-coroutines-core</artifactId>
             <version>${kotlinx-coroutines.version}</version>
         </dependency>
+        <!--
+        TODO: Something is pulling in Kotlin 1.5.x, and above deps does not
+              fix
+         -->
+        <dependency>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-compiler-embeddable</artifactId>
+            <version>${kotlin.version}</version>
+        </dependency>
 
         <!-- Play with logging -->
         <dependency>
