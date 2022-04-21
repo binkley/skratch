@@ -1,8 +1,5 @@
 package hm.binkley.util
 
-import hm.binkley.util.ArrayMutableStack.Companion.asMutableStack
-import hm.binkley.util.ArrayMutableStack.Companion.asStack
-
 /** An immutable stack view of [List]. */
 interface Stack<out T> : List<T> {
     /**
