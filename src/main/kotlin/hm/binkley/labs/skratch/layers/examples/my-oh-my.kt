@@ -4,7 +4,6 @@ import hm.binkley.labs.skratch.layers.MutableLayer
 import hm.binkley.labs.skratch.layers.MutableLayers
 import hm.binkley.labs.skratch.layers.ValueOrRule
 import hm.binkley.labs.skratch.layers.rules.lastOrDefaultRule
-import hm.binkley.labs.skratch.layers.self
 import hm.binkley.labs.skratch.layers.toValue
 
 class MyLayers :
@@ -27,7 +26,7 @@ open class MyLayer(
     index: Int,
     map: Map<String, ValueOrRule<Number>> = emptyMap(),
 ) : MutableLayer<String, Number, MyLayer>(index, map) {
-    override fun <N : MyLayer> copy(): N = MyLayer(index, toMap()).self()
+    override fun copy() = MyLayer(index, toMap())
 }
 
 open class OhMyLayer<M : OhMyLayer<M>>(

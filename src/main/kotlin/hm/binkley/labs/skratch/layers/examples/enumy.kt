@@ -8,7 +8,6 @@ import hm.binkley.labs.skratch.layers.ValueOrRule
 import hm.binkley.labs.skratch.layers.examples.EnumyKey.AbstractEnumyKey
 import hm.binkley.labs.skratch.layers.rules.lastOrNullRule
 import hm.binkley.labs.skratch.layers.rules.lastRule
-import hm.binkley.labs.skratch.layers.self
 
 interface EnumyKey {
     val name: String
@@ -35,8 +34,7 @@ open class EnumyLayer(
     index: Int,
     map: Map<EnumyKey, ValueOrRule<Number>> = emptyMap(),
 ) : MutableLayer<EnumyKey, Number, EnumyLayer>(index, map) {
-    override fun <N : EnumyLayer> copy(): N =
-        EnumyLayer(index, toMap()).self()
+    override fun copy(): EnumyLayer = EnumyLayer(index, toMap())
 }
 
 /**
