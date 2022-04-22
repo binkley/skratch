@@ -66,8 +66,8 @@ open class MutableLayers<
         if (1 < layers.size) layers.pop()
         else throw MissingFirstLayerException
 
-    fun <N : M> push(layer: NewLayer<K, V, M>): N {
-        val valid = validate { it.push(layer(layers.size).self()) }.top
+    fun <N : M> push(newLayer: NewLayer<K, V, M>): N {
+        val valid = validate { it.push(newLayer(layers.size)) }.top
         return layers.push(valid).self()
     }
 
