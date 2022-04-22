@@ -26,7 +26,7 @@ open class MyLayer(
     index: Int,
     map: Map<String, ValueOrRule<Number>> = emptyMap(),
 ) : MutableLayer<String, Number, MyLayer>(index, map) {
-    override fun copy() = MyLayer(index, toMap())
+    override fun copy() = MyLayer(index, this)
 }
 
 open class OhMyLayer<M : OhMyLayer<M>>(

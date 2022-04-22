@@ -2,7 +2,6 @@ package hm.binkley.labs.skratch.layers
 
 import hm.binkley.labs.skratch.layers.examples.EnumyKey.AbstractEnumyKey
 import hm.binkley.labs.skratch.layers.examples.EnumyLayers
-import hm.binkley.labs.skratch.layers.examples.EnumyStuff
 import hm.binkley.labs.skratch.layers.examples.LARGE
 import hm.binkley.labs.skratch.layers.examples.LEFT
 import hm.binkley.labs.skratch.layers.examples.Large

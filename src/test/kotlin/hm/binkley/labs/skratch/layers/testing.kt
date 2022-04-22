@@ -22,7 +22,7 @@ class TestLayer(
         edit(block)
     }
 
-    override fun copy() = TestLayer(index, toMap())
+    override fun copy() = TestLayer(index, this)
 }
 
 /**

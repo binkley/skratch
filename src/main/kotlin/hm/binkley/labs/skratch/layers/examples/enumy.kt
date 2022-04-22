@@ -35,7 +35,7 @@ open class EnumyLayer(
     index: Int,
     map: Map<EnumyKey, ValueOrRule<Number>> = emptyMap(),
 ) : MutableLayer<EnumyKey, Number, EnumyLayer>(index, map) {
-    override fun copy(): EnumyLayer = EnumyLayer(index, toMap())
+    override fun copy(): EnumyLayer = EnumyLayer(index, this)
 }
 /**
  * Shorthand for `this[Left]` in an edit block.  Assigning `null` deletes
