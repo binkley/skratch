@@ -5,7 +5,6 @@ import hm.binkley.labs.skratch.layers.EditMapDelegate
 import hm.binkley.labs.skratch.layers.MutableLayer
 import hm.binkley.labs.skratch.layers.MutableLayers
 import hm.binkley.labs.skratch.layers.ValueOrRule
-import hm.binkley.labs.skratch.layers.container.AbstractContainer
 import hm.binkley.labs.skratch.layers.examples.EnumyKey.AbstractEnumyKey
 import hm.binkley.labs.skratch.layers.rules.lastOrNullRule
 import hm.binkley.labs.skratch.layers.rules.lastRule
@@ -37,6 +36,7 @@ open class EnumyLayer(
 ) : MutableLayer<EnumyKey, Number, EnumyLayer>(index, map) {
     override fun copy(): EnumyLayer = EnumyLayer(index, this)
 }
+
 /**
  * Shorthand for `this[Left]` in an edit block.  Assigning `null` deletes
  * the key.
@@ -71,13 +71,26 @@ class EnumyLayers :
     } // Start with blank layer for edits
 }
 
-class EnumyStuff(
+open class EnumyStuff(
     index: Int,
     map: Map<EnumyKey, ValueOrRule<Number>> = emptyMap(),
-) : AbstractContainer<EnumyKey, Number, EnumyLayer, EnumyStuff>(index, map) {
-    override fun copy(): EnumyStuff = TODO("Not yet implemented")
+    private val _contents: MutableList<EnumyLayer> = mutableListOf(),
+) : EnumyLayer(index, map) {
+    override fun copy() = EnumyStuff(index, this, _contents.toMutableList())
 
-    companion object {
-        fun new(index: Int) = EnumyStuff(index)
+    val contents: List<EnumyLayer> = _contents
+
+    operator fun plus(layer: EnumyLayer): EnumyStuff {
+        if (layer in _contents) error("Already in contents: $layer")
+        _contents += layer
+        return this
     }
+
+    operator fun minus(layer: EnumyLayer): EnumyStuff {
+        if (layer !in _contents) error("Not in contents: $layer")
+        _contents -= layer
+        return this
+    }
+
+    override fun toString() = "${super.toString()}: $contents"
 }
