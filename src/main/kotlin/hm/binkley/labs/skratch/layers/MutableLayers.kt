@@ -71,9 +71,11 @@ open class MutableLayers<
         return layers.push(valid).self()
     }
 
+    /** Creates a [newLayer], edits it, and returns it. */
     fun push(block: EditMap<K, V>.() -> Unit): M =
         push { index -> newLayer(index).edit(block) }
 
+    /** Edits the [top] layer, and returns it. */
     fun edit(block: EditMap<K, V>.() -> Unit): M {
         val valid = whatIf(block).top
         layers.replaceLast(valid)
@@ -83,7 +85,7 @@ open class MutableLayers<
     /**
      * Applies [block] to a shallow defensive copy of the layers, and
      * returns a new [MutableLayers] using the updates from [block].
-     * Since `init` validates the initial layers, the return is valid.
+     * Actual validation is in `init` for the new mutable layers.
      */
     private fun validate(
         block: (MutableStack<M>) -> Unit,

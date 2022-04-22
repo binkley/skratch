@@ -18,9 +18,16 @@ abstract class AbstractContainer<
     >(
     index: Int,
     map: Map<K, ValueOrRule<V>> = emptyMap(),
-    protected val _contents: MutableList<M> = mutableListOf(),
+    private val _contents: MutableList<M> = mutableListOf(),
 ) : MutableLayer<K, V, C>(index, map) {
-    val contents: Collection<M> = _contents
+    /**
+     * Cleaner would be implementing `Collection<M> by _contents`.
+     * However, a layer is also a "Map", and signatures clash between "Map"
+     * and "Collection".
+     * For example, should `isEmpty()` mean there are no contents, or that
+     * this layer has no keys?
+     */
+    val contents: List<M> = _contents
 
     operator fun plus(layer: M): C {
         if (layer in contents) error("Already in container: $layer")

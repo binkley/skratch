@@ -2,6 +2,7 @@ package hm.binkley.labs.skratch.layers
 
 import hm.binkley.labs.skratch.layers.examples.EnumyKey.AbstractEnumyKey
 import hm.binkley.labs.skratch.layers.examples.EnumyLayers
+import hm.binkley.labs.skratch.layers.examples.EnumyStuff
 import hm.binkley.labs.skratch.layers.examples.LARGE
 import hm.binkley.labs.skratch.layers.examples.LEFT
 import hm.binkley.labs.skratch.layers.examples.Large
@@ -127,6 +128,12 @@ fun main() {
         LARGE = SMALL // prop delegate reads as well
     }
     println("LAYERS -> ${enumyLayers.display()}")
+
+    /*
+    println("-- ENUM-Y CONTAINER")
+    // TODO: DOES NOT COMPILE
+    val container: EnumyStuff = enumyLayers.push(EnumyStuff::new)
+    */
 }
 
 private fun Layers<*, *, *>.display() =

@@ -5,6 +5,7 @@ import hm.binkley.labs.skratch.layers.EditMapDelegate
 import hm.binkley.labs.skratch.layers.MutableLayer
 import hm.binkley.labs.skratch.layers.MutableLayers
 import hm.binkley.labs.skratch.layers.ValueOrRule
+import hm.binkley.labs.skratch.layers.container.AbstractContainer
 import hm.binkley.labs.skratch.layers.examples.EnumyKey.AbstractEnumyKey
 import hm.binkley.labs.skratch.layers.rules.lastOrNullRule
 import hm.binkley.labs.skratch.layers.rules.lastRule
@@ -36,7 +37,6 @@ open class EnumyLayer(
 ) : MutableLayer<EnumyKey, Number, EnumyLayer>(index, map) {
     override fun copy(): EnumyLayer = EnumyLayer(index, toMap())
 }
-
 /**
  * Shorthand for `this[Left]` in an edit block.  Assigning `null` deletes
  * the key.
@@ -62,8 +62,22 @@ fun initialRules(index: Int): EnumyLayer {
 }
 
 class EnumyLayers :
-    MutableLayers<EnumyKey, Number, EnumyLayer>(::initialRules, ::EnumyLayer) {
+    MutableLayers<EnumyKey, Number, EnumyLayer>(
+        ::initialRules,
+        ::EnumyLayer
+    ) {
     init {
         push { }
     } // Start with blank layer for edits
+}
+
+class EnumyStuff(
+    index: Int,
+    map: Map<EnumyKey, ValueOrRule<Number>> = emptyMap(),
+) : AbstractContainer<EnumyKey, Number, EnumyLayer, EnumyStuff>(index, map) {
+    override fun copy(): EnumyStuff = TODO("Not yet implemented")
+
+    companion object {
+        fun new(index: Int) = EnumyStuff(index)
+    }
 }
