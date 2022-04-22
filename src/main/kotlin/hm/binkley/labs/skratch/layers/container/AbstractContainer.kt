@@ -1,6 +1,5 @@
 package hm.binkley.labs.skratch.layers.container
 
-import hm.binkley.labs.skratch.layers.Layer
 import hm.binkley.labs.skratch.layers.MutableLayer
 import hm.binkley.labs.skratch.layers.ValueOrRule
 import hm.binkley.labs.skratch.layers.self
@@ -14,22 +13,22 @@ import hm.binkley.labs.skratch.layers.self
 abstract class AbstractContainer<
     K : Any,
     V : Any,
-    L : Layer<K, V, L>,
-    C : AbstractContainer<K, V, L, C>,
+    M : MutableLayer<K, V, M>,
+    C : AbstractContainer<K, V, M, C>,
     >(
     index: Int,
     map: Map<K, ValueOrRule<V>> = emptyMap(),
-    private val _contents: MutableList<L> = mutableListOf(),
+    protected val _contents: MutableList<M> = mutableListOf(),
 ) : MutableLayer<K, V, C>(index, map) {
-    val contents: List<L> = _contents
+    val contents: Collection<M> = _contents
 
-    operator fun plus(layer: L): C {
+    operator fun plus(layer: M): C {
         if (layer in contents) error("Already in container: $layer")
         _contents += layer
         return self()
     }
 
-    operator fun minus(layer: L): C {
+    operator fun minus(layer: M): C {
         if (layer !in contents) error("Not in container: $layer")
         _contents -= layer
         return self()
