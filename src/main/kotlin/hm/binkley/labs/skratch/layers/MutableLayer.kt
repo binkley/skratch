@@ -16,7 +16,8 @@ abstract class MutableLayer<
 
     override fun toString() = map.toString()
 
-    abstract fun copy(): M // Safe alternative to [Object.clone]
+    /** Safe alternative to [Object.clone] used for validation and what-if. */
+    abstract fun copy(): M
 
     fun edit(block: EditMap<K, V>.() -> Unit): M {
         DefaultEditMap().block()
