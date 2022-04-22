@@ -131,7 +131,7 @@ fun main() {
 
     /*
     println("-- ENUM-Y CONTAINER")
-    // TODO: DOES NOT COMPILE
+    // TODO: DOES NOT COMPILE -- EnumyStuff is not an EnumyLayer
     val container: EnumyStuff = enumyLayers.push(EnumyStuff::new)
     */
 }

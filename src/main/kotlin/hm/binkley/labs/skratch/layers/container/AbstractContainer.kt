@@ -9,6 +9,8 @@ import hm.binkley.labs.skratch.layers.self
  * @todo Sort out what equality means for layers:
  *       Adding 2 foo (OK) _vs_ adding the same foo twice (error)
  * @todo Set: No duplicate layers; order by layer index
+ * @todo Needs to be a MIXIN, not a base class; Kotlin does not do multiple
+ *       inheritance
  */
 abstract class AbstractContainer<
     K : Any,
