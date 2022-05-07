@@ -32,13 +32,13 @@ abstract class AbstractContainer<
     val contents: List<M> = _contents
 
     operator fun plus(layer: M): C {
-        if (layer in contents) error("Already in container: $layer")
+        require(layer !in contents) { "Already in container: $layer" }
         _contents += layer
         return self()
     }
 
     operator fun minus(layer: M): C {
-        if (layer !in contents) error("Not in container: $layer")
+        require(layer in contents) { "Not in container: $layer" }
         _contents -= layer
         return self()
     }
