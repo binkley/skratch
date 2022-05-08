@@ -130,8 +130,10 @@ fun main() {
     println("LAYERS -> ${enumyLayers.display()}")
 
     println("-- ENUM-Y CONTAINER")
-    val container: EnumyStuff = enumyLayers.push(::EnumyStuff)
-    container + bigger
+    val container1 = enumyLayers.push<EnumyStuff>(::EnumyStuff)
+    println("CONTAINER:EMPTY -> $container1")
+    val container2 = enumyLayers.push<EnumyStuff>(container1 + bigger)
+    println("CONTAINER:AFTER-ADD -> $container2")
     println("LAYERS -> ${enumyLayers.display()}")
 }
 

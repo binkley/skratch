@@ -1,8 +1,8 @@
 package hm.binkley.labs.skratch.layers.container
 
 import hm.binkley.labs.skratch.layers.MutableLayer
-import hm.binkley.labs.skratch.layers.ValueOrRule
-import hm.binkley.labs.skratch.layers.self
+import hm.binkley.labs.skratch.layers.NewLayer
+import org.checkerframework.checker.units.qual.K
 
 /**
  * @todo Limits for containers
@@ -12,34 +12,25 @@ import hm.binkley.labs.skratch.layers.self
  * @todo Needs to be a MIXIN, not a base class; Kotlin does not do multiple
  *       inheritance
  */
-abstract class AbstractContainer<
+interface AbstractContainer<
     K : Any,
     V : Any,
     M : MutableLayer<K, V, M>,
-    C : AbstractContainer<K, V, M, C>,
-    >(
-    index: Int,
-    map: Map<K, ValueOrRule<V>> = emptyMap(),
-    private val _contents: MutableList<M> = mutableListOf(),
-) : MutableLayer<K, V, C>(index, map) {
-    /**
-     * Cleaner would be implementing `Collection<M> by _contents`.
-     * However, a layer is also a "Map", and signatures clash between "Map"
-     * and "Collection".
-     * For example, should `isEmpty()` mean there are no contents, or that
-     * this layer has no keys?
-     */
-    val contents: List<M> = _contents
+    C,
+    > where C : MutableLayer<K, V, C>, C : AbstractContainer<K, V, M, C> {
+    val contents: List<M>
 
-    operator fun plus(layer: M): C {
+    fun update(contents: List<M>): NewLayer<K, V, C>
+
+    /** @return a new layer with updated contents, preserving the original */
+    operator fun plus(layer: M): NewLayer<K, V, C> {
         require(layer !in contents) { "Already in container: $layer" }
-        _contents += layer
-        return self()
+        return update(contents + layer)
     }
 
-    operator fun minus(layer: M): C {
+    /** @return a new layer with updated contents, preserving the original */
+    operator fun minus(layer: M): NewLayer<K, V, C> {
         require(layer in contents) { "Not in container: $layer" }
-        _contents -= layer
-        return self()
+        return update(contents - layer)
     }
 }
