@@ -1,11 +1,13 @@
 package hm.binkley.labs.skratch.math.matrix
+import hm.binkley.labs.skratch.math.matrix.Rational.Companion.ONE as RONE
+import hm.binkley.labs.skratch.math.matrix.Rational.Companion.ZERO as RZERO
 
 data class Complex(
     val re: Rational,
     val im: Rational,
 ) : GeneralNumber<Complex, Rational> {
-    constructor(re: Long) : this(Rational(re), Rational(0L))
-    constructor(re: Rational) : this(re, Rational(0L))
+    constructor(re: Long) : this(Rational(re), RZERO)
+    constructor(re: Rational) : this(re, RZERO)
     constructor(re: Long, im: Long) : this(Rational(re), Rational(im))
     constructor(re: Long, im: Rational) : this(Rational(re), im)
     constructor(re: Rational, im: Long) : this(re, Rational(im))
@@ -28,17 +30,17 @@ data class Complex(
     override operator fun div(other: Long) = this / Rational(other)
 
     override val conj get() = Complex(re, -im)
-    override val absoluteValue get() = squareNorm.root as Rational
     override val squareNorm get() = re * re + im * im
+    override val absoluteValue get() = squareNorm.root as Rational
 
-    override fun isZero() = re.isZero() && im.isZero()
-    override fun isUnit() = re.isUnit() && im.isZero()
+    override fun isZero() = ZERO == this
+    override fun isUnit() = ONE == this
     val isReal get() = im.isZero()
     val isImaginary get() = re.isZero()
 
     override fun equivalent(other: GeneralNumber<*, *>) = when (other) {
-        is Complex -> re == other.re && im == other.im
-        is Rational -> Rational.ZERO == im && re.numerator == other.numerator && re.denominator == other.denominator
+        is Complex -> this == other
+        is Rational -> RZERO == im && re == other
         else -> TODO("BUG: This is a terrible approach")
     }
 
@@ -46,8 +48,8 @@ data class Complex(
         if (isReal) return "$re"
 
         val simpleI = when (im) {
-            Rational.ONE -> "i"
-            -Rational.ONE -> "-i"
+            RONE -> "i"
+            -RONE -> "-i"
             else -> "${im}i"
         }
 
@@ -56,8 +58,8 @@ data class Complex(
     }
 
     companion object {
-        val ZERO = Complex(0L)
-        val ONE = Complex(1L)
-        val I = Complex(0L, 1L)
+        val ZERO = Complex(RZERO, RZERO)
+        val ONE = Complex(RONE, RZERO)
+        val I = Complex(RZERO, RONE)
     }
 }

@@ -87,6 +87,7 @@ class Rational(n: Long, d: Long) :
         ): Long = if (b == 0L) a else gcd(b, a % b)
 
         private fun root(c: Rational): GeneralNumber<*, Rational> {
+            // TODO: WRONG -- does not work for Quarternions
             if (c.isNegative) return Complex(
                 0L,
                 c.absoluteValue.root as Rational
