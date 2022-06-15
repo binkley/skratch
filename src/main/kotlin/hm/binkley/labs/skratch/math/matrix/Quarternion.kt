@@ -52,6 +52,7 @@ data class Quarternion(
 
     override val conj get() = Quarternion(re, -i, -j, -k)
     override val squareNorm get() = re * re + i * i + j * j + k * k
+    // TODO: Something is wrong here with types
     override val absoluteValue get() = squareNorm.root as Rational
 
     override fun isZero() = ZERO == this

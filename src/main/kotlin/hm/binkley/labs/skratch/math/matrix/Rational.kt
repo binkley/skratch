@@ -37,14 +37,11 @@ class Rational(n: Long, d: Long) :
     override fun div(other: Rational) = this * other.multInv
     override fun div(other: Long) = this / Rational(other)
 
-    override val conj: Rational
-        get() = this
+    override val conj: Rational get() = this
     override val absoluteValue: Rational
         get() = Rational(abs(numerator), denominator)
-    override val squareNorm: Rational
-        get() = this
-    val root: GeneralNumber<*, Rational>
-        get() = root(this)
+    override val squareNorm: Rational get() = this
+    val root: GeneralNumber<*, Rational> get() = root(this)
 
     override fun isZero() = this == ZERO
     val isPositive get() = this > ZERO
