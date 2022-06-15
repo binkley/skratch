@@ -12,7 +12,7 @@ data class Quarternion(
     constructor(re: Rational) : this(re, RZERO, RZERO, RZERO)
     constructor(re: Long) : this(Rational(re), RZERO, RZERO, RZERO)
     constructor(re: Long, i: Long, j: Long, k: Long) :
-            this(Rational(re), Rational(i), Rational(j), Rational(k))
+        this(Rational(re), Rational(i), Rational(j), Rational(k))
 
     override fun unaryMinus() = Quarternion(-re, -i, -j, -k)
     override fun plus(other: Quarternion) = Quarternion(
