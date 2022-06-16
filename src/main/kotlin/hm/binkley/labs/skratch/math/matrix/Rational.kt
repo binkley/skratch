@@ -50,9 +50,8 @@ class Rational(n: Long, d: Long) :
     val isWhole get() = 1L == denominator
 
     override fun compareTo(other: Rational) =
-        (numerator * other.denominator).compareTo(
-            other.numerator * denominator
-        )
+        (numerator * other.denominator)
+            .compareTo(other.numerator * denominator)
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
