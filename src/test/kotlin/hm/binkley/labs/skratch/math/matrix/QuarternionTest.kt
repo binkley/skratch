@@ -56,6 +56,9 @@ internal class QuarternionTest {
     @Test
     fun divides() {
         assertEquals(ONE, ONE / ONE)
+        assertEquals(-I, ONE / I)
+        assertEquals(-J, ONE / J)
+        assertEquals(-K, ONE / K)
         assertEquals(-K, I / J)
         assertEquals(-I, J / K)
         assertEquals(-J, K / I)
