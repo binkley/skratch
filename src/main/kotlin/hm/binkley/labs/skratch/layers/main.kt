@@ -1,8 +1,8 @@
 package hm.binkley.labs.skratch.layers
 
+import hm.binkley.labs.skratch.layers.examples.EnumyContainer
 import hm.binkley.labs.skratch.layers.examples.EnumyKey.AbstractEnumyKey
 import hm.binkley.labs.skratch.layers.examples.EnumyLayers
-import hm.binkley.labs.skratch.layers.examples.EnumyStuff
 import hm.binkley.labs.skratch.layers.examples.LARGE
 import hm.binkley.labs.skratch.layers.examples.LEFT
 import hm.binkley.labs.skratch.layers.examples.Large
@@ -130,9 +130,9 @@ fun main() {
     println("LAYERS -> ${enumyLayers.display()}")
 
     println("-- ENUM-Y CONTAINER")
-    val container1 = enumyLayers.push<EnumyStuff>(::EnumyStuff)
+    val container1 = enumyLayers.push<EnumyContainer>(::EnumyContainer)
     println("CONTAINER:EMPTY -> $container1")
-    val container2 = enumyLayers.push<EnumyStuff>(container1 + bigger)
+    val container2 = enumyLayers.push<EnumyContainer>(container1 + bigger)
     println("CONTAINER:AFTER-ADD -> $container2")
     println("LAYERS -> ${enumyLayers.display()}")
 }

@@ -6,6 +6,7 @@ import hm.binkley.labs.skratch.layers.MutableLayer
 import hm.binkley.labs.skratch.layers.MutableLayers
 import hm.binkley.labs.skratch.layers.NewLayer
 import hm.binkley.labs.skratch.layers.ValueOrRule
+import hm.binkley.labs.skratch.layers.container.AbstractContainer
 import hm.binkley.labs.skratch.layers.examples.EnumyKey.AbstractEnumyKey
 import hm.binkley.labs.skratch.layers.rules.lastOrNullRule
 import hm.binkley.labs.skratch.layers.rules.lastRule
@@ -72,23 +73,36 @@ class EnumyLayers :
     } // Start with blank layer for edits
 }
 
-open class EnumyStuff(
+/** @todo Implement [AbstractContainer] */
+open class EnumyContainer(
     index: Int,
     map: Map<EnumyKey, ValueOrRule<Number>> = emptyMap(),
     private val contents: List<EnumyLayer> = emptyList(),
 ) : EnumyLayer(index, map) {
-    override fun copy() = EnumyStuff(index, this, contents)
+    override fun copy() = EnumyContainer(index, this, contents)
 
     operator fun plus(layer: EnumyLayer):
-        NewLayer<EnumyKey, Number, EnumyLayer> {
+            NewLayer<EnumyKey, Number, EnumyLayer> {
         require(layer !in contents) { "Already in contents: $layer" }
-        return NewLayer { index -> EnumyStuff(index, this, contents + layer) }
+        return NewLayer { index ->
+            EnumyContainer(
+                index,
+                this,
+                contents + layer
+            )
+        }
     }
 
     operator fun minus(layer: EnumyLayer):
-        NewLayer<EnumyKey, Number, EnumyLayer> {
+            NewLayer<EnumyKey, Number, EnumyLayer> {
         require(layer in contents) { "Not in contents: $layer" }
-        return NewLayer { index -> EnumyStuff(index, this, contents - layer) }
+        return NewLayer { index ->
+            EnumyContainer(
+                index,
+                this,
+                contents - layer
+            )
+        }
     }
 
     override fun toString() = "${super.toString()}: $contents"
