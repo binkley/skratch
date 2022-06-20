@@ -4,7 +4,6 @@ import hm.binkley.labs.skratch.math.matrix.Quarternion.Companion.I
 import hm.binkley.labs.skratch.math.matrix.Quarternion.Companion.J
 import hm.binkley.labs.skratch.math.matrix.Quarternion.Companion.K
 import hm.binkley.labs.skratch.math.matrix.Quarternion.Companion.ONE
-import hm.binkley.labs.skratch.math.matrix.Rational.Companion.ZERO
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
