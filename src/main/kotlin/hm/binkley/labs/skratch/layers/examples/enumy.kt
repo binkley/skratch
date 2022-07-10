@@ -82,7 +82,7 @@ open class EnumyContainer(
     override fun copy() = EnumyContainer(index, this, contents)
 
     operator fun plus(layer: EnumyLayer):
-            NewLayer<EnumyKey, Number, EnumyLayer> {
+        NewLayer<EnumyKey, Number, EnumyLayer> {
         require(layer !in contents) { "Already in contents: $layer" }
         return NewLayer { index ->
             EnumyContainer(
@@ -94,7 +94,7 @@ open class EnumyContainer(
     }
 
     operator fun minus(layer: EnumyLayer):
-            NewLayer<EnumyKey, Number, EnumyLayer> {
+        NewLayer<EnumyKey, Number, EnumyLayer> {
         require(layer in contents) { "Not in contents: $layer" }
         return NewLayer { index ->
             EnumyContainer(
