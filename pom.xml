@@ -37,7 +37,7 @@
         <ktlint-maven-plugin.version>1.13.1</ktlint-maven-plugin.version>
         <jgit.version>6.2.0.202206071550-r</jgit.version>
         <junit.version>5.9.0-RC1</junit.version>
-        <kotest.version>5.3.2</kotest.version>
+        <kotest.version>5.4.0</kotest.version>
         <kotlin.code.style>official</kotlin.code.style>
         <kotlin.version>1.7.10</kotlin.version>
         <kotlinx-cli.version>0.3</kotlinx-cli.version>
