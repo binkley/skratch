@@ -22,7 +22,7 @@ interface Layers<
      */
     fun <T : V> getAs(
         key: K,
-        except: Collection<Layer<K, V, *>> = emptyList()
+        except: Collection<Layer<K, V, *>> = emptyList(),
     ): T?
 
     /** Convenience for [getAs]. */
@@ -57,13 +57,14 @@ val <
     K : Any,
     V : Any,
     L : Layer<K, V, L>,
-    > Layers<K, V, L>.top
-    get() = peek()
+    >
+Layers<K, V, L>.top get() = peek()
 
 /** Finds the most recent layer containing [rule] assigned to [key]. */
-fun <K : Any, V : Any> Layers<K, V, *>.find(
+fun <K : Any, V : Any>
+Layers<K, V, *>.find(
     key: K,
-    rule: Rule<K, V, *>
+    rule: Rule<K, V, *>,
 ): Layer<K, V, *> = history.asReversed().first { rule == it[key] }
 
 /**
@@ -76,8 +77,9 @@ fun <K : Any, V : Any> Layers<K, V, *>.find(
 fun <
     K : Any,
     V : Any,
-    T : V
-    > Layers<K, V, *>.getAsWithout(
+    T : V,
+    >
+Layers<K, V, *>.getAsWithout(
     key: K,
-    rule: Rule<K, V, *>
+    rule: Rule<K, V, *>,
 ): T = getAs(key, find(key, rule))!! // `!!` as [rule] must be present

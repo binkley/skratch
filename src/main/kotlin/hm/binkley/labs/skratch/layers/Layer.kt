@@ -16,4 +16,5 @@ fun <
     V : Any,
     L : Layer<K, V, L>,
     N : L,
-    > Layer<K, V, L>.self(): N = this as N
+    >
+Layer<K, V, L>.self(): N = this as N
