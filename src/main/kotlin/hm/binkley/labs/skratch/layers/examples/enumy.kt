@@ -6,7 +6,7 @@ import hm.binkley.labs.skratch.layers.EditMap
 import hm.binkley.labs.skratch.layers.EditMapDelegate
 import hm.binkley.labs.skratch.layers.NewLayer
 import hm.binkley.labs.skratch.layers.ValueOrRule
-import hm.binkley.labs.skratch.layers.container.AbstractContainer
+import hm.binkley.labs.skratch.layers.container.Container
 import hm.binkley.labs.skratch.layers.examples.EnumyKey.AbstractEnumyKey
 import hm.binkley.labs.skratch.layers.rules.lastOrNullRule
 import hm.binkley.labs.skratch.layers.rules.lastRule
@@ -73,7 +73,7 @@ class EnumyLayers :
     } // Start with blank layer for edits
 }
 
-/** @todo Implement [AbstractContainer] */
+/** @todo Implement [Container] */
 open class EnumyContainer(
     index: Int,
     map: Map<EnumyKey, ValueOrRule<Number>> = emptyMap(),
