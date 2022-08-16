@@ -16,7 +16,7 @@ class TestEditMap(
 class TestLayer(
     index: Int,
     map: Map<String, ValueOrRule<Int>> = emptyMap(),
-) : MutableLayer<String, Int, TestLayer>(index, map) {
+) : AbstractMutableLayer<String, Int, TestLayer>(index, map) {
     constructor(index: Int, block: EditMap<String, Int>.() -> Unit) :
         this(index) {
         edit(block)
@@ -37,7 +37,7 @@ class TestLayer(
  */
 class TestLayers constructor(
     history: List<TestLayer> = listOf(TestLayer(0)),
-) : MutableLayers<String, Int, TestLayer>(history, ::TestLayer) {
+) : AbstractMutableLayers<String, Int, TestLayer>(history, ::TestLayer) {
     constructor(initialRules: TestLayer) : this(listOf(initialRules))
     constructor(block: EditMap<String, Int>.() -> Unit) : this() {
         edit(block)

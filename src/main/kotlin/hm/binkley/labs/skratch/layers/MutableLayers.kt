@@ -10,22 +10,38 @@ import java.util.AbstractMap.SimpleImmutableEntry
 import kotlin.collections.Map.Entry
 
 fun interface NewLayer<
-    K : Any,
-    V : Any,
-    M : MutableLayer<K, V, M>,
-    > {
+        K : Any,
+        V : Any,
+        M : MutableLayer<K, V, M>,
+        > {
     operator fun invoke(index: Int): M
 }
 
 // TODO: Messy relationships among "push", "edit", and "whatIf"
-open class MutableLayers<
-    K : Any,
-    V : Any,
-    M : MutableLayer<K, V, M>,
-    > private constructor(
+interface MutableLayers<
+        K : Any,
+        V : Any,
+        M : MutableLayer<K, V, M>,
+        > : Layers<K, V, M> {
+    fun pop(): M
+    fun <N : M> push(newLayer: NewLayer<K, V, M>): N
+
+    /** Creates a [NewLayer], edits it, and returns it. */
+    fun push(block: EditMap<K, V>.() -> Unit): M
+
+    /** Edits the [top] layer, and returns it. */
+    fun edit(block: EditMap<K, V>.() -> Unit): M
+}
+
+// TODO: Messy relationships among "push", "edit", and "whatIf"
+open class AbstractMutableLayers<
+        K : Any,
+        V : Any,
+        M : MutableLayer<K, V, M>,
+        > private constructor(
     private val layers: MutableStack<M>,
     private val newLayer: NewLayer<K, V, M>,
-) : AbstractMap<K, V>(), Layers<K, V, M> {
+) : AbstractMap<K, V>(), MutableLayers<K, V, M> {
     constructor(
         initialRules: NewLayer<K, V, M>,
         newLayer: NewLayer<K, V, M>,
@@ -48,7 +64,8 @@ open class MutableLayers<
     override fun <T : V> getAs(
         key: K,
         except: Collection<Layer<K, V, *>>,
-    ): T? = whatIfNot(except).valueFor(key)
+        // TODO: Remove the downcast
+    ): T? = (whatIfNot(except) as AbstractMutableLayers).valueFor(key)
 
     override fun peek(): M = layers.top
 
@@ -59,24 +76,25 @@ open class MutableLayers<
         block: EditMap<K, V>.() -> Unit,
     ): MutableLayers<K, V, M> = whatIf(top.copy().edit(block))
 
-    override fun whatIfNot(except: Collection<Layer<K, V, *>>):
-        MutableLayers<K, V, M> = validate { it.removeAll(except.toSet()) }
+    override fun whatIfNot(except: Collection<Layer<K, V, *>>) = validate {
+        it.removeAll(except.toSet())
+    }
 
-    fun pop(): M =
+    override fun pop(): M =
         if (1 < layers.size) layers.pop()
         else throw MissingFirstLayerException
 
-    fun <N : M> push(newLayer: NewLayer<K, V, M>): N {
+    override fun <N : M> push(newLayer: NewLayer<K, V, M>): N {
         val valid = validate { it.push(newLayer(layers.size)) }.top
         return layers.push(valid).self()
     }
 
     /** Creates a [newLayer], edits it, and returns it. */
-    fun push(block: EditMap<K, V>.() -> Unit): M =
+    override fun push(block: EditMap<K, V>.() -> Unit): M =
         push { index -> newLayer(index).edit(block) }
 
     /** Edits the [top] layer, and returns it. */
-    fun edit(block: EditMap<K, V>.() -> Unit): M {
+    override fun edit(block: EditMap<K, V>.() -> Unit): M {
         val valid = whatIf(block).top
         layers.replaceLast(valid)
         return valid
@@ -92,7 +110,7 @@ open class MutableLayers<
     ): MutableLayers<K, V, M> {
         val layersCopy = layers.toMutableStack()
         block(layersCopy)
-        return MutableLayers(layersCopy, newLayer)
+        return AbstractMutableLayers(layersCopy, newLayer)
     }
 
     // The "allKeys()" fun is NOT the [keys] property

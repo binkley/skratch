@@ -1,9 +1,9 @@
 package hm.binkley.labs.skratch.layers.examples
 
+import hm.binkley.labs.skratch.layers.AbstractMutableLayer
+import hm.binkley.labs.skratch.layers.AbstractMutableLayers
 import hm.binkley.labs.skratch.layers.EditMap
 import hm.binkley.labs.skratch.layers.EditMapDelegate
-import hm.binkley.labs.skratch.layers.MutableLayer
-import hm.binkley.labs.skratch.layers.MutableLayers
 import hm.binkley.labs.skratch.layers.NewLayer
 import hm.binkley.labs.skratch.layers.ValueOrRule
 import hm.binkley.labs.skratch.layers.container.AbstractContainer
@@ -35,7 +35,7 @@ object Large : TeeShirtSize()
 open class EnumyLayer(
     index: Int,
     map: Map<EnumyKey, ValueOrRule<Number>> = emptyMap(),
-) : MutableLayer<EnumyKey, Number, EnumyLayer>(index, map) {
+) : AbstractMutableLayer<EnumyKey, Number, EnumyLayer>(index, map) {
     override fun copy(): EnumyLayer = EnumyLayer(index, this)
 }
 
@@ -64,7 +64,7 @@ fun initialRules(index: Int): EnumyLayer {
 }
 
 class EnumyLayers :
-    MutableLayers<EnumyKey, Number, EnumyLayer>(
+    AbstractMutableLayers<EnumyKey, Number, EnumyLayer>(
         ::initialRules,
         ::EnumyLayer
     ) {

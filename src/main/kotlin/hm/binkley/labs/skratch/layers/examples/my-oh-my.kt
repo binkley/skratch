@@ -1,13 +1,13 @@
 package hm.binkley.labs.skratch.layers.examples
 
-import hm.binkley.labs.skratch.layers.MutableLayer
-import hm.binkley.labs.skratch.layers.MutableLayers
+import hm.binkley.labs.skratch.layers.AbstractMutableLayer
+import hm.binkley.labs.skratch.layers.AbstractMutableLayers
 import hm.binkley.labs.skratch.layers.ValueOrRule
 import hm.binkley.labs.skratch.layers.rules.lastOrDefaultRule
 import hm.binkley.labs.skratch.layers.toValue
 
 class MyLayers :
-    MutableLayers<String, Number, MyLayer>(::MyLayer, ::MyLayer) {
+    AbstractMutableLayers<String, Number, MyLayer>(::MyLayer, ::MyLayer) {
     init {
         // First layer via editing initial empty layer
         edit {
@@ -25,14 +25,13 @@ class MyLayers :
 open class MyLayer(
     index: Int,
     map: Map<String, ValueOrRule<Number>> = emptyMap(),
-) : MutableLayer<String, Number, MyLayer>(index, map) {
+) : AbstractMutableLayer<String, Number, MyLayer>(index, map) {
     override fun copy() = MyLayer(index, this)
 }
 
 open class OhMyLayer<M : OhMyLayer<M>>(
     index: Int,
-) :
-    MyLayer(index, mapOf("message" to 17.toValue())) {
+) : MyLayer(index, mapOf("message" to 17.toValue())) {
     open fun ohMy() = println("OH, MY, ${this["message"]}!")
 }
 
