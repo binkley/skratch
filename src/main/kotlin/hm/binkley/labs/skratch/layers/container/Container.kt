@@ -26,13 +26,19 @@ interface Container<
      */
     fun withContents(contents: List<M>): NewLayer<K, V, C>
 
-    /** @return a new layer with updated contents, preserving the original */
+    /**
+     * @return a new layer function with updated contents, preserving the
+     * original
+     */
     operator fun plus(layer: M): NewLayer<K, V, C> {
         require(layer !in contents) { "Already in container: $layer" }
         return withContents(contents + layer)
     }
 
-    /** @return a new layer with updated contents, preserving the original */
+    /**
+     * @return a new layer function with updated contents, preserving the
+     * original
+     */
     operator fun minus(layer: M): NewLayer<K, V, C> {
         require(layer in contents) { "Not in container: $layer" }
         return withContents(contents - layer)
