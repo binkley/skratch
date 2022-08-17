@@ -19,17 +19,22 @@ interface Container<
     > where C : MutableLayer<K, V, C>, C : Container<K, V, M, C> {
     val contents: List<M>
 
-    fun update(contents: List<M>): NewLayer<K, V, C>
+    /**
+     * Returns a function to create a new layer holding [contents].
+     *
+     * @param contents not a delta, the complete contents for a new layer
+     */
+    fun withContents(contents: List<M>): NewLayer<K, V, C>
 
     /** @return a new layer with updated contents, preserving the original */
     operator fun plus(layer: M): NewLayer<K, V, C> {
         require(layer !in contents) { "Already in container: $layer" }
-        return update(contents + layer)
+        return withContents(contents + layer)
     }
 
     /** @return a new layer with updated contents, preserving the original */
     operator fun minus(layer: M): NewLayer<K, V, C> {
         require(layer in contents) { "Not in container: $layer" }
-        return update(contents - layer)
+        return withContents(contents - layer)
     }
 }
