@@ -4,8 +4,12 @@ package hm.binkley.labs.skratch
 
 import hm.binkley.labs.skratch.Q.Companion.la
 import hm.binkley.labs.skratch.puzzlers.main
+import java.lang.IllegalArgumentException
 
-fun main() {
+fun main(args: List<String>) {
+    if (!args.isEmpty())
+        throw IllegalArgumentException("No arguments expected: args")
+
     val a_s: List<String> = List(3) { index -> ('a' + index).toString() }
     println("CHEESY: Using a fun name as a class name -> $a_s")
 
