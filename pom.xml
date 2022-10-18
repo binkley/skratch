@@ -34,7 +34,7 @@
         <jdk.version>18</jdk.version>
         <jline.version>3.18.0</jline.version>
         <jmh.version>1.35</jmh.version>
-        <ktlint-maven-plugin.version>1.13.1</ktlint-maven-plugin.version>
+        <ktlint-maven-plugin.version>1.15.2</ktlint-maven-plugin.version>
         <jgit.version>6.3.0.202209071007-r</jgit.version>
         <junit.version>5.9.0</junit.version>
         <kotest.version>5.5.1</kotest.version>
