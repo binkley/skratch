@@ -6,7 +6,7 @@ data class BDD constructor(
     val SCENARIO: String,
     val GIVEN: String,
     val WHEN: String,
-    val THEN: String,
+    val THEN: String
 ) {
     init {
         (
@@ -41,13 +41,13 @@ data class BDD constructor(
             infix fun GIVEN(GIVEN: String) = Given(SCENARIO, GIVEN)
             data class Given(
                 private val SCENARIO: String,
-                private val GIVEN: String,
+                private val GIVEN: String
             ) {
                 infix fun WHEN(WHEN: String) = When(SCENARIO, GIVEN, WHEN)
                 data class When(
                     private val SCENARIO: String,
                     private val GIVEN: String,
-                    private val WHEN: String,
+                    private val WHEN: String
                 ) {
                     infix fun THEN(THEN: String) =
                         BDD(SCENARIO, GIVEN, WHEN, THEN)

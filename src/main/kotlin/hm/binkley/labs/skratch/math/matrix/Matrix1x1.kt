@@ -9,7 +9,7 @@ interface HasA<N, Norm : GeneralNumber<Norm, Norm>, M>
 }
 
 abstract class Matrix1x1<N, Norm : GeneralNumber<Norm, Norm>, M>(
-    a: N,
+    a: N
 ) :
     SquareMatrix<N, Norm, M>(1, listOf(a)),
     HasA<N, Norm, M>
@@ -18,7 +18,7 @@ abstract class Matrix1x1<N, Norm : GeneralNumber<Norm, Norm>, M>(
     constructor(m: Holder<N, Norm>) : this(m.a)
 
     data class Holder<N, Norm : GeneralNumber<Norm, Norm>>(
-        val a: N,
+        val a: N
     ) where N : GeneralNumber<N, Norm>
 
     override val a: N get() = this[1, 1]
@@ -40,9 +40,11 @@ abstract class Matrix1x1<N, Norm : GeneralNumber<Norm, Norm>, M>(
     override operator fun times(other: Long) = this * elementCtor(other)
 
     override operator fun div(other: M): M =
-        if (other.isSingular())
+        if (other.isSingular()) {
             throw ArithmeticException("Divisor is singular")
-        else this * other.multInv
+        } else {
+            this * other.multInv
+        }
 
     override operator fun div(other: Long) = this / elementCtor(other)
 

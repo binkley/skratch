@@ -5,7 +5,7 @@ import hm.binkley.util.top
 fun interface NewLayer<
     K : Any,
     V : Any,
-    M : MutableLayer<K, V, M>,
+    M : MutableLayer<K, V, M>
     > {
     operator fun invoke(index: Int): M
 }
@@ -14,7 +14,7 @@ fun interface NewLayer<
 interface MutableLayers<
     K : Any,
     V : Any,
-    M : MutableLayer<K, V, M>,
+    M : MutableLayer<K, V, M>
     > : Layers<K, V, M> {
     fun pop(): M
     fun <N : M> push(newLayer: NewLayer<K, V, M>): N

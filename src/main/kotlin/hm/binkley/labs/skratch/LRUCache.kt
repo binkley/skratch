@@ -25,16 +25,18 @@ class LRUCache(
      */
     private val capacity: Int,
     /** What value to provide on a cache miss? */
-    private val cacheMiss: Int = -1,
+    private val cacheMiss: Int = -1
 ) : LinkedHashMap<Int, Int>(
     capacity,
     0.75f, // The default: not available as a public constant
-    true, // Use access order (old to new), not insertion order
+    true // Use access order (old to new), not insertion order
 ) {
     init {
-        if (0 > capacity) throw IllegalArgumentException(
-            "Capacity for LRUCache must be non-negative: $capacity"
-        )
+        if (0 > capacity) {
+            throw IllegalArgumentException(
+                "Capacity for LRUCache must be non-negative: $capacity"
+            )
+        }
     }
 
     /**

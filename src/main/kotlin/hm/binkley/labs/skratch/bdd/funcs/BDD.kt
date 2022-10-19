@@ -67,7 +67,7 @@ data class QED(
     private val previousText: String = caller(),
     private var clauseType: Type = NO_CLAUSE,
     private var result: TestResult =
-        ERROR(IllegalStateException("BUG: Not executed")),
+        ERROR(IllegalStateException("BUG: Not executed"))
 ) {
     init {
         THEN.text = previousText
@@ -79,7 +79,7 @@ data class QED(
     }
 
     abstract class Clause(
-        val type: Type,
+        val type: Type
     ) : () -> Unit {
         enum class Type {
             NO_CLAUSE, GIVEN_CLAUSE, WHEN_CLAUSE, THEN_CLAUSE, QED_CLAUSE;
@@ -179,7 +179,7 @@ data class QED(
 
     data class Scenario(
         internal var text: String = CLAUSE_NAME_BUG,
-        private var action: () -> Unit = {},
+        private var action: () -> Unit = {}
     ) : () -> Unit {
         fun act(action: () -> Unit) = run {
             this.action = action
@@ -194,7 +194,7 @@ data class QED(
         val SCENARIO: Scenario,
         internal var text: String = CLAUSE_NAME_BUG,
         private val previousText: String = caller(),
-        private var action: () -> Unit = {},
+        private var action: () -> Unit = {}
     ) : Clause(GIVEN_CLAUSE) {
         init {
             SCENARIO.text = previousText
@@ -214,7 +214,7 @@ data class QED(
         val GIVEN: Given,
         internal var text: String = CLAUSE_NAME_BUG,
         private val previousText: String = caller(),
-        private var action: () -> Unit = {},
+        private var action: () -> Unit = {}
     ) : Clause(WHEN_CLAUSE) {
         init {
             GIVEN.text = previousText
@@ -235,7 +235,7 @@ data class QED(
         val WHEN: When,
         internal var text: String = CLAUSE_NAME_BUG,
         private val previousText: String = caller(),
-        private var action: () -> Unit = {},
+        private var action: () -> Unit = {}
     ) : Clause(THEN_CLAUSE) {
         init {
             WHEN.text = previousText
@@ -252,7 +252,7 @@ data class QED(
 }
 
 private fun Throwable.copyStackTraceWithoutFrameworkInto(
-    target: Throwable,
+    target: Throwable
 ) {
     target.stackTrace = stackTrace.filter {
         !it.className.startsWith(QED::class.qualifiedName!!)

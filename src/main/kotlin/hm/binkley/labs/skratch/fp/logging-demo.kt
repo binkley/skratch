@@ -11,7 +11,7 @@ import kotlin.system.exitProcess
     name = "logging-demo",
     mixinStandardHelpOptions = true,
     version = ["logging-demo 0-SNAPSHOT"],
-    description = ["Prints logging examples to STDOUT."],
+    description = ["Prints logging examples to STDOUT."]
 )
 class LoggingDemo : Callable<Int> {
     override fun call(): Int {
@@ -112,7 +112,7 @@ fun error(thing: String): String =
 inline fun <reified E : Exception, R : Any> BusinessLogger.handle(
     label: String,
     default: R,
-    block: () -> R,
+    block: () -> R
 ): R = try {
     debug("Trying $label")
     block().also {

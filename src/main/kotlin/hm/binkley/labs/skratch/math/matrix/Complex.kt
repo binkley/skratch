@@ -4,7 +4,7 @@ import hm.binkley.labs.skratch.math.matrix.Rational.Companion.ZERO as RZERO
 
 data class Complex(
     val re: Rational,
-    val im: Rational,
+    val im: Rational
 ) : GeneralNumber<Complex, Rational> {
     constructor(re: Long) : this(Rational(re), RZERO)
     constructor(re: Rational) : this(re, RZERO)
@@ -53,8 +53,11 @@ data class Complex(
             else -> "${im}i"
         }
 
-        return if (isImaginary) simpleI
-        else "$re+$simpleI"
+        return if (isImaginary) {
+            simpleI
+        } else {
+            "$re+$simpleI"
+        }
     }
 
     companion object {

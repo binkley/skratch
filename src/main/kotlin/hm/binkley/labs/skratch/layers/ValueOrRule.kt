@@ -8,7 +8,7 @@ sealed class ValueOrRule<V : Any>
  * @param value the value
  */
 data class Value<V : Any>(
-    val value: V,
+    val value: V
 ) : ValueOrRule<V>() {
     override fun toString() = "<Value>$value"
 }
@@ -31,9 +31,9 @@ typealias ReversedSequence<T> = Sequence<T>
 abstract class Rule<
     K : Any,
     V : Any,
-    T : V,
+    T : V
     >(
-    val name: String,
+    val name: String
 ) : ValueOrRule<V>(), (K, ReversedSequence<T>, Layers<K, V, *>) -> T? {
     override fun toString() = "<Rule>$name"
 }

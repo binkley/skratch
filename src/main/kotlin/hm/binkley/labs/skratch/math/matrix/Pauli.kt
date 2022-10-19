@@ -11,7 +11,7 @@ sealed class Pauli(
     a: Complex,
     b: Complex,
     c: Complex,
-    d: Complex,
+    d: Complex
 ) : Matrix2x2<Complex, Rational, Pauli>(a, b, c, d) {
     override fun elementCtor(n: Long) = Complex(n)
 
@@ -19,7 +19,7 @@ sealed class Pauli(
         a: Complex,
         b: Complex,
         c: Complex,
-        d: Complex,
+        d: Complex
     ) = pauli(GenericMatrix2x2(a, b, c, d) { Complex(it) })
 
     override fun toString(): String = "($symbol)${super.toString()}"

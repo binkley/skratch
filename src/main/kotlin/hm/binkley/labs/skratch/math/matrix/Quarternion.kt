@@ -7,7 +7,7 @@ data class Quarternion(
     val re: Rational,
     val i: Rational,
     val j: Rational,
-    val k: Rational,
+    val k: Rational
 ) : GeneralNumber<Quarternion, Rational> {
     constructor(re: Rational) : this(re, RZERO, RZERO, RZERO)
     constructor(re: Long) : this(Rational(re), RZERO, RZERO, RZERO)
@@ -16,7 +16,10 @@ data class Quarternion(
 
     override fun unaryMinus() = Quarternion(-re, -i, -j, -k)
     override fun plus(other: Quarternion) = Quarternion(
-        re + other.re, i + other.i, j + other.j, k + other.k
+        re + other.re,
+        i + other.i,
+        j + other.j,
+        k + other.k
     )
 
     override fun unaryDiv() = conj / squareNorm
@@ -52,6 +55,7 @@ data class Quarternion(
 
     override val conj get() = Quarternion(re, -i, -j, -k)
     override val squareNorm get() = re * re + i * i + j * j + k * k
+
     // TODO: Something is wrong here with types
     override val absoluteValue get() = squareNorm.root as Rational
 
@@ -67,8 +71,11 @@ data class Quarternion(
     }
 
     override fun toString() =
-        if (isReal) "$re"
-        else "$re+${i}i+${j}j+${k}k"
+        if (isReal) {
+            "$re"
+        } else {
+            "$re+${i}i+${j}j+${k}k"
+        }
 
     companion object {
         val ZERO = Quarternion(RZERO, RZERO, RZERO, RZERO)

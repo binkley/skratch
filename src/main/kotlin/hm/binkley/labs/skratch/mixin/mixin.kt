@@ -62,6 +62,6 @@ interface Fooby {
         @College("Baker")
         override var bob: String = "Hi, Nancy! It's Bob.",
         @College("Baker")
-        override var nancy: String = "Hi, Bob! It's Nancy.",
+        override var nancy: String = "Hi, Bob! It's Nancy."
     ) : Fooby
 }

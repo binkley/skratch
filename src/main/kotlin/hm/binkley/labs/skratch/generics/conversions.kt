@@ -16,12 +16,12 @@ fun <
     >
 Measure<S, K, *, *>.into(
     other: V,
-    conversion: (BigRational) -> BigRational,
+    conversion: (BigRational) -> BigRational
 ): N = other.new(convertByBases(other, conversion))
 
 fun <S : System<S>, K : Kind>
 Measure<S, K, *, *>.into(
-    units: List<Units<S, K, *, *>>,
+    units: List<Units<S, K, *, *>>
 ): List<Measure<S, K, *, *>> {
     // Pre-populate with nulls so that we may write in any order
     val into = MutableList<Measure<*, *, *, *>?>(units.size) { null }
@@ -47,12 +47,12 @@ Measure<S, K, *, *>.into(
 
 fun <S : System<S>, K : Kind>
 Measure<S, K, *, *>.into(
-    vararg units: Units<S, K, *, *>,
+    vararg units: Units<S, K, *, *>
 ): List<Measure<S, K, *, *>> = into(units.asList())
 
 private fun Measure<*, *, *, *>.convertByBases(
     other: Units<*, *, *, *>,
-    conversion: (BigRational) -> BigRational,
+    conversion: (BigRational) -> BigRational
 ) = conversion(quantity * unit.basis) / other.basis
 
 private fun <T : Comparable<T>> List<T>.sortedDescendingIndexed() =

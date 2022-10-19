@@ -27,7 +27,7 @@ abstract class Matrix2x2<N, Norm : GeneralNumber<Norm, Norm>, M>(
     a: N,
     b: N,
     c: N,
-    d: N,
+    d: N
 ) :
     SquareMatrix<N, Norm, M>(2, listOf(a, b, c, d)),
     HasD<N, Norm, M>
@@ -39,7 +39,7 @@ abstract class Matrix2x2<N, Norm : GeneralNumber<Norm, Norm>, M>(
         val a: N,
         val b: N,
         val c: N,
-        val d: N,
+        val d: N
     ) where N : GeneralNumber<N, Norm>
 
     override val a: N get() = this[1, 1]
@@ -76,9 +76,11 @@ abstract class Matrix2x2<N, Norm : GeneralNumber<Norm, Norm>, M>(
     override operator fun times(other: Long) = this * elementCtor(other)
 
     override operator fun div(other: M): M =
-        if (other.isSingular())
+        if (other.isSingular()) {
             throw ArithmeticException("Divisor is singular")
-        else this * other.multInv
+        } else {
+            this * other.multInv
+        }
 
     override operator fun div(other: Long) = this / elementCtor(other)
 

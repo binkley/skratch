@@ -8,13 +8,13 @@ import hm.binkley.labs.skratch.layers.getAsWithout
 class CeilRule<
     K : Any,
     V : Any,
-    T : Comparable<T>, // `where T : V` does not compile
+    T : Comparable<T> // `where T : V` does not compile
     >(val ceiling: T) : Rule<K, V, V>("ceil[$ceiling]") {
     @Suppress("UNCHECKED_CAST")
     override fun invoke(
         key: K,
         values: ReversedSequence<V>,
-        layers: Layers<K, V, *>,
+        layers: Layers<K, V, *>
     ): V = min(ceiling, layers.getAsWithout(key, this)) as V
 }
 

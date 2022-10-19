@@ -3,7 +3,7 @@ package hm.binkley.labs.skratch.math.algebra
 import java.util.Objects.hash
 
 class Mod3Int private constructor(
-    val value: Int,
+    val value: Int
 ) : Ring<Mod3Int> {
     override val constants: Constants get() = Mod3Int
 

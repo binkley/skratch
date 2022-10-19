@@ -34,7 +34,7 @@ object Large : TeeShirtSize()
 
 open class EnumyLayer(
     index: Int,
-    map: Map<EnumyKey, ValueOrRule<Number>> = emptyMap(),
+    map: Map<EnumyKey, ValueOrRule<Number>> = emptyMap()
 ) : AbstractMutableLayer<EnumyKey, Number, EnumyLayer>(index, map) {
     override fun copy(): EnumyLayer = EnumyLayer(index, this)
 }
@@ -77,7 +77,7 @@ class EnumyLayers :
 open class EnumyContainer(
     index: Int,
     map: Map<EnumyKey, ValueOrRule<Number>> = emptyMap(),
-    private val contents: List<EnumyLayer> = emptyList(),
+    private val contents: List<EnumyLayer> = emptyList()
 ) : EnumyLayer(index, map) {
     override fun copy() = EnumyContainer(index, this, contents)
 

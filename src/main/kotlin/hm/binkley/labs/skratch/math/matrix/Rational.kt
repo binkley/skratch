@@ -74,20 +74,22 @@ class Rational(n: Long, d: Long) :
     companion object {
         private fun normalizeSign(
             a: Long,
-            b: Long,
+            b: Long
         ) = if (-1 == b.sign) -a to -b else a to b
 
         private tailrec fun gcd(
             a: Long,
-            b: Long,
+            b: Long
         ): Long = if (b == 0L) a else gcd(b, a % b)
 
         private fun root(c: Rational): GeneralNumber<*, Rational> {
             // TODO: WRONG -- does not work for Quarternions
-            if (c.isNegative) return Complex(
-                0L,
-                c.absoluteValue.root as Rational
-            )
+            if (c.isNegative) {
+                return Complex(
+                    0L,
+                    c.absoluteValue.root as Rational
+                )
+            }
             val (rn, nexact) = maybeExactRoot(c.numerator)
             val (rd, dexact) = maybeExactRoot(c.denominator)
             return when {
@@ -100,7 +102,7 @@ class Rational(n: Long, d: Long) :
             x: Long,
             start: Long,
             end: Long,
-            guess: Long,
+            guess: Long
         ): Long {
             if (start > end) return guess
             val mid = (start + end) / 2

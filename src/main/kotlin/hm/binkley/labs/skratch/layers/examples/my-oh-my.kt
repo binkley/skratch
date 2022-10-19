@@ -24,19 +24,19 @@ class MyLayers :
 
 open class MyLayer(
     index: Int,
-    map: Map<String, ValueOrRule<Number>> = emptyMap(),
+    map: Map<String, ValueOrRule<Number>> = emptyMap()
 ) : AbstractMutableLayer<String, Number, MyLayer>(index, map) {
     override fun copy() = MyLayer(index, this)
 }
 
 open class OhMyLayer<M : OhMyLayer<M>>(
-    index: Int,
+    index: Int
 ) : MyLayer(index, mapOf("message" to 17.toValue())) {
     open fun ohMy() = println("OH, MY, ${this["message"]}!")
 }
 
 class MyWordLayer(
-    index: Int,
+    index: Int
 ) : OhMyLayer<MyWordLayer>(index) {
     init {
         edit {

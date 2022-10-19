@@ -4,7 +4,7 @@ import hm.binkley.labs.skratch.math.matrix.Rational.Companion.ONE
 import hm.binkley.labs.skratch.math.matrix.Rational.Companion.ZERO
 
 class FibMatrix(
-    val characteristic: Long,
+    val characteristic: Long
 ) : Matrix2x2<Rational, Rational, FibMatrix>(nthFib(characteristic)) {
     constructor(char: Int) : this(char.toLong())
 
@@ -17,7 +17,7 @@ class FibMatrix(
         a: Rational,
         b: Rational,
         c: Rational,
-        d: Rational,
+        d: Rational
     ) = throw AssertionError("BUG: Did not override other method")
 
     override val T: FibMatrix get() = this
@@ -60,11 +60,17 @@ class FibMatrix(
         }
 
         private tailrec fun nextFib(n: Long, m: Holder<Rational, Rational>): Holder<Rational, Rational> =
-            if (0L == n) m
-            else nextFib(n - 1, Holder(m.b, m.d, m.d, m.b + m.d))
+            if (0L == n) {
+                m
+            } else {
+                nextFib(n - 1, Holder(m.b, m.d, m.d, m.b + m.d))
+            }
 
         private tailrec fun prevFib(n: Long, m: Holder<Rational, Rational>): Holder<Rational, Rational> =
-            if (0L == n) m
-            else prevFib(n + 1, Holder(m.b - m.a, m.a, m.a, m.b))
+            if (0L == n) {
+                m
+            } else {
+                prevFib(n + 1, Holder(m.b - m.a, m.a, m.a, m.b))
+            }
     }
 }

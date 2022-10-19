@@ -7,8 +7,9 @@ import hm.binkley.labs.skratch.puzzlers.main
 import java.lang.IllegalArgumentException
 
 fun main(args: List<String>) {
-    if (!args.isEmpty())
+    if (!args.isEmpty()) {
         throw IllegalArgumentException("No arguments expected: args")
+    }
 
     val a_s: List<String> = List(3) { index -> ('a' + index).toString() }
     println("CHEESY: Using a fun name as a class name -> $a_s")
@@ -23,8 +24,11 @@ fun main(args: List<String>) {
     }
 
     fun `maybe three`(check: (Int) -> Boolean) {
-        if (check(3)) `do the three things`()
-        else println("$check says do not pass go")
+        if (check(3)) {
+            `do the three things`()
+        } else {
+            println("$check says do not pass go")
+        }
     }
 
     `maybe three`(Named("Is it three?") { i -> 3 == i })

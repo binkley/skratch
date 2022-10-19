@@ -11,7 +11,7 @@ val Int.rat: BigRational get() = valueOf(big)
 
 class BigRational private constructor(
     val numerator: BigInteger,
-    val denominator: BigInteger,
+    val denominator: BigInteger
 ) : Comparable<BigRational> {
     override fun compareTo(other: BigRational) =
         (numerator * other.denominator)
@@ -24,8 +24,11 @@ class BigRational private constructor(
 
     override fun hashCode() = hash(numerator, denominator)
     override fun toString() =
-        if (BigInteger.ONE == denominator) "$numerator"
-        else "$numerator/$denominator"
+        if (BigInteger.ONE == denominator) {
+            "$numerator"
+        } else {
+            "$numerator/$denominator"
+        }
 
     companion object {
         val ZERO = BigRational(0.big, 1.big)
@@ -33,10 +36,11 @@ class BigRational private constructor(
 
         fun valueOf(
             numerator: BigInteger,
-            denominator: BigInteger = BigInteger.ONE,
+            denominator: BigInteger = BigInteger.ONE
         ): BigRational {
-            if (BigInteger.ZERO == denominator)
+            if (BigInteger.ZERO == denominator) {
                 throw ArithmeticException("Division by zero")
+            }
             if (BigInteger.ZERO == numerator) return ZERO
 
             var n = numerator
@@ -52,8 +56,10 @@ class BigRational private constructor(
                 d /= gcd
             }
 
-            if (BigInteger.ONE == d) when {
-                BigInteger.ONE == n -> return ONE
+            if (BigInteger.ONE == d) {
+                when {
+                    BigInteger.ONE == n -> return ONE
+                }
             }
 
             return BigRational(n, d)

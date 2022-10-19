@@ -16,7 +16,7 @@ private interface HasZero<T> {
 private fun <T : XBase<T>> T.isZero() = this.companion.ZERO == this
 
 private abstract class XCompanionBase<T : XBase<T>>(
-    override val ZERO: T,
+    override val ZERO: T
 ) : HasZero<T> {
     abstract fun valueOf(x: Int): T
 
@@ -25,7 +25,7 @@ private abstract class XCompanionBase<T : XBase<T>>(
 }
 
 private abstract class XBase<T : XBase<T>> protected constructor(
-    val x: Int,
+    val x: Int
 ) {
     abstract val companion: XCompanionBase<T>
 
@@ -38,7 +38,7 @@ private class P private constructor(x: Int) : XBase<P>(x) {
     override val companion get() = P
 
     companion object : XCompanionBase<P>(
-        ZERO = P(0),
+        ZERO = P(0)
     ) {
         override fun valueOf(x: Int): P = construct(x) { P(it) }
     }
@@ -48,7 +48,7 @@ private class Q private constructor(x: Int) : XBase<Q>(x) {
     override val companion get() = Companion
 
     companion object : XCompanionBase<Q>(
-        ZERO = Q(0),
+        ZERO = Q(0)
     ) {
         override fun valueOf(x: Int): Q = construct(x) { Q(it) }
     }

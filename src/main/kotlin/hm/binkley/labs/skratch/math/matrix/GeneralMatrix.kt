@@ -3,7 +3,7 @@ package hm.binkley.labs.skratch.math.matrix
 abstract class GeneralMatrix<N, Norm : GeneralNumber<Norm, Norm>, M>(
     val rows: Int,
     val cols: Int,
-    private val values: List<N>,
+    private val values: List<N>
 ) :
     Additive<M>,
     Multiplicative<M>,

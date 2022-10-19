@@ -35,7 +35,7 @@ interface MoneyFactory<M : Money<M>> {
 /** @todo How to ensure each [KnownCurrency] has a matching money? */
 abstract class AbstractMoney<M : AbstractMoney<M>>(
     override val currency: Currency,
-    override val amount: BigDecimal,
+    override val amount: BigDecimal
 ) : Money<M> {
     final override fun equals(other: Any?): Boolean = this === other ||
         other is Money<*> &&

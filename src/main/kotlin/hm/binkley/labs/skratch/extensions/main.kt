@@ -27,7 +27,7 @@ abstract class CBase<T : XBase<T>> {
 
 abstract class XBase<T : XBase<T>>(
     val companion: CBase<T>,
-    val v: Int,
+    val v: Int
 ) {
     operator fun plus(other: T): T = companion.valueOf(v + other.v)
     operator fun div(other: Int): T = companion.valueOf(v / other)

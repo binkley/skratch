@@ -5,10 +5,10 @@ import kotlin.collections.Map.Entry
 abstract class AbstractMutableLayer<
     K : Any,
     V : Any,
-    M : MutableLayer<K, V, M>,
+    M : MutableLayer<K, V, M>
     >(
     override val index: Int,
-    map: Map<K, ValueOrRule<V>>,
+    map: Map<K, ValueOrRule<V>>
 ) : MutableLayer<K, V, M>, AbstractMap<K, ValueOrRule<V>>() {
     private val map = map.toMutableMap() // Defensive copy
 

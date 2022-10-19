@@ -4,7 +4,7 @@ import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.matchers.shouldBe
 
 class TestEditMap(
-    val map: MutableMap<String, ValueOrRule<Int>> = mutableMapOf(),
+    val map: MutableMap<String, ValueOrRule<Int>> = mutableMapOf()
 ) : EditMap<String, Int>, MutableMap<String, ValueOrRule<Int>> by map
 
 /**
@@ -15,7 +15,7 @@ class TestEditMap(
  */
 class TestLayer(
     index: Int,
-    map: Map<String, ValueOrRule<Int>> = emptyMap(),
+    map: Map<String, ValueOrRule<Int>> = emptyMap()
 ) : AbstractMutableLayer<String, Int, TestLayer>(index, map) {
     constructor(index: Int, block: EditMap<String, Int>.() -> Unit) :
         this(index) {
@@ -36,7 +36,7 @@ class TestLayer(
  *   layer
  */
 class TestLayers constructor(
-    history: List<TestLayer> = listOf(TestLayer(0)),
+    history: List<TestLayer> = listOf(TestLayer(0))
 ) : AbstractMutableLayers<String, Int, TestLayer>(history, ::TestLayer) {
     constructor(initialRules: TestLayer) : this(listOf(initialRules))
     constructor(block: EditMap<String, Int>.() -> Unit) : this() {
@@ -56,7 +56,7 @@ var EditMap<String, Int>.BOB: Int? by EditMapDelegate { "BOB" }
 var EditMap<String, Int>.NANCY: Int by EditMapDelegate { "NANCY" }
 
 inline fun <reified E : Throwable> TestLayers.shouldRollback(
-    block: (TestLayers) -> Unit,
+    block: (TestLayers) -> Unit
 ): E {
     val initView: Map<String, Int> = toMap() // Defensive copy
     val initHistory = history.toList() // Defensive copy

@@ -10,12 +10,12 @@ interface EditMap<K : Any, V : Any> : MutableMap<K, ValueOrRule<V>> {
     /** Creates an ad-hoc rule. */
     fun <T : V> rule(
         name: String,
-        block: (K, Sequence<T>, Layers<K, V, *>) -> T?,
+        block: (K, Sequence<T>, Layers<K, V, *>) -> T?
     ): Rule<K, V, T> = object : Rule<K, V, T>(name) {
         override fun invoke(
             key: K,
             values: ReversedSequence<T>,
-            layers: Layers<K, V, *>,
+            layers: Layers<K, V, *>
         ): T? = block(key, values, layers)
     }
 }
@@ -27,7 +27,7 @@ interface EditMap<K : Any, V : Any> : MutableMap<K, ValueOrRule<V>> {
  */
 operator fun <
     K : Any,
-    V : Any,
+    V : Any
     >
 EditMap<K, V>.set(key: K, value: V) = put(key, value)
 
@@ -43,7 +43,7 @@ EditMap<K, V>.set(key: K, value: V) = put(key, value)
 fun interface EditMapDelegate<
     K : Any,
     V : Any,
-    T : V,
+    T : V
     > : ReadWriteProperty<EditMap<K, V>, T?> {
     /** Finds or creates a suitable edit map key. */
     fun KProperty<*>.toKey(): K
@@ -66,7 +66,10 @@ fun interface EditMapDelegate<
         property: KProperty<*>,
         value: T?
     ) {
-        if (null == value) thisRef.remove(property.toKey())
-        else thisRef[property.toKey()] = value.toValue()
+        if (null == value) {
+            thisRef.remove(property.toKey())
+        } else {
+            thisRef[property.toKey()] = value.toValue()
+        }
     }
 }

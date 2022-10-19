@@ -2,7 +2,7 @@ package hm.binkley.labs.skratch.math.matrix
 
 abstract class SquareMatrix<N, Norm : GeneralNumber<Norm, Norm>, M>(
     val rank: Int,
-    values: List<N>,
+    values: List<N>
 ) :
     GeneralMatrix<N, Norm, M>(rank, rank, values),
     Additive<M>,

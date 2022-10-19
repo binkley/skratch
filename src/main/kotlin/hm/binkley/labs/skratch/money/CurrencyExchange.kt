@@ -9,7 +9,7 @@ interface CurrencyExchange {
 
     class MoneyChanger<M : Money<M>>(
         private val money: M,
-        private val exchange: CurrencyExchange,
+        private val exchange: CurrencyExchange
     ) {
         infix fun <O : Money<O>> convertTo(to: KClass<O>) =
             exchange.exchange(money, to)
@@ -17,7 +17,7 @@ interface CurrencyExchange {
 
     class ChangedMoney<M : Money<M>, O : Money<O>>(
         private val money: M,
-        private val to: KClass<O>,
+        private val to: KClass<O>
     ) {
         infix fun at(exchange: CurrencyExchange) =
             exchange.exchange(money, to)

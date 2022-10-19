@@ -8,7 +8,7 @@ fun main() {
 }
 
 private data class Bob(
-    val strings: Int,
+    val strings: Int
 )
 
 private object Nancy {

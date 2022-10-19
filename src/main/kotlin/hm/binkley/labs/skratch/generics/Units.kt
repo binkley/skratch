@@ -20,7 +20,7 @@ abstract class Units<
     >(
     val system: S,
     val name: String,
-    val basis: BigRational,
+    val basis: BigRational
 ) : Comparable<Units<S, K, *, *>> {
     abstract fun new(value: BigRational): M
     override fun compareTo(other: Units<S, K, *, *>) =
@@ -35,7 +35,7 @@ abstract class Measure<
     M : Measure<S, K, U, M>
     >(
     val unit: U,
-    val quantity: BigRational,
+    val quantity: BigRational
 ) : Comparable<Measure<S, K, *, *>> {
     override fun compareTo(other: Measure<S, K, *, *>) =
         quantity.compareTo((other into unit).quantity)

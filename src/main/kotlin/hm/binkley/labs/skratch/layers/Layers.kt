@@ -5,7 +5,7 @@ import hm.binkley.util.Stack
 interface Layers<
     K : Any,
     V : Any,
-    L : Layer<K, V, L>,
+    L : Layer<K, V, L>
     > : Map<K, V> {
     /** A read-only view of editing history in oldest-to-newest order. */
     val history: Stack<Layer<K, V, L>>
@@ -22,7 +22,7 @@ interface Layers<
      */
     fun <T : V> getAs(
         key: K,
-        except: Collection<Layer<K, V, *>> = emptyList(),
+        except: Collection<Layer<K, V, *>> = emptyList()
     ): T?
 
     /** Convenience for [getAs]. */
@@ -56,7 +56,7 @@ interface Layers<
 val <
     K : Any,
     V : Any,
-    L : Layer<K, V, L>,
+    L : Layer<K, V, L>
     >
 Layers<K, V, L>.top get() = peek()
 
@@ -64,7 +64,7 @@ Layers<K, V, L>.top get() = peek()
 fun <K : Any, V : Any>
 Layers<K, V, *>.find(
     key: K,
-    rule: Rule<K, V, *>,
+    rule: Rule<K, V, *>
 ): Layer<K, V, *> = history.asReversed().first { rule == it[key] }
 
 /**
@@ -77,9 +77,9 @@ Layers<K, V, *>.find(
 fun <
     K : Any,
     V : Any,
-    T : V,
+    T : V
     >
 Layers<K, V, *>.getAsWithout(
     key: K,
-    rule: Rule<K, V, *>,
+    rule: Rule<K, V, *>
 ): T = getAs(key, find(key, rule))!! // `!!` as [rule] must be present

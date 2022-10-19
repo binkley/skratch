@@ -62,7 +62,7 @@ private class FunnyMoney private constructor(amount: BigDecimal) :
 private val exchange = object : CurrencyExchange {
     override fun <M : Money<M>, O : Money<O>> exchange(
         money: M,
-        to: KClass<O>,
+        to: KClass<O>
     ) = when (to) {
         SGD::class -> SGD.of("1.35")
         FunnyMoney::class -> FunnyMoney.of(money.amount * 1101.toBigDecimal())

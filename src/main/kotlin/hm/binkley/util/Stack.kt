@@ -73,7 +73,7 @@ interface MutableStack<T> : Stack<T>, MutableList<T> {
  * Use [asStack] and [asMutableStack] to wrap a mutable list.
  */
 open class ArrayMutableStack<T> private constructor(
-    private val elements: MutableList<T> = ArrayList(),
+    private val elements: MutableList<T> = ArrayList()
 ) : MutableStack<T>, MutableList<T> by elements {
     constructor(elements: Collection<T>) : this(ArrayList(elements))
     constructor(initialCapacity: Int) : this(ArrayList(initialCapacity))

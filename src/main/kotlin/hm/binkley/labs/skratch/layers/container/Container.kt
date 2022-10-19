@@ -15,7 +15,7 @@ interface Container<
     K : Any,
     V : Any,
     M : MutableLayer<K, V, M>,
-    C,
+    C
     > where C : MutableLayer<K, V, C>, C : Container<K, V, M, C> {
     val contents: List<M>
 

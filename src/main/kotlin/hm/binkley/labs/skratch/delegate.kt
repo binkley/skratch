@@ -5,7 +5,7 @@ fun main() {
         mutableMapOf(
             "name" to "BOB",
             "number" to 42,
-            "pi" to 3.14159,
+            "pi" to 3.14159
         )
     )
 

@@ -13,20 +13,20 @@ import kotlin.collections.Map.Entry
 open class AbstractMutableLayers<
     K : Any,
     V : Any,
-    M : MutableLayer<K, V, M>,
+    M : MutableLayer<K, V, M>
     > private constructor(
     private val layers: MutableStack<M>,
-    private val newLayer: NewLayer<K, V, M>,
+    private val newLayer: NewLayer<K, V, M>
 ) : AbstractMap<K, V>(), MutableLayers<K, V, M> {
     constructor(
         initialRules: NewLayer<K, V, M>,
-        newLayer: NewLayer<K, V, M>,
+        newLayer: NewLayer<K, V, M>
     ) : this(mutableStackOf(initialRules(0)), newLayer)
 
     /** @todo Only used in testing for pathological cases */
     constructor(
         layers: List<M>,
-        newLayer: NewLayer<K, V, M>,
+        newLayer: NewLayer<K, V, M>
     ) : this(layers.toMutableStack(), newLayer)
 
     init {
@@ -39,7 +39,7 @@ open class AbstractMutableLayers<
 
     override fun <T : V> getAs(
         key: K,
-        except: Collection<Layer<K, V, *>>,
+        except: Collection<Layer<K, V, *>>
         // TODO: Remove the downcast
     ): T? = (whatIfNot(except) as AbstractMutableLayers).valueFor(key)
 
@@ -49,7 +49,7 @@ open class AbstractMutableLayers<
         validate { it.replaceLast(layer) }
 
     override fun whatIf(
-        block: EditMap<K, V>.() -> Unit,
+        block: EditMap<K, V>.() -> Unit
     ): MutableLayers<K, V, M> = whatIf(top.copy().edit(block))
 
     override fun whatIfNot(except: Collection<Layer<K, V, *>>) = validate {
@@ -57,8 +57,11 @@ open class AbstractMutableLayers<
     }
 
     override fun pop(): M =
-        if (1 < layers.size) layers.pop()
-        else throw MissingFirstLayerException
+        if (1 < layers.size) {
+            layers.pop()
+        } else {
+            throw MissingFirstLayerException
+        }
 
     override fun <N : M> push(newLayer: NewLayer<K, V, M>): N {
         val valid = validate { it.push(newLayer(layers.size)) }.top
@@ -82,7 +85,7 @@ open class AbstractMutableLayers<
      * Actual validation is in `init` for the new mutable layers.
      */
     private fun validate(
-        block: (MutableStack<M>) -> Unit,
+        block: (MutableStack<M>) -> Unit
     ): MutableLayers<K, V, M> {
         val layersCopy = layers.toMutableStack()
         block(layersCopy)
@@ -119,7 +122,7 @@ open class AbstractMutableLayers<
         override fun iterator(): Iterator<Entry<K, V>> = NonNullValues()
 
         private inner class NonNullValues(
-            private val kit: Iterator<K> = allKeys().iterator(),
+            private val kit: Iterator<K> = allKeys().iterator()
         ) : AbstractIterator<Entry<K, V>>() {
             override fun computeNext() {
                 while (kit.hasNext()) {

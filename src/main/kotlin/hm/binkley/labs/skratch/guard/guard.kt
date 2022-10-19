@@ -23,7 +23,10 @@ private data class GuardedException(val guardBroken: Any) : Exception()
 
 private fun <V> V?.guard(
     guardedBlock: V.() -> Boolean,
-    alternativeBlock: (V?) -> Any = {},
+    alternativeBlock: (V?) -> Any = {}
 ): V =
-    if (this != null && guardedBlock(this)) this
-    else throw GuardedException(alternativeBlock(this))
+    if (this != null && guardedBlock(this)) {
+        this
+    } else {
+        throw GuardedException(alternativeBlock(this))
+    }

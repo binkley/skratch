@@ -8,13 +8,13 @@ import hm.binkley.labs.skratch.layers.getAsWithout
 class FloorRule<
     K : Any,
     V : Any,
-    T : Comparable<T>, // `where T : V` does not compile
+    T : Comparable<T> // `where T : V` does not compile
     >(val floor: T) : Rule<K, V, V>("floor[$floor]") {
     @Suppress("UNCHECKED_CAST")
     override fun invoke(
         key: K,
         values: ReversedSequence<V>,
-        layers: Layers<K, V, *>,
+        layers: Layers<K, V, *>
     ): V = max(floor, layers.getAsWithout(key, this)) as V
 }
 

@@ -3,7 +3,7 @@ package hm.binkley.labs.skratch.layers
 interface Layer<
     K : Any,
     V : Any,
-    L : Layer<K, V, L>,
+    L : Layer<K, V, L>
     > : Map<K, ValueOrRule<V>> {
     /** Position within [Layers]. */
     val index: Int
@@ -15,6 +15,6 @@ fun <
     K : Any,
     V : Any,
     L : Layer<K, V, L>,
-    N : L,
+    N : L
     >
 Layer<K, V, L>.self(): N = this as N
