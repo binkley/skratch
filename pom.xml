@@ -39,7 +39,7 @@
         <junit.version>5.9.1</junit.version>
         <kotest.version>5.5.4</kotest.version>
         <kotlin.code.style>official</kotlin.code.style>
-        <kotlin.version>1.7.21</kotlin.version>
+        <kotlin.version>1.7.22</kotlin.version>
         <kotlinx-cli.version>0.3</kotlinx-cli.version>
         <kotlinx-coroutines.version>1.6.4</kotlinx-coroutines.version>
         <kotlinx-datetime.version>0.4.0</kotlinx-datetime.version>
