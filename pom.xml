@@ -51,7 +51,7 @@
         <maven-dependency-plugin.version>3.4.0</maven-dependency-plugin.version>
         <maven-help-plugin.version>3.3.0</maven-help-plugin.version>
         <maven-jar-plugin.version>3.3.0</maven-jar-plugin.version>
-        <maven-surefire-plugin.version>3.0.0-M7</maven-surefire-plugin.version>
+        <maven-surefire-plugin.version>3.0.0-M8</maven-surefire-plugin.version>
         <mockk.version>1.13.3</mockk.version>
         <picocli.version>4.7.0</picocli.version>
         <project.build.sourceEncoding>${java.charset}</project.build.sourceEncoding>
