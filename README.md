@@ -6,6 +6,7 @@
 
 [![build](https://github.com/binkley/skratch/workflows/build/badge.svg)](https://github.com/binkley/skratch/actions)
 [![issues](https://img.shields.io/github/issues/binkley/skratch.svg)](https://github.com/binkley/skratch/issues/)
+[![pull requests](https://img.shields.io/github/issues-pr/binkley/skratch.svg)](https://github.com/binkley/skratch/pulls)
 [![vulnerabilities](https://snyk.io/test/github/binkley/skratch/badge.svg)](https://snyk.io/test/github/binkley/skratch)
 [![license](https://img.shields.io/badge/license-Public%20Domain-blue.svg)](http://unlicense.org/)
 
