@@ -8,8 +8,8 @@ abstract class SquareMatrix<N, Norm : GeneralNumber<Norm, Norm>, M>(
     Additive<M>,
     Multiplicative<M>,
     Scalable<M>
-        where N : GeneralNumber<N, Norm>,
-              M : SquareMatrix<N, Norm, M> {
+    where N : GeneralNumber<N, Norm>,
+          M : SquareMatrix<N, Norm, M> {
     abstract val det: N // TODO: General algorithm for determinant
     val tr
         get() = (1..rank).map {

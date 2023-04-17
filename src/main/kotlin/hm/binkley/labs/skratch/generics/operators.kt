@@ -6,7 +6,7 @@ operator fun <
     U : Units<S, K, U, M>,
     M : Measure<S, K, U, M>
     >
-M.plus(other: Measure<S, K, *, *>): M =
+    M.plus(other: Measure<S, K, *, *>): M =
     unit.new(quantity + (other into unit).quantity)
 
 operator fun <
@@ -15,4 +15,4 @@ operator fun <
     V : Units<S, K, V, N>,
     N : Measure<S, K, V, N>
     >
-Measure<S, K, *, *>.div(other: V): N = into(other)
+    Measure<S, K, *, *>.div(other: V): N = into(other)

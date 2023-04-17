@@ -3,8 +3,8 @@ package hm.binkley.labs.skratch.math.matrix
 import java.util.Objects.hash
 
 interface HasA<N, Norm : GeneralNumber<Norm, Norm>, M>
-        where N : GeneralNumber<N, Norm>,
-              M : SquareMatrix<N, Norm, M> {
+    where N : GeneralNumber<N, Norm>,
+          M : SquareMatrix<N, Norm, M> {
     val a: N
 }
 
@@ -13,8 +13,8 @@ abstract class Matrix1x1<N, Norm : GeneralNumber<Norm, Norm>, M>(
 ) :
     SquareMatrix<N, Norm, M>(1, listOf(a)),
     HasA<N, Norm, M>
-        where N : GeneralNumber<N, Norm>,
-              M : Matrix1x1<N, Norm, M> {
+    where N : GeneralNumber<N, Norm>,
+          M : Matrix1x1<N, Norm, M> {
     constructor(m: Holder<N, Norm>) : this(m.a)
 
     data class Holder<N, Norm : GeneralNumber<Norm, Norm>>(

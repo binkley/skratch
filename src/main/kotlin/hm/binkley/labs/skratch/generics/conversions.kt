@@ -6,7 +6,7 @@ infix fun <
     V : Units<S, K, V, N>,
     N : Measure<S, K, V, N>
     >
-Measure<S, K, *, *>.into(other: V): N = into(other) { it }
+    Measure<S, K, *, *>.into(other: V): N = into(other) { it }
 
 fun <
     S : System<S>,
@@ -14,15 +14,15 @@ fun <
     V : Units<S, K, V, N>,
     N : Measure<S, K, V, N>
     >
-Measure<S, K, *, *>.into(
-    other: V,
-    conversion: (BigRational) -> BigRational
-): N = other.new(convertByBases(other, conversion))
+    Measure<S, K, *, *>.into(
+        other: V,
+        conversion: (BigRational) -> BigRational
+    ): N = other.new(convertByBases(other, conversion))
 
 fun <S : System<S>, K : Kind>
-Measure<S, K, *, *>.into(
-    units: List<Units<S, K, *, *>>
-): List<Measure<S, K, *, *>> {
+    Measure<S, K, *, *>.into(
+        units: List<Units<S, K, *, *>>
+    ): List<Measure<S, K, *, *>> {
     // Pre-populate with nulls so that we may write in any order
     val into = MutableList<Measure<*, *, *, *>?>(units.size) { null }
 
@@ -46,9 +46,9 @@ Measure<S, K, *, *>.into(
 }
 
 fun <S : System<S>, K : Kind>
-Measure<S, K, *, *>.into(
-    vararg units: Units<S, K, *, *>
-): List<Measure<S, K, *, *>> = into(units.asList())
+    Measure<S, K, *, *>.into(
+        vararg units: Units<S, K, *, *>
+    ): List<Measure<S, K, *, *>> = into(units.asList())
 
 private fun Measure<*, *, *, *>.convertByBases(
     other: Units<*, *, *, *>,

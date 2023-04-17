@@ -110,11 +110,15 @@ data class QED(
             // Throw an assertion restating the BDD failure spot, but do not
             // lose any of the original assertion failure info
             val x = e::class.constructors.filter {
-                it.parameters.map { p -> p.type.classifier } == listOf(String::class)
+                it.parameters.map { p -> p.type.classifier } == listOf(
+                    String::class
+                )
             }.map {
                 it.call("Errored $type clause in:\n${this@QED}\n$e")
             }.firstOrNull()
-                ?: throw IllegalStateException("BUG: Exception does not accept a reason")
+                ?: throw IllegalStateException(
+                    "BUG: Exception does not accept a reason"
+                )
 
             e.copyStackTraceWithoutFrameworkInto(x)
             throw x

@@ -53,7 +53,9 @@ internal class NewtonTest {
                 THEN Newton eats the apple
         """.trimIndent()
 
-        assert(e.message == "Failed THEN clause in:\n$scenarioText\njava.lang.AssertionError: Newton should be eating the apple while thinking") {
+        assert(
+            e.message == "Failed THEN clause in:\n$scenarioText\njava.lang.AssertionError: Newton should be eating the apple while thinking"
+        ) {
             "Wrong message in failed scenario: Expected:\n$scenarioText\nGot:\n${e.message}"
         }
     }
@@ -75,7 +77,9 @@ internal class NewtonTest {
                 THEN Newton sleeps
         """.trimIndent()
 
-        assert(e.message == "Errored THEN clause in:\n$scenarioText\njava.lang.IllegalStateException: Newton should be thinking, not sleeping") {
+        assert(
+            e.message == "Errored THEN clause in:\n$scenarioText\njava.lang.IllegalStateException: Newton should be thinking, not sleeping"
+        ) {
             "Wrong message in failed scenario: Expected:\n$scenarioText\nGot:\n${e.message}"
         }
     }

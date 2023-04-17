@@ -29,7 +29,7 @@ operator fun <
     K : Any,
     V : Any
     >
-EditMap<K, V>.set(key: K, value: V) = put(key, value)
+    EditMap<K, V>.set(key: K, value: V) = put(key, value)
 
 /**
  * Delegate for _simple_ assignment.

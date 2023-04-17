@@ -45,7 +45,7 @@ fun main(args: List<String>) {
     for ((k, v) in q)
         println(
             "$k -> ${
-            if (v is Function<*>) (v as F)(1, 2) else v
+                if (v is Function<*>) (v as F)(1, 2) else v
             }"
         )
 

@@ -8,8 +8,8 @@ abstract class GeneralMatrix<N, Norm : GeneralNumber<Norm, Norm>, M>(
     Additive<M>,
     Multiplicative<M>,
     Scalable<M>
-        where N : GeneralNumber<N, Norm>, // TODO: Conjugable
-              M : GeneralMatrix<N, Norm, M> {
+    where N : GeneralNumber<N, Norm>, // TODO: Conjugable
+          M : GeneralMatrix<N, Norm, M> {
     abstract val conj: M // TODO: Implement conjugate algorithm
     abstract val T: M // TODO: Implement transpose algorithm
     val hermitian get() = T.conj

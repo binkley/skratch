@@ -4,22 +4,22 @@ import java.util.Objects.hash
 
 interface HasB<N, Norm : GeneralNumber<Norm, Norm>, M> :
     HasA<N, Norm, M>
-        where N : GeneralNumber<N, Norm>,
-              M : SquareMatrix<N, Norm, M> {
+    where N : GeneralNumber<N, Norm>,
+          M : SquareMatrix<N, Norm, M> {
     val b: N
 }
 
 interface HasC<N, Norm : GeneralNumber<Norm, Norm>, M> :
     HasB<N, Norm, M>
-        where N : GeneralNumber<N, Norm>,
-              M : SquareMatrix<N, Norm, M> {
+    where N : GeneralNumber<N, Norm>,
+          M : SquareMatrix<N, Norm, M> {
     val c: N
 }
 
 interface HasD<N, Norm : GeneralNumber<Norm, Norm>, M> :
     HasC<N, Norm, M>
-        where N : GeneralNumber<N, Norm>,
-              M : SquareMatrix<N, Norm, M> {
+    where N : GeneralNumber<N, Norm>,
+          M : SquareMatrix<N, Norm, M> {
     val d: N
 }
 
@@ -31,8 +31,8 @@ abstract class Matrix2x2<N, Norm : GeneralNumber<Norm, Norm>, M>(
 ) :
     SquareMatrix<N, Norm, M>(2, listOf(a, b, c, d)),
     HasD<N, Norm, M>
-        where N : GeneralNumber<N, Norm>,
-              M : Matrix2x2<N, Norm, M> {
+    where N : GeneralNumber<N, Norm>,
+          M : Matrix2x2<N, Norm, M> {
     constructor(m: Holder<N, Norm>) : this(m.a, m.b, m.c, m.d)
 
     data class Holder<N, Norm : GeneralNumber<Norm, Norm>>(

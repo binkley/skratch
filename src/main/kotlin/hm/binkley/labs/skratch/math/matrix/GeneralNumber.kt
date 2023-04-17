@@ -7,7 +7,7 @@ interface GeneralNumber<T, Norm> :
     Scalable<T>,
     Conjugable<T>,
     Normed<T, Norm>
-        where T : GeneralNumber<T, Norm>,
-              Norm : GeneralNumber<Norm, Norm> {
+    where T : GeneralNumber<T, Norm>,
+          Norm : GeneralNumber<Norm, Norm> {
     fun equivalent(other: GeneralNumber<*, *>): Boolean
 }
