@@ -22,43 +22,43 @@
     <properties>
         <!-- @formatter:off -->
         <arrow.version>1.0.1</arrow.version>
-        <awaitility.version>4.2.0</awaitility.version>
+        <awaitility.version>4.3.0</awaitility.version>
         <buildplan-maven-plugin.version>1.5</buildplan-maven-plugin.version>
         <exp4j.version>0.4.8</exp4j.version>
         <failIfNoTests>true</failIfNoTests>
         <failsafe.printSummary>false</failsafe.printSummary>
         <generateBackupPoms>false</generateBackupPoms>
-        <jacoco-maven-plugin.version>0.8.8</jacoco-maven-plugin.version>
-        <jansi.version>2.4.0</jansi.version>
+        <jacoco-maven-plugin.version>0.8.13</jacoco-maven-plugin.version>
+        <jansi.version>2.4.2</jansi.version>
         <java.charset>UTF-8</java.charset>
-        <jdk.version>17</jdk.version>
+        <jdk.version>21</jdk.version>
         <jline.version>3.18.0</jline.version>
-        <jmh.version>1.36</jmh.version>
-        <ktlint-maven-plugin.version>1.16.0</ktlint-maven-plugin.version>
-        <jgit.version>6.5.0.202303070854-r</jgit.version>
-        <junit.version>5.9.2</junit.version>
-        <kotest.version>5.6.0</kotest.version>
+        <jmh.version>1.37</jmh.version>
+        <ktlint-maven-plugin.version>3.5.0</ktlint-maven-plugin.version>
+        <jgit.version>7.3.0.202506031305-r</jgit.version>
+        <junit.version>6.0.0-M2</junit.version>
+        <kotest.version>6.0.0.M10</kotest.version>
         <kotlin.code.style>official</kotlin.code.style>
-        <kotlin.version>1.8.10</kotlin.version>
+        <kotlin.version>2.2.0</kotlin.version>
         <kotlinx-cli.version>0.3</kotlinx-cli.version>
-        <kotlinx-coroutines.version>1.7.0-Beta</kotlinx-coroutines.version>
-        <kotlinx-datetime.version>0.4.0</kotlinx-datetime.version>
-        <log4j.version>2.20.0</log4j.version>
+        <kotlinx-coroutines.version>1.10.2</kotlinx-coroutines.version>
+        <kotlinx-datetime.version>0.7.1</kotlinx-datetime.version>
+        <log4j.version>3.0.0-beta3</log4j.version>
         <main.class>hm.binkley.labs.skratch.MainKt</main.class>
-        <maven-assembly-plugin.version>3.5.0</maven-assembly-plugin.version>
-        <maven-clean-plugin.version>3.2.0</maven-clean-plugin.version>
-        <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
-        <maven-dependency-plugin.version>3.5.0</maven-dependency-plugin.version>
-        <maven-help-plugin.version>3.4.0</maven-help-plugin.version>
-        <maven-jar-plugin.version>3.3.0</maven-jar-plugin.version>
-        <maven-surefire-plugin.version>3.0.0</maven-surefire-plugin.version>
-        <mockk.version>1.13.5</mockk.version>
-        <picocli.version>4.7.2</picocli.version>
+        <maven-assembly-plugin.version>3.7.1</maven-assembly-plugin.version>
+        <maven-clean-plugin.version>3.5.0</maven-clean-plugin.version>
+        <maven-compiler-plugin.version>3.14.0</maven-compiler-plugin.version>
+        <maven-dependency-plugin.version>3.8.1</maven-dependency-plugin.version>
+        <maven-help-plugin.version>3.5.1</maven-help-plugin.version>
+        <maven-jar-plugin.version>3.4.2</maven-jar-plugin.version>
+        <maven-surefire-plugin.version>3.5.3</maven-surefire-plugin.version>
+        <mockk.version>1.14.5</mockk.version>
+        <picocli.version>4.7.7</picocli.version>
         <project.build.sourceEncoding>${java.charset}</project.build.sourceEncoding>
         <project.reporting.outputEncoding>${java.charset}</project.reporting.outputEncoding>
         <surefire.printSummary>false</surefire.printSummary>
         <system-lambda.version>1.2.1</system-lambda.version>
-        <versions-maven-plugin.version>2.15.0</versions-maven-plugin.version>
+        <versions-maven-plugin.version>2.18.0</versions-maven-plugin.version>
         <!-- @formatter:on -->
     </properties>
 
@@ -96,12 +96,7 @@
         <dependency>
             <!-- TODO: Remove when kotlinx-coroutines catches up -->
             <groupId>org.jetbrains.kotlin</groupId>
-            <artifactId>kotlin-stdlib-common</artifactId>
-            <version>${kotlin.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jetbrains.kotlin</groupId>
-            <artifactId>kotlin-stdlib-jdk8</artifactId>
+            <artifactId>kotlin-stdlib</artifactId>
             <version>${kotlin.version}</version>
         </dependency>
         <dependency>
@@ -244,12 +239,12 @@
         </dependency>
 
         <!-- TODO: Download from Maven Central breaks for 1.6.2 -->
-<!--        <dependency>-->
-<!--            <groupId>org.jetbrains.kotlinx</groupId>-->
-<!--            <artifactId>kotlinx-coroutines-debug</artifactId>-->
-<!--            <version>${kotlinx-coroutines.version}</version>-->
-<!--            <scope>test</scope>-->
-<!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.jetbrains.kotlinx</groupId>-->
+        <!--            <artifactId>kotlinx-coroutines-debug</artifactId>-->
+        <!--            <version>${kotlinx-coroutines.version}</version>-->
+        <!--            <scope>test</scope>-->
+        <!--        </dependency>-->
         <dependency>
             <groupId>org.awaitility</groupId>
             <artifactId>awaitility</artifactId>
@@ -318,14 +313,14 @@
                 <artifactId>kotlin-maven-plugin</artifactId>
                 <version>${kotlin.version}</version>
                 <configuration>
-                    <apiVersion>1.6</apiVersion>
+                    <apiVersion>2.2</apiVersion>
                     <args>
                         <arg>-Werror</arg>
                         <arg>-Xjvm-enable-preview</arg>
                         <arg>-opt-in=kotlin.RequiresOptIn</arg>
                     </args>
                     <jvmTarget>${jdk.version}</jvmTarget>
-                    <languageVersion>1.6</languageVersion>
+                    <languageVersion>2.2</languageVersion>
                 </configuration>
                 <executions>
                     <execution>
@@ -497,8 +492,10 @@
                 <configuration>
                     <verbose>true</verbose>
                     <sourceRoots>
-                        <sourceRoot>${project.basedir}/src/main/kotlin</sourceRoot>
-                        <sourceRoot>${project.basedir}/src/test/kotlin</sourceRoot>
+                        <sourceRoot>${project.basedir}/src/main/kotlin
+                        </sourceRoot>
+                        <sourceRoot>${project.basedir}/src/test/kotlin
+                        </sourceRoot>
                     </sourceRoots>
                 </configuration>
                 <executions>

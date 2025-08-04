@@ -12,5 +12,6 @@ interface Monoid<T : Monoid<T>> : Semigroup<T> {
 
     @Suppress("UNCHECKED_CAST")
     operator fun unaryPlus(): T = this as T
+
     operator fun plus(addend: T): T
 }

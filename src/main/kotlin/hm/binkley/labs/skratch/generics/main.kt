@@ -1,3 +1,5 @@
+@file:Suppress("ktlint:standard:property-naming")
+
 package hm.binkley.labs.skratch.generics
 
 import hm.binkley.labs.skratch.generics.Bar.Bars

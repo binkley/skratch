@@ -1,3 +1,5 @@
+@file:Suppress("ktlint:standard:property-naming")
+
 package hm.binkley.labs.skratch.extensions
 
 import hm.binkley.labs.skratch.extensions.Y.Companion.average
@@ -21,8 +23,7 @@ abstract class CBase<T : XBase<T>> {
 
     fun Iterable<T>.sum() = sumOf { it }
 
-    fun <E> Iterable<E>.sumOf(selector: (E) -> T) =
-        fold(ZERO) { acc, element -> acc + selector(element) }
+    fun <E> Iterable<E>.sumOf(selector: (E) -> T) = fold(ZERO) { acc, element -> acc + selector(element) }
 }
 
 abstract class XBase<T : XBase<T>>(
@@ -30,12 +31,15 @@ abstract class XBase<T : XBase<T>>(
     val v: Int
 ) {
     operator fun plus(other: T): T = companion.valueOf(v + other.v)
+
     operator fun div(other: Int): T = companion.valueOf(v / other)
 
     override fun toString() = "${javaClass.simpleName}($v)"
 }
 
-class Y private constructor(v: Int) : XBase<Y>(Y, v) {
+class Y private constructor(
+    v: Int
+) : XBase<Y>(Y, v) {
     companion object : CBase<Y>() {
         override val ZERO = 0.y
         override val ONE = 1.y
@@ -46,7 +50,9 @@ class Y private constructor(v: Int) : XBase<Y>(Y, v) {
 
 val Int.y: Y get() = Y.valueOf(this)
 
-class Z private constructor(v: Int) : XBase<Z>(Z, v) {
+class Z private constructor(
+    v: Int
+) : XBase<Z>(Z, v) {
     companion object : CBase<Z>() {
         override val ZERO = 0.z
         override val ONE = 1.z

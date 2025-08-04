@@ -15,12 +15,14 @@ data class Quarternion(
         this(Rational(re), Rational(i), Rational(j), Rational(k))
 
     override fun unaryMinus() = Quarternion(-re, -i, -j, -k)
-    override fun plus(other: Quarternion) = Quarternion(
-        re + other.re,
-        i + other.i,
-        j + other.j,
-        k + other.k
-    )
+
+    override fun plus(other: Quarternion) =
+        Quarternion(
+            re + other.re,
+            i + other.i,
+            j + other.j,
+            k + other.k
+        )
 
     override fun unaryDiv() = conj / squareNorm
 
@@ -35,21 +37,21 @@ data class Quarternion(
      *         + k (a*h + b*g - c*f + d*e)
      * ```
      */
-    override fun times(other: Quarternion) = Quarternion(
-        re * other.re - i * other.i - j * other.j - k * other.k,
-        i * other.re + re * other.i + j * other.k - k * other.j,
-        re * other.j - i * other.k + j * other.re + k * other.i,
-        re * other.k + i * other.j - j * other.i + k * other.re
-    )
+    override fun times(other: Quarternion) =
+        Quarternion(
+            re * other.re - i * other.i - j * other.j - k * other.k,
+            i * other.re + re * other.i + j * other.k - k * other.j,
+            re * other.j - i * other.k + j * other.re + k * other.i,
+            re * other.k + i * other.j - j * other.i + k * other.re
+        )
 
-    operator fun times(other: Rational) =
-        Quarternion(re * other, i * other, j * other, k * other)
+    operator fun times(other: Rational) = Quarternion(re * other, i * other, j * other, k * other)
 
     override operator fun times(other: Long) = this * Rational(other)
+
     override operator fun div(other: Quarternion) = this * other.multInv
 
-    operator fun div(other: Rational) =
-        Quarternion(re / other, i / other, j / other, k / other)
+    operator fun div(other: Rational) = Quarternion(re / other, i / other, j / other, k / other)
 
     override operator fun div(other: Long) = this / Rational(other)
 
@@ -60,15 +62,17 @@ data class Quarternion(
     override val absoluteValue get() = squareNorm.root as Rational
 
     override fun isZero() = ZERO == this
+
     override fun isUnit() = ONE == this
 
     val isReal get() = i.isZero() && j.isZero() && k.isZero()
 
-    override fun equivalent(other: GeneralNumber<*, *>) = when (other) {
-        is Quarternion -> this == other
-        is Rational -> RZERO == i && re == other
-        else -> TODO("BUG: This is a terrible approach")
-    }
+    override fun equivalent(other: GeneralNumber<*, *>) =
+        when (other) {
+            is Quarternion -> this == other
+            is Rational -> RZERO == i && re == other
+            else -> TODO("BUG: This is a terrible approach")
+        }
 
     override fun toString() =
         if (isReal) {

@@ -8,7 +8,7 @@ class LastOrNullRule<
     K : Any,
     V : Any,
     T : V
-    > : Rule<K, V, T>("last-or[null]") {
+> : Rule<K, V, T>("last-or[null]") {
     override fun invoke(
         key: K,
         values: ReversedSequence<T>,

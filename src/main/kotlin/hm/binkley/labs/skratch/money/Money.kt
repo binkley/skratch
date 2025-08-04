@@ -15,6 +15,7 @@ interface Money<M : Money<M>> {
 
     /** Force implementations to define equality. */
     override fun equals(other: Any?): Boolean
+
     override fun hashCode(): Int
 
     /**
@@ -27,8 +28,11 @@ interface Money<M : Money<M>> {
 
 interface MoneyFactory<M : Money<M>> {
     fun of(amount: Int): M = of(amount.toLong())
+
     fun of(amount: Long): M = of(amount.toBigDecimal())
+
     fun of(amount: String): M = of(amount.toBigDecimal())
+
     fun of(amount: BigDecimal): M
 }
 
@@ -37,33 +41,43 @@ abstract class AbstractMoney<M : AbstractMoney<M>>(
     override val currency: Currency,
     override val amount: BigDecimal
 ) : Money<M> {
-    final override fun equals(other: Any?): Boolean = this === other ||
-        other is Money<*> &&
-        currency == other.currency &&
-        amount == other.amount
+    final override fun equals(other: Any?): Boolean =
+        this === other ||
+            other is Money<*> &&
+            currency == other.currency &&
+            amount == other.amount
 
     final override fun hashCode() = hash(currency, amount)
+
     final override fun toString() = currency.format(amount)
 }
 
 operator fun <M : Money<M>> M.unaryPlus(): M = this
+
 operator fun <M : Money<M>> M.unaryMinus() = with(-amount)
 
 operator fun <M : Money<M>> M.plus(other: M) = with(amount + other.amount)
+
 operator fun <M : Money<M>> M.minus(other: M) = with(amount - other.amount)
 
 operator fun <M : Money<M>> M.times(other: Int) = this * other.toLong()
+
 operator fun <M : Money<M>> M.times(other: Long) = this * other.toBigDecimal()
+
 operator fun <M : Money<M>> M.times(other: BigDecimal) = with(amount * other)
+
 operator fun <M : Money<M>> Int.times(other: M) = other * this
+
 operator fun <M : Money<M>> Long.times(other: M) = other * this
+
 operator fun <M : Money<M>> BigDecimal.times(other: M) = other * this
 
 // TODO: This should use BigRationals; ie, non-decimal currencies
 operator fun <M : Money<M>> M.div(other: Int): M = this / other.toLong()
-operator fun <M : Money<M>> M.div(other: Long): M =
-    this / other.toBigDecimal()
 
-operator fun <M : Money<M>> M.div(other: BigDecimal): M = with(
-    amount.divide(other, amount.scale(), UNNECESSARY)
-)
+operator fun <M : Money<M>> M.div(other: Long): M = this / other.toBigDecimal()
+
+operator fun <M : Money<M>> M.div(other: BigDecimal): M =
+    with(
+        amount.divide(other, amount.scale(), UNNECESSARY)
+    )

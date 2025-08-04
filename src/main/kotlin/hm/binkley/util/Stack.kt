@@ -33,7 +33,9 @@ fun <T> Collection<T>.toStack(): Stack<T> = toMutableStack()
 val <T> Stack<T>.top get() = peek()
 
 /** A mutable stack view of [MutableList]. */
-interface MutableStack<T> : Stack<T>, MutableList<T> {
+interface MutableStack<T> :
+    Stack<T>,
+    MutableList<T> {
     /**
      * Pops the top element from the stack.
      *
@@ -74,27 +76,28 @@ interface MutableStack<T> : Stack<T>, MutableList<T> {
  */
 open class ArrayMutableStack<T> private constructor(
     private val elements: MutableList<T> = ArrayList()
-) : MutableStack<T>, MutableList<T> by elements {
+) : MutableStack<T>,
+    MutableList<T> by elements {
     constructor(elements: Collection<T>) : this(ArrayList(elements))
     constructor(initialCapacity: Int) : this(ArrayList(initialCapacity))
 
-    override fun equals(other: Any?): Boolean = this === other ||
-        other is Stack<*> &&
-        elements == other.toList()
+    override fun equals(other: Any?): Boolean =
+        this === other ||
+            other is Stack<*> &&
+            elements == other.toList()
 
     override fun hashCode(): Int = elements.hashCode()
+
     override fun toString(): String = elements.toString()
 
     companion object {
         // Access to private constructor for wrapping and not copying
 
         /** Returns a [Stack] that wraps the list. */
-        fun <T> MutableList<T>.asStack(): Stack<T> =
-            ArrayMutableStack(this)
+        fun <T> MutableList<T>.asStack(): Stack<T> = ArrayMutableStack(this)
 
         /** Returns a [MutableStack] that wraps the list. */
-        fun <T> MutableList<T>.asMutableStack(): Stack<T> =
-            ArrayMutableStack(this)
+        fun <T> MutableList<T>.asMutableStack(): Stack<T> = ArrayMutableStack(this)
     }
 }
 
@@ -102,12 +105,10 @@ open class ArrayMutableStack<T> private constructor(
 fun <T> emptyMutableStack(): MutableStack<T> = mutableStackOf()
 
 /** Returns a new, mutable stack of the given [elements]. */
-fun <T> mutableStackOf(vararg elements: T): MutableStack<T> =
-    elements.asList().toMutableStack()
+fun <T> mutableStackOf(vararg elements: T): MutableStack<T> = elements.asList().toMutableStack()
 
 /** Returns a [MutableStack] filled this collection. */
-fun <T> Collection<T>.toMutableStack(): MutableStack<T> =
-    ArrayMutableStack(this)
+fun <T> Collection<T>.toMutableStack(): MutableStack<T> = ArrayMutableStack(this)
 
 /** Duplicates (re-pushes) the top element. */
 fun <T> MutableStack<T>.duplicate() {

@@ -24,28 +24,41 @@ sealed class Pauli(
 
     override fun toString(): String = "($symbol)${super.toString()}"
 
-    fun toGeneric() = GenericMatrix2x2(a, b, c, d) {
-        Complex(it)
-    }
+    fun toGeneric() =
+        GenericMatrix2x2(a, b, c, d) {
+            Complex(it)
+        }
 
     private class I : Pauli("I", ONE, ZERO, ZERO, ONE)
+
     private class nI : Pauli("-I", -ONE, ZERO, ZERO, -ONE)
+
     private class iI : Pauli("iI", Complex.I, ZERO, ZERO, Complex.I)
+
     private class niI : Pauli("-iI", -Complex.I, ZERO, ZERO, -Complex.I)
 
     private class σ1 : Pauli("σ1", ZERO, ONE, ONE, ZERO)
+
     private class nσ1 : Pauli("-σ1", ZERO, -ONE, -ONE, ZERO)
+
     private class iσ1 : Pauli("iσ1", ZERO, Complex.I, Complex.I, ZERO)
+
     private class niσ1 : Pauli("-iσ1", ZERO, -Complex.I, -Complex.I, ZERO)
 
     private class σ2 : Pauli("σ2", ZERO, -Complex.I, Complex.I, ZERO)
+
     private class nσ2 : Pauli("-σ2", ZERO, Complex.I, -Complex.I, ZERO)
+
     private class iσ2 : Pauli("iσ2", ZERO, ONE, -ONE, ZERO)
+
     private class niσ2 : Pauli("-σ2", ZERO, -ONE, ONE, ZERO)
 
     private class σ3 : Pauli("σ3", ONE, ZERO, ZERO, -ONE)
+
     private class nσ3 : Pauli("-σ3", -ONE, ZERO, ZERO, ONE)
+
     private class iσ3 : Pauli("iσ3", Complex.I, ZERO, ZERO, -Complex.I)
+
     private class niσ3 : Pauli("-iσ3", -Complex.I, ZERO, ZERO, Complex.I)
 
     companion object : AbstractList<Pauli>() {
@@ -69,33 +82,49 @@ sealed class Pauli(
         val iσ3: Pauli = iσ3()
         val niσ3: Pauli = niσ3()
 
-        val values = listOf(
-            I, nI, iI, niI,
-            σ1, nσ1, iσ1, niσ1,
-            σ2, nσ2, iσ2, niσ2,
-            σ3, nσ3, iσ3, niσ3
-        )
+        val values =
+            listOf(
+                I,
+                nI,
+                iI,
+                niI,
+                σ1,
+                nσ1,
+                iσ1,
+                niσ1,
+                σ2,
+                nσ2,
+                iσ2,
+                niσ2,
+                σ3,
+                nσ3,
+                iσ3,
+                niσ3
+            )
 
-        fun pauli(p: Matrix2x2<Complex, Rational, *>) = values.find {
-            it.equivalent(p)
-        } ?: TODO(
-            "BUG: How to downgrade type when multiplying Pauli by non-{one,zero,i}? $p"
-        )
+        fun pauli(p: Matrix2x2<Complex, Rational, *>) =
+            values.find {
+                it.equivalent(p)
+            } ?: TODO(
+                "BUG: How to downgrade type when multiplying Pauli by non-{one,zero,i}? $p"
+            )
 
         override val size: Int = values.size
+
         override fun get(index: Int): Pauli = values[index]
     }
 }
 
 operator fun Complex.times(other: Pauli): Pauli {
-    val p = GenericMatrix2x2(
-        this * other.a,
-        this * other.b,
-        this * other.c,
-        this * other.d
-    ) {
-        Complex(it)
-    }
+    val p =
+        GenericMatrix2x2(
+            this * other.a,
+            this * other.b,
+            this * other.c,
+            this * other.d
+        ) {
+            Complex(it)
+        }
 
     return pauli(p)
 }

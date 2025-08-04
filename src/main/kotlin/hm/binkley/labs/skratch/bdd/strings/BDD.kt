@@ -13,44 +13,51 @@ data class BDD constructor(
             actions[GIVEN] ?: throw IllegalArgumentException(
                 "No GIVEN defined: $GIVEN"
             )
-            ).invoke()
+        ).invoke()
         (
             actions[WHEN] ?: throw IllegalArgumentException(
                 "No WHEN defined: $WHEN"
             )
-            ).invoke()
+        ).invoke()
         (
             actions[THEN] ?: throw IllegalArgumentException(
                 "No THEN defined: $THEN"
             )
-            ).invoke()
+        ).invoke()
     }
 
     companion object {
         val SO = So()
         private val actions = HashMap<String, () -> Unit>()
 
-        fun upon(clause: String, action: () -> Unit) {
+        fun upon(
+            clause: String,
+            action: () -> Unit
+        ) {
             actions[clause] = action
         }
     }
 
     class So {
         infix fun SCENARIO(SCENARIO: String) = Scenario(SCENARIO)
-        data class Scenario(private val SCENARIO: String) {
+
+        data class Scenario(
+            private val SCENARIO: String
+        ) {
             infix fun GIVEN(GIVEN: String) = Given(SCENARIO, GIVEN)
+
             data class Given(
                 private val SCENARIO: String,
                 private val GIVEN: String
             ) {
                 infix fun WHEN(WHEN: String) = When(SCENARIO, GIVEN, WHEN)
+
                 data class When(
                     private val SCENARIO: String,
                     private val GIVEN: String,
                     private val WHEN: String
                 ) {
-                    infix fun THEN(THEN: String) =
-                        BDD(SCENARIO, GIVEN, WHEN, THEN)
+                    infix fun THEN(THEN: String) = BDD(SCENARIO, GIVEN, WHEN, THEN)
                 }
             }
         }

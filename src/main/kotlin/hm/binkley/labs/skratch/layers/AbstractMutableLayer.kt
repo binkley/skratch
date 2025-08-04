@@ -6,10 +6,11 @@ abstract class AbstractMutableLayer<
     K : Any,
     V : Any,
     M : MutableLayer<K, V, M>
-    >(
+>(
     override val index: Int,
     map: Map<K, ValueOrRule<V>>
-) : MutableLayer<K, V, M>, AbstractMap<K, ValueOrRule<V>>() {
+) : AbstractMap<K, ValueOrRule<V>>(),
+    MutableLayer<K, V, M> {
     private val map = map.toMutableMap() // Defensive copy
 
     override val entries: Set<Entry<K, ValueOrRule<V>>> get() = map.entries
@@ -22,5 +23,6 @@ abstract class AbstractMutableLayer<
     }
 
     private inner class DefaultEditMap :
-        EditMap<K, V>, MutableMap<K, ValueOrRule<V>> by map
+        EditMap<K, V>,
+        MutableMap<K, ValueOrRule<V>> by map
 }

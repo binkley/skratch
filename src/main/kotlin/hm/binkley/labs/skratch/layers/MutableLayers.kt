@@ -6,7 +6,7 @@ fun interface NewLayer<
     K : Any,
     V : Any,
     M : MutableLayer<K, V, M>
-    > {
+> {
     operator fun invoke(index: Int): M
 }
 
@@ -15,8 +15,9 @@ interface MutableLayers<
     K : Any,
     V : Any,
     M : MutableLayer<K, V, M>
-    > : Layers<K, V, M> {
+> : Layers<K, V, M> {
     fun pop(): M
+
     fun <N : M> push(newLayer: NewLayer<K, V, M>): N
 
     /** Creates a [NewLayer], edits it, and returns it. */

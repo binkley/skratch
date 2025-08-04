@@ -18,18 +18,20 @@ import org.junit.jupiter.api.assertThrows
 internal class NewtonTest {
     @Test
     fun `should think (happy path)`() {
-        val it = SCENARIO `A revolution begins`
-            GIVEN `an apple`
-            WHEN `it falls`
-            THEN `Newton thinks`
-            QED
+        val it =
+            SCENARIO `A revolution begins`
+                GIVEN `an apple`
+                WHEN `it falls`
+                THEN `Newton thinks`
+                QED
 
-        val scenarioText = """
+        val scenarioText =
+            """
             ✓ SCENARIO A revolution begins
                 GIVEN an apple
                 WHEN it falls
                 THEN Newton thinks
-        """.trimIndent()
+            """.trimIndent()
 
         assert("$it" == scenarioText) {
             "Wrong message in passed scenario: Expected:\n$scenarioText\nGot:\n$it"
@@ -38,20 +40,22 @@ internal class NewtonTest {
 
     @Test
     fun `should have broken production code for eating fallen apple (failed test)`() {
-        val e = assertThrows<AssertionError> {
-            SCENARIO `A snack helps with thinking`
-                GIVEN `an apple`
-                WHEN `it falls`
-                THEN `Newton eats the apple`
-                QED
-        }
+        val e =
+            assertThrows<AssertionError> {
+                SCENARIO `A snack helps with thinking`
+                    GIVEN `an apple`
+                    WHEN `it falls`
+                    THEN `Newton eats the apple`
+                    QED
+            }
 
-        val scenarioText = """
+        val scenarioText =
+            """
             ✗ SCENARIO A snack helps with thinking
                 GIVEN an apple
                 WHEN it falls
                 THEN Newton eats the apple
-        """.trimIndent()
+            """.trimIndent()
 
         assert(
             e.message == "Failed THEN clause in:\n$scenarioText\njava.lang.AssertionError: Newton should be eating the apple while thinking"
@@ -62,20 +66,22 @@ internal class NewtonTest {
 
     @Test
     fun `should not sleep (broken test)`() {
-        val e = assertThrows<IllegalStateException> {
-            SCENARIO `A revolution is missed`
-                GIVEN `an apple`
-                WHEN `it falls`
-                THEN `Newton sleeps`
-                QED
-        }
+        val e =
+            assertThrows<IllegalStateException> {
+                SCENARIO `A revolution is missed`
+                    GIVEN `an apple`
+                    WHEN `it falls`
+                    THEN `Newton sleeps`
+                    QED
+            }
 
-        val scenarioText = """
+        val scenarioText =
+            """
             ‽ SCENARIO A revolution is missed
                 GIVEN an apple
                 WHEN it falls
                 THEN Newton sleeps
-        """.trimIndent()
+            """.trimIndent()
 
         assert(
             e.message == "Errored THEN clause in:\n$scenarioText\njava.lang.IllegalStateException: Newton should be thinking, not sleeping"

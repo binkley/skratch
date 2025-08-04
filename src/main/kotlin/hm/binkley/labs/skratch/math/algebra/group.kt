@@ -7,5 +7,6 @@ interface Group<T : Group<T>> : Monoid<T> {
     override val constants: GroupConstants<T>
 
     operator fun unaryMinus(): T
+
     operator fun minus(subtrahend: T): T = this + -subtrahend
 }

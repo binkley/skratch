@@ -1,10 +1,9 @@
-@file:Suppress("FunctionName")
+@file:Suppress("ktlint:standard:property-naming", "FunctionName")
 
 package hm.binkley.labs.skratch
 
 import hm.binkley.labs.skratch.Q.Companion.la
 import hm.binkley.labs.skratch.puzzlers.main
-import java.lang.IllegalArgumentException
 
 fun main(args: List<String>) {
     if (!args.isEmpty()) {
@@ -14,8 +13,10 @@ fun main(args: List<String>) {
     val a_s: List<String> = List(3) { index -> ('a' + index).toString() }
     println("CHEESY: Using a fun name as a class name -> $a_s")
 
-    open class Named<in T>(val name: String, check: (T) -> Boolean) :
-        (T) -> Boolean by check {
+    open class Named<in T>(
+        val name: String,
+        check: (T) -> Boolean
+    ) : (T) -> Boolean by check {
         override fun toString() = name
     }
 
@@ -42,12 +43,13 @@ fun main(args: List<String>) {
     q["howard"] = la("Fooby-do!")
 
     @Suppress("UNCHECKED_CAST")
-    for ((k, v) in q)
+    for ((k, v) in q) {
         println(
             "$k -> ${
                 if (v is Function<*>) (v as F)(1, 2) else v
             }"
         )
+    }
 
     println()
     println("== FAKE CTOR")
@@ -66,12 +68,17 @@ fun main(args: List<String>) {
 
 private typealias F = (Int, Int) -> String
 
-private class X(private val a: String) : CharSequence by a {
+private class X(
+    private val a: String
+) : CharSequence by a {
     override fun toString() = a
 }
 
 private class Q : MutableMap<String, Any> by mutableMapOf() {
-    operator fun <T> set(key: String, x: (a: Int, b: Int) -> T) {
+    operator fun <T> set(
+        key: String,
+        x: (a: Int, b: Int) -> T
+    ) {
         this[key] = x as Any
     }
 
@@ -80,23 +87,33 @@ private class Q : MutableMap<String, Any> by mutableMapOf() {
     }
 }
 
-private class S(private val s: String) {
+private class S(
+    private val s: String
+) {
     override fun toString() = s
 }
 
-private data class A<T>(val list: List<T>) {
+private data class A<T>(
+    val list: List<T>
+) {
     // Equivalent secondary ctor to the fake ctor:
     // constructor(size: Int, init: (Int) -> T) : this(List(size, init))
 }
 
-private fun <T> A(size: Int, init: (Int) -> T): A<T> {
+private fun <T> A(
+    size: Int,
+    init: (Int) -> T
+): A<T> {
     val list = ArrayList<T>(size)
     repeat(size) { list.add(init(it)) }
     return A(list)
 }
 
 private class J
+
 private class K
 
-private fun K.kkk(j: J, f: J.() -> Int): Unit =
-    println("$this -> $j -> ${f(j)}")
+private fun K.kkk(
+    j: J,
+    f: J.() -> Int
+): Unit = println("$this -> $j -> ${f(j)}")

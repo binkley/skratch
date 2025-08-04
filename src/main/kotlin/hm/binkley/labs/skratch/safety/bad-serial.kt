@@ -27,24 +27,30 @@ private fun write(o: Any): ByteArray {
 }
 
 @Suppress("SameParameterValue")
-private fun prettyPrint(out: PrintStream, data: ByteArray) {
+private fun prettyPrint(
+    out: PrintStream,
+    data: ByteArray
+) {
     out.println(
         data.joinToString(" ", "[", "]") {
             "\\x%02X".format(it)
         }
     )
 
-    for (i in data.indices) when (data[i]) {
-        'O'.code.toByte() -> data[i] = 'N'.code.toByte()
-        'K'.code.toByte() -> data[i] = 'O'.code.toByte()
+    for (i in data.indices) {
+        when (data[i]) {
+            'O'.code.toByte() -> data[i] = 'N'.code.toByte()
+            'K'.code.toByte() -> data[i] = 'O'.code.toByte()
+        }
     }
 }
 
 @Suppress("UNCHECKED_CAST")
-private fun <T> read(data: ByteArray): T =
-    ObjectInputStream(ByteArrayInputStream(data)).readObject() as T
+private fun <T> read(data: ByteArray): T = ObjectInputStream(ByteArrayInputStream(data)).readObject() as T
 
-private data class Foo(val s: String) : Serializable {
+private data class Foo(
+    val s: String
+) : Serializable {
     init {
         if (s != "OK") throw IllegalArgumentException("Not OK: $s")
     }

@@ -21,7 +21,8 @@ fun main() {
     println("SUPERCLASSES OF RICE:")
     rice::class.superclasses.forEach {
         println("- $it")
-        KClass::class.memberProperties
+        KClass::class
+            .memberProperties
             .filter { prop -> prop.name.startsWith("is") }
             .filter { prop -> prop.get(it) as Boolean }
             .map { prop -> prop.name }
@@ -46,13 +47,17 @@ fun main() {
 
 @Inherited
 @Target(FIELD)
-annotation class College(val name: String)
+annotation class College(
+    val name: String
+)
 
 abstract class University {
     fun attend() = Unit
 }
 
-class Rice : University(), Fooby by Fooby.Mixin()
+class Rice :
+    University(),
+    Fooby by Fooby.Mixin()
 
 interface Fooby {
     var bob: String

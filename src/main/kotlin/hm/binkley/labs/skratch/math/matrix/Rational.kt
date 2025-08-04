@@ -5,8 +5,10 @@ import kotlin.math.abs
 import kotlin.math.sign
 
 // TODO: Reuse FixedBigRational from kotlin-rational project
-class Rational(n: Long, d: Long) :
-    GeneralNumber<Rational, Rational>,
+class Rational(
+    n: Long,
+    d: Long
+) : GeneralNumber<Rational, Rational>,
     Comparable<Rational> {
     val numerator: Long
     val denominator: Long
@@ -23,6 +25,7 @@ class Rational(n: Long, d: Long) :
     constructor(n: Long) : this(n, 1L)
 
     override fun unaryMinus() = Rational(-numerator, denominator)
+
     override fun plus(other: Rational) =
         Rational(
             numerator * other.denominator + other.numerator * denominator,
@@ -30,11 +33,13 @@ class Rational(n: Long, d: Long) :
         )
 
     override fun unaryDiv() = Rational(denominator, numerator)
-    override fun times(other: Rational) =
-        Rational(numerator * other.numerator, denominator * other.denominator)
+
+    override fun times(other: Rational) = Rational(numerator * other.numerator, denominator * other.denominator)
 
     override fun times(other: Long) = this * Rational(other)
+
     override fun div(other: Rational) = this * other.multInv
+
     override fun div(other: Long) = this / Rational(other)
 
     override val conj: Rational get() = this
@@ -44,9 +49,12 @@ class Rational(n: Long, d: Long) :
     val root: GeneralNumber<*, Rational> get() = root(this)
 
     override fun isZero() = this == ZERO
+
     val isPositive get() = this > ZERO
     val isNegative get() = this < ZERO
+
     override fun isUnit() = this == ONE
+
     val isWhole get() = 1L == denominator
 
     override fun compareTo(other: Rational) =
@@ -60,16 +68,16 @@ class Rational(n: Long, d: Long) :
         return numerator == other.numerator && denominator == other.denominator
     }
 
-    override fun equivalent(other: GeneralNumber<*, *>) = when (other) {
-        is Rational -> numerator == other.numerator && denominator == other.denominator
-        is Complex -> ZERO == other.im && numerator == other.re.numerator && denominator == other.re.denominator
-        else -> TODO("BUG: This is a terrible approach")
-    }
+    override fun equivalent(other: GeneralNumber<*, *>) =
+        when (other) {
+            is Rational -> numerator == other.numerator && denominator == other.denominator
+            is Complex -> ZERO == other.im && numerator == other.re.numerator && denominator == other.re.denominator
+            else -> TODO("BUG: This is a terrible approach")
+        }
 
     override fun hashCode() = Objects.hash(numerator, denominator)
 
-    override fun toString() =
-        if (isWhole) "$numerator" else "$numerator/$denominator"
+    override fun toString() = if (isWhole) "$numerator" else "$numerator/$denominator"
 
     companion object {
         private fun normalizeSign(
@@ -114,19 +122,22 @@ class Rational(n: Long, d: Long) :
             }
         }
 
-        private fun maybeExactRoot(x: Long) = when (x) {
-            0L, 1L -> x to true
-            else -> {
-                val guess = guessRoot(x, 1L, x, 0L)
-                guess to (x == guess * guess)
+        private fun maybeExactRoot(x: Long) =
+            when (x) {
+                0L, 1L -> x to true
+                else -> {
+                    val guess = guessRoot(x, 1L, x, 0L)
+                    guess to (x == guess * guess)
+                }
             }
-        }
 
         private val EPSILON = Rational(1L, 1_000_000L)
+
         private fun newtonApproximation(c: Rational): Rational {
             var t = c
-            while ((t - c / t).absoluteValue > EPSILON * t)
+            while ((t - c / t).absoluteValue > EPSILON * t) {
                 t = (c / t + t) / TWO
+            }
             return t
         }
 
@@ -137,13 +148,17 @@ class Rational(n: Long, d: Long) :
 }
 
 val Long.sign: Int // TODO: This is in Kotlin 1.2 - why not found on Mac?
-    get() = when {
-        this < 0L -> -1
-        this == 0L -> 0
-        else -> 1
-    }
+    get() =
+        when {
+            this < 0L -> -1
+            this == 0L -> 0
+            else -> 1
+        }
 
 operator fun Long.plus(other: Rational) = Rational(this) + other
+
 operator fun Long.minus(other: Rational) = Rational(this) - other
+
 operator fun Long.times(other: Rational) = Rational(this) * other
+
 operator fun Long.div(other: Rational) = Rational(this) / other

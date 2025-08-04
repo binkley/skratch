@@ -36,6 +36,7 @@ internal class LRUCacheTest {
         val cache = LRUCache(2)
 
         fun assertCached(key: Int) = assertEquals(key, cache[key])
+
         fun assertEvicted(key: Int) = assertEquals(-1, cache[key])
 
         cache[1] = 1

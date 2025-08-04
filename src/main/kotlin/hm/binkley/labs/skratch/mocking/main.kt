@@ -17,7 +17,12 @@ fun main() {
     mockkStatic(System::class) {
         println("MOCKING SYSTEM...")
         every { System.console() } returns eofConsole()
-        val nextChar = System.console().reader().read().toChar()
+        val nextChar =
+            System
+                .console()
+                .reader()
+                .read()
+                .toChar()
         println("EOF -> '$nextChar'")
     }
 }

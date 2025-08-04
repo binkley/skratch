@@ -17,12 +17,14 @@ class BigRational private constructor(
         (numerator * other.denominator)
             .compareTo(other.numerator * denominator)
 
-    override fun equals(other: Any?) = this === other ||
-        other is BigRational &&
-        numerator == other.numerator &&
-        denominator == other.denominator
+    override fun equals(other: Any?) =
+        this === other ||
+            other is BigRational &&
+            numerator == other.numerator &&
+            denominator == other.denominator
 
     override fun hashCode() = hash(numerator, denominator)
+
     override fun toString() =
         if (BigInteger.ONE == denominator) {
             "$numerator"
@@ -68,37 +70,40 @@ class BigRational private constructor(
 }
 
 infix fun BigInteger.over(other: BigInteger) = valueOf(this, other)
+
 infix fun Int.over(denominator: Int) = big over denominator.big
 
-infix operator fun BigRational.plus(other: BigRational) = valueOf(
-    numerator * other.denominator + other.numerator * denominator,
-    denominator * other.denominator
-)
+infix operator fun BigRational.plus(other: BigRational) =
+    valueOf(
+        numerator * other.denominator + other.numerator * denominator,
+        denominator * other.denominator
+    )
 
-infix operator fun BigRational.minus(other: BigRational) = valueOf(
-    numerator * other.denominator - other.numerator * denominator,
-    denominator * other.denominator
-)
+infix operator fun BigRational.minus(other: BigRational) =
+    valueOf(
+        numerator * other.denominator - other.numerator * denominator,
+        denominator * other.denominator
+    )
 
-infix operator fun BigRational.times(other: BigRational) = valueOf(
-    numerator * other.numerator,
-    denominator * other.denominator
-)
+infix operator fun BigRational.times(other: BigRational) =
+    valueOf(
+        numerator * other.numerator,
+        denominator * other.denominator
+    )
 
-infix operator fun BigRational.div(other: BigRational) = valueOf(
-    numerator * other.denominator,
-    denominator * other.numerator
-)
+infix operator fun BigRational.div(other: BigRational) =
+    valueOf(
+        numerator * other.denominator,
+        denominator * other.numerator
+    )
 
 fun BigRational.truncate() = (numerator / denominator).rat
 
-fun BigRational.divideAndRemainder(other: BigRational):
-    Pair<BigRational, BigRational> {
+fun BigRational.divideAndRemainder(other: BigRational): Pair<BigRational, BigRational> {
     val quotient = (this / other).truncate()
     val remainder = this - other * quotient
 
     return quotient to remainder
 }
 
-fun BigRational.wholeNumberAndRemainder(): Pair<BigRational, BigRational> =
-    divideAndRemainder(ONE)
+fun BigRational.wholeNumberAndRemainder(): Pair<BigRational, BigRational> = divideAndRemainder(ONE)

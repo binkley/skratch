@@ -1,3 +1,5 @@
+@file:Suppress("ktlint:standard:property-naming")
+
 package hm.binkley.labs.skratch.layers.examples
 
 import hm.binkley.labs.skratch.layers.AbstractMutableLayer
@@ -14,22 +16,31 @@ import hm.binkley.labs.skratch.layers.rules.lastRule
 interface EnumyKey {
     val name: String
 
-    abstract class AbstractEnumyKey(override val name: String) : EnumyKey {
+    abstract class AbstractEnumyKey(
+        override val name: String
+    ) : EnumyKey {
         override fun toString() = name
     }
 }
 
-sealed class Handedness(name: String) : AbstractEnumyKey(name)
+sealed class Handedness(
+    name: String
+) : AbstractEnumyKey(name)
+
 object Left : Handedness("Left")
+
 object Right : Handedness("Right")
 
 sealed class TeeShirtSize : EnumyKey {
     override val name get() = this::class.simpleName!!
+
     override fun toString() = "T-shirt:$name"
 }
 
 object Small : TeeShirtSize()
+
 object Medium : TeeShirtSize()
+
 object Large : TeeShirtSize()
 
 open class EnumyLayer(
@@ -81,8 +92,7 @@ open class EnumyContainer(
 ) : EnumyLayer(index, map) {
     override fun copy() = EnumyContainer(index, this, contents)
 
-    operator fun plus(layer: EnumyLayer):
-        NewLayer<EnumyKey, Number, EnumyLayer> {
+    operator fun plus(layer: EnumyLayer): NewLayer<EnumyKey, Number, EnumyLayer> {
         require(layer !in contents) { "Already in contents: $layer" }
         return NewLayer { index ->
             EnumyContainer(
@@ -93,8 +103,7 @@ open class EnumyContainer(
         }
     }
 
-    operator fun minus(layer: EnumyLayer):
-        NewLayer<EnumyKey, Number, EnumyLayer> {
+    operator fun minus(layer: EnumyLayer): NewLayer<EnumyKey, Number, EnumyLayer> {
         require(layer in contents) { "Not in contents: $layer" }
         return NewLayer { index ->
             EnumyContainer(

@@ -16,8 +16,9 @@ internal class MoneyTest {
     }
 
     @Test
-    fun `double your money`() =
+    fun `double your money`() {
         2 * USD.of(1) shouldBe USD.of(2)
+    }
 
     @Test
     fun `convert nicely`() {
@@ -45,12 +46,13 @@ internal class MoneyTest {
 
 private object Funny : Currency {
     override fun format(amount: BigDecimal) = "MMG\$$amount"
+
     override fun toString() = "PP"
 }
 
-private class FunnyMoney private constructor(amount: BigDecimal) :
-    AbstractMoney<FunnyMoney>(Funny, amount.setScale(0)) {
-
+private class FunnyMoney private constructor(
+    amount: BigDecimal
+) : AbstractMoney<FunnyMoney>(Funny, amount.setScale(0)) {
     override fun with(amount: BigDecimal) = FunnyMoney(amount)
 
     companion object : MoneyFactory<FunnyMoney> {
@@ -59,13 +61,14 @@ private class FunnyMoney private constructor(amount: BigDecimal) :
 }
 
 @Suppress("UNCHECKED_CAST")
-private val exchange = object : CurrencyExchange {
-    override fun <M : Money<M>, O : Money<O>> exchange(
-        money: M,
-        to: KClass<O>
-    ) = when (to) {
-        SGD::class -> SGD.of("1.35")
-        FunnyMoney::class -> FunnyMoney.of(money.amount * 1101.toBigDecimal())
-        else -> fail("Unsupported exchange: $money -> $to")
-    } as O
-}
+private val exchange =
+    object : CurrencyExchange {
+        override fun <M : Money<M>, O : Money<O>> exchange(
+            money: M,
+            to: KClass<O>
+        ) = when (to) {
+            SGD::class -> SGD.of("1.35")
+            FunnyMoney::class -> FunnyMoney.of(money.amount * 1101.toBigDecimal())
+            else -> fail("Unsupported exchange: $money -> $to")
+        } as O
+    }

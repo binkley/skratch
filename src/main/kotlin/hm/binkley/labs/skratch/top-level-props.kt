@@ -8,8 +8,10 @@ var b: String = "abc"
     get() = field.uppercase(Locale.getDefault())
 
 private class APropDelegate {
-    operator fun getValue(thisRef: Nothing?, property: KProperty<*>) =
-        property
+    operator fun getValue(
+        thisRef: Nothing?,
+        property: KProperty<*>
+    ) = property
 }
 
 fun main() {

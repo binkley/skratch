@@ -6,7 +6,9 @@ sealed interface DiscriminatedUnion {
     fun doIt()
 
     @JvmInline
-    value class Bob(val x: Int) : DiscriminatedUnion {
+    value class Bob(
+        val x: Int
+    ) : DiscriminatedUnion {
         override fun doIt() {
             println("I AM A BOB: $this")
         }

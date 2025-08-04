@@ -5,6 +5,7 @@ internal fun interface Onto<T, R> : (T) -> R
 private typealias F<T> = Onto<T, T>
 
 private fun interface FF<T> : Onto<F<T>, F<T>>
+
 private fun interface Self<T> : Onto<Self<T>, T>
 
 private fun <T> fixedPointGenerator(): Onto<FF<T>, F<T>> {
@@ -26,20 +27,19 @@ private fun <T> higherOrderFor(original: (t: T, f: F<T>) -> T): FF<T> =
         }
     }
 
-private fun <T> recursiveFor(higherOrderF: FF<T>) =
-    fixedPointGenerator<T>()(higherOrderF)
+private fun <T> recursiveFor(higherOrderF: FF<T>) = fixedPointGenerator<T>()(higherOrderF)
 
-private fun <T> recursiveFor(original: (t: T, f: F<T>) -> T): F<T> =
-    recursiveFor(higherOrderFor(original))
+private fun <T> recursiveFor(original: (t: T, f: F<T>) -> T): F<T> = recursiveFor(higherOrderFor(original))
 
 // See https://gist.github.com/aruld/3965968/
 fun main() {
-    val factorial = recursiveFor<Int> { it, nextCall ->
-        when (it) {
-            0 -> 1
-            else -> it * nextCall(it - 1)
+    val factorial =
+        recursiveFor<Int> { it, nextCall ->
+            when (it) {
+                0 -> 1
+                else -> it * nextCall(it - 1)
+            }
         }
-    }
 
     (0..9).forEach {
         println("$it -> ${factorial(it)}")

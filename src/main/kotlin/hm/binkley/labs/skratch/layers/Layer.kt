@@ -4,7 +4,7 @@ interface Layer<
     K : Any,
     V : Any,
     L : Layer<K, V, L>
-    > : Map<K, ValueOrRule<V>> {
+> : Map<K, ValueOrRule<V>> {
     /** Position within [Layers]. */
     val index: Int
 }
@@ -16,5 +16,4 @@ fun <
     V : Any,
     L : Layer<K, V, L>,
     N : L
-    >
-    Layer<K, V, L>.self(): N = this as N
+> Layer<K, V, L>.self(): N = this as N

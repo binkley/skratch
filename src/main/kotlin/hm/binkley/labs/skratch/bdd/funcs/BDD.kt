@@ -17,11 +17,12 @@ import java.lang.System.out
 
 fun main() {
     println("== HAPPY PATH PASSING")
-    val scenario = SCENARIO `A revolution begins`
-        GIVEN `an apple`
-        WHEN `it falls`
-        THEN `Newton thinks`
-        QED
+    val scenario =
+        SCENARIO `A revolution begins`
+            GIVEN `an apple`
+            WHEN `it falls`
+            THEN `Newton thinks`
+            QED
     println(scenario)
 
     println()
@@ -55,9 +56,16 @@ private const val CLAUSE_NAME_BUG = "<BUG: Clause name misassigned>"
 fun String.asAnsi(vararg args: Any?): String = AUTO.string(format(args))
 
 sealed interface TestResult
+
 object PASS : TestResult
-data class FAIL(val reason: String) : TestResult
-data class ERROR(val e: Exception) : TestResult
+
+data class FAIL(
+    val reason: String
+) : TestResult
+
+data class ERROR(
+    val e: Exception
+) : TestResult
 
 data class QED(
     private val SCENARIO: Scenario,
@@ -82,7 +90,11 @@ data class QED(
         val type: Type
     ) : () -> Unit {
         enum class Type {
-            NO_CLAUSE, GIVEN_CLAUSE, WHEN_CLAUSE, THEN_CLAUSE, QED_CLAUSE;
+            NO_CLAUSE,
+            GIVEN_CLAUSE,
+            WHEN_CLAUSE,
+            THEN_CLAUSE,
+            QED_CLAUSE;
 
             override fun toString() = name.replace("_CLAUSE", "")
         }
@@ -109,16 +121,20 @@ data class QED(
 
             // Throw an assertion restating the BDD failure spot, but do not
             // lose any of the original assertion failure info
-            val x = e::class.constructors.filter {
-                it.parameters.map { p -> p.type.classifier } == listOf(
-                    String::class
-                )
-            }.map {
-                it.call("Errored $type clause in:\n${this@QED}\n$e")
-            }.firstOrNull()
-                ?: throw IllegalStateException(
-                    "BUG: Exception does not accept a reason"
-                )
+            val x =
+                e::class
+                    .constructors
+                    .filter {
+                        it.parameters.map { p -> p.type.classifier } ==
+                            listOf(
+                                String::class
+                            )
+                    }.map {
+                        it.call("Errored $type clause in:\n${this@QED}\n$e")
+                    }.firstOrNull()
+                    ?: throw IllegalStateException(
+                        "BUG: Exception does not accept a reason"
+                    )
 
             e.copyStackTraceWithoutFrameworkInto(x)
             throw x
@@ -126,43 +142,53 @@ data class QED(
     }
 
     override fun toString(): String {
-        val scenario = when (result) {
-            PASS -> "@|bold,green ✓|@ @|underline,green $SCENARIO|@"
-            is FAIL -> "@|bold,red ✗|@ @|underline,red $SCENARIO|@"
-            is ERROR -> "@|bold,magenta ‽|@ @|underline,magenta $SCENARIO|@"
-        }
+        val scenario =
+            when (result) {
+                PASS -> "@|bold,green ✓|@ @|underline,green $SCENARIO|@"
+                is FAIL -> "@|bold,red ✗|@ @|underline,red $SCENARIO|@"
+                is ERROR -> "@|bold,magenta ‽|@ @|underline,magenta $SCENARIO|@"
+            }
 
-        data class GWT(val given: String, val aWhen: String, val then: String)
-        val (given, aWhen, then) = when (clauseType) {
-            NO_CLAUSE -> throw IllegalStateException("BUG: Not executed")
-            GIVEN_CLAUSE -> GWT(
-                "@|italic,reverse $GIVEN|@",
-                "$WHEN",
-                "@|bold $THEN|@"
-            )
-            WHEN_CLAUSE -> GWT(
-                "@|italic $GIVEN|@",
-                "@|reverse $WHEN|@",
-                "@|bold $THEN|@"
-            )
-            THEN_CLAUSE -> GWT(
-                "@|italic $GIVEN|@",
-                "$WHEN",
-                "@|bold,reverse $THEN|@"
-            )
-            QED_CLAUSE -> GWT(
-                "@|italic $GIVEN|@",
-                "$WHEN",
-                "@|bold $THEN|@"
-            )
-        }
+        data class GWT(
+            val given: String,
+            val aWhen: String,
+            val then: String
+        )
+        val (given, aWhen, then) =
+            when (clauseType) {
+                NO_CLAUSE -> throw IllegalStateException("BUG: Not executed")
+                GIVEN_CLAUSE ->
+                    GWT(
+                        "@|italic,reverse $GIVEN|@",
+                        "$WHEN",
+                        "@|bold $THEN|@"
+                    )
+                WHEN_CLAUSE ->
+                    GWT(
+                        "@|italic $GIVEN|@",
+                        "@|reverse $WHEN|@",
+                        "@|bold $THEN|@"
+                    )
+                THEN_CLAUSE ->
+                    GWT(
+                        "@|italic $GIVEN|@",
+                        "$WHEN",
+                        "@|bold,reverse $THEN|@"
+                    )
+                QED_CLAUSE ->
+                    GWT(
+                        "@|italic $GIVEN|@",
+                        "$WHEN",
+                        "@|bold $THEN|@"
+                    )
+            }
 
         return """
             $scenario
                 $given
                 $aWhen
                 $then
-        """.trimIndent().asAnsi()
+            """.trimIndent().asAnsi()
     }
 
     companion object {
@@ -185,12 +211,14 @@ data class QED(
         internal var text: String = CLAUSE_NAME_BUG,
         private var action: () -> Unit = {}
     ) : () -> Unit {
-        fun act(action: () -> Unit) = run {
-            this.action = action
-            Given(this)
-        }
+        fun act(action: () -> Unit) =
+            run {
+                this.action = action
+                Given(this)
+            }
 
         override fun invoke() = action()
+
         override fun toString() = "SCENARIO $text"
     }
 
@@ -204,12 +232,14 @@ data class QED(
             SCENARIO.text = previousText
         }
 
-        fun act(action: () -> Unit) = run {
-            this.action = action
-            When(SCENARIO, this)
-        }
+        fun act(action: () -> Unit) =
+            run {
+                this.action = action
+                When(SCENARIO, this)
+            }
 
         override fun invoke() = action()
+
         override fun toString() = "GIVEN $text"
     }
 
@@ -224,12 +254,14 @@ data class QED(
             GIVEN.text = previousText
         }
 
-        fun act(action: () -> Unit) = run {
-            this.action = action
-            Then(SCENARIO, GIVEN, this)
-        }
+        fun act(action: () -> Unit) =
+            run {
+                this.action = action
+                Then(SCENARIO, GIVEN, this)
+            }
 
         override fun invoke() = action()
+
         override fun toString() = "WHEN $text"
     }
 
@@ -245,21 +277,23 @@ data class QED(
             WHEN.text = previousText
         }
 
-        fun act(action: () -> Unit) = run {
-            this.action = action
-            QED(SCENARIO, GIVEN, WHEN, this)
-        }
+        fun act(action: () -> Unit) =
+            run {
+                this.action = action
+                QED(SCENARIO, GIVEN, WHEN, this)
+            }
 
         override fun invoke() = action()
+
         override fun toString() = "THEN $text"
     }
 }
 
-private fun Throwable.copyStackTraceWithoutFrameworkInto(
-    target: Throwable
-) {
-    target.stackTrace = stackTrace.filter {
-        !it.className.startsWith(QED::class.qualifiedName!!)
-    }.toTypedArray()
+private fun Throwable.copyStackTraceWithoutFrameworkInto(target: Throwable) {
+    target.stackTrace =
+        stackTrace
+            .filter {
+                !it.className.startsWith(QED::class.qualifiedName!!)
+            }.toTypedArray()
     suppressed.forEach { target.addSuppressed(it) }
 }

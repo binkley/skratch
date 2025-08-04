@@ -8,7 +8,9 @@ class LastOrDefaultRule<
     K : Any,
     V : Any,
     T : V
-    >(val default: T) : Rule<K, V, T>("last-or[$default]") {
+>(
+    val default: T
+) : Rule<K, V, T>("last-or[$default]") {
     override fun invoke(
         key: K,
         values: ReversedSequence<T>,

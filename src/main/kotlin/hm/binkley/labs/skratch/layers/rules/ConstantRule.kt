@@ -8,7 +8,9 @@ class ConstantRule<
     K : Any,
     V : Any,
     T : V
-    >(val constant: T) : Rule<K, V, T>("constant[$constant]") {
+>(
+    val constant: T
+) : Rule<K, V, T>("constant[$constant]") {
     override fun invoke(
         key: K,
         values: ReversedSequence<T>,

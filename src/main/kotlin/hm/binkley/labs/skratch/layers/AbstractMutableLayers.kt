@@ -14,10 +14,11 @@ open class AbstractMutableLayers<
     K : Any,
     V : Any,
     M : MutableLayer<K, V, M>
-    > private constructor(
+> private constructor(
     private val layers: MutableStack<M>,
     private val newLayer: NewLayer<K, V, M>
-) : AbstractMap<K, V>(), MutableLayers<K, V, M> {
+) : AbstractMap<K, V>(),
+    MutableLayers<K, V, M> {
     constructor(
         initialRules: NewLayer<K, V, M>,
         newLayer: NewLayer<K, V, M>
@@ -45,16 +46,14 @@ open class AbstractMutableLayers<
 
     override fun peek(): M = layers.top
 
-    override fun whatIf(layer: M): MutableLayers<K, V, M> =
-        validate { it.replaceLast(layer) }
+    override fun whatIf(layer: M): MutableLayers<K, V, M> = validate { it.replaceLast(layer) }
 
-    override fun whatIf(
-        block: EditMap<K, V>.() -> Unit
-    ): MutableLayers<K, V, M> = whatIf(top.copy().edit(block))
+    override fun whatIf(block: EditMap<K, V>.() -> Unit): MutableLayers<K, V, M> = whatIf(top.copy().edit(block))
 
-    override fun whatIfNot(except: Collection<Layer<K, V, *>>) = validate {
-        it.removeAll(except.toSet())
-    }
+    override fun whatIfNot(except: Collection<Layer<K, V, *>>) =
+        validate {
+            it.removeAll(except.toSet())
+        }
 
     override fun pop(): M =
         if (1 < layers.size) {
@@ -69,8 +68,7 @@ open class AbstractMutableLayers<
     }
 
     /** Creates a [newLayer], edits it, and returns it. */
-    override fun push(block: EditMap<K, V>.() -> Unit): M =
-        push { index -> newLayer(index).edit(block) }
+    override fun push(block: EditMap<K, V>.() -> Unit): M = push { index -> newLayer(index).edit(block) }
 
     /** Edits the [top] layer, and returns it. */
     override fun edit(block: EditMap<K, V>.() -> Unit): M {
@@ -84,9 +82,7 @@ open class AbstractMutableLayers<
      * returns a new [MutableLayers] using the updates from [block].
      * Actual validation is in `init` for the new mutable layers.
      */
-    private fun validate(
-        block: (MutableStack<M>) -> Unit
-    ): MutableLayers<K, V, M> {
+    private fun validate(block: (MutableStack<M>) -> Unit): MutableLayers<K, V, M> {
         val layersCopy = layers.toMutableStack()
         block(layersCopy)
         return AbstractMutableLayers(layersCopy, newLayer)
@@ -112,13 +108,17 @@ open class AbstractMutableLayers<
         }
 
     private fun <T : V> valuesOrRulesFor(key: K): Sequence<ValueOrRule<T>> =
-        layers.asReversed().asSequence().map {
-            it[key]
-        }.filterIsInstance<ValueOrRule<T>>()
+        layers
+            .asReversed()
+            .asSequence()
+            .map {
+                it[key]
+            }.filterIsInstance<ValueOrRule<T>>()
 
     /** Filters non-null values so rules can hide keys. */
     private inner class ValuedEntries : AbstractSet<Entry<K, V>>() {
         override val size: Int get() = iterator().size()
+
         override fun iterator(): Iterator<Entry<K, V>> = NonNullValues()
 
         private inner class NonNullValues(
@@ -141,8 +141,7 @@ open class AbstractMutableLayers<
  * Swaps out the last element in the list, returning the previous last
  * element.
  */
-private fun <T> MutableList<T>.replaceLast(element: T): T =
-    set(lastIndex, element)
+private fun <T> MutableList<T>.replaceLast(element: T): T = set(lastIndex, element)
 
 /**
  * Exhausts the iterator to find the element count.

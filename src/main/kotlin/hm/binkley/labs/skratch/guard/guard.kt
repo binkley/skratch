@@ -4,22 +4,27 @@ package hm.binkley.labs.skratch.guard
 // https://medium.com/swlh/swifts-guard-statement-for-kotlin-967ba580443f
 // https://gist.github.com/Aidanvii7/5c80a6008a934a95b579a307db8e19bb
 
-fun main() = try {
-    var username = "bob".guard(String::isNotEmpty) {
-        println("username is blank")
-    }
-    println(username)
+fun main() =
+    try {
+        var username =
+            "bob".guard(String::isNotEmpty) {
+                println("username is blank")
+            }
+        println(username)
 
-    val s: String? = null
-    username = s.guard(String::isNotEmpty) {
-        println("username is blank")
+        val s: String? = null
+        username =
+            s.guard(String::isNotEmpty) {
+                println("username is blank")
+            }
+        println(username)
+    } catch (e: GuardedException) {
+        e.printStackTrace()
     }
-    println(username)
-} catch (e: GuardedException) {
-    e.printStackTrace()
-}
 
-private data class GuardedException(val guardBroken: Any) : Exception()
+private data class GuardedException(
+    val guardBroken: Any
+) : Exception()
 
 private fun <V> V?.guard(
     guardedBlock: V.() -> Boolean,

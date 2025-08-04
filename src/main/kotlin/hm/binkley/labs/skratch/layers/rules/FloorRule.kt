@@ -8,8 +8,11 @@ import hm.binkley.labs.skratch.layers.getAsWithout
 class FloorRule<
     K : Any,
     V : Any,
-    T : Comparable<T> // `where T : V` does not compile
-    >(val floor: T) : Rule<K, V, V>("floor[$floor]") {
+    // `where T : V` does not compile
+    T : Comparable<T>
+>(
+    val floor: T
+) : Rule<K, V, V>("floor[$floor]") {
     @Suppress("UNCHECKED_CAST")
     override fun invoke(
         key: K,
@@ -19,4 +22,7 @@ class FloorRule<
 }
 
 /** Returns the greater of [a] and [b], [a] on a tie for stable sorting. */
-private fun <T : Comparable<T>> max(a: T, b: T): T = if (b > a) b else a
+private fun <T : Comparable<T>> max(
+    a: T,
+    b: T
+): T = if (b > a) b else a

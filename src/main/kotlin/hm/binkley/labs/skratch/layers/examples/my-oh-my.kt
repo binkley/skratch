@@ -6,8 +6,7 @@ import hm.binkley.labs.skratch.layers.ValueOrRule
 import hm.binkley.labs.skratch.layers.rules.lastOrDefaultRule
 import hm.binkley.labs.skratch.layers.toValue
 
-class MyLayers :
-    AbstractMutableLayers<String, Number, MyLayer>(::MyLayer, ::MyLayer) {
+class MyLayers : AbstractMutableLayers<String, Number, MyLayer>(::MyLayer, ::MyLayer) {
     init {
         // First layer via editing initial empty layer
         edit {
@@ -18,8 +17,7 @@ class MyLayers :
         push { }
     }
 
-    fun doHickey(index: Int): MyLayer =
-        MyLayer(index, mapOf("HUM-HUM" to 2.toValue()))
+    fun doHickey(index: Int): MyLayer = MyLayer(index, mapOf("HUM-HUM" to 2.toValue()))
 }
 
 open class MyLayer(

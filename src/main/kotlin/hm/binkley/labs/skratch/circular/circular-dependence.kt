@@ -10,6 +10,7 @@ fun main() {
 }
 
 private interface HasZero<T> {
+    @Suppress("ktlint:standard:property-naming")
     val ZERO: T
 }
 
@@ -20,8 +21,10 @@ private abstract class XCompanionBase<T : XBase<T>>(
 ) : HasZero<T> {
     abstract fun valueOf(x: Int): T
 
-    protected fun construct(x: Int, ctor: (Int) -> T) =
-        if (0 == x) ZERO else ctor(x)
+    protected fun construct(
+        x: Int,
+        ctor: (Int) -> T
+    ) = if (0 == x) ZERO else ctor(x)
 }
 
 private abstract class XBase<T : XBase<T>> protected constructor(
@@ -34,7 +37,9 @@ private abstract class XBase<T : XBase<T>> protected constructor(
     override fun toString() = "${super.toString()}: $x"
 }
 
-private class P private constructor(x: Int) : XBase<P>(x) {
+private class P private constructor(
+    x: Int
+) : XBase<P>(x) {
     override val companion get() = P
 
     companion object : XCompanionBase<P>(
@@ -44,7 +49,9 @@ private class P private constructor(x: Int) : XBase<P>(x) {
     }
 }
 
-private class Q private constructor(x: Int) : XBase<Q>(x) {
+private class Q private constructor(
+    x: Int
+) : XBase<Q>(x) {
     override val companion get() = Companion
 
     companion object : XCompanionBase<Q>(

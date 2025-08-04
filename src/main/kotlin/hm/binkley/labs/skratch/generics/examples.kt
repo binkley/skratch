@@ -59,7 +59,7 @@ val Int.bazen: Baz get() = rat.bazen
 abstract class MetaWeights<
     U : MetaWeights<U, M>,
     M : MetaWeight<U, M>
-    >(
+>(
     name: String,
     basis: BigRational
 ) : Units<Meta, Weight, U, M>(Meta, name, basis)
@@ -67,7 +67,7 @@ abstract class MetaWeights<
 abstract class MetaWeight<
     U : MetaWeights<U, M>,
     M : MetaWeight<U, M>
-    >(
+>(
     unit: U,
     quantity: BigRational
 ) : Measure<Meta, Weight, U, M>(unit, quantity)
@@ -103,6 +103,7 @@ val BigRational.hams: Ham get() = Hams.new(this)
 val Int.hams: Ham get() = rat.hams
 
 object Martian : System<Martian>("Martian")
+
 class Grok private constructor(
     value: BigRational
 ) : Measure<Martian, Length, Groks, Grok>(Groks, value) {

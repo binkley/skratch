@@ -9,7 +9,7 @@ class LastRule<
     K : Any,
     V : Any,
     T : V
-    > : Rule<K, V, T>("last") {
+> : Rule<K, V, T>("last") {
     override fun invoke(
         key: K,
         values: ReversedSequence<T>,

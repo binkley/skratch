@@ -25,11 +25,12 @@ internal class EditMapTest {
 
     @Test
     fun `should remove by delegate`() {
-        val editMap = TestEditMap(
-            mutableMapOf(
-                "NANCY" to 3.toValue()
+        val editMap =
+            TestEditMap(
+                mutableMapOf(
+                    "NANCY" to 3.toValue()
+                )
             )
-        )
 
         editMap.NANCY = null
 
@@ -53,5 +54,8 @@ internal class EditMapTest {
     }
 }
 
+@Suppress("ktlint:standard:property-naming")
 private var TestEditMap.BOB: Int by EditMapDelegate { name }
+
+@Suppress("ktlint:standard:property-naming")
 private var TestEditMap.NANCY: Int? by EditMapDelegate { name }

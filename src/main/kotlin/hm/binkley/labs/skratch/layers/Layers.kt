@@ -6,7 +6,7 @@ interface Layers<
     K : Any,
     V : Any,
     L : Layer<K, V, L>
-    > : Map<K, V> {
+> : Map<K, V> {
     /** A read-only view of editing history in oldest-to-newest order. */
     val history: Stack<Layer<K, V, L>>
 
@@ -26,8 +26,10 @@ interface Layers<
     ): T?
 
     /** Convenience for [getAs]. */
-    fun <T : V> getAs(key: K, vararg except: Layer<K, V, *>): T? =
-        getAs(key, except.asList())
+    fun <T : V> getAs(
+        key: K,
+        vararg except: Layer<K, V, *>
+    ): T? = getAs(key, except.asList())
 
     /**
      * Gets the top layer.
@@ -45,8 +47,7 @@ interface Layers<
     fun whatIfNot(except: Collection<Layer<K, V, *>>): Layers<K, V, L>
 
     /** Convenience for [whatIfNot]. */
-    fun whatIfNot(vararg except: Layer<K, V, *>): Layers<K, V, L> =
-        whatIfNot(except.asList())
+    fun whatIfNot(vararg except: Layer<K, V, *>): Layers<K, V, L> = whatIfNot(except.asList())
 }
 
 /**
@@ -57,15 +58,14 @@ val <
     K : Any,
     V : Any,
     L : Layer<K, V, L>
-    >
+>
 Layers<K, V, L>.top get() = peek()
 
 /** Finds the most recent layer containing [rule] assigned to [key]. */
-fun <K : Any, V : Any>
-    Layers<K, V, *>.find(
-        key: K,
-        rule: Rule<K, V, *>
-    ): Layer<K, V, *> = history.asReversed().first { rule == it[key] }
+fun <K : Any, V : Any> Layers<K, V, *>.find(
+    key: K,
+    rule: Rule<K, V, *>
+): Layer<K, V, *> = history.asReversed().first { rule == it[key] }
 
 /**
  * Gets the value of [key] in the layers as-if [rule] were not present.
@@ -78,8 +78,7 @@ fun <
     K : Any,
     V : Any,
     T : V
-    >
-    Layers<K, V, *>.getAsWithout(
-        key: K,
-        rule: Rule<K, V, *>
-    ): T = getAs(key, find(key, rule))!! // `!!` as [rule] must be present
+> Layers<K, V, *>.getAsWithout(
+    key: K,
+    rule: Rule<K, V, *>
+): T = getAs(key, find(key, rule))!! // `!!` as [rule] must be present

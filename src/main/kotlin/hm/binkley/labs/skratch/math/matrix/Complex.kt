@@ -13,20 +13,25 @@ data class Complex(
     constructor(re: Rational, im: Long) : this(re, Rational(im))
 
     override fun unaryMinus() = Complex(-re, -im)
+
     override fun plus(other: Complex) = Complex(re + other.re, im + other.im)
 
     override fun unaryDiv() = conj / squareNorm
 
-    override fun times(other: Complex) = Complex(
-        re * other.re - im * other.im,
-        re * other.im + im * other.re
-    )
+    override fun times(other: Complex) =
+        Complex(
+            re * other.re - im * other.im,
+            re * other.im + im * other.re
+        )
 
     operator fun times(other: Rational) = Complex(re * other, im * other)
+
     override operator fun times(other: Long) = this * Rational(other)
+
     override operator fun div(other: Complex) = this * other.multInv
 
     operator fun div(other: Rational) = Complex(re / other, im / other)
+
     override operator fun div(other: Long) = this / Rational(other)
 
     override val conj get() = Complex(re, -im)
@@ -34,24 +39,28 @@ data class Complex(
     override val absoluteValue get() = squareNorm.root as Rational
 
     override fun isZero() = ZERO == this
+
     override fun isUnit() = ONE == this
+
     val isReal get() = im.isZero()
     val isImaginary get() = re.isZero()
 
-    override fun equivalent(other: GeneralNumber<*, *>) = when (other) {
-        is Complex -> this == other
-        is Rational -> RZERO == im && re == other
-        else -> TODO("BUG: This is a terrible approach")
-    }
+    override fun equivalent(other: GeneralNumber<*, *>) =
+        when (other) {
+            is Complex -> this == other
+            is Rational -> RZERO == im && re == other
+            else -> TODO("BUG: This is a terrible approach")
+        }
 
     override fun toString(): String {
         if (isReal) return "$re"
 
-        val simpleI = when (im) {
-            RONE -> "i"
-            -RONE -> "-i"
-            else -> "${im}i"
-        }
+        val simpleI =
+            when (im) {
+                RONE -> "i"
+                -RONE -> "-i"
+                else -> "${im}i"
+            }
 
         return if (isImaginary) {
             simpleI

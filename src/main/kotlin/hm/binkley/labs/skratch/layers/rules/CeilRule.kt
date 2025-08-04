@@ -8,8 +8,11 @@ import hm.binkley.labs.skratch.layers.getAsWithout
 class CeilRule<
     K : Any,
     V : Any,
-    T : Comparable<T> // `where T : V` does not compile
-    >(val ceiling: T) : Rule<K, V, V>("ceil[$ceiling]") {
+    // `where T : V` does not compile
+    T : Comparable<T>
+>(
+    val ceiling: T
+) : Rule<K, V, V>("ceil[$ceiling]") {
     @Suppress("UNCHECKED_CAST")
     override fun invoke(
         key: K,
@@ -19,4 +22,7 @@ class CeilRule<
 }
 
 /** Returns the lesser of [a] and [b], [a] on a tie for stable sorting. */
-private fun <T : Comparable<T>> min(a: T, b: T): T = if (b < a) b else a
+private fun <T : Comparable<T>> min(
+    a: T,
+    b: T
+): T = if (b < a) b else a

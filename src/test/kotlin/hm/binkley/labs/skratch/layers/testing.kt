@@ -5,7 +5,8 @@ import io.kotest.matchers.shouldBe
 
 class TestEditMap(
     val map: MutableMap<String, ValueOrRule<Int>> = mutableMapOf()
-) : EditMap<String, Int>, MutableMap<String, ValueOrRule<Int>> by map
+) : EditMap<String, Int>,
+    MutableMap<String, ValueOrRule<Int>> by map
 
 /**
  * Canonical constructors:
@@ -50,14 +51,14 @@ class TestLayers constructor(
  * Convenience for the "BOB" property when in an edit map block.
  * "BOB" is deleteable through assignment of `null`.
  */
+@Suppress("ktlint:standard:property-naming")
 var EditMap<String, Int>.BOB: Int? by EditMapDelegate { "BOB" }
 
 /** Convenience for the "NANCY" property when in an edit map block. */
+@Suppress("ktlint:standard:property-naming")
 var EditMap<String, Int>.NANCY: Int by EditMapDelegate { "NANCY" }
 
-inline fun <reified E : Throwable> TestLayers.shouldRollback(
-    block: (TestLayers) -> Unit
-): E {
+inline fun <reified E : Throwable> TestLayers.shouldRollback(block: (TestLayers) -> Unit): E {
     val initView: Map<String, Int> = toMap() // Defensive copy
     val initHistory = history.toList() // Defensive copy
     val e = shouldThrow<E> { block(this) }

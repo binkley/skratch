@@ -15,5 +15,6 @@ interface Field<T : Field<T>> : Ring<T> {
      *       to implement for non-base cases
      */
     fun unaryDiv(): T
+
     operator fun div(divisor: T): T = this * divisor.unaryDiv()
 }

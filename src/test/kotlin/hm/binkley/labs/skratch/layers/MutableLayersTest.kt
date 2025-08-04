@@ -33,14 +33,16 @@ internal class MutableLayersTest {
 
     @Test
     fun `should get-as type with excluded layers`() {
-        val layers = TestLayers {
-            this["BOB"] = lastOrDefaultRule(17)
-            this["NANCY"] = lastOrDefaultRule(3)
-        }
-        val layer = layers.push {
-            this["BOB"] = constantRule(3)
-            NANCY = 4
-        }
+        val layers =
+            TestLayers {
+                this["BOB"] = lastOrDefaultRule(17)
+                this["NANCY"] = lastOrDefaultRule(3)
+            }
+        val layer =
+            layers.push {
+                this["BOB"] = constantRule(3)
+                NANCY = 4
+            }
 
         val nancy: Int? = layers.getAs("NANCY", listOf(layer))
 
@@ -49,9 +51,10 @@ internal class MutableLayersTest {
 
     @Test
     fun `should rollback and complain for bad edits`() {
-        val layers = TestLayers {
-            this["BOB"] = lastOrDefaultRule(17)
-        }
+        val layers =
+            TestLayers {
+                this["BOB"] = lastOrDefaultRule(17)
+            }
 
         layers.shouldRollback<MissingRuleException> {
             it.edit {
@@ -81,14 +84,16 @@ internal class MutableLayersTest {
     @Suppress("DANGEROUS_CHARACTERS")
     @Test
     fun `should ask what if?`() {
-        val layers = TestLayers {
-            this["BOB"] = lastOrDefaultRule(17)
-            this["NANCY"] = lastOrDefaultRule(3)
-        }
+        val layers =
+            TestLayers {
+                this["BOB"] = lastOrDefaultRule(17)
+                this["NANCY"] = lastOrDefaultRule(3)
+            }
 
-        val whatIf = layers.whatIf {
-            this["BOB"] = lastOrDefaultRule(3)
-        }
+        val whatIf =
+            layers.whatIf {
+                this["BOB"] = lastOrDefaultRule(3)
+            }
 
         whatIf shouldBe mapOf("BOB" to 3, "NANCY" to 3)
         whatIf.history.size shouldBe layers.history.size
@@ -101,14 +106,16 @@ internal class MutableLayersTest {
     @Suppress("DANGEROUS_CHARACTERS")
     @Test
     fun `should ask what if not?`() {
-        val layers = TestLayers {
-            this["BOB"] = lastOrDefaultRule(17)
-            this["NANCY"] = lastOrDefaultRule(3)
-        }
-        val layer = layers.push {
-            this["BOB"] = constantRule(3)
-            NANCY = 4
-        }
+        val layers =
+            TestLayers {
+                this["BOB"] = lastOrDefaultRule(17)
+                this["NANCY"] = lastOrDefaultRule(3)
+            }
+        val layer =
+            layers.push {
+                this["BOB"] = constantRule(3)
+                NANCY = 4
+            }
 
         val whatIfNot = layers.whatIfNot(layer)
 
@@ -123,10 +130,11 @@ internal class MutableLayersTest {
 
     @Test
     fun `should pop`() {
-        val layers = TestLayers(
-            TestLayer(0) { this["BOB"] = lastOrDefaultRule(17) },
-            TestLayer(1) { BOB = 3 }
-        )
+        val layers =
+            TestLayers(
+                TestLayer(0) { this["BOB"] = lastOrDefaultRule(17) },
+                TestLayer(1) { BOB = 3 }
+            )
 
         layers.pop()
 

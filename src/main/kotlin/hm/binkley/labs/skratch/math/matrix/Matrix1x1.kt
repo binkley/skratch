@@ -10,8 +10,7 @@ interface HasA<N, Norm : GeneralNumber<Norm, Norm>, M>
 
 abstract class Matrix1x1<N, Norm : GeneralNumber<Norm, Norm>, M>(
     a: N
-) :
-    SquareMatrix<N, Norm, M>(1, listOf(a)),
+) : SquareMatrix<N, Norm, M>(1, listOf(a)),
     HasA<N, Norm, M>
     where N : GeneralNumber<N, Norm>,
           M : Matrix1x1<N, Norm, M> {
@@ -30,7 +29,9 @@ abstract class Matrix1x1<N, Norm : GeneralNumber<Norm, Norm>, M>(
     override val adj: M get() = matrixCtor(a)
 
     protected abstract fun elementCtor(n: Long): N
+
     protected abstract fun matrixCtor(a: N): M
+
     override fun matrixCtor(values: List<N>) = matrixCtor(values[0])
 
     override operator fun unaryMinus() = matrixCtor(-a)
@@ -49,20 +50,26 @@ abstract class Matrix1x1<N, Norm : GeneralNumber<Norm, Norm>, M>(
     override operator fun div(other: Long) = this / elementCtor(other)
 
     override fun isDiagonal() = true
+
     override fun isSymmetric() = true
+
     override fun isZero() = isDiagonal() && a.isZero()
+
     override fun isUnit() = isDiagonal() && a.isUnit()
 
     override fun isUpperTriangular() = true
+
     override fun isLowerTriangular() = true
 
     override fun symmetricPart() = (this + T) / elementCtor(2L)
+
     override fun antisymmetricPart() = (this - T) / elementCtor(2L)
 
     @Suppress("UNCHECKED_CAST")
-    override fun equals(other: Any?) = this === other ||
-        javaClass == other?.javaClass &&
-        equivalent(other as M)
+    override fun equals(other: Any?) =
+        this === other ||
+            javaClass == other?.javaClass &&
+            equivalent(other as M)
 
     override fun hashCode() = hash(a)
 

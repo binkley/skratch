@@ -13,7 +13,8 @@ private data class Bob(
 
 private object Nancy {
     @JvmStatic
-    val stringsField = Bob::class.java.getDeclaredField("strings").apply {
-        trySetAccessible()
-    }
+    val stringsField =
+        Bob::class.java.getDeclaredField("strings").apply {
+            trySetAccessible()
+        }
 }

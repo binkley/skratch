@@ -53,10 +53,11 @@ fun main() {
     println("STRING -> ${layers["STRING"]}")
 
     // TODO: Can the <T> be avoided?
-    val wordy = layers.push<MyWordLayer>(::MyWordLayer).apply {
-        ohMy()
-        myWord()
-    }
+    val wordy =
+        layers.push<MyWordLayer>(::MyWordLayer).apply {
+            ohMy()
+            myWord()
+        }
 
     println("-- MORE EXTENDING")
     println("WORDY -> $wordy")
@@ -123,10 +124,11 @@ fun main() {
         LARGE = 3
     }
     println("LAYERS -> ${enumyLayers.display()}")
-    val bigger = enumyLayers.push {
-        SMALL = 11
-        LARGE = SMALL // prop delegate reads as well
-    }
+    val bigger =
+        enumyLayers.push {
+            SMALL = 11
+            LARGE = SMALL // prop delegate reads as well
+        }
     println("LAYERS -> ${enumyLayers.display()}")
 
     println("-- ENUM-Y CONTAINER")

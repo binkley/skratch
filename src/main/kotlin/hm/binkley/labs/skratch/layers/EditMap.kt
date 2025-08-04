@@ -5,19 +5,23 @@ import kotlin.reflect.KProperty
 
 interface EditMap<K : Any, V : Any> : MutableMap<K, ValueOrRule<V>> {
     /** Convenience for converting [value] to a [Value]. */
-    fun put(key: K, value: V) = put(key, value.toValue())
+    fun put(
+        key: K,
+        value: V
+    ) = put(key, value.toValue())
 
     /** Creates an ad-hoc rule. */
     fun <T : V> rule(
         name: String,
         block: (K, Sequence<T>, Layers<K, V, *>) -> T?
-    ): Rule<K, V, T> = object : Rule<K, V, T>(name) {
-        override fun invoke(
-            key: K,
-            values: ReversedSequence<T>,
-            layers: Layers<K, V, *>
-        ): T? = block(key, values, layers)
-    }
+    ): Rule<K, V, T> =
+        object : Rule<K, V, T>(name) {
+            override fun invoke(
+                key: K,
+                values: ReversedSequence<T>,
+                layers: Layers<K, V, *>
+            ): T? = block(key, values, layers)
+        }
 }
 
 /**
@@ -28,8 +32,10 @@ interface EditMap<K : Any, V : Any> : MutableMap<K, ValueOrRule<V>> {
 operator fun <
     K : Any,
     V : Any
-    >
-    EditMap<K, V>.set(key: K, value: V) = put(key, value)
+> EditMap<K, V>.set(
+    key: K,
+    value: V
+) = put(key, value)
 
 /**
  * Delegate for _simple_ assignment.
@@ -44,7 +50,7 @@ fun interface EditMapDelegate<
     K : Any,
     V : Any,
     T : V
-    > : ReadWriteProperty<EditMap<K, V>, T?> {
+> : ReadWriteProperty<EditMap<K, V>, T?> {
     /** Finds or creates a suitable edit map key. */
     fun KProperty<*>.toKey(): K
 

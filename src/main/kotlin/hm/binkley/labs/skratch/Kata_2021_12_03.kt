@@ -13,7 +13,10 @@ data class ListNode(
     var next: ListNode? = null
 )
 
-fun mergeTwoLists(list1: ListNode?, list2: ListNode?): ListNode? {
+fun mergeTwoLists(
+    list1: ListNode?,
+    list2: ListNode?
+): ListNode? {
     if (null == list1) return list2
     if (null == list2) return list1
     return (list1.toList() + list2.toList()).sorted().toNode()

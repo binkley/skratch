@@ -25,10 +25,11 @@ internal class AwaitilityTest {
         }
     }
 
-    private fun slow() = runBlocking {
-        async {
-            delay(100L)
-            x = 1
+    private fun slow() =
+        runBlocking {
+            async {
+                delay(100L)
+                x = 1
+            }
         }
-    }
 }

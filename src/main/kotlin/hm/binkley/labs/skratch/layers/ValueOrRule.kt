@@ -32,8 +32,9 @@ abstract class Rule<
     K : Any,
     V : Any,
     T : V
-    >(
+>(
     val name: String
-) : ValueOrRule<V>(), (K, ReversedSequence<T>, Layers<K, V, *>) -> T? {
+) : ValueOrRule<V>(),
+    (K, ReversedSequence<T>, Layers<K, V, *>) -> T? {
     override fun toString() = "<Rule>$name"
 }

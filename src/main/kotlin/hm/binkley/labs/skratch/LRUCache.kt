@@ -27,10 +27,10 @@ class LRUCache(
     /** What value to provide on a cache miss? */
     private val cacheMiss: Int = -1
 ) : LinkedHashMap<Int, Int>(
-    capacity,
-    0.75f, // The default: not available as a public constant
-    true // Use access order (old to new), not insertion order
-) {
+        capacity,
+        0.75f, // The default: not available as a public constant
+        true // Use access order (old to new), not insertion order
+    ) {
     init {
         if (0 > capacity) {
             throw IllegalArgumentException(
@@ -48,7 +48,10 @@ class LRUCache(
 
     override fun get(key: Int): Int = super.get(key) ?: cacheMiss
 
-    override fun put(key: Int, value: Int): Int? {
+    override fun put(
+        key: Int,
+        value: Int
+    ): Int? {
         maybeRemoveOldestEntry()
 
         return super.put(key, value)
