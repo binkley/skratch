@@ -42,7 +42,7 @@
         <kotlin.version>2.2.0</kotlin.version>
         <kotlinx-cli.version>0.3</kotlinx-cli.version>
         <kotlinx-coroutines.version>1.10.2</kotlinx-coroutines.version>
-        <kotlinx-datetime.version>0.7.1</kotlinx-datetime.version>
+        <kotlinx-datetime.version>0.7.1-0.6.x-compat</kotlinx-datetime.version>
         <log4j.version>3.0.0-beta3</log4j.version>
         <main.class>hm.binkley.labs.skratch.MainKt</main.class>
         <maven-assembly-plugin.version>3.7.1</maven-assembly-plugin.version>
