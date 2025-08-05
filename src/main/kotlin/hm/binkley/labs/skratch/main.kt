@@ -4,14 +4,12 @@ package hm.binkley.labs.skratch
 
 import hm.binkley.labs.skratch.Q.Companion.la
 import hm.binkley.labs.skratch.puzzlers.main
+import java.util.stream.IntStream
 
-fun main(args: List<String>) {
+fun main(args: Array<String>) {
     if (!args.isEmpty()) {
         throw IllegalArgumentException("No arguments expected: args")
     }
-
-    val a_s: List<String> = List(3) { index -> ('a' + index).toString() }
-    println("CHEESY: Using a fun name as a class name -> $a_s")
 
     open class Named<in T>(
         val name: String,
@@ -72,6 +70,11 @@ private class X(
     private val a: String
 ) : CharSequence by a {
     override fun toString() = a
+
+    // TODO: Workaround -- override Java interface default methods explicitly
+    override fun chars(): IntStream = a.chars()
+
+    override fun codePoints(): IntStream = a.codePoints()
 }
 
 private class Q : MutableMap<String, Any> by mutableMapOf() {

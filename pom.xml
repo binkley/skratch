@@ -366,10 +366,13 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>${maven-compiler-plugin.version}</version>
                 <configuration>
-                    <compilerArgs>--enable-preview</compilerArgs>
+                    <!-- TODO: Try out latest non-release JDK
+                         Note the double dash is invalid in XML
+                    <compilerArgs>- -enable-preview</compilerArgs>
+                    -->
                     <release>${jdk.version}</release>
-                    <source>18</source>
-                    <target>18</target>
+                    <source>${jdk.version}</source>
+                    <target>${jdk.version}</target>
                 </configuration>
                 <executions>
                     <!-- Replacing default-compile as it is treated specially by maven -->
