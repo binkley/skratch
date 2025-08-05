@@ -42,7 +42,6 @@
         <kotlin.version>2.2.0</kotlin.version>
         <kotlinx-cli.version>0.3</kotlinx-cli.version>
         <kotlinx-coroutines.version>1.10.2</kotlinx-coroutines.version>
-        <kotlinx-datetime.version>0.7.1</kotlinx-datetime.version>
         <log4j.version>3.0.0-beta3</log4j.version>
         <main.class>hm.binkley.labs.skratch.MainKt</main.class>
         <maven-assembly-plugin.version>3.7.1</maven-assembly-plugin.version>
@@ -133,13 +132,6 @@
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-core</artifactId>
-        </dependency>
-
-        <!-- Play with date/times -->
-        <dependency>
-            <groupId>org.jetbrains.kotlinx</groupId>
-            <artifactId>kotlinx-datetime-jvm</artifactId>
-            <version>${kotlinx-datetime.version}</version>
         </dependency>
 
         <dependency>
