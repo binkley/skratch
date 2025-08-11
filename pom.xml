@@ -36,9 +36,9 @@
         <jline.version>3.18.0</jline.version>
         <jmh.version>1.37</jmh.version>
         <junit.version>6.0.0-M2</junit.version>
-        <kotest.version>6.0.0.M10</kotest.version>
+        <kotest.version>6.0.0.M15</kotest.version>
         <kotlin.code.style>official</kotlin.code.style>
-        <kotlin.version>2.2.0</kotlin.version>
+        <kotlin.version>2.2.20-Beta2</kotlin.version>
         <kotlinx-cli.version>0.3</kotlinx-cli.version>
         <kotlinx-coroutines.version>1.10.2</kotlinx-coroutines.version>
         <ktlint.version>1.7.1</ktlint.version>
@@ -55,7 +55,7 @@
         <picocli.version>4.7.7</picocli.version>
         <project.build.sourceEncoding>${java.charset}</project.build.sourceEncoding>
         <project.reporting.outputEncoding>${java.charset}</project.reporting.outputEncoding>
-        <spotless-maven-plugin.version>2.45.0</spotless-maven-plugin.version>
+        <spotless-maven-plugin.version>2.46.1</spotless-maven-plugin.version>
         <surefire.printSummary>false</surefire.printSummary>
         <system-lambda.version>1.2.1</system-lambda.version>
         <versions-maven-plugin.version>2.18.0</versions-maven-plugin.version>
